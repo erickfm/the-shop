@@ -30,6 +30,4 @@ export const ipc = {
     invoke<UninstallResult>("uninstall_pack", { character, packName }),
   resetToVanilla: () => invoke<ResetReport>("reset_to_vanilla"),
   launchSlippi: () => invoke<void>("launch_slippi"),
-  applyMexTemplate: () => invoke<InstallResult>("apply_mex_template"),
-  revertMexBase: () => invoke<void>("revert_mex_base"),
 };

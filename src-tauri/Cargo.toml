@@ -26,8 +26,6 @@ anyhow = "1.0"
 sha2 = "0.10"
 hex = "0.4"
 gc_fst = "0.2"
-xdelta3 = "0.1"
-indexmap = "2"
 dirs = "5.0"
 tokio = { version = "1", features = ["fs", "rt-multi-thread", "macros"] }
 

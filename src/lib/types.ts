@@ -22,9 +22,6 @@ export type Settings = {
   current_slippi_iso_path: string | null;
   patched_iso_path: string;
   skins_dir: string;
-  mex_base_iso_path: string | null;
-  mex_base_active: boolean;
-  gecko_ini_path: string | null;
 };
 
 export type SlotEntry = {

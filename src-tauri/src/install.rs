@@ -12,7 +12,6 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 const ORIGINAL_ISO_KEY: &str = "original_slippi_iso_path";
 const VANILLA_ISO_KEY: &str = "vanilla_iso_path";
-const MEX_BASE_KEY: &str = "mex_base_iso_path";
 
 fn now_secs() -> i64 {
     SystemTime::now()
@@ -22,12 +21,6 @@ fn now_secs() -> i64 {
 }
 
 pub fn working_iso(db: &Db) -> AppResult<PathBuf> {
-    if let Some(p) = db.get_setting(MEX_BASE_KEY)? {
-        let path = PathBuf::from(p);
-        if path.exists() {
-            return Ok(path);
-        }
-    }
     let s = db
         .get_setting(VANILLA_ISO_KEY)?
         .ok_or(AppError::IsoNotConfigured)?;

@@ -3,6 +3,7 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { ipc } from "../lib/ipc";
 import { toast } from "../components/Toaster";
 import { busy as withBusy } from "../components/BusyOverlay";
+import { CharacterBadge } from "../components/CharacterBadge";
 import type { CharacterDef, SkinPack } from "../lib/types";
 
 export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
@@ -122,21 +123,24 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
           const myKey = `${p.character_code}/${p.pack_name}`;
           return (
             <div key={myKey} className="card p-4 space-y-3">
-              <div className="flex items-baseline justify-between">
-                <div>
-                  <div className="text-base font-semibold">
-                    {p.character_display}
-                    <span className="text-muted"> · </span>
-                    <span>{p.pack_name}</span>
-                  </div>
-                  <div className="text-xs text-muted">
-                    {p.slots.length} slot{p.slots.length === 1 ? "" : "s"}
-                    {p.fully_installed && (
-                      <span className="text-ok"> · installed</span>
-                    )}
-                    {p.partially_installed && (
-                      <span className="text-accent"> · partial</span>
-                    )}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-start gap-3 min-w-0">
+                  <CharacterBadge code={p.character_code} size={56} />
+                  <div className="min-w-0">
+                    <div className="text-base font-semibold truncate">
+                      {p.character_display}
+                      <span className="text-muted"> · </span>
+                      <span>{p.pack_name}</span>
+                    </div>
+                    <div className="text-xs text-muted">
+                      {p.slots.length} slot{p.slots.length === 1 ? "" : "s"}
+                      {p.fully_installed && (
+                        <span className="text-ok"> · installed</span>
+                      )}
+                      {p.partially_installed && (
+                        <span className="text-accent"> · partial</span>
+                      )}
+                    </div>
                   </div>
                 </div>
                 {p.fully_installed || p.partially_installed ? (

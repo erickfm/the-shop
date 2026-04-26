@@ -3,7 +3,6 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { ipc } from "../lib/ipc";
 import { bytes } from "../lib/format";
 import { toast } from "../components/Toaster";
-import { busy as withBusy } from "../components/BusyOverlay";
 import type { DetectedPaths, Settings as SettingsT } from "../lib/types";
 
 export function Settings({ onChange }: { onChange?: () => void }) {
@@ -129,141 +128,12 @@ export function Settings({ onChange }: { onChange?: () => void }) {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-1">m-ex Slippi Template</h2>
-        <p className="text-sm text-muted mb-3">
-          Apply the m-ex Slippi Template once to enable extended costume slots — required for
-          modern skins that don't fit in vanilla file slots.
-        </p>
-        <MexSection settings={settings} onChanged={refresh} />
-      </div>
-
-      <div>
         <h2 className="text-lg font-semibold mb-1">Storage</h2>
         <div className="card p-4 text-xs text-muted font-mono space-y-1">
           <div>skins: {settings.skins_dir}</div>
           <div>patched ISO: {settings.patched_iso_path}</div>
-          {settings.mex_base_iso_path && (
-            <div>m-ex base: {settings.mex_base_iso_path}</div>
-          )}
-          {settings.gecko_ini_path && (
-            <div>gecko ini: {settings.gecko_ini_path}</div>
-          )}
         </div>
       </div>
     </div>
-  );
-}
-
-function MexSection({
-  settings,
-  onChanged,
-}: {
-  settings: SettingsT;
-  onChanged: () => Promise<void>;
-}) {
-  const [busy, setBusy] = useState(false);
-
-  const apply = async () => {
-    if (!settings.vanilla_iso_path) {
-      toast({ kind: "danger", text: "Set your vanilla Melee ISO first" });
-      return;
-    }
-    if (!confirm("Apply m-ex Slippi Template to your vanilla ISO? Creates a separate the-shop-mex-base.iso next to your original.")) return;
-    setBusy(true);
-    try {
-      const r = await withBusy(
-        "Applying m-ex template (decoding xdelta against your 1.4GB ISO; ~30s)…",
-        () => ipc.applyMexTemplate(),
-      );
-      toast({
-        kind: "ok",
-        text: `m-ex applied → ${r.patched_iso_path.split("/").pop()}; Skip Slippi SSS Gecko code installed`,
-      });
-      await onChanged();
-    } catch (e: any) {
-      toast({ kind: "danger", text: `m-ex apply failed: ${e?.message || e}` });
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const revert = async () => {
-    if (!confirm("Revert m-ex? Deletes the-shop-mex-base.iso and removes the Gecko code from Slippi.")) return;
-    setBusy(true);
-    try {
-      await ipc.revertMexBase();
-      toast({ kind: "ok", text: "m-ex base reverted" });
-      await onChanged();
-    } catch (e: any) {
-      toast({ kind: "danger", text: `Revert failed: ${e?.message || e}` });
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  return (
-    <div className="card p-4 space-y-3">
-      <div className="flex items-center gap-3">
-        {settings.mex_base_active ? (
-          <>
-            <span className="pill-ok">m-ex base ready</span>
-            <button className="btn-danger ml-auto" onClick={revert} disabled={busy}>
-              {busy ? "…" : "Revert m-ex"}
-            </button>
-          </>
-        ) : (
-          <>
-            <span className="pill-muted">vanilla mode</span>
-            <button className="btn-primary ml-auto" onClick={apply} disabled={busy}>
-              {busy ? (
-                <span className="inline-flex items-center gap-2">
-                  <Spinner /> Applying… (~30s)
-                </span>
-              ) : (
-                "Apply m-ex template"
-              )}
-            </button>
-          </>
-        )}
-      </div>
-      {busy && !settings.mex_base_active && (
-        <div className="text-xs text-muted">
-          Decoding the xdelta patch against your 1.4GB ISO. Memory will spike to ~3GB
-          briefly. Don't close the app.
-        </div>
-      )}
-      <div className="text-xs text-muted">
-        Template by{" "}
-        <span className="text-white">davidvkimball</span> — m-ex Slippi Template Pack v5.1.
-        Bundled with attribution. Underlying m-ex framework by Team Akaneia.
-      </div>
-    </div>
-  );
-}
-
-function Spinner() {
-  return (
-    <svg
-      className="animate-spin"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeOpacity="0.25"
-      />
-      <path
-        d="M22 12a10 10 0 0 1-10 10"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-    </svg>
   );
 }
