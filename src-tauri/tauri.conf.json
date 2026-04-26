@@ -33,6 +33,9 @@
       "icons/128x128.png",
       "icons/128x128@2x.png"
     ],
+    "resources": [
+      "resources/hsd-tool/*"
+    ],
     "category": "Utility",
     "shortDescription": "Slippi skin manager",
     "longDescription": "Browse, install, and play with custom Melee skins on Slippi."

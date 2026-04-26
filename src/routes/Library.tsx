@@ -4,6 +4,7 @@ import { ipc } from "../lib/ipc";
 import { toast } from "../components/Toaster";
 import { busy as withBusy } from "../components/BusyOverlay";
 import { CharacterBadge } from "../components/CharacterBadge";
+import { SkinPreview3D } from "../components/SkinPreview3D";
 import type { CharacterDef, SkinPack } from "../lib/types";
 
 export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
@@ -116,24 +117,37 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
           + Add skins
         </button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {packs.map((p) => {
           const charDef = chars.find((c) => c.code === p.character_code);
           const allSlots = charDef?.slots ?? [];
           const myKey = `${p.character_code}/${p.pack_name}`;
           return (
-            <div key={myKey} className="card p-4 space-y-3">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-start gap-3 min-w-0">
-                  <CharacterBadge code={p.character_code} size={56} />
+            <div key={myKey} className="card overflow-hidden flex flex-col">
+              <div className="relative aspect-square bg-bg">
+                {p.slots[0] ? (
+                  <SkinPreview3D
+                    skinFileId={p.slots[0].skin_file_id}
+                    size="100%"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <CharacterBadge code={p.character_code} size={120} />
+                  </div>
+                )}
+                <div className="absolute top-2 left-2">
+                  <CharacterBadge code={p.character_code} size={32} />
+                </div>
+              </div>
+              <div className="p-4 space-y-3 flex-1 flex flex-col">
+                <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <div className="text-base font-semibold truncate">
-                      {p.character_display}
-                      <span className="text-muted"> · </span>
-                      <span>{p.pack_name}</span>
+                      {p.pack_name}
                     </div>
                     <div className="text-xs text-muted">
-                      {p.slots.length} slot{p.slots.length === 1 ? "" : "s"}
+                      {p.character_display} · {p.slots.length} slot
+                      {p.slots.length === 1 ? "" : "s"}
                       {p.fully_installed && (
                         <span className="text-ok"> · installed</span>
                       )}
@@ -142,66 +156,66 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
                       )}
                     </div>
                   </div>
+                  {p.fully_installed || p.partially_installed ? (
+                    <button
+                      className="btn-danger flex-shrink-0"
+                      onClick={() => uninstall(p)}
+                      disabled={busy === myKey}
+                    >
+                      {busy === myKey ? (
+                        <span className="inline-flex items-center gap-2">
+                          <BusyDot /> Uninstalling…
+                        </span>
+                      ) : (
+                        "Uninstall"
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      className="btn-primary flex-shrink-0"
+                      onClick={() => install(p)}
+                      disabled={busy === myKey}
+                    >
+                      {busy === myKey ? (
+                        <span className="inline-flex items-center gap-2">
+                          <BusyDot /> Installing…
+                        </span>
+                      ) : (
+                        "Install"
+                      )}
+                    </button>
+                  )}
                 </div>
-                {p.fully_installed || p.partially_installed ? (
-                  <button
-                    className="btn-danger"
-                    onClick={() => uninstall(p)}
-                    disabled={busy === myKey}
-                  >
-                    {busy === myKey ? (
-                      <span className="inline-flex items-center gap-2">
-                        <BusyDot /> Uninstalling…
-                      </span>
-                    ) : (
-                      "Uninstall"
-                    )}
-                  </button>
-                ) : (
-                  <button
-                    className="btn-primary"
-                    onClick={() => install(p)}
-                    disabled={busy === myKey}
-                  >
-                    {busy === myKey ? (
-                      <span className="inline-flex items-center gap-2">
-                        <BusyDot /> Installing…
-                      </span>
-                    ) : (
-                      "Install"
-                    )}
-                  </button>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {allSlots.map((s) => {
-                  const ours = p.slots.find((ps) => ps.slot_code === s.code);
-                  if (!ours) {
+                <div className="flex flex-wrap gap-1.5">
+                  {allSlots.map((s) => {
+                    const ours = p.slots.find((ps) => ps.slot_code === s.code);
+                    if (!ours) {
+                      return (
+                        <span key={s.code} className="pill-muted opacity-40">
+                          {s.display}
+                        </span>
+                      );
+                    }
+                    const routed =
+                      ours.installed &&
+                      ours.actual_slot_code &&
+                      ours.actual_slot_code !== ours.slot_code;
                     return (
-                      <span key={s.code} className="pill-muted opacity-40">
+                      <span
+                        key={s.code}
+                        className={ours.installed ? "pill-ok" : "pill-muted"}
+                        title={ours.source_path}
+                      >
                         {s.display}
+                        {routed && (
+                          <span className="ml-1 text-accent">
+                            → {ours.actual_slot_code}
+                          </span>
+                        )}
                       </span>
                     );
-                  }
-                  const routed =
-                    ours.installed &&
-                    ours.actual_slot_code &&
-                    ours.actual_slot_code !== ours.slot_code;
-                  return (
-                    <span
-                      key={s.code}
-                      className={ours.installed ? "pill-ok" : "pill-muted"}
-                      title={ours.source_path}
-                    >
-                      {s.display}
-                      {routed && (
-                        <span className="ml-1 text-accent">
-                          → {ours.actual_slot_code}
-                        </span>
-                      )}
-                    </span>
-                  );
-                })}
+                  })}
+                </div>
               </div>
             </div>
           );

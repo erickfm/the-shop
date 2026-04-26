@@ -7,6 +7,7 @@ mod launch;
 mod library;
 mod manifest;
 mod paths;
+mod preview;
 mod reset;
 mod slippi_config;
 mod slot_codes;
@@ -211,6 +212,30 @@ fn launch_slippi(state: State<'_, AppState>) -> AppResult<()> {
     launch::launch(&state.db)
 }
 
+#[tauri::command]
+fn get_skin_obj(
+    state: State<'_, AppState>,
+    app: tauri::AppHandle,
+    skin_file_id: i64,
+) -> AppResult<String> {
+    use rusqlite::params;
+    let source: String = state.db.with_conn(|c| {
+        let p: String = c.query_row(
+            "SELECT source_path FROM skin_files WHERE id = ?1",
+            params![skin_file_id],
+            |r| r.get(0),
+        )?;
+        Ok(p)
+    })?;
+    let resource_dir = app
+        .path()
+        .resource_dir()
+        .map_err(|e| error::AppError::Other(format!("resource_dir: {e}")))?;
+    let obj = preview::ensure_obj(&resource_dir, std::path::Path::new(&source))?;
+    let bytes = std::fs::read(&obj).map_err(|e| error::AppError::Io(e.to_string()))?;
+    Ok(String::from_utf8_lossy(&bytes).into_owned())
+}
+
 
 fn reconcile_on_startup(db: &Db) {
     let vanilla = match db.get_setting(VANILLA_ISO_KEY) {
@@ -257,6 +282,7 @@ pub fn run() {
             uninstall_pack,
             reset_to_vanilla,
             launch_slippi,
+            get_skin_obj,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
