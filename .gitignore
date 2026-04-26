@@ -1,0 +1,31 @@
+# Node / Vite
+node_modules/
+dist/
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
+# Rust / Tauri
+src-tauri/target/
+src-tauri/gen/
+
+# C# / dotnet
+tools/hsd-tool/**/bin/
+tools/hsd-tool/**/obj/
+
+# HSDLib upstream is cloned at build time, not committed (run tools/hsd-tool/setup.sh)
+tools/hsd-tool/HSDLib/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# User-supplied skin files dropped anywhere in the repo for testing
+Pl*.dat
+Pl*.usd
+
+# Local sqlite
+*.sqlite3
+*.sqlite
