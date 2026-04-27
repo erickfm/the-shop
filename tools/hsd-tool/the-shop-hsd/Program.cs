@@ -404,6 +404,15 @@ static Matrix4x4 GetInverseBind(HSD_JOBJ? j, Dictionary<int, Matrix4x4> cache)
     return Matrix4x4.Identity;
 }
 
+// transpose(inverse(m)) — the canonical normal matrix. Required for normals to
+// stay perpendicular to the surface under non-uniform scale or shear; reduces
+// to the rotation submatrix for pure rotation+translation.
+static Matrix4x4 NormalMatrix(Matrix4x4 m)
+{
+    if (!Matrix4x4.Invert(m, out var inv)) return m;
+    return Matrix4x4.Transpose(inv);
+}
+
 static void WalkAndEmit(
     HSD_JOBJ? jobj,
     Dictionary<int, Matrix4x4> jobjWorlds,
@@ -426,7 +435,6 @@ static void WalkAndEmit(
     var parentTransform = GetWorld(jobj, jobjWorlds);
 
     bool skipEnvelope = Environment.GetEnvironmentVariable("THE_SHOP_HSD_SKIP_ENVELOPE") == "1";
-    bool logPobjFlags = Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_POBJ_FLAGS") == "1";
     var dobj = jobj.Dobj;
     while (dobj != null)
     {
@@ -445,15 +453,6 @@ static void WalkAndEmit(
             {
                 pobj = pobj.Next;
                 continue;
-            }
-            if (logPobjFlags)
-            {
-                bool unknown2 = pobj.Flags.HasFlag(POBJ_FLAG.UNKNOWN2);
-                bool sk = jobj.Flags.HasFlag(JOBJ_FLAG.SKELETON);
-                bool skr = jobj.Flags.HasFlag(JOBJ_FLAG.SKELETON_ROOT);
-                bool sba = pobj.Flags.HasFlag(POBJ_FLAG.SHAPESET_AVERAGE);
-                Console.Error.WriteLine(
-                    $"  pobj {matEntry.Name} env={isEnvelope} unk2={unknown2} skel={sk} skelRoot={skr} shapeAvg={sba} singleBind={(pobj.SingleBoundJOBJ != null)}");
             }
             try
             {
@@ -497,28 +496,6 @@ static void EmitPobj(
     var allVerts = GX_VertexAccessor.GetDecodedVertices(dl, pobj);
     var envelopes = pobj.EnvelopeWeights;
     bool hasPNMTXIDX = pobj.HasAttribute(GXAttribName.GX_VA_PNMTXIDX);
-    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_ENV") == "1")
-    {
-        int envCount = envelopes?.Length ?? -1;
-        int multiBone = 0;
-        int singleBone = 0;
-        if (envelopes != null)
-        {
-            for (int i = 0; i < envelopes.Length; i++)
-            {
-                var en = envelopes[i];
-                if (en == null) continue;
-                if (en.EnvelopeCount > 1) multiBone++;
-                else if (en.EnvelopeCount == 1) singleBone++;
-            }
-        }
-        Console.Error.WriteLine($"  pobj envelopes={envCount} single={singleBone} multi={multiBone} hasPNMTXIDX={hasPNMTXIDX}");
-    }
-    bool isSkeleton = parent.Flags.HasFlag(JOBJ_FLAG.SKELETON)
-        || parent.Flags.HasFlag(JOBJ_FLAG.SKELETON_ROOT)
-        || pobj.Flags.HasFlag(POBJ_FLAG.UNKNOWN2);
-    bool isShapesetAverage = pobj.Flags.HasFlag(POBJ_FLAG.SHAPESET_AVERAGE);
-
     var singleBind = pobj.SingleBoundJOBJ;
     var singleBindTransform = GetWorld(singleBind, jobjWorlds);
 
@@ -536,122 +513,98 @@ static void EmitPobj(
         for (int i = 0; i < pgVerts.Length; i++)
         {
             var gv = pgVerts[i];
+            var localPos = new Vector3(gv.POS.X, gv.POS.Y, gv.POS.Z);
+            var localNrm = new Vector3(gv.NRM.X, gv.NRM.Y, gv.NRM.Z);
 
-            var singleMatrix = Matrix4x4.Identity;
+            // Skinning matches HSDRawViewer's Shader/gx.vert main() (lines 115-156):
+            //   - single-bone weight=1: vec * world[bone]   (bone-local stored vertex)
+            //   - multi-bone weighted:  sum(w * vec * inv_bind[bone] * world[bone])
+            //                                              (mesh-local stored vertex)
+            // No normalization by sum-of-weights; HAL data has weights summing to 1,
+            // the canonical shader doesn't divide either.
             if (hasPNMTXIDX && envelopes != null)
             {
+                SkinStats.Total++;
                 int eIdx = gv.PNMTXIDX / 3;
                 if (eIdx >= 0 && eIdx < envelopes.Length)
                 {
                     var en = envelopes[eIdx];
-                    if (en.EnvelopeCount > 0
-                        && en.GetWeightAt(0) == 1
-                        && en.GetJOBJAt(0) != null)
+                    bool singleBindOpt = en.EnvelopeCount > 0
+                        && en.GetWeightAt(0) == 1.0f
+                        && en.GetJOBJAt(0) != null;
+                    if (singleBindOpt)
                     {
-                        singleMatrix = GetWorld(en.GetJOBJAt(0), jobjWorlds);
+                        var bone = en.GetJOBJAt(0)!;
+                        var world = GetWorld(bone, jobjWorlds);
+                        localPos = Vector3.Transform(localPos, world);
+                        // Use HAL's authored vertex normal as-is (no skinning
+                        // transform). Set THE_SHOP_HSD_TRANSFORM_NORMALS=1 to
+                        // re-enable the canonical normal-matrix skinning.
+                        if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_TRANSFORM_NORMALS") == "1")
+                            localNrm = Vector3.TransformNormal(localNrm, NormalMatrix(world));
                     }
                     else
                     {
-                        singleMatrix = parentTransform;
-                    }
-                }
-            }
-
-            var localPos = new Vector3(gv.POS.X, gv.POS.Y, gv.POS.Z);
-            var localNrm = new Vector3(gv.NRM.X, gv.NRM.Y, gv.NRM.Z);
-
-            string mode = Environment.GetEnvironmentVariable("THE_SHOP_HSD_MODE") ?? "skin";
-            if (mode == "raw")
-            {
-            }
-            else if (mode == "envelope-mat")
-            {
-                if (hasPNMTXIDX)
-                {
-                    localPos = Vector3.Transform(localPos, singleMatrix);
-                    localNrm = Vector3.TransformNormal(localNrm, singleMatrix);
-                }
-                else
-                {
-                    localPos = Vector3.Transform(localPos, parentTransform);
-                    localNrm = Vector3.TransformNormal(localNrm, parentTransform);
-                }
-                localPos = Vector3.Transform(localPos, singleBindTransform);
-                localNrm = Vector3.TransformNormal(localNrm, singleBindTransform);
-            }
-            else if (mode == "bind-skin")
-            {
-                // Proper bind-pose multi-bone skinning. At bind pose,
-                // world_bind * inverse_bind = identity for each bone, so
-                // sum(weight * (world * inv_bind * pos)) reduces to pos.
-                // Envelope verts pass through; non-envelope go through
-                // parent's world matrix (rigid bind to parent JOBJ).
-                if (!hasPNMTXIDX)
-                {
-                    localPos = Vector3.Transform(localPos, parentTransform);
-                    localNrm = Vector3.TransformNormal(localNrm, parentTransform);
-                }
-                localPos = Vector3.Transform(localPos, singleBindTransform);
-                localNrm = Vector3.TransformNormal(localNrm, singleBindTransform);
-            }
-            else if (mode == "skin")
-            {
-                // Multi-bone weighted skinning, HAL flavor. Envelope vertex
-                // positions appear to be authored in bone-local space (no
-                // inv_bind needed), so each contribution is just w * (vec * bone_world).
-                // At bind for a single-bone weight=1, this matches the v0.2
-                // default mode's working case. At posed, bones carry their
-                // verts naturally.
-                if (hasPNMTXIDX && envelopes != null)
-                {
-                    int eIdx = gv.PNMTXIDX / 3;
-                    if (eIdx >= 0 && eIdx < envelopes.Length)
-                    {
-                        var en = envelopes[eIdx];
                         Vector3 accumPos = Vector3.Zero;
                         Vector3 accumNrm = Vector3.Zero;
-                        float totalW = 0f;
+                        int nullCount = 0;
+                        int contributingCount = 0;
                         for (int wi = 0; wi < en.EnvelopeCount; wi++)
                         {
                             var bone = en.GetJOBJAt(wi);
                             float w = en.GetWeightAt(wi);
-                            if (bone == null || w <= 0) continue;
-                            var bonePosed = GetWorld(bone, jobjWorlds);
-                            accumPos += w * Vector3.Transform(localPos, bonePosed);
-                            accumNrm += w * Vector3.TransformNormal(localNrm, bonePosed);
-                            totalW += w;
+                            if (bone == null) { nullCount++; continue; }
+                            if (w <= 0) continue;
+                            var world = GetWorld(bone, jobjWorlds);
+                            var invBind = GetInverseBind(bone, invBindCache);
+                            var skinM = invBind * world;
+                            accumPos += w * Vector3.Transform(localPos, skinM);
+                            if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_TRANSFORM_NORMALS") == "1")
+                                accumNrm += w * Vector3.TransformNormal(localNrm, NormalMatrix(skinM));
+                            else
+                                accumNrm += w * localNrm;
+                            contributingCount++;
                         }
-                        if (totalW > 0)
+                        if (en.EnvelopeCount > 0 && nullCount == en.EnvelopeCount)
                         {
-                            localPos = accumPos / totalW;
-                            localNrm = accumNrm / totalW;
+                            SkinStats.AllBonesNull++;
+                            SkinStats.Sample($"allBonesNull eIdx={eIdx} envCount={en.EnvelopeCount}");
+                        }
+                        else if (nullCount > 0)
+                        {
+                            SkinStats.PartialBonesNull++;
+                        }
+                        if (contributingCount > 0)
+                        {
+                            localPos = accumPos;
+                            localNrm = accumNrm;
+                        }
+                        else
+                        {
+                            SkinStats.TotalWZero++;
+                            SkinStats.Sample($"totalWZero eIdx={eIdx} envCount={en.EnvelopeCount} nullCount={nullCount}");
                         }
                     }
                 }
                 else
                 {
-                    // non-envelope: rigid bind to parent JOBJ
-                    localPos = Vector3.Transform(localPos, parentTransform);
-                    localNrm = Vector3.TransformNormal(localNrm, parentTransform);
+                    SkinStats.EIdxOob++;
+                    SkinStats.Sample($"eIdxOOB PNMTXIDX={gv.PNMTXIDX} eIdx={eIdx} envLen={envelopes.Length}");
                 }
-                localPos = Vector3.Transform(localPos, singleBindTransform);
-                localNrm = Vector3.TransformNormal(localNrm, singleBindTransform);
+            }
+            else if (hasPNMTXIDX)
+            {
+                SkinStats.Total++;
+                SkinStats.NoEnvelopeArr++;
             }
             else
             {
-                if (!isShapesetAverage && !hasPNMTXIDX)
-                {
-                    localPos = Vector3.Transform(localPos, parentTransform);
-                    localNrm = Vector3.TransformNormal(localNrm, parentTransform);
-                }
-                if (isSkeleton)
-                {
-                    localPos = Vector3.Transform(localPos, singleMatrix);
-                    localNrm = Vector3.TransformNormal(localNrm, singleMatrix);
-                }
-                localPos = Vector3.Transform(localPos, singleBindTransform);
-                localNrm = Vector3.TransformNormal(localNrm, singleBindTransform);
+                // non-envelope: rigid bind to parent JOBJ
+                localPos = Vector3.Transform(localPos, parentTransform);
+                localNrm = Vector3.TransformNormal(localNrm, NormalMatrix(parentTransform));
             }
+            localPos = Vector3.Transform(localPos, singleBindTransform);
+            localNrm = Vector3.TransformNormal(localNrm, NormalMatrix(singleBindTransform));
 
             if (localNrm.LengthSquared() > 1e-12f)
                 localNrm = Vector3.Normalize(localNrm);
@@ -844,6 +797,8 @@ static int ToGltf(string[] args)
     var input = args[1];
     var output = args[2];
 
+    SkinStats.Reset();
+
     string? posePath = null;
     int animIndex = 0;
     float poseFrame = 0f;
@@ -895,51 +850,6 @@ static int ToGltf(string[] args)
     var jobjWorlds = new Dictionary<int, Matrix4x4>();
     foreach (var root in file.Roots)
         if (root.Data is HSD_JOBJ rj) BuildJobjWorlds(rj, Matrix4x4.Identity, jobjWorlds, new HashSet<int>());
-
-    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_WORLDS") == "1")
-    {
-        // Compare bind vs posed worlds for a few bones to verify pose persists
-        foreach (var root in file.Roots)
-        {
-            if (root.Data is HSD_JOBJ rj)
-            {
-                var list = rj.TreeList;
-                for (int i = 0; i < Math.Min(20, list.Count); i++)
-                {
-                    var jobj = list[i];
-                    int h = jobj.GetHashCode();
-                    bindWorlds.TryGetValue(h, out var bw);
-                    jobjWorlds.TryGetValue(h, out var pw);
-                    bool inMap = bindWorlds.ContainsKey(h);
-                    Console.Error.WriteLine($"  jobj#{i} hash={h} inBindMap={inMap} T=({jobj.TX:F3},{jobj.TY:F3},{jobj.TZ:F3}) R=({jobj.RX:F2},{jobj.RY:F2},{jobj.RZ:F2}) bind.M42={bw.M42:F2} posed.M42={pw.M42:F2}");
-                }
-            }
-        }
-    }
-
-    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_INVBIND") == "1")
-    {
-        foreach (var root in file.Roots)
-        {
-            if (root.Data is HSD_JOBJ rj)
-            {
-                int sampled = 0;
-                foreach (var jobj in rj.TreeList)
-                {
-                    if (sampled >= 3) break;
-                    if (jobj.InverseWorldTransform == null) continue;
-                    var raw = jobj.InverseWorldTransform;
-                    Console.Error.WriteLine($"  jobj#{sampled} TX={jobj.TX:F3} TY={jobj.TY:F3} TZ={jobj.TZ:F3}");
-                    Console.Error.WriteLine($"    raw inv: [{raw.M11:F3},{raw.M12:F3},{raw.M13:F3},{raw.M14:F3}]");
-                    Console.Error.WriteLine($"             [{raw.M21:F3},{raw.M22:F3},{raw.M23:F3},{raw.M24:F3}]");
-                    Console.Error.WriteLine($"             [{raw.M31:F3},{raw.M32:F3},{raw.M33:F3},{raw.M34:F3}]");
-                    var world = GetWorld(jobj, jobjWorlds);
-                    Console.Error.WriteLine($"    world.M41,M42,M43 = {world.M41:F3},{world.M42:F3},{world.M43:F3}");
-                    sampled++;
-                }
-            }
-        }
-    }
 
     foreach (var root in file.Roots)
         if (root.Data is HSD_JOBJ rj) WalkAndEmit(rj, jobjWorlds, invBindCache, materials, mobjToMatIdx, tobjHashToFilename,
@@ -997,6 +907,8 @@ static int ToGltf(string[] args)
     int totalFaces = 0;
     foreach (var b in facesByMat.Values) totalFaces += b.Count;
     Console.WriteLine($"wrote {positions.Count} verts, {totalFaces} faces, {materials.Count} mats, {texBytesByFilename.Count} textures to {output}");
+    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_SPIKES") == "1")
+        SkinStats.Print();
     return totalFaces > 0 ? 0 : 4;
 }
 
@@ -1071,6 +983,33 @@ static void ApplyFigaTreePose(HSDRawFile costume, HSDRawFile anim, int animIndex
             var j = jobjs[i];
             Console.Error.WriteLine($"  jobj[{i}] T=({j.TX:F3},{j.TY:F3},{j.TZ:F3}) R=({j.RX:F3},{j.RY:F3},{j.RZ:F3}) S=({j.SX:F3},{j.SY:F3},{j.SZ:F3})");
         }
+    }
+}
+
+static class SkinStats
+{
+    public static int Total;
+    public static int NoEnvelopeArr;
+    public static int EIdxOob;
+    public static int AllBonesNull;
+    public static int PartialBonesNull;
+    public static int TotalWZero;
+    public static List<string> Samples = new();
+    public static void Reset()
+    {
+        Total = NoEnvelopeArr = EIdxOob = AllBonesNull = PartialBonesNull = TotalWZero = 0;
+        Samples = new();
+    }
+    public static void Sample(string s)
+    {
+        if (Samples.Count < 5) Samples.Add(s);
+    }
+    public static void Print()
+    {
+        Console.Error.WriteLine(
+            $"--- SkinStats: total={Total} noEnvArr={NoEnvelopeArr} eIdxOOB={EIdxOob} " +
+            $"allBonesNull={AllBonesNull} partialBonesNull={PartialBonesNull} totalWZero={TotalWZero} ---");
+        foreach (var s in Samples) Console.Error.WriteLine($"  sample: {s}");
     }
 }
 

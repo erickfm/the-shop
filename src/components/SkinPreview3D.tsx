@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Bounds, OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 import * as THREE from "three";
 import { ipc, type SkinPreviewBundle } from "../lib/ipc";
 
@@ -55,6 +54,21 @@ export function SkinPreview3D({
       "",
       (gltf) => {
         if (cancelled) return;
+        // Tune each material once on parse: metalness/roughness/side and SRGB
+        // colorSpace on the diffuse map. These persist across re-renders.
+        gltf.scene.traverse((child) => {
+          if ((child as THREE.Mesh).isMesh) {
+            const m = child as THREE.Mesh;
+            const mats = Array.isArray(m.material) ? m.material : [m.material];
+            for (const mat of mats) {
+              const std = mat as THREE.MeshStandardMaterial;
+              std.metalness = 0.05;
+              std.roughness = 0.55;
+              std.side = THREE.DoubleSide;
+              if (std.map) std.map.colorSpace = THREE.SRGBColorSpace;
+            }
+          }
+        });
         setParsed({ scene: gltf.scene });
       },
       (err: unknown) => {
@@ -87,108 +101,17 @@ export function SkinPreview3D({
     };
   }, [parsed]);
 
-  const [debugMode, setDebugMode] = useState<
-    "textured" | "no-tex" | "checker" | "merged"
-  >("textured");
-
-  // Capture the original baseColor textures and colors ONCE per parsed scene,
-  // before any debug mode mutates them. This lets us cycle modes without
-  // permanently destroying the texture pointers.
-  const originals = useMemo(() => {
+  // Compute a translation offset that will sit the model's bbox center at the
+  // world origin, so OrbitControls (which targets origin via Bounds) orbits the
+  // body center instead of the feet. Applied to a wrapper <group> rather than
+  // mutating gltf.scene.position so Bounds can't fight us for it.
+  const offset = useMemo(() => {
     if (!parsed) return null;
-    const map = new WeakMap<
-      THREE.Material,
-      { map: THREE.Texture | null; color: THREE.Color }
-    >();
-    parsed.scene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const m = child as THREE.Mesh;
-        const mats = Array.isArray(m.material) ? m.material : [m.material];
-        for (const mat of mats) {
-          const std = mat as THREE.MeshStandardMaterial;
-          if (!map.has(std)) {
-            map.set(std, { map: std.map ?? null, color: std.color.clone() });
-          }
-          std.metalness = 0.05;
-          std.roughness = 0.55;
-          std.side = THREE.DoubleSide;
-          if (std.map) std.map.colorSpace = THREE.SRGBColorSpace;
-        }
-      }
-    });
-    return map;
+    const bbox = new THREE.Box3().setFromObject(parsed.scene);
+    const center = new THREE.Vector3();
+    bbox.getCenter(center);
+    return [-center.x, -center.y, -center.z] as [number, number, number];
   }, [parsed]);
-
-  const tunedScene = useMemo(() => {
-    if (!parsed || !originals) return null;
-
-    if (debugMode === "merged") {
-      const geoms: THREE.BufferGeometry[] = [];
-      parsed.scene.traverse((child) => {
-        if ((child as THREE.Mesh).isMesh) {
-          const g = (child as THREE.Mesh).geometry as THREE.BufferGeometry;
-          const clone = new THREE.BufferGeometry();
-          const pos = g.getAttribute("position");
-          const nrm = g.getAttribute("normal");
-          if (pos) clone.setAttribute("position", pos);
-          if (nrm) clone.setAttribute("normal", nrm);
-          if (g.index) clone.setIndex(g.index);
-          geoms.push(clone);
-        }
-      });
-      const merged = BufferGeometryUtils.mergeGeometries(geoms, false);
-      const mergedMesh = new THREE.Mesh(
-        merged,
-        new THREE.MeshStandardMaterial({
-          color: 0xcfd6e6,
-          metalness: 0.05,
-          roughness: 0.55,
-          side: THREE.DoubleSide,
-        }),
-      );
-      const mergedGroup = new THREE.Group();
-      mergedGroup.add(mergedMesh);
-      return mergedGroup;
-    }
-
-    let checkerTex: THREE.Texture | null = null;
-    if (debugMode === "checker") {
-      const c = document.createElement("canvas");
-      c.width = c.height = 64;
-      const g = c.getContext("2d")!;
-      for (let y = 0; y < 8; y++) {
-        for (let x = 0; x < 8; x++) {
-          g.fillStyle = (x + y) % 2 === 0 ? "#ffffff" : "#222222";
-          g.fillRect(x * 8, y * 8, 8, 8);
-        }
-      }
-      checkerTex = new THREE.CanvasTexture(c);
-      checkerTex.colorSpace = THREE.SRGBColorSpace;
-    }
-    parsed.scene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh) {
-        const m = child as THREE.Mesh;
-        const mats = Array.isArray(m.material) ? m.material : [m.material];
-        for (const mat of mats) {
-          const std = mat as THREE.MeshStandardMaterial;
-          const orig = originals.get(std);
-          if (debugMode === "no-tex") {
-            std.map = null;
-            if (orig) std.color.copy(orig.color);
-          } else if (debugMode === "checker") {
-            std.map = checkerTex;
-            std.color.set(0xffffff);
-          } else {
-            // textured (default): restore original
-            std.map = orig?.map ?? null;
-            if (orig) std.color.copy(orig.color);
-          }
-          std.needsUpdate = true;
-        }
-      }
-    });
-    return parsed.scene;
-  }, [parsed, originals, debugMode]);
 
   const isFill = size === "100%" || size === "full";
   const style = isFill
@@ -206,7 +129,7 @@ export function SkinPreview3D({
       </div>
     );
   }
-  if (!tunedScene) {
+  if (!parsed || !offset) {
     return (
       <div
         className={isFill ? "" : "rounded border border-border bg-bg animate-pulse"}
@@ -221,25 +144,9 @@ export function SkinPreview3D({
     );
   }
 
-  const cycleMode = () => {
-    setDebugMode((m) =>
-      m === "textured"
-        ? "no-tex"
-        : m === "no-tex"
-          ? "checker"
-          : m === "checker"
-            ? "merged"
-            : "textured",
-    );
-  };
-
   return (
     <div
-      className={
-        isFill
-          ? ""
-          : "rounded border border-border bg-bg overflow-hidden relative"
-      }
+      className={isFill ? "" : "rounded border border-border bg-bg overflow-hidden"}
       style={style}
     >
       <Canvas
@@ -251,7 +158,9 @@ export function SkinPreview3D({
         <directionalLight position={[3, 5, 4]} intensity={1.1} />
         <directionalLight position={[-3, -2, -3]} intensity={0.4} color="#9bb3ff" />
         <Bounds fit clip margin={1.15}>
-          <primitive object={tunedScene} />
+          <group position={offset}>
+            <primitive object={parsed.scene} />
+          </group>
         </Bounds>
         <OrbitControls
           autoRotate={autoRotate}
@@ -260,13 +169,6 @@ export function SkinPreview3D({
           enablePan={false}
         />
       </Canvas>
-      <button
-        onClick={cycleMode}
-        className="absolute top-2 right-2 px-2 py-1 text-[10px] rounded bg-black/60 text-white hover:bg-black/80 z-10"
-        title="cycle: textured → no-tex → checker"
-      >
-        {debugMode}
-      </button>
     </div>
   );
 }
