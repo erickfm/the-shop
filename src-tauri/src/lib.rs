@@ -213,11 +213,11 @@ fn launch_slippi(state: State<'_, AppState>) -> AppResult<()> {
 }
 
 #[tauri::command]
-fn get_skin_obj(
+fn get_skin_preview(
     state: State<'_, AppState>,
     app: tauri::AppHandle,
     skin_file_id: i64,
-) -> AppResult<String> {
+) -> AppResult<preview::SkinPreview> {
     use rusqlite::params;
     let source: String = state.db.with_conn(|c| {
         let p: String = c.query_row(
@@ -231,9 +231,7 @@ fn get_skin_obj(
         .path()
         .resource_dir()
         .map_err(|e| error::AppError::Other(format!("resource_dir: {e}")))?;
-    let obj = preview::ensure_obj(&resource_dir, std::path::Path::new(&source))?;
-    let bytes = std::fs::read(&obj).map_err(|e| error::AppError::Io(e.to_string()))?;
-    Ok(String::from_utf8_lossy(&bytes).into_owned())
+    preview::ensure_preview(&resource_dir, std::path::Path::new(&source))
 }
 
 
@@ -282,7 +280,7 @@ pub fn run() {
             uninstall_pack,
             reset_to_vanilla,
             launch_slippi,
-            get_skin_obj,
+            get_skin_preview,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

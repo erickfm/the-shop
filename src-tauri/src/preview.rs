@@ -1,9 +1,19 @@
 use crate::error::{AppError, AppResult};
 use crate::paths;
+use base64::Engine;
 use sha2::{Digest, Sha256};
+use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
+use std::sync::Once;
+
+#[derive(serde::Serialize, Clone)]
+pub struct SkinPreview {
+    pub obj: String,
+    pub mtl: String,
+    pub textures: HashMap<String, String>,
+}
 
 pub fn hsd_tool_binary(resource_dir: &Path) -> Option<PathBuf> {
     let p = resource_dir.join("hsd-tool").join("the-shop-hsd");
@@ -45,20 +55,43 @@ fn cache_key_for(skin_path: &Path) -> AppResult<String> {
     Ok(hex::encode(h.finalize()))
 }
 
-pub fn ensure_obj(resource_dir: &Path, skin_path: &Path) -> AppResult<PathBuf> {
+static SWEEP_ONCE: Once = Once::new();
+
+fn sweep_legacy_cache() {
+    SWEEP_ONCE.call_once(|| {
+        let dir = match previews_dir() {
+            Ok(p) => p,
+            Err(_) => return,
+        };
+        let entries = match fs::read_dir(&dir) {
+            Ok(e) => e,
+            Err(_) => return,
+        };
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_file() && path.extension().and_then(|s| s.to_str()) == Some("obj") {
+                let _ = fs::remove_file(&path);
+            }
+        }
+    });
+}
+
+fn ensure_preview_dir(resource_dir: &Path, skin_path: &Path) -> AppResult<PathBuf> {
+    sweep_legacy_cache();
     let key = cache_key_for(skin_path)?;
-    let dir = previews_dir().map_err(|e| AppError::Io(e.to_string()))?;
-    let dest = dir.join(format!("{key}.obj"));
-    if dest.exists() {
-        return Ok(dest);
+    let root = previews_dir().map_err(|e| AppError::Io(e.to_string()))?;
+    let dir = root.join(&key);
+    let obj_path = dir.join("model.obj");
+    if obj_path.exists() {
+        return Ok(dir);
     }
-    let bin = hsd_tool_binary(resource_dir).ok_or_else(|| {
-        AppError::Other("the-shop-hsd binary not found".into())
-    })?;
+    fs::create_dir_all(&dir).map_err(|e| AppError::Io(e.to_string()))?;
+    let bin = hsd_tool_binary(resource_dir)
+        .ok_or_else(|| AppError::Other("the-shop-hsd binary not found".into()))?;
     let status = Command::new(&bin)
         .arg("to-obj")
         .arg(skin_path)
-        .arg(&dest)
+        .arg(&obj_path)
         .status()
         .map_err(|e| AppError::Other(format!("spawn the-shop-hsd: {e}")))?;
     if !status.success() {
@@ -67,10 +100,36 @@ pub fn ensure_obj(resource_dir: &Path, skin_path: &Path) -> AppResult<PathBuf> {
             status.code().unwrap_or(-1)
         )));
     }
-    if !dest.exists() {
+    if !obj_path.exists() {
         return Err(AppError::Other(
             "OBJ not produced even though tool exited 0".into(),
         ));
     }
-    Ok(dest)
+    Ok(dir)
+}
+
+pub fn ensure_preview(resource_dir: &Path, skin_path: &Path) -> AppResult<SkinPreview> {
+    let dir = ensure_preview_dir(resource_dir, skin_path)?;
+    let obj = fs::read_to_string(dir.join("model.obj"))
+        .map_err(|e| AppError::Io(format!("read model.obj: {e}")))?;
+    let mtl = fs::read_to_string(dir.join("model.mtl")).unwrap_or_default();
+
+    let mut textures = HashMap::new();
+    if let Ok(entries) = fs::read_dir(&dir) {
+        for entry in entries.flatten() {
+            let path = entry.path();
+            let name = match path.file_name().and_then(|s| s.to_str()) {
+                Some(n) if n.starts_with("tex_") && n.ends_with(".png") => n.to_string(),
+                _ => continue,
+            };
+            let bytes = match fs::read(&path) {
+                Ok(b) => b,
+                Err(_) => continue,
+            };
+            let encoded = base64::engine::general_purpose::STANDARD.encode(&bytes);
+            textures.insert(name, encoded);
+        }
+    }
+
+    Ok(SkinPreview { obj, mtl, textures })
 }

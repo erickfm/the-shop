@@ -30,6 +30,12 @@ export const ipc = {
     invoke<UninstallResult>("uninstall_pack", { character, packName }),
   resetToVanilla: () => invoke<ResetReport>("reset_to_vanilla"),
   launchSlippi: () => invoke<void>("launch_slippi"),
-  getSkinObj: (skinFileId: number) =>
-    invoke<string>("get_skin_obj", { skinFileId }),
+  getSkinPreview: (skinFileId: number) =>
+    invoke<SkinPreviewBundle>("get_skin_preview", { skinFileId }),
+};
+
+export type SkinPreviewBundle = {
+  obj: string;
+  mtl: string;
+  textures: Record<string, string>;
 };

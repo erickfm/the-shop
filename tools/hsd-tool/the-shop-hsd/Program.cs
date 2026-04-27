@@ -227,7 +227,12 @@ static int ToObj(string[] args)
     var positions = new List<Vector3>();
     var normals = new List<Vector3>();
     var uvs = new List<Vector2>();
-    var faces = new List<(int v, int n, int t)[]>();
+    var vertColors = new List<Vector3>();
+    var vertMatIdx = new List<int>();
+    var facesByMat = new Dictionary<int, List<(int v, int n, int t)[]>>();
+    var materials = new List<MaterialEntry>();
+    var mobjToMatIdx = new Dictionary<int, int>();
+    var tobjHashToFilename = new Dictionary<int, string>();
 
     var jobjWorlds = new Dictionary<int, Matrix4x4>();
     foreach (var root in file.Roots)
@@ -238,27 +243,53 @@ static int ToObj(string[] args)
         }
     }
 
-    var colors = new List<Vector3>();
     foreach (var root in file.Roots)
     {
         if (root.Data is HSD_JOBJ rootJobj)
         {
-            WalkAndEmit(rootJobj, jobjWorlds, positions, normals, uvs, colors, faces, new HashSet<int>());
+            WalkAndEmit(
+                rootJobj, jobjWorlds,
+                materials, mobjToMatIdx, tobjHashToFilename,
+                positions, normals, uvs, vertColors, vertMatIdx,
+                facesByMat,
+                new HashSet<int>());
         }
     }
 
-    Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(output)) ?? ".");
+    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_MATERIALS") == "1")
+        LogMaterials(materials);
+
+    var outDir = Path.GetDirectoryName(Path.GetFullPath(output)) ?? ".";
+    Directory.CreateDirectory(outDir);
+
+    var baseName = Path.GetFileNameWithoutExtension(output);
+    var mtlName = baseName + ".mtl";
+    var mtlPath = Path.Combine(outDir, mtlName);
+
+    int totalFaces = 0;
+    foreach (var bucket in facesByMat.Values) totalFaces += bucket.Count;
+
     using (var w = new StreamWriter(output))
     {
         w.WriteLine("# the-shop-hsd OBJ export");
         w.WriteLine($"# source: {Path.GetFileName(input)}");
-        w.WriteLine($"# vertices: {positions.Count}, faces: {faces.Count}");
+        w.WriteLine($"# vertices: {positions.Count}, faces: {totalFaces}, materials: {materials.Count}");
+        w.WriteLine($"mtllib {mtlName}");
 
         for (int i = 0; i < positions.Count; i++)
         {
             var p = positions[i];
-            var c = i < colors.Count ? colors[i] : new Vector3(0.8f, 0.8f, 0.85f);
-            w.WriteLine($"v {F(p.X)} {F(p.Y)} {F(p.Z)} {F(c.X)} {F(c.Y)} {F(c.Z)}");
+            int mi = i < vertMatIdx.Count ? vertMatIdx[i] : -1;
+            bool textured = mi >= 0 && mi < materials.Count && materials[mi].HasDiffuseTexture;
+            if (textured)
+            {
+                w.WriteLine($"v {F(p.X)} {F(p.Y)} {F(p.Z)}");
+            }
+            else
+            {
+                var c = i < vertColors.Count ? vertColors[i] : new Vector3(0.8f, 0.8f, 0.85f);
+                w.WriteLine($"v {F(p.X)} {F(p.Y)} {F(p.Z)} {F(c.X)} {F(c.Y)} {F(c.Z)}");
+            }
         }
         foreach (var n in normals)
             w.WriteLine($"vn {F(n.X)} {F(n.Y)} {F(n.Z)}");
@@ -266,22 +297,30 @@ static int ToObj(string[] args)
             w.WriteLine($"vt {F(uv.X)} {F(1 - uv.Y)}");
 
         w.WriteLine("o character");
-        foreach (var face in faces)
+        foreach (var (matIdx, bucket) in facesByMat)
         {
-            var s = "f";
-            foreach (var t in face)
+            var matName = matIdx >= 0 && matIdx < materials.Count ? materials[matIdx].Name : "mat_default";
+            w.WriteLine($"usemtl {matName}");
+            foreach (var face in bucket)
             {
-                int vi = t.v + 1;
-                int ti = t.t + 1;
-                int ni = t.n + 1;
-                s += $" {vi}/{(t.t < 0 ? "" : ti.ToString())}/{(t.n < 0 ? "" : ni.ToString())}";
+                var s = "f";
+                foreach (var t in face)
+                {
+                    int vi = t.v + 1;
+                    int ti = t.t + 1;
+                    int ni = t.n + 1;
+                    s += $" {vi}/{(t.t < 0 ? "" : ti.ToString())}/{(t.n < 0 ? "" : ni.ToString())}";
+                }
+                w.WriteLine(s);
             }
-            w.WriteLine(s);
         }
     }
 
-    Console.WriteLine($"wrote {positions.Count} verts, {faces.Count} faces to {output}");
-    return positions.Count > 0 && faces.Count > 0 ? 0 : 4;
+    WriteMtl(mtlPath, materials);
+    int texturesWritten = ExportMaterialTextures(materials, outDir);
+
+    Console.WriteLine($"wrote {positions.Count} verts, {totalFaces} faces, {materials.Count} mats, {texturesWritten} textures to {outDir}");
+    return positions.Count > 0 && totalFaces > 0 ? 0 : 4;
 }
 
 static string F(float v) => v.ToString("0.######", CultureInfo.InvariantCulture);
@@ -334,11 +373,15 @@ static Matrix4x4 GetWorld(HSD_JOBJ? j, Dictionary<int, Matrix4x4> jobjWorlds)
 static void WalkAndEmit(
     HSD_JOBJ? jobj,
     Dictionary<int, Matrix4x4> jobjWorlds,
+    List<MaterialEntry> materials,
+    Dictionary<int, int> mobjToMatIdx,
+    Dictionary<int, string> tobjHashToFilename,
     List<Vector3> positions,
     List<Vector3> normals,
     List<Vector2> uvs,
-    List<Vector3> colors,
-    List<(int v, int n, int t)[]> faces,
+    List<Vector3> vertColors,
+    List<int> vertMatIdx,
+    Dictionary<int, List<(int v, int n, int t)[]>> facesByMat,
     HashSet<int> seen)
 {
     if (jobj == null) return;
@@ -351,6 +394,12 @@ static void WalkAndEmit(
     var dobj = jobj.Dobj;
     while (dobj != null)
     {
+        var matIdx = GetOrAddMaterial(dobj.Mobj, mobjToMatIdx, materials, tobjHashToFilename);
+        var matEntry = materials[matIdx];
+        if (!facesByMat.ContainsKey(matIdx))
+            facesByMat[matIdx] = new List<(int v, int n, int t)[]>();
+        var faceBucket = facesByMat[matIdx];
+
         var pobj = dobj.Pobj;
         while (pobj != null)
         {
@@ -363,8 +412,8 @@ static void WalkAndEmit(
             }
             try
             {
-                var matColor = MaterialDiffuse(dobj.Mobj);
-                EmitPobj(pobj, jobj, parentTransform, jobjWorlds, matColor, positions, normals, uvs, colors, faces);
+                EmitPobj(pobj, jobj, parentTransform, jobjWorlds, matEntry, matIdx,
+                    positions, normals, uvs, vertColors, vertMatIdx, faceBucket);
             }
             catch (Exception e)
             {
@@ -375,28 +424,27 @@ static void WalkAndEmit(
         dobj = dobj.Next;
     }
 
-    WalkAndEmit(jobj.Child, jobjWorlds, positions, normals, uvs, colors, faces, seen);
-    WalkAndEmit(jobj.Next, jobjWorlds, positions, normals, uvs, colors, faces, seen);
+    WalkAndEmit(jobj.Child, jobjWorlds, materials, mobjToMatIdx, tobjHashToFilename,
+        positions, normals, uvs, vertColors, vertMatIdx, facesByMat, seen);
+    WalkAndEmit(jobj.Next, jobjWorlds, materials, mobjToMatIdx, tobjHashToFilename,
+        positions, normals, uvs, vertColors, vertMatIdx, facesByMat, seen);
 }
 
-static Vector3 MaterialDiffuse(HSD_MOBJ? mobj)
-{
-    if (mobj == null) return new Vector3(0.85f, 0.85f, 0.9f);
-    var mat = mobj.Material;
-    if (mat == null) return new Vector3(0.85f, 0.85f, 0.9f);
-    return new Vector3(mat.DIF_R / 255f, mat.DIF_G / 255f, mat.DIF_B / 255f);
-}
+static Vector3 MaterialDiffuseFallback(MaterialEntry e) =>
+    new Vector3(e.DifR / 255f, e.DifG / 255f, e.DifB / 255f);
 
 static void EmitPobj(
     HSD_POBJ pobj,
     HSD_JOBJ parent,
     Matrix4x4 parentTransform,
     Dictionary<int, Matrix4x4> jobjWorlds,
-    Vector3 matColor,
+    MaterialEntry matEntry,
+    int matIdx,
     List<Vector3> positions,
     List<Vector3> normals,
     List<Vector2> uvs,
-    List<Vector3> colors,
+    List<Vector3> vertColors,
+    List<int> vertMatIdx,
     List<(int v, int n, int t)[]> faces)
 {
     var dl = pobj.ToDisplayList();
@@ -489,8 +537,10 @@ static void EmitPobj(
 
             positions.Add(localPos);
             normals.Add(localNrm);
-            uvs.Add(new Vector2(gv.TEX0.X, gv.TEX0.Y));
-            colors.Add(matColor);
+            var rawUv = new Vector2(gv.TEX0.X, gv.TEX0.Y);
+            uvs.Add(TransformUV(rawUv, matEntry));
+            vertColors.Add(MaterialDiffuseFallback(matEntry));
+            vertMatIdx.Add(matIdx);
         }
 
         EmitFaces(pg.PrimitiveType, baseIdx, count, faces);
@@ -534,3 +584,152 @@ static void EmitFaces(
 
 static (int v, int n, int t)[] Tri(int a, int b, int c) =>
     new[] { (a, a, a), (b, b, b), (c, c, c) };
+
+static int GetOrAddMaterial(
+    HSD_MOBJ? mobj,
+    Dictionary<int, int> mobjToMatIdx,
+    List<MaterialEntry> materials,
+    Dictionary<int, string> tobjHashToFilename)
+{
+    int hash = mobj == null ? 0 : System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(mobj);
+    if (mobjToMatIdx.TryGetValue(hash, out var existing))
+        return existing;
+
+    var entry = new MaterialEntry { Name = $"mat_{materials.Count:D3}" };
+    var mat = mobj?.Material;
+    if (mat != null)
+    {
+        entry.AmbR = mat.AMB_R; entry.AmbG = mat.AMB_G; entry.AmbB = mat.AMB_B; entry.AmbA = mat.AMB_A;
+        entry.DifR = mat.DIF_R; entry.DifG = mat.DIF_G; entry.DifB = mat.DIF_B; entry.DifA = mat.DIF_A;
+        entry.SpcR = mat.SPC_R; entry.SpcG = mat.SPC_G; entry.SpcB = mat.SPC_B; entry.SpcA = mat.SPC_A;
+        entry.Shininess = mat.Shininess;
+        entry.Alpha = mat.Alpha;
+    }
+    else
+    {
+        entry.AmbR = entry.AmbG = entry.AmbB = 217;
+        entry.DifR = entry.DifG = entry.DifB = 217;
+        entry.SpcR = entry.SpcG = entry.SpcB = 0;
+        entry.AmbA = entry.DifA = entry.SpcA = 255;
+        entry.Alpha = 1.0f;
+        entry.Shininess = 50f;
+    }
+
+    if (mobj?.Textures != null)
+    {
+        HSD_TOBJ? primary = null;
+        HSD_TOBJ? fallback = null;
+        var t = mobj.Textures;
+        while (t != null)
+        {
+            if (t.ImageData != null)
+            {
+                if (t.DiffuseLightmap && primary == null) primary = t;
+                if (fallback == null) fallback = t;
+            }
+            t = t.Next;
+        }
+        var chosen = primary ?? fallback;
+        if (chosen != null)
+        {
+            entry.DiffuseTobj = chosen;
+            entry.DiffuseFromFallback = primary == null;
+            entry.UvSX = chosen.SX; entry.UvSY = chosen.SY; entry.UvSZ = chosen.SZ;
+            entry.UvRX = chosen.RX; entry.UvRY = chosen.RY; entry.UvRZ = chosen.RZ;
+            entry.UvTX = chosen.TX; entry.UvTY = chosen.TY; entry.UvTZ = chosen.TZ;
+            var imgBytes = chosen.ImageData?.ImageData;
+            int thash = imgBytes != null
+                ? System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(imgBytes)
+                : System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(chosen);
+            if (!tobjHashToFilename.TryGetValue(thash, out var existingFile))
+            {
+                existingFile = $"tex_{tobjHashToFilename.Count:D3}.png";
+                tobjHashToFilename[thash] = existingFile;
+            }
+            entry.TexFilename = existingFile;
+        }
+    }
+
+    int idx = materials.Count;
+    materials.Add(entry);
+    mobjToMatIdx[hash] = idx;
+    return idx;
+}
+
+static Vector2 TransformUV(Vector2 uv, MaterialEntry entry)
+{
+    if (entry.DiffuseTobj == null) return uv;
+    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_SKIP_UVXFORM") == "1") return uv;
+    var s = Matrix4x4.CreateScale(entry.UvSX, entry.UvSY, entry.UvSZ);
+    var r = EulerMatrix(entry.UvRX, entry.UvRY, entry.UvRZ);
+    var t = Matrix4x4.CreateTranslation(entry.UvTX, entry.UvTY, entry.UvTZ);
+    var m = s * r * t;
+    if (!Matrix4x4.Invert(m, out var inv)) return uv;
+    var v = Vector3.Transform(new Vector3(uv.X, uv.Y, 0), inv);
+    return new Vector2(v.X, v.Y);
+}
+
+static void WriteMtl(string path, List<MaterialEntry> materials)
+{
+    using var w = new StreamWriter(path);
+    w.WriteLine("# the-shop-hsd MTL export");
+    foreach (var e in materials)
+    {
+        w.WriteLine($"newmtl {e.Name}");
+        w.WriteLine($"Ka {F(e.AmbR / 255f)} {F(e.AmbG / 255f)} {F(e.AmbB / 255f)}");
+        w.WriteLine($"Kd {F(e.DifR / 255f)} {F(e.DifG / 255f)} {F(e.DifB / 255f)}");
+        w.WriteLine($"Ks {F(e.SpcR / 255f)} {F(e.SpcG / 255f)} {F(e.SpcB / 255f)}");
+        w.WriteLine($"Ns {F(MathF.Max(0.001f, e.Shininess))}");
+        w.WriteLine($"d {F(MathF.Max(0f, MathF.Min(1f, e.Alpha)))}");
+        w.WriteLine("illum 2");
+        if (e.TexFilename != null)
+            w.WriteLine($"map_Kd {e.TexFilename}");
+        w.WriteLine();
+    }
+}
+
+static int ExportMaterialTextures(List<MaterialEntry> materials, string outDir)
+{
+    int written = 0;
+    var writtenFiles = new HashSet<string>();
+    foreach (var e in materials)
+    {
+        if (e.DiffuseTobj == null || e.TexFilename == null) continue;
+        if (!writtenFiles.Add(e.TexFilename)) continue;
+        var path = Path.Combine(outDir, e.TexFilename);
+        if (SaveTextureAsPng(e.DiffuseTobj, path) == 0)
+            written++;
+    }
+    return written;
+}
+
+static void LogMaterials(List<MaterialEntry> materials)
+{
+    Console.Error.WriteLine($"--- materials ({materials.Count}) ---");
+    foreach (var e in materials)
+    {
+        var has = e.DiffuseTobj != null ? (e.DiffuseFromFallback ? "diffuse(fallback)" : "diffuse") : "untextured";
+        Console.Error.WriteLine(
+            $"  {e.Name} {has} Kd=({e.DifR},{e.DifG},{e.DifB}) " +
+            $"R=({F(e.UvRX)},{F(e.UvRY)},{F(e.UvRZ)}) " +
+            $"S=({F(e.UvSX)},{F(e.UvSY)},{F(e.UvSZ)}) " +
+            $"T=({F(e.UvTX)},{F(e.UvTY)},{F(e.UvTZ)})");
+    }
+}
+
+class MaterialEntry
+{
+    public string Name = "mat";
+    public byte AmbR, AmbG, AmbB, AmbA;
+    public byte DifR, DifG, DifB, DifA;
+    public byte SpcR, SpcG, SpcB, SpcA;
+    public float Shininess = 50f;
+    public float Alpha = 1.0f;
+    public HSD_TOBJ? DiffuseTobj;
+    public bool DiffuseFromFallback;
+    public string? TexFilename;
+    public float UvSX = 1, UvSY = 1, UvSZ = 1;
+    public float UvRX, UvRY, UvRZ;
+    public float UvTX, UvTY, UvTZ;
+    public bool HasDiffuseTexture => DiffuseTobj != null && TexFilename != null;
+}
