@@ -121,14 +121,10 @@ fn ensure_glb(resource_dir: &Path, skin_path: &Path, anim_path: Option<&Path>) -
     fs::create_dir_all(&dir).map_err(|e| AppError::Io(e.to_string()))?;
     let bin = hsd_tool_binary(resource_dir)
         .ok_or_else(|| AppError::Other("the-shop-hsd binary not found".into()))?;
-    let mode = std::env::var("THE_SHOP_HSD_MODE").unwrap_or_default();
     let mut cmd = Command::new(&bin);
     cmd.arg("to-gltf").arg(skin_path).arg(&glb_path);
     if let Some(p) = anim_path {
         cmd.arg("--pose").arg(p);
-    }
-    if !mode.is_empty() {
-        cmd.env("THE_SHOP_HSD_MODE", &mode);
     }
     let status = cmd
         .status()

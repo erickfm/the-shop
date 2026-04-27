@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Bounds, OrbitControls } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import { ipc, type SkinPreviewBundle } from "../lib/ipc";
@@ -54,8 +54,6 @@ export function SkinPreview3D({
       "",
       (gltf) => {
         if (cancelled) return;
-        // Tune each material once on parse: metalness/roughness/side and SRGB
-        // colorSpace on the diffuse map. These persist across re-renders.
         gltf.scene.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
             const m = child as THREE.Mesh;
@@ -101,16 +99,24 @@ export function SkinPreview3D({
     };
   }, [parsed]);
 
-  // Compute a translation offset that will sit the model's bbox center at the
-  // world origin, so OrbitControls (which targets origin via Bounds) orbits the
-  // body center instead of the feet. Applied to a wrapper <group> rather than
-  // mutating gltf.scene.position so Bounds can't fight us for it.
-  const offset = useMemo(() => {
+  // Compute bbox center (orbit target) and a camera distance that fits the
+  // model in view. No Bounds — Bounds was overwriting the target back to its
+  // own choice, fighting our explicit one.
+  const cam = useMemo(() => {
     if (!parsed) return null;
     const bbox = new THREE.Box3().setFromObject(parsed.scene);
     const center = new THREE.Vector3();
     bbox.getCenter(center);
-    return [-center.x, -center.y, -center.z] as [number, number, number];
+    const size = new THREE.Vector3();
+    bbox.getSize(size);
+    // Fit distance for fov=32deg: half-size * 1/tan(fov/2) * margin.
+    const margin = 1.4;
+    const halfMax = Math.max(size.x, size.y) / 2;
+    const dist = (halfMax / Math.tan((32 * Math.PI) / 180 / 2)) * margin;
+    return {
+      target: [center.x, center.y, center.z] as [number, number, number],
+      position: [center.x, center.y, center.z + dist] as [number, number, number],
+    };
   }, [parsed]);
 
   const isFill = size === "100%" || size === "full";
@@ -129,7 +135,7 @@ export function SkinPreview3D({
       </div>
     );
   }
-  if (!parsed || !offset) {
+  if (!parsed || !cam) {
     return (
       <div
         className={isFill ? "" : "rounded border border-border bg-bg animate-pulse"}
@@ -151,18 +157,15 @@ export function SkinPreview3D({
     >
       <Canvas
         dpr={[1, 2]}
-        camera={{ position: [0, 0, 8], fov: 32 }}
+        camera={{ position: cam.position, fov: 32 }}
         gl={{ preserveDrawingBuffer: false, antialias: true }}
       >
         <ambientLight intensity={0.55} />
         <directionalLight position={[3, 5, 4]} intensity={1.1} />
         <directionalLight position={[-3, -2, -3]} intensity={0.4} color="#9bb3ff" />
-        <Bounds fit clip margin={1.15}>
-          <group position={offset}>
-            <primitive object={parsed.scene} />
-          </group>
-        </Bounds>
+        <primitive object={parsed.scene} />
         <OrbitControls
+          target={cam.target}
           autoRotate={autoRotate}
           autoRotateSpeed={1.2}
           enableZoom={false}

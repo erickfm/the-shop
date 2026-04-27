@@ -135,9 +135,6 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
                     <CharacterBadge code={p.character_code} size={120} />
                   </div>
                 )}
-                <div className="absolute top-2 left-2">
-                  <CharacterBadge code={p.character_code} size={32} />
-                </div>
               </div>
               <div className="p-4 space-y-3 flex-1 flex flex-col">
                 <div className="flex items-start justify-between gap-2">
