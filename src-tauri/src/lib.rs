@@ -219,19 +219,30 @@ fn get_skin_preview(
     skin_file_id: i64,
 ) -> AppResult<preview::SkinPreview> {
     use rusqlite::params;
-    let source: String = state.db.with_conn(|c| {
-        let p: String = c.query_row(
-            "SELECT source_path FROM skin_files WHERE id = ?1",
+    let (source, char_code): (String, String) = state.db.with_conn(|c| {
+        let row: (String, String) = c.query_row(
+            "SELECT source_path, character_code FROM skin_files WHERE id = ?1",
             params![skin_file_id],
-            |r| r.get(0),
+            |r| Ok((r.get(0)?, r.get(1)?)),
         )?;
-        Ok(p)
+        Ok(row)
     })?;
+    let vanilla_iso = state
+        .db
+        .get_setting(VANILLA_ISO_KEY)
+        .ok()
+        .flatten()
+        .map(std::path::PathBuf::from);
     let resource_dir = app
         .path()
         .resource_dir()
         .map_err(|e| error::AppError::Other(format!("resource_dir: {e}")))?;
-    preview::ensure_preview(&resource_dir, std::path::Path::new(&source))
+    preview::ensure_preview(
+        &resource_dir,
+        std::path::Path::new(&source),
+        &char_code,
+        vanilla_iso.as_deref(),
+    )
 }
 
 

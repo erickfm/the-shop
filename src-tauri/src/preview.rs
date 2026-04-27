@@ -1,4 +1,5 @@
 use crate::error::{AppError, AppResult};
+use crate::iso;
 use crate::paths;
 use base64::Engine;
 use sha2::{Digest, Sha256};
@@ -6,6 +7,26 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use std::sync::Once;
+
+/// Extract the Pl<CharCode>AJ.dat animation file from the vanilla ISO once,
+/// cache it under the app data dir. Returns the cached path or None if the
+/// extraction fails or there's no vanilla ISO configured.
+pub fn ensure_anim_file(vanilla_iso: Option<&Path>, char_code: &str) -> Option<PathBuf> {
+    let iso_path = vanilla_iso?;
+    if !iso_path.exists() { return None; }
+    let cache_dir = paths::app_data_dir().ok()?.join("anims");
+    fs::create_dir_all(&cache_dir).ok()?;
+    let cached = cache_dir.join(format!("Pl{char_code}AJ.dat"));
+    if cached.exists() {
+        return Some(cached);
+    }
+    let target = format!("Pl{char_code}AJ.dat");
+    if iso::extract_from_iso(iso_path, &target, &cached).is_ok() && cached.exists() {
+        Some(cached)
+    } else {
+        None
+    }
+}
 
 #[derive(serde::Serialize, Clone)]
 pub struct SkinPreview {
@@ -37,7 +58,7 @@ pub fn previews_dir() -> std::io::Result<PathBuf> {
     Ok(p)
 }
 
-fn cache_key_for(skin_path: &Path) -> AppResult<String> {
+fn cache_key_for(skin_path: &Path, anim_path: Option<&Path>) -> AppResult<String> {
     let meta = fs::metadata(skin_path).map_err(|e| AppError::Io(e.to_string()))?;
     let mtime = meta
         .modified()
@@ -49,6 +70,13 @@ fn cache_key_for(skin_path: &Path) -> AppResult<String> {
     h.update(skin_path.to_string_lossy().as_bytes());
     h.update(mtime.to_le_bytes());
     h.update(meta.len().to_le_bytes());
+    if let Some(p) = anim_path {
+        if let Ok(am) = fs::metadata(p) {
+            h.update(b"|anim:");
+            h.update(p.to_string_lossy().as_bytes());
+            h.update(am.len().to_le_bytes());
+        }
+    }
     Ok(hex::encode(h.finalize()))
 }
 
@@ -81,9 +109,9 @@ fn sweep_legacy_cache() {
     });
 }
 
-fn ensure_glb(resource_dir: &Path, skin_path: &Path) -> AppResult<PathBuf> {
+fn ensure_glb(resource_dir: &Path, skin_path: &Path, anim_path: Option<&Path>) -> AppResult<PathBuf> {
     sweep_legacy_cache();
-    let key = cache_key_for(skin_path)?;
+    let key = cache_key_for(skin_path, anim_path)?;
     let root = previews_dir().map_err(|e| AppError::Io(e.to_string()))?;
     let dir = root.join(&key);
     let glb_path = dir.join("model.glb");
@@ -96,6 +124,9 @@ fn ensure_glb(resource_dir: &Path, skin_path: &Path) -> AppResult<PathBuf> {
     let mode = std::env::var("THE_SHOP_HSD_MODE").unwrap_or_default();
     let mut cmd = Command::new(&bin);
     cmd.arg("to-gltf").arg(skin_path).arg(&glb_path);
+    if let Some(p) = anim_path {
+        cmd.arg("--pose").arg(p);
+    }
     if !mode.is_empty() {
         cmd.env("THE_SHOP_HSD_MODE", &mode);
     }
@@ -116,8 +147,14 @@ fn ensure_glb(resource_dir: &Path, skin_path: &Path) -> AppResult<PathBuf> {
     Ok(glb_path)
 }
 
-pub fn ensure_preview(resource_dir: &Path, skin_path: &Path) -> AppResult<SkinPreview> {
-    let glb_path = ensure_glb(resource_dir, skin_path)?;
+pub fn ensure_preview(
+    resource_dir: &Path,
+    skin_path: &Path,
+    char_code: &str,
+    vanilla_iso: Option<&Path>,
+) -> AppResult<SkinPreview> {
+    let anim = ensure_anim_file(vanilla_iso, char_code);
+    let glb_path = ensure_glb(resource_dir, skin_path, anim.as_deref())?;
     let bytes = fs::read(&glb_path).map_err(|e| AppError::Io(format!("read model.glb: {e}")))?;
     let glb = base64::engine::general_purpose::STANDARD.encode(&bytes);
     Ok(SkinPreview { glb })

@@ -13,6 +13,8 @@ using SharpGLTF.Geometry;
 using SharpGLTF.Geometry.VertexTypes;
 using SharpGLTF.Materials;
 using SharpGLTF.Scenes;
+using HSDRaw.Common.Animation;
+using HSDRaw.Tools;
 
 if (args.Length < 1)
 {
@@ -244,6 +246,7 @@ static int ToObj(string[] args)
     var tobjHashToFilename = new Dictionary<int, string>();
 
     var jobjWorlds = new Dictionary<int, Matrix4x4>();
+    var invBindCache = new Dictionary<int, Matrix4x4>();
     foreach (var root in file.Roots)
     {
         if (root.Data is HSD_JOBJ rootJobj)
@@ -257,7 +260,7 @@ static int ToObj(string[] args)
         if (root.Data is HSD_JOBJ rootJobj)
         {
             WalkAndEmit(
-                rootJobj, jobjWorlds,
+                rootJobj, jobjWorlds, invBindCache,
                 materials, mobjToMatIdx, tobjHashToFilename,
                 positions, normals, uvs, vertColors, vertMatIdx,
                 facesByMat,
@@ -364,7 +367,7 @@ static void BuildJobjWorlds(
     HashSet<int> seen)
 {
     if (jobj == null) return;
-    int hash = System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(jobj);
+    int hash = jobj.GetHashCode();
     if (!seen.Add(hash)) return;
 
     var world = LocalMatrix(jobj) * parentWorld;
@@ -377,13 +380,34 @@ static void BuildJobjWorlds(
 static Matrix4x4 GetWorld(HSD_JOBJ? j, Dictionary<int, Matrix4x4> jobjWorlds)
 {
     if (j == null) return Matrix4x4.Identity;
-    int h = System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(j);
+    int h = j.GetHashCode();
     return jobjWorlds.TryGetValue(h, out var m) ? m : Matrix4x4.Identity;
+}
+
+static Matrix4x4 HsdToNumerics(HSDRaw.Common.HSD_Matrix4x3 mat)
+{
+    // HSDLib stores 4x3 matrices row-major (M[r,c]); System.Numerics.Matrix4x4
+    // expects last row as translation. Construct so that Vector3.Transform(v, m)
+    // gives the same result HSDRawViewer's IO/ModelExporter does.
+    return new Matrix4x4(
+        mat.M11, mat.M21, mat.M31, 0,
+        mat.M12, mat.M22, mat.M32, 0,
+        mat.M13, mat.M23, mat.M33, 0,
+        mat.M14, mat.M24, mat.M34, 1);
+}
+
+static Matrix4x4 GetInverseBind(HSD_JOBJ? j, Dictionary<int, Matrix4x4> cache)
+{
+    if (j == null) return Matrix4x4.Identity;
+    int h = j.GetHashCode();
+    if (cache.TryGetValue(h, out var m)) return m;
+    return Matrix4x4.Identity;
 }
 
 static void WalkAndEmit(
     HSD_JOBJ? jobj,
     Dictionary<int, Matrix4x4> jobjWorlds,
+    Dictionary<int, Matrix4x4> invBindCache,
     List<MaterialEntry> materials,
     Dictionary<int, int> mobjToMatIdx,
     Dictionary<int, string> tobjHashToFilename,
@@ -396,7 +420,7 @@ static void WalkAndEmit(
     HashSet<int> seen)
 {
     if (jobj == null) return;
-    int hash = System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(jobj);
+    int hash = jobj.GetHashCode();
     if (!seen.Add(hash)) return;
 
     var parentTransform = GetWorld(jobj, jobjWorlds);
@@ -433,7 +457,7 @@ static void WalkAndEmit(
             }
             try
             {
-                EmitPobj(pobj, jobj, parentTransform, jobjWorlds, matEntry, matIdx,
+                EmitPobj(pobj, jobj, parentTransform, jobjWorlds, invBindCache, matEntry, matIdx,
                     positions, normals, uvs, vertColors, vertMatIdx, faceBucket);
             }
             catch (Exception e)
@@ -445,9 +469,9 @@ static void WalkAndEmit(
         dobj = dobj.Next;
     }
 
-    WalkAndEmit(jobj.Child, jobjWorlds, materials, mobjToMatIdx, tobjHashToFilename,
+    WalkAndEmit(jobj.Child, jobjWorlds, invBindCache, materials, mobjToMatIdx, tobjHashToFilename,
         positions, normals, uvs, vertColors, vertMatIdx, facesByMat, seen);
-    WalkAndEmit(jobj.Next, jobjWorlds, materials, mobjToMatIdx, tobjHashToFilename,
+    WalkAndEmit(jobj.Next, jobjWorlds, invBindCache, materials, mobjToMatIdx, tobjHashToFilename,
         positions, normals, uvs, vertColors, vertMatIdx, facesByMat, seen);
 }
 
@@ -459,6 +483,7 @@ static void EmitPobj(
     HSD_JOBJ parent,
     Matrix4x4 parentTransform,
     Dictionary<int, Matrix4x4> jobjWorlds,
+    Dictionary<int, Matrix4x4> invBindCache,
     MaterialEntry matEntry,
     int matIdx,
     List<Vector3> positions,
@@ -535,7 +560,7 @@ static void EmitPobj(
             var localPos = new Vector3(gv.POS.X, gv.POS.Y, gv.POS.Z);
             var localNrm = new Vector3(gv.NRM.X, gv.NRM.Y, gv.NRM.Z);
 
-            string mode = Environment.GetEnvironmentVariable("THE_SHOP_HSD_MODE") ?? "default";
+            string mode = Environment.GetEnvironmentVariable("THE_SHOP_HSD_MODE") ?? "skin";
             if (mode == "raw")
             {
             }
@@ -563,6 +588,49 @@ static void EmitPobj(
                 // parent's world matrix (rigid bind to parent JOBJ).
                 if (!hasPNMTXIDX)
                 {
+                    localPos = Vector3.Transform(localPos, parentTransform);
+                    localNrm = Vector3.TransformNormal(localNrm, parentTransform);
+                }
+                localPos = Vector3.Transform(localPos, singleBindTransform);
+                localNrm = Vector3.TransformNormal(localNrm, singleBindTransform);
+            }
+            else if (mode == "skin")
+            {
+                // Multi-bone weighted skinning, HAL flavor. Envelope vertex
+                // positions appear to be authored in bone-local space (no
+                // inv_bind needed), so each contribution is just w * (vec * bone_world).
+                // At bind for a single-bone weight=1, this matches the v0.2
+                // default mode's working case. At posed, bones carry their
+                // verts naturally.
+                if (hasPNMTXIDX && envelopes != null)
+                {
+                    int eIdx = gv.PNMTXIDX / 3;
+                    if (eIdx >= 0 && eIdx < envelopes.Length)
+                    {
+                        var en = envelopes[eIdx];
+                        Vector3 accumPos = Vector3.Zero;
+                        Vector3 accumNrm = Vector3.Zero;
+                        float totalW = 0f;
+                        for (int wi = 0; wi < en.EnvelopeCount; wi++)
+                        {
+                            var bone = en.GetJOBJAt(wi);
+                            float w = en.GetWeightAt(wi);
+                            if (bone == null || w <= 0) continue;
+                            var bonePosed = GetWorld(bone, jobjWorlds);
+                            accumPos += w * Vector3.Transform(localPos, bonePosed);
+                            accumNrm += w * Vector3.TransformNormal(localNrm, bonePosed);
+                            totalW += w;
+                        }
+                        if (totalW > 0)
+                        {
+                            localPos = accumPos / totalW;
+                            localNrm = accumNrm / totalW;
+                        }
+                    }
+                }
+                else
+                {
+                    // non-envelope: rigid bind to parent JOBJ
                     localPos = Vector3.Transform(localPos, parentTransform);
                     localNrm = Vector3.TransformNormal(localNrm, parentTransform);
                 }
@@ -776,7 +844,44 @@ static int ToGltf(string[] args)
     var input = args[1];
     var output = args[2];
 
+    string? posePath = null;
+    int animIndex = 0;
+    float poseFrame = 0f;
+    for (int i = 3; i < args.Length; i++)
+    {
+        if (args[i] == "--pose" && i + 1 < args.Length) posePath = args[++i];
+        else if (args[i] == "--anim-index" && i + 1 < args.Length) int.TryParse(args[++i], out animIndex);
+        else if (args[i] == "--pose-frame" && i + 1 < args.Length) float.TryParse(args[++i], System.Globalization.CultureInfo.InvariantCulture, out poseFrame);
+    }
+
     var file = new HSDRawFile(input);
+
+    // Compute bind-pose world inverses BEFORE applying any pose so we have
+    // a true bind reference for skinning.
+    var invBindCache = new Dictionary<int, Matrix4x4>();
+    var bindWorlds = new Dictionary<int, Matrix4x4>();
+    foreach (var root in file.Roots)
+        if (root.Data is HSD_JOBJ rj) BuildJobjWorlds(rj, Matrix4x4.Identity, bindWorlds, new HashSet<int>());
+    foreach (var kv in bindWorlds)
+    {
+        if (Matrix4x4.Invert(kv.Value, out var inv))
+            invBindCache[kv.Key] = inv;
+        else
+            invBindCache[kv.Key] = Matrix4x4.Identity;
+    }
+
+    if (posePath != null)
+    {
+        try
+        {
+            var animFile = new HSDRawFile(posePath);
+            ApplyFigaTreePose(file, animFile, animIndex, poseFrame);
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine($"pose load failed: {e.Message}");
+        }
+    }
     var positions = new List<Vector3>();
     var normals = new List<Vector3>();
     var uvs = new List<Vector2>();
@@ -790,8 +895,54 @@ static int ToGltf(string[] args)
     var jobjWorlds = new Dictionary<int, Matrix4x4>();
     foreach (var root in file.Roots)
         if (root.Data is HSD_JOBJ rj) BuildJobjWorlds(rj, Matrix4x4.Identity, jobjWorlds, new HashSet<int>());
+
+    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_WORLDS") == "1")
+    {
+        // Compare bind vs posed worlds for a few bones to verify pose persists
+        foreach (var root in file.Roots)
+        {
+            if (root.Data is HSD_JOBJ rj)
+            {
+                var list = rj.TreeList;
+                for (int i = 0; i < Math.Min(20, list.Count); i++)
+                {
+                    var jobj = list[i];
+                    int h = jobj.GetHashCode();
+                    bindWorlds.TryGetValue(h, out var bw);
+                    jobjWorlds.TryGetValue(h, out var pw);
+                    bool inMap = bindWorlds.ContainsKey(h);
+                    Console.Error.WriteLine($"  jobj#{i} hash={h} inBindMap={inMap} T=({jobj.TX:F3},{jobj.TY:F3},{jobj.TZ:F3}) R=({jobj.RX:F2},{jobj.RY:F2},{jobj.RZ:F2}) bind.M42={bw.M42:F2} posed.M42={pw.M42:F2}");
+                }
+            }
+        }
+    }
+
+    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_INVBIND") == "1")
+    {
+        foreach (var root in file.Roots)
+        {
+            if (root.Data is HSD_JOBJ rj)
+            {
+                int sampled = 0;
+                foreach (var jobj in rj.TreeList)
+                {
+                    if (sampled >= 3) break;
+                    if (jobj.InverseWorldTransform == null) continue;
+                    var raw = jobj.InverseWorldTransform;
+                    Console.Error.WriteLine($"  jobj#{sampled} TX={jobj.TX:F3} TY={jobj.TY:F3} TZ={jobj.TZ:F3}");
+                    Console.Error.WriteLine($"    raw inv: [{raw.M11:F3},{raw.M12:F3},{raw.M13:F3},{raw.M14:F3}]");
+                    Console.Error.WriteLine($"             [{raw.M21:F3},{raw.M22:F3},{raw.M23:F3},{raw.M24:F3}]");
+                    Console.Error.WriteLine($"             [{raw.M31:F3},{raw.M32:F3},{raw.M33:F3},{raw.M34:F3}]");
+                    var world = GetWorld(jobj, jobjWorlds);
+                    Console.Error.WriteLine($"    world.M41,M42,M43 = {world.M41:F3},{world.M42:F3},{world.M43:F3}");
+                    sampled++;
+                }
+            }
+        }
+    }
+
     foreach (var root in file.Roots)
-        if (root.Data is HSD_JOBJ rj) WalkAndEmit(rj, jobjWorlds, materials, mobjToMatIdx, tobjHashToFilename,
+        if (root.Data is HSD_JOBJ rj) WalkAndEmit(rj, jobjWorlds, invBindCache, materials, mobjToMatIdx, tobjHashToFilename,
             positions, normals, uvs, vertColors, vertMatIdx, facesByMat, new HashSet<int>());
 
     // Build one MaterialBuilder per MaterialEntry. Textures are embedded as PNGs
@@ -870,6 +1021,57 @@ static VertexBuilder<VertexPositionNormal, VertexTexture1, VertexEmpty> MakeVert
     return new VertexBuilder<VertexPositionNormal, VertexTexture1, VertexEmpty>(
         new VertexPositionNormal(pos, nrm),
         new VertexTexture1(uv));
+}
+
+static void ApplyFigaTreePose(HSDRawFile costume, HSDRawFile anim, int animIndex, float frame)
+{
+    if (animIndex < 0 || animIndex >= anim.Roots.Count) return;
+    if (anim.Roots[animIndex].Data is not HSD_FigaTree tree) return;
+
+    HSD_JOBJ? root = null;
+    foreach (var r in costume.Roots)
+        if (r.Data is HSD_JOBJ j) { root = j; break; }
+    if (root == null) return;
+
+    var jobjs = root.TreeList;
+    var nodes = tree.Nodes;
+    int count = Math.Min(nodes.Count, jobjs.Count);
+    int applied = 0;
+    int changed = 0;
+    for (int i = 0; i < count; i++)
+    {
+        var jobj = jobjs[i];
+        foreach (var track in nodes[i].Tracks)
+        {
+            float v = new FOBJ_Player(track.ToFOBJ()).GetValue(frame);
+            float old = 0;
+            bool matched = true;
+            switch (track.JointTrackType)
+            {
+                case JointTrackType.HSD_A_J_ROTX: old = jobj.RX; jobj.RX = v; break;
+                case JointTrackType.HSD_A_J_ROTY: old = jobj.RY; jobj.RY = v; break;
+                case JointTrackType.HSD_A_J_ROTZ: old = jobj.RZ; jobj.RZ = v; break;
+                case JointTrackType.HSD_A_J_TRAX: old = jobj.TX; jobj.TX = v; break;
+                case JointTrackType.HSD_A_J_TRAY: old = jobj.TY; jobj.TY = v; break;
+                case JointTrackType.HSD_A_J_TRAZ: old = jobj.TZ; jobj.TZ = v; break;
+                case JointTrackType.HSD_A_J_SCAX: old = jobj.SX; jobj.SX = v; break;
+                case JointTrackType.HSD_A_J_SCAY: old = jobj.SY; jobj.SY = v; break;
+                case JointTrackType.HSD_A_J_SCAZ: old = jobj.SZ; jobj.SZ = v; break;
+                default: matched = false; break;
+            }
+            if (matched) { applied++; if (Math.Abs(old - v) > 1e-5f) changed++; }
+        }
+    }
+    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_POSE") == "1")
+    {
+        Console.Error.WriteLine($"pose applied: {applied} track values, {changed} differed from bind, across {count} jobjs at frame {frame}");
+        // Sample first 10 jobjs' transform after pose application
+        for (int i = 0; i < Math.Min(10, jobjs.Count); i++)
+        {
+            var j = jobjs[i];
+            Console.Error.WriteLine($"  jobj[{i}] T=({j.TX:F3},{j.TY:F3},{j.TZ:F3}) R=({j.RX:F3},{j.RY:F3},{j.RZ:F3}) S=({j.SX:F3},{j.SY:F3},{j.SZ:F3})");
+        }
+    }
 }
 
 class MaterialEntry
