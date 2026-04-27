@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Bounds, OrbitControls } from "@react-three/drei";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
 import * as THREE from "three";
 import { ipc, type SkinPreviewBundle } from "../lib/ipc";
 
@@ -12,6 +11,30 @@ function base64ToBlobUrl(b64: string): string {
   const bytes = new Uint8Array(len);
   for (let i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
   return URL.createObjectURL(new Blob([bytes], { type: "image/png" }));
+}
+
+type MtlMeta = { map_Kd?: string; Kd?: [number, number, number] };
+
+function parseMtl(mtl: string): Map<string, MtlMeta> {
+  const out = new Map<string, MtlMeta>();
+  let cur: MtlMeta | null = null;
+  let curName = "";
+  for (const line of mtl.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const parts = trimmed.split(/\s+/);
+    if (parts[0] === "newmtl") {
+      if (cur) out.set(curName, cur);
+      curName = parts[1] ?? "";
+      cur = {};
+    } else if (cur && parts[0] === "map_Kd") {
+      cur.map_Kd = parts.slice(1).join(" ");
+    } else if (cur && parts[0] === "Kd" && parts.length >= 4) {
+      cur.Kd = [Number(parts[1]), Number(parts[2]), Number(parts[3])];
+    }
+  }
+  if (cur && curName) out.set(curName, cur);
+  return out;
 }
 
 export function SkinPreview3D({
@@ -55,48 +78,58 @@ export function SkinPreview3D({
     }
 
     try {
-      const manager = new THREE.LoadingManager();
-      manager.setURLModifier((url) => {
-        const base = url.split("/").pop() ?? url;
-        const mapped = nameToBlob.get(base);
-        return mapped ?? url;
-      });
-
-      const mtlLoader = new MTLLoader(manager);
-      const materials = mtlLoader.parse(bundle.mtl, "");
-      materials.preload();
-
-      const objLoader = new OBJLoader();
-      objLoader.setMaterials(materials);
-      const group = objLoader.parse(bundle.obj);
+      const matMeta = parseMtl(bundle.mtl);
 
       const ownedTextures: THREE.Texture[] = [];
+      const texLoader = new THREE.TextureLoader();
+      const matToTexture = new Map<string, THREE.Texture | null>();
+      for (const [name, meta] of matMeta) {
+        if (!meta.map_Kd) {
+          matToTexture.set(name, null);
+          continue;
+        }
+        const url = nameToBlob.get(meta.map_Kd);
+        if (!url) {
+          matToTexture.set(name, null);
+          continue;
+        }
+        const tex = texLoader.load(url);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.flipY = true;
+        ownedTextures.push(tex);
+        matToTexture.set(name, tex);
+      }
+
+      const objLoader = new OBJLoader();
+      const group = objLoader.parse(bundle.obj);
+
       group.traverse((child) => {
         if ((child as THREE.Mesh).isMesh) {
           const m = child as THREE.Mesh;
+          const geom = m.geometry as THREE.BufferGeometry;
+          const hasVertColors = geom.getAttribute("color") != null;
           const mats = Array.isArray(m.material) ? m.material : [m.material];
-          for (const mat of mats) {
-            const map = (mat as unknown as { map?: THREE.Texture | null }).map ?? null;
-            if (map) ownedTextures.push(map);
-
-            const geom = m.geometry as THREE.BufferGeometry;
-            const hasVertColors = geom.getAttribute("color") != null;
-            const replacement = new THREE.MeshStandardMaterial({
-              color: map || hasVertColors ? 0xffffff : 0xcfd6e6,
-              map: map,
-              vertexColors: !map && hasVertColors,
+          const replaced = mats.map((mat) => {
+            const matName = (mat as THREE.Material).name;
+            const tex = matToTexture.get(matName) ?? null;
+            const meta = matMeta.get(matName);
+            const kd = meta?.Kd ?? [0.8, 0.8, 0.85];
+            return new THREE.MeshStandardMaterial({
+              name: matName,
+              color: tex
+                ? 0xffffff
+                : hasVertColors
+                  ? 0xffffff
+                  : new THREE.Color(kd[0], kd[1], kd[2]),
+              map: tex,
+              vertexColors: !tex && hasVertColors,
               metalness: 0.05,
               roughness: 0.55,
               side: THREE.DoubleSide,
             });
-            if (Array.isArray(m.material)) {
-              const idx = (m.material as THREE.Material[]).indexOf(mat as THREE.Material);
-              (m.material as THREE.Material[])[idx] = replacement;
-            } else {
-              m.material = replacement;
-            }
-            (mat as THREE.Material).dispose?.();
-          }
+          });
+          for (const orig of mats) (orig as THREE.Material).dispose?.();
+          m.material = Array.isArray(m.material) ? replaced : replaced[0];
         }
       });
 
