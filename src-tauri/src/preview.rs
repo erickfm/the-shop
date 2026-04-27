@@ -93,10 +93,13 @@ fn ensure_glb(resource_dir: &Path, skin_path: &Path) -> AppResult<PathBuf> {
     fs::create_dir_all(&dir).map_err(|e| AppError::Io(e.to_string()))?;
     let bin = hsd_tool_binary(resource_dir)
         .ok_or_else(|| AppError::Other("the-shop-hsd binary not found".into()))?;
-    let status = Command::new(&bin)
-        .arg("to-gltf")
-        .arg(skin_path)
-        .arg(&glb_path)
+    let mode = std::env::var("THE_SHOP_HSD_MODE").unwrap_or_default();
+    let mut cmd = Command::new(&bin);
+    cmd.arg("to-gltf").arg(skin_path).arg(&glb_path);
+    if !mode.is_empty() {
+        cmd.env("THE_SHOP_HSD_MODE", &mode);
+    }
+    let status = cmd
         .status()
         .map_err(|e| AppError::Other(format!("spawn the-shop-hsd: {e}")))?;
     if !status.success() {

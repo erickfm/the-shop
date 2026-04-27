@@ -171,7 +171,10 @@ static int SaveTextureAsPng(HSD_TOBJ tobj, string output)
         Console.Error.WriteLine($"decoded buffer too small: {rgba?.Length ?? 0} for {w}x{h}");
         return 5;
     }
-    using (var image = Image.LoadPixelData<Rgba32>(rgba.AsSpan(0, w * h * 4), w, h))
+    // HAL textures decode to BGRA byte order via HSD_TOBJ.GetDecodedImageData
+    // (HSDRawViewer's SaveImagePNG also uses Bgra32). Reading as Rgba32 swaps
+    // R<->B which makes orange skins render as blue.
+    using (var image = Image.LoadPixelData<Bgra32>(rgba.AsSpan(0, w * h * 4), w, h))
     {
         Directory.CreateDirectory(Path.GetDirectoryName(output) ?? ".");
         image.SaveAsPng(output);
@@ -399,6 +402,7 @@ static void WalkAndEmit(
     var parentTransform = GetWorld(jobj, jobjWorlds);
 
     bool skipEnvelope = Environment.GetEnvironmentVariable("THE_SHOP_HSD_SKIP_ENVELOPE") == "1";
+    bool logPobjFlags = Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_POBJ_FLAGS") == "1";
     var dobj = jobj.Dobj;
     while (dobj != null)
     {
@@ -417,6 +421,15 @@ static void WalkAndEmit(
             {
                 pobj = pobj.Next;
                 continue;
+            }
+            if (logPobjFlags)
+            {
+                bool unknown2 = pobj.Flags.HasFlag(POBJ_FLAG.UNKNOWN2);
+                bool sk = jobj.Flags.HasFlag(JOBJ_FLAG.SKELETON);
+                bool skr = jobj.Flags.HasFlag(JOBJ_FLAG.SKELETON_ROOT);
+                bool sba = pobj.Flags.HasFlag(POBJ_FLAG.SHAPESET_AVERAGE);
+                Console.Error.WriteLine(
+                    $"  pobj {matEntry.Name} env={isEnvelope} unk2={unknown2} skel={sk} skelRoot={skr} shapeAvg={sba} singleBind={(pobj.SingleBoundJOBJ != null)}");
             }
             try
             {
@@ -459,6 +472,23 @@ static void EmitPobj(
     var allVerts = GX_VertexAccessor.GetDecodedVertices(dl, pobj);
     var envelopes = pobj.EnvelopeWeights;
     bool hasPNMTXIDX = pobj.HasAttribute(GXAttribName.GX_VA_PNMTXIDX);
+    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_ENV") == "1")
+    {
+        int envCount = envelopes?.Length ?? -1;
+        int multiBone = 0;
+        int singleBone = 0;
+        if (envelopes != null)
+        {
+            for (int i = 0; i < envelopes.Length; i++)
+            {
+                var en = envelopes[i];
+                if (en == null) continue;
+                if (en.EnvelopeCount > 1) multiBone++;
+                else if (en.EnvelopeCount == 1) singleBone++;
+            }
+        }
+        Console.Error.WriteLine($"  pobj envelopes={envCount} single={singleBone} multi={multiBone} hasPNMTXIDX={hasPNMTXIDX}");
+    }
     bool isSkeleton = parent.Flags.HasFlag(JOBJ_FLAG.SKELETON)
         || parent.Flags.HasFlag(JOBJ_FLAG.SKELETON_ROOT)
         || pobj.Flags.HasFlag(POBJ_FLAG.UNKNOWN2);
@@ -517,6 +547,21 @@ static void EmitPobj(
                     localNrm = Vector3.TransformNormal(localNrm, singleMatrix);
                 }
                 else
+                {
+                    localPos = Vector3.Transform(localPos, parentTransform);
+                    localNrm = Vector3.TransformNormal(localNrm, parentTransform);
+                }
+                localPos = Vector3.Transform(localPos, singleBindTransform);
+                localNrm = Vector3.TransformNormal(localNrm, singleBindTransform);
+            }
+            else if (mode == "bind-skin")
+            {
+                // Proper bind-pose multi-bone skinning. At bind pose,
+                // world_bind * inverse_bind = identity for each bone, so
+                // sum(weight * (world * inv_bind * pos)) reduces to pos.
+                // Envelope verts pass through; non-envelope go through
+                // parent's world matrix (rigid bind to parent JOBJ).
+                if (!hasPNMTXIDX)
                 {
                     localPos = Vector3.Transform(localPos, parentTransform);
                     localNrm = Vector3.TransformNormal(localNrm, parentTransform);
@@ -809,7 +854,7 @@ static byte[] EncodeTobjAsPngBytes(HSD_TOBJ tobj)
     var rgba = tobj.GetDecodedImageData();
     int w = tobj.ImageData!.Width;
     int h = tobj.ImageData!.Height;
-    using var image = Image.LoadPixelData<Rgba32>(rgba.AsSpan(0, w * h * 4), w, h);
+    using var image = Image.LoadPixelData<Bgra32>(rgba.AsSpan(0, w * h * 4), w, h);
     using var ms = new MemoryStream();
     image.SaveAsPng(ms);
     return ms.ToArray();
