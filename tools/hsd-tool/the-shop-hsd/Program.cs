@@ -238,11 +238,12 @@ static int ToObj(string[] args)
         }
     }
 
+    var colors = new List<Vector3>();
     foreach (var root in file.Roots)
     {
         if (root.Data is HSD_JOBJ rootJobj)
         {
-            WalkAndEmit(rootJobj, jobjWorlds, positions, normals, uvs, faces, new HashSet<int>());
+            WalkAndEmit(rootJobj, jobjWorlds, positions, normals, uvs, colors, faces, new HashSet<int>());
         }
     }
 
@@ -253,8 +254,12 @@ static int ToObj(string[] args)
         w.WriteLine($"# source: {Path.GetFileName(input)}");
         w.WriteLine($"# vertices: {positions.Count}, faces: {faces.Count}");
 
-        foreach (var p in positions)
-            w.WriteLine($"v {F(p.X)} {F(p.Y)} {F(p.Z)}");
+        for (int i = 0; i < positions.Count; i++)
+        {
+            var p = positions[i];
+            var c = i < colors.Count ? colors[i] : new Vector3(0.8f, 0.8f, 0.85f);
+            w.WriteLine($"v {F(p.X)} {F(p.Y)} {F(p.Z)} {F(c.X)} {F(c.Y)} {F(c.Z)}");
+        }
         foreach (var n in normals)
             w.WriteLine($"vn {F(n.X)} {F(n.Y)} {F(n.Z)}");
         foreach (var uv in uvs)
@@ -332,6 +337,7 @@ static void WalkAndEmit(
     List<Vector3> positions,
     List<Vector3> normals,
     List<Vector2> uvs,
+    List<Vector3> colors,
     List<(int v, int n, int t)[]> faces,
     HashSet<int> seen)
 {
@@ -357,7 +363,8 @@ static void WalkAndEmit(
             }
             try
             {
-                EmitPobj(pobj, jobj, parentTransform, jobjWorlds, positions, normals, uvs, faces);
+                var matColor = MaterialDiffuse(dobj.Mobj);
+                EmitPobj(pobj, jobj, parentTransform, jobjWorlds, matColor, positions, normals, uvs, colors, faces);
             }
             catch (Exception e)
             {
@@ -368,8 +375,16 @@ static void WalkAndEmit(
         dobj = dobj.Next;
     }
 
-    WalkAndEmit(jobj.Child, jobjWorlds, positions, normals, uvs, faces, seen);
-    WalkAndEmit(jobj.Next, jobjWorlds, positions, normals, uvs, faces, seen);
+    WalkAndEmit(jobj.Child, jobjWorlds, positions, normals, uvs, colors, faces, seen);
+    WalkAndEmit(jobj.Next, jobjWorlds, positions, normals, uvs, colors, faces, seen);
+}
+
+static Vector3 MaterialDiffuse(HSD_MOBJ? mobj)
+{
+    if (mobj == null) return new Vector3(0.85f, 0.85f, 0.9f);
+    var mat = mobj.Material;
+    if (mat == null) return new Vector3(0.85f, 0.85f, 0.9f);
+    return new Vector3(mat.DIF_R / 255f, mat.DIF_G / 255f, mat.DIF_B / 255f);
 }
 
 static void EmitPobj(
@@ -377,9 +392,11 @@ static void EmitPobj(
     HSD_JOBJ parent,
     Matrix4x4 parentTransform,
     Dictionary<int, Matrix4x4> jobjWorlds,
+    Vector3 matColor,
     List<Vector3> positions,
     List<Vector3> normals,
     List<Vector2> uvs,
+    List<Vector3> colors,
     List<(int v, int n, int t)[]> faces)
 {
     var dl = pobj.ToDisplayList();
@@ -473,6 +490,7 @@ static void EmitPobj(
             positions.Add(localPos);
             normals.Add(localNrm);
             uvs.Add(new Vector2(gv.TEX0.X, gv.TEX0.Y));
+            colors.Add(matColor);
         }
 
         EmitFaces(pg.PrimitiveType, baseIdx, count, faces);

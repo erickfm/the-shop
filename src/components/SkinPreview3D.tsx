@@ -42,11 +42,15 @@ export function SkinPreview3D({
       group.traverse((child) => {
         if ((child as THREE.Mesh).isMesh) {
           const m = child as THREE.Mesh;
+          const geom = m.geometry as THREE.BufferGeometry;
+          const hasColors = geom.getAttribute("color") != null;
           m.material = new THREE.MeshStandardMaterial({
-            color: "#cfd6e6",
+            color: hasColors ? "#ffffff" : "#cfd6e6",
+            vertexColors: hasColors,
             metalness: 0.05,
             roughness: 0.55,
             flatShading: false,
+            side: THREE.DoubleSide,
           });
         }
       });
