@@ -299,7 +299,9 @@ static int ToObj(string[] args)
         w.WriteLine("o character");
         foreach (var (matIdx, bucket) in facesByMat)
         {
+            if (bucket.Count == 0) continue;
             var matName = matIdx >= 0 && matIdx < materials.Count ? materials[matIdx].Name : "mat_default";
+            w.WriteLine($"g {matName}");
             w.WriteLine($"usemtl {matName}");
             foreach (var face in bucket)
             {

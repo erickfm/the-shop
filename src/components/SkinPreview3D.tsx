@@ -95,6 +95,8 @@ export function SkinPreview3D({
         }
         const tex = texLoader.load(url);
         tex.colorSpace = THREE.SRGBColorSpace;
+        tex.wrapS = THREE.RepeatWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
         tex.flipY = true;
         ownedTextures.push(tex);
         matToTexture.set(name, tex);
