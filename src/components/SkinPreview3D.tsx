@@ -246,12 +246,11 @@ export function SkinPreview3D({
         dpr={[1, 2]}
         camera={{ position: [0, 0, 8], fov: 32 }}
         gl={{ preserveDrawingBuffer: false, antialias: true }}
-        style={{ touchAction: "auto" }}
       >
         <ambientLight intensity={0.55} />
         <directionalLight position={[3, 5, 4]} intensity={1.1} />
         <directionalLight position={[-3, -2, -3]} intensity={0.4} color="#9bb3ff" />
-        <Bounds fit clip observe margin={1.15}>
+        <Bounds fit clip margin={1.15}>
           <primitive object={tunedScene} />
         </Bounds>
         <OrbitControls
@@ -259,7 +258,6 @@ export function SkinPreview3D({
           autoRotateSpeed={1.2}
           enableZoom={false}
           enablePan={false}
-          enableRotate={false}
         />
       </Canvas>
       <button
