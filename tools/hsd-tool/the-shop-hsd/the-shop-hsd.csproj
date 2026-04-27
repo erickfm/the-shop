@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HSDLib\HSDRaw\HSDRaw.csproj" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
+    <PackageReference Include="SharpGLTF.Toolkit" Version="1.0.4" />
   </ItemGroup>
 
   <PropertyGroup>

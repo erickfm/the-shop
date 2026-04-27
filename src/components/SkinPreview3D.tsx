@@ -1,40 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Bounds, OrbitControls } from "@react-three/drei";
-import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as THREE from "three";
 import { ipc, type SkinPreviewBundle } from "../lib/ipc";
 
-function base64ToBlobUrl(b64: string): string {
+function base64ToArrayBuffer(b64: string): ArrayBuffer {
   const bin = atob(b64);
   const len = bin.length;
   const bytes = new Uint8Array(len);
   for (let i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
-  return URL.createObjectURL(new Blob([bytes], { type: "image/png" }));
-}
-
-type MtlMeta = { map_Kd?: string; Kd?: [number, number, number] };
-
-function parseMtl(mtl: string): Map<string, MtlMeta> {
-  const out = new Map<string, MtlMeta>();
-  let cur: MtlMeta | null = null;
-  let curName = "";
-  for (const line of mtl.split("\n")) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) continue;
-    const parts = trimmed.split(/\s+/);
-    if (parts[0] === "newmtl") {
-      if (cur) out.set(curName, cur);
-      curName = parts[1] ?? "";
-      cur = {};
-    } else if (cur && parts[0] === "map_Kd") {
-      cur.map_Kd = parts.slice(1).join(" ");
-    } else if (cur && parts[0] === "Kd" && parts.length >= 4) {
-      cur.Kd = [Number(parts[1]), Number(parts[2]), Number(parts[3])];
-    }
-  }
-  if (cur && curName) out.set(curName, cur);
-  return out;
+  return bytes.buffer;
 }
 
 export function SkinPreview3D({
@@ -47,11 +23,13 @@ export function SkinPreview3D({
   autoRotate?: boolean;
 }) {
   const [bundle, setBundle] = useState<SkinPreviewBundle | null>(null);
+  const [parsed, setParsed] = useState<{ scene: THREE.Group } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let alive = true;
     setBundle(null);
+    setParsed(null);
     setError(null);
     ipc
       .getSkinPreview(skinFileId)
@@ -66,97 +44,66 @@ export function SkinPreview3D({
     };
   }, [skinFileId]);
 
-  const parsed = useMemo(() => {
-    if (!bundle) return null;
-
-    const blobUrls: string[] = [];
-    const nameToBlob = new Map<string, string>();
-    for (const [name, b64] of Object.entries(bundle.textures)) {
-      const url = base64ToBlobUrl(b64);
-      blobUrls.push(url);
-      nameToBlob.set(name, url);
-    }
-
-    try {
-      const matMeta = parseMtl(bundle.mtl);
-
-      const ownedTextures: THREE.Texture[] = [];
-      const texLoader = new THREE.TextureLoader();
-      const matToTexture = new Map<string, THREE.Texture | null>();
-      for (const [name, meta] of matMeta) {
-        if (!meta.map_Kd) {
-          matToTexture.set(name, null);
-          continue;
-        }
-        const url = nameToBlob.get(meta.map_Kd);
-        if (!url) {
-          matToTexture.set(name, null);
-          continue;
-        }
-        const tex = texLoader.load(url);
-        tex.colorSpace = THREE.SRGBColorSpace;
-        tex.wrapS = THREE.RepeatWrapping;
-        tex.wrapT = THREE.RepeatWrapping;
-        tex.flipY = true;
-        ownedTextures.push(tex);
-        matToTexture.set(name, tex);
-      }
-
-      const objLoader = new OBJLoader();
-      const group = objLoader.parse(bundle.obj);
-
-      group.traverse((child) => {
-        if ((child as THREE.Mesh).isMesh) {
-          const m = child as THREE.Mesh;
-          const geom = m.geometry as THREE.BufferGeometry;
-          const hasVertColors = geom.getAttribute("color") != null;
-          const mats = Array.isArray(m.material) ? m.material : [m.material];
-          const replaced = mats.map((mat) => {
-            const matName = (mat as THREE.Material).name;
-            const tex = matToTexture.get(matName) ?? null;
-            const meta = matMeta.get(matName);
-            const kd = meta?.Kd ?? [0.8, 0.8, 0.85];
-            return new THREE.MeshStandardMaterial({
-              name: matName,
-              color: tex
-                ? 0xffffff
-                : hasVertColors
-                  ? 0xffffff
-                  : new THREE.Color(kd[0], kd[1], kd[2]),
-              map: tex,
-              vertexColors: !tex && hasVertColors,
-              metalness: 0.05,
-              roughness: 0.55,
-              side: THREE.DoubleSide,
-            });
-          });
-          for (const orig of mats) (orig as THREE.Material).dispose?.();
-          m.material = Array.isArray(m.material) ? replaced : replaced[0];
-        }
-      });
-
-      return { group, blobUrls, ownedTextures };
-    } catch (e: any) {
-      blobUrls.forEach((u) => URL.revokeObjectURL(u));
-      setError(`preview parse: ${e?.message ?? e}`);
-      return null;
-    }
+  useEffect(() => {
+    if (!bundle) return;
+    let cancelled = false;
+    const ab = base64ToArrayBuffer(bundle.glb);
+    const loader = new GLTFLoader();
+    loader.parse(
+      ab,
+      "",
+      (gltf) => {
+        if (cancelled) return;
+        setParsed({ scene: gltf.scene });
+      },
+      (err: unknown) => {
+        if (cancelled) return;
+        const msg = err instanceof Error ? err.message : String(err);
+        setError(`glTF parse: ${msg}`);
+      },
+    );
+    return () => {
+      cancelled = true;
+    };
   }, [bundle]);
 
+  // Dispose textures + geometry when the parsed tree changes
   useEffect(() => {
+    if (!parsed) return;
     return () => {
-      if (!parsed) return;
-      parsed.blobUrls.forEach((u) => URL.revokeObjectURL(u));
-      parsed.ownedTextures.forEach((t) => t.dispose());
-      parsed.group.traverse((child) => {
+      parsed.scene.traverse((child) => {
         if ((child as THREE.Mesh).isMesh) {
           const m = child as THREE.Mesh;
           const mats = Array.isArray(m.material) ? m.material : [m.material];
-          for (const mat of mats) (mat as THREE.Material).dispose?.();
+          for (const mat of mats) {
+            const std = mat as THREE.MeshStandardMaterial;
+            std.map?.dispose();
+            mat.dispose?.();
+          }
           (m.geometry as THREE.BufferGeometry).dispose?.();
         }
       });
     };
+  }, [parsed]);
+
+  // Tweak materials to match the existing soft-shading aesthetic without
+  // throwing away the GLTF-loaded baseColorTexture.
+  const tunedScene = useMemo(() => {
+    if (!parsed) return null;
+    parsed.scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        const m = child as THREE.Mesh;
+        const mats = Array.isArray(m.material) ? m.material : [m.material];
+        for (const mat of mats) {
+          const std = mat as THREE.MeshStandardMaterial;
+          std.metalness = 0.05;
+          std.roughness = 0.55;
+          std.side = THREE.DoubleSide;
+          if (std.map) std.map.colorSpace = THREE.SRGBColorSpace;
+        }
+      }
+    });
+    return parsed.scene;
   }, [parsed]);
 
   const isFill = size === "100%" || size === "full";
@@ -175,7 +122,7 @@ export function SkinPreview3D({
       </div>
     );
   }
-  if (!parsed) {
+  if (!tunedScene) {
     return (
       <div
         className={isFill ? "" : "rounded border border-border bg-bg animate-pulse"}
@@ -204,7 +151,7 @@ export function SkinPreview3D({
         <directionalLight position={[3, 5, 4]} intensity={1.1} />
         <directionalLight position={[-3, -2, -3]} intensity={0.4} color="#9bb3ff" />
         <Bounds fit clip observe margin={1.15}>
-          <primitive object={parsed.group} />
+          <primitive object={tunedScene} />
         </Bounds>
         <OrbitControls
           autoRotate={autoRotate}

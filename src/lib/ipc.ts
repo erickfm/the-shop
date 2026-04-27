@@ -35,7 +35,5 @@ export const ipc = {
 };
 
 export type SkinPreviewBundle = {
-  obj: string;
-  mtl: string;
-  textures: Record<string, string>;
+  glb: string;
 };

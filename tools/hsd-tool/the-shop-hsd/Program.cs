@@ -9,10 +9,14 @@ using HSDRaw.GX;
 using HSDRaw.Tools;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SharpGLTF.Geometry;
+using SharpGLTF.Geometry.VertexTypes;
+using SharpGLTF.Materials;
+using SharpGLTF.Scenes;
 
 if (args.Length < 1)
 {
-    Console.Error.WriteLine("usage: the-shop-hsd <inspect|thumbnail|dump-textures|to-obj> ...");
+    Console.Error.WriteLine("usage: the-shop-hsd <inspect|thumbnail|dump-textures|to-obj|to-gltf> ...");
     return 2;
 }
 
@@ -22,6 +26,7 @@ return args[0] switch
     "thumbnail" => Thumbnail(args),
     "dump-textures" => DumpTextures(args),
     "to-obj" => ToObj(args),
+    "to-gltf" => ToGltf(args),
     _ => Usage(),
 };
 
@@ -32,6 +37,7 @@ static int Usage()
     Console.Error.WriteLine("  thumbnail <input.dat> <output.png>");
     Console.Error.WriteLine("  dump-textures <input.dat> <output_dir>");
     Console.Error.WriteLine("  to-obj <input.dat> <output.obj>");
+    Console.Error.WriteLine("  to-gltf <input.dat> <output.glb>");
     return 2;
 }
 
@@ -717,6 +723,108 @@ static void LogMaterials(List<MaterialEntry> materials)
             $"S=({F(e.UvSX)},{F(e.UvSY)},{F(e.UvSZ)}) " +
             $"T=({F(e.UvTX)},{F(e.UvTY)},{F(e.UvTZ)})");
     }
+}
+
+static int ToGltf(string[] args)
+{
+    if (args.Length < 3) return Usage();
+    var input = args[1];
+    var output = args[2];
+
+    var file = new HSDRawFile(input);
+    var positions = new List<Vector3>();
+    var normals = new List<Vector3>();
+    var uvs = new List<Vector2>();
+    var vertColors = new List<Vector3>();
+    var vertMatIdx = new List<int>();
+    var facesByMat = new Dictionary<int, List<(int v, int n, int t)[]>>();
+    var materials = new List<MaterialEntry>();
+    var mobjToMatIdx = new Dictionary<int, int>();
+    var tobjHashToFilename = new Dictionary<int, string>();
+
+    var jobjWorlds = new Dictionary<int, Matrix4x4>();
+    foreach (var root in file.Roots)
+        if (root.Data is HSD_JOBJ rj) BuildJobjWorlds(rj, Matrix4x4.Identity, jobjWorlds, new HashSet<int>());
+    foreach (var root in file.Roots)
+        if (root.Data is HSD_JOBJ rj) WalkAndEmit(rj, jobjWorlds, materials, mobjToMatIdx, tobjHashToFilename,
+            positions, normals, uvs, vertColors, vertMatIdx, facesByMat, new HashSet<int>());
+
+    // Build one MaterialBuilder per MaterialEntry. Textures are embedded as PNGs
+    // inside the GLB binary buffer.
+    var matBuilders = new Dictionary<int, MaterialBuilder>();
+    var texBytesByFilename = new Dictionary<string, byte[]>();
+    foreach (var (matIdx, _) in facesByMat)
+    {
+        var e = materials[matIdx];
+        var builder = new MaterialBuilder(e.Name).WithDoubleSide(true);
+        if (e.DiffuseTobj != null && e.TexFilename != null)
+        {
+            if (!texBytesByFilename.TryGetValue(e.TexFilename, out var pngBytes))
+            {
+                pngBytes = EncodeTobjAsPngBytes(e.DiffuseTobj);
+                texBytesByFilename[e.TexFilename] = pngBytes;
+            }
+            var img = new SharpGLTF.Memory.MemoryImage(pngBytes);
+            builder.WithBaseColor(img);
+        }
+        else
+        {
+            builder.WithBaseColor(new Vector4(e.DifR / 255f, e.DifG / 255f, e.DifB / 255f, e.Alpha));
+        }
+        matBuilders[matIdx] = builder;
+    }
+
+    // Build a single MeshBuilder with one primitive per material. Each primitive
+    // is keyed on its MaterialBuilder; SharpGLTF dedupes vertices within a primitive.
+    var mesh = new MeshBuilder<VertexPositionNormal, VertexTexture1>("character");
+    foreach (var (matIdx, bucket) in facesByMat)
+    {
+        if (bucket.Count == 0) continue;
+        var prim = mesh.UsePrimitive(matBuilders[matIdx]);
+        foreach (var face in bucket)
+        {
+            if (face.Length < 3) continue;
+            var v0 = MakeVertex(face[0].v, face[0].n, face[0].t, positions, normals, uvs);
+            var v1 = MakeVertex(face[1].v, face[1].n, face[1].t, positions, normals, uvs);
+            var v2 = MakeVertex(face[2].v, face[2].n, face[2].t, positions, normals, uvs);
+            prim.AddTriangle(v0, v1, v2);
+        }
+    }
+
+    var scene = new SceneBuilder();
+    scene.AddRigidMesh(mesh, Matrix4x4.Identity);
+    var model = scene.ToGltf2();
+
+    Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(output)) ?? ".");
+    model.SaveGLB(output);
+
+    int totalFaces = 0;
+    foreach (var b in facesByMat.Values) totalFaces += b.Count;
+    Console.WriteLine($"wrote {positions.Count} verts, {totalFaces} faces, {materials.Count} mats, {texBytesByFilename.Count} textures to {output}");
+    return totalFaces > 0 ? 0 : 4;
+}
+
+static byte[] EncodeTobjAsPngBytes(HSD_TOBJ tobj)
+{
+    var rgba = tobj.GetDecodedImageData();
+    int w = tobj.ImageData!.Width;
+    int h = tobj.ImageData!.Height;
+    using var image = Image.LoadPixelData<Rgba32>(rgba.AsSpan(0, w * h * 4), w, h);
+    using var ms = new MemoryStream();
+    image.SaveAsPng(ms);
+    return ms.ToArray();
+}
+
+static VertexBuilder<VertexPositionNormal, VertexTexture1, VertexEmpty> MakeVertex(
+    int vIdx, int nIdx, int tIdx,
+    List<Vector3> positions, List<Vector3> normals, List<Vector2> uvs)
+{
+    var pos = vIdx >= 0 && vIdx < positions.Count ? positions[vIdx] : Vector3.Zero;
+    var nrm = nIdx >= 0 && nIdx < normals.Count ? normals[nIdx] : Vector3.UnitY;
+    var uv = tIdx >= 0 && tIdx < uvs.Count ? uvs[tIdx] : Vector2.Zero;
+    return new VertexBuilder<VertexPositionNormal, VertexTexture1, VertexEmpty>(
+        new VertexPositionNormal(pos, nrm),
+        new VertexTexture1(uv));
 }
 
 class MaterialEntry

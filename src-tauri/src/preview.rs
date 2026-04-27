@@ -2,7 +2,6 @@ use crate::error::{AppError, AppResult};
 use crate::paths;
 use base64::Engine;
 use sha2::{Digest, Sha256};
-use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
@@ -10,9 +9,7 @@ use std::sync::Once;
 
 #[derive(serde::Serialize, Clone)]
 pub struct SkinPreview {
-    pub obj: String,
-    pub mtl: String,
-    pub textures: HashMap<String, String>,
+    pub glb: String,
 }
 
 pub fn hsd_tool_binary(resource_dir: &Path) -> Option<PathBuf> {
@@ -69,67 +66,56 @@ fn sweep_legacy_cache() {
         };
         for entry in entries.flatten() {
             let path = entry.path();
+            // legacy single-file OBJ cache
             if path.is_file() && path.extension().and_then(|s| s.to_str()) == Some("obj") {
                 let _ = fs::remove_file(&path);
+            }
+            // legacy per-skin dir with OBJ+MTL+PNGs (no glb yet)
+            if path.is_dir() {
+                let glb = path.join("model.glb");
+                if !glb.exists() {
+                    let _ = fs::remove_dir_all(&path);
+                }
             }
         }
     });
 }
 
-fn ensure_preview_dir(resource_dir: &Path, skin_path: &Path) -> AppResult<PathBuf> {
+fn ensure_glb(resource_dir: &Path, skin_path: &Path) -> AppResult<PathBuf> {
     sweep_legacy_cache();
     let key = cache_key_for(skin_path)?;
     let root = previews_dir().map_err(|e| AppError::Io(e.to_string()))?;
     let dir = root.join(&key);
-    let obj_path = dir.join("model.obj");
-    if obj_path.exists() {
-        return Ok(dir);
+    let glb_path = dir.join("model.glb");
+    if glb_path.exists() {
+        return Ok(glb_path);
     }
     fs::create_dir_all(&dir).map_err(|e| AppError::Io(e.to_string()))?;
     let bin = hsd_tool_binary(resource_dir)
         .ok_or_else(|| AppError::Other("the-shop-hsd binary not found".into()))?;
     let status = Command::new(&bin)
-        .arg("to-obj")
+        .arg("to-gltf")
         .arg(skin_path)
-        .arg(&obj_path)
+        .arg(&glb_path)
         .status()
         .map_err(|e| AppError::Other(format!("spawn the-shop-hsd: {e}")))?;
     if !status.success() {
         return Err(AppError::Other(format!(
-            "the-shop-hsd to-obj failed (exit {})",
+            "the-shop-hsd to-gltf failed (exit {})",
             status.code().unwrap_or(-1)
         )));
     }
-    if !obj_path.exists() {
+    if !glb_path.exists() {
         return Err(AppError::Other(
-            "OBJ not produced even though tool exited 0".into(),
+            "GLB not produced even though tool exited 0".into(),
         ));
     }
-    Ok(dir)
+    Ok(glb_path)
 }
 
 pub fn ensure_preview(resource_dir: &Path, skin_path: &Path) -> AppResult<SkinPreview> {
-    let dir = ensure_preview_dir(resource_dir, skin_path)?;
-    let obj = fs::read_to_string(dir.join("model.obj"))
-        .map_err(|e| AppError::Io(format!("read model.obj: {e}")))?;
-    let mtl = fs::read_to_string(dir.join("model.mtl")).unwrap_or_default();
-
-    let mut textures = HashMap::new();
-    if let Ok(entries) = fs::read_dir(&dir) {
-        for entry in entries.flatten() {
-            let path = entry.path();
-            let name = match path.file_name().and_then(|s| s.to_str()) {
-                Some(n) if n.starts_with("tex_") && n.ends_with(".png") => n.to_string(),
-                _ => continue,
-            };
-            let bytes = match fs::read(&path) {
-                Ok(b) => b,
-                Err(_) => continue,
-            };
-            let encoded = base64::engine::general_purpose::STANDARD.encode(&bytes);
-            textures.insert(name, encoded);
-        }
-    }
-
-    Ok(SkinPreview { obj, mtl, textures })
+    let glb_path = ensure_glb(resource_dir, skin_path)?;
+    let bytes = fs::read(&glb_path).map_err(|e| AppError::Io(format!("read model.glb: {e}")))?;
+    let glb = base64::engine::general_purpose::STANDARD.encode(&bytes);
+    Ok(SkinPreview { glb })
 }
