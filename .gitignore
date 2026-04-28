@@ -22,9 +22,14 @@ tools/hsd-tool/HSDLib/
 .idea/
 *.swp
 
-# User-supplied skin files dropped anywhere in the repo for testing
+# User-supplied skin / texture / stage / effect files dropped anywhere in the repo for testing
 Pl*.dat
 Pl*.usd
+Gr*.dat
+Gr*.usd
+Ef*.dat
+EVA-*.png
+NERV-*.png
 
 # Local sqlite
 *.sqlite3
