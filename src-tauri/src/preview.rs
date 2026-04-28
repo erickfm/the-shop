@@ -28,6 +28,28 @@ pub fn ensure_anim_file(vanilla_iso: Option<&Path>, char_code: &str) -> Option<P
     }
 }
 
+/// Extract the Pl<CharCode>.dat fighter-data file from the vanilla ISO once.
+/// This file holds the LowPoly visibility lookup that tells us which DObj
+/// indices are low-poly variants of higher-poly meshes — without filtering
+/// these out, every model renders both LOD levels overlapped (e.g. TAILS shows
+/// 6 hair tufts instead of 3, eyes look flat from z-fighting, etc.).
+pub fn ensure_fighter_file(vanilla_iso: Option<&Path>, char_code: &str) -> Option<PathBuf> {
+    let iso_path = vanilla_iso?;
+    if !iso_path.exists() { return None; }
+    let cache_dir = paths::app_data_dir().ok()?.join("fighters");
+    fs::create_dir_all(&cache_dir).ok()?;
+    let cached = cache_dir.join(format!("Pl{char_code}.dat"));
+    if cached.exists() {
+        return Some(cached);
+    }
+    let target = format!("Pl{char_code}.dat");
+    if iso::extract_from_iso(iso_path, &target, &cached).is_ok() && cached.exists() {
+        Some(cached)
+    } else {
+        None
+    }
+}
+
 #[derive(serde::Serialize, Clone)]
 pub struct SkinPreview {
     pub glb: String,
@@ -58,7 +80,12 @@ pub fn previews_dir() -> std::io::Result<PathBuf> {
     Ok(p)
 }
 
-fn cache_key_for(skin_path: &Path, anim_path: Option<&Path>) -> AppResult<String> {
+fn cache_key_for(
+    skin_path: &Path,
+    anim_path: Option<&Path>,
+    fighter_path: Option<&Path>,
+    with_textures: bool,
+) -> AppResult<String> {
     let meta = fs::metadata(skin_path).map_err(|e| AppError::Io(e.to_string()))?;
     let mtime = meta
         .modified()
@@ -77,6 +104,14 @@ fn cache_key_for(skin_path: &Path, anim_path: Option<&Path>) -> AppResult<String
             h.update(am.len().to_le_bytes());
         }
     }
+    if let Some(p) = fighter_path {
+        if let Ok(fm) = fs::metadata(p) {
+            h.update(b"|fighter:");
+            h.update(p.to_string_lossy().as_bytes());
+            h.update(fm.len().to_le_bytes());
+        }
+    }
+    h.update(if with_textures { b"|tex:1" } else { b"|tex:0" });
     Ok(hex::encode(h.finalize()))
 }
 
@@ -109,9 +144,15 @@ fn sweep_legacy_cache() {
     });
 }
 
-fn ensure_glb(resource_dir: &Path, skin_path: &Path, anim_path: Option<&Path>) -> AppResult<PathBuf> {
+fn ensure_glb(
+    resource_dir: &Path,
+    skin_path: &Path,
+    anim_path: Option<&Path>,
+    fighter_path: Option<&Path>,
+    with_textures: bool,
+) -> AppResult<PathBuf> {
     sweep_legacy_cache();
-    let key = cache_key_for(skin_path, anim_path)?;
+    let key = cache_key_for(skin_path, anim_path, fighter_path, with_textures)?;
     let root = previews_dir().map_err(|e| AppError::Io(e.to_string()))?;
     let dir = root.join(&key);
     let glb_path = dir.join("model.glb");
@@ -125,6 +166,12 @@ fn ensure_glb(resource_dir: &Path, skin_path: &Path, anim_path: Option<&Path>) -
     cmd.arg("to-gltf").arg(skin_path).arg(&glb_path);
     if let Some(p) = anim_path {
         cmd.arg("--pose").arg(p);
+    }
+    if let Some(p) = fighter_path {
+        cmd.arg("--fighter").arg(p);
+    }
+    if !with_textures {
+        cmd.arg("--no-textures");
     }
     let status = cmd
         .status()
@@ -148,9 +195,17 @@ pub fn ensure_preview(
     skin_path: &Path,
     char_code: &str,
     vanilla_iso: Option<&Path>,
+    with_textures: bool,
 ) -> AppResult<SkinPreview> {
     let anim = ensure_anim_file(vanilla_iso, char_code);
-    let glb_path = ensure_glb(resource_dir, skin_path, anim.as_deref())?;
+    let fighter = ensure_fighter_file(vanilla_iso, char_code);
+    let glb_path = ensure_glb(
+        resource_dir,
+        skin_path,
+        anim.as_deref(),
+        fighter.as_deref(),
+        with_textures,
+    )?;
     let bytes = fs::read(&glb_path).map_err(|e| AppError::Io(format!("read model.glb: {e}")))?;
     let glb = base64::engine::general_purpose::STANDARD.encode(&bytes);
     Ok(SkinPreview { glb })

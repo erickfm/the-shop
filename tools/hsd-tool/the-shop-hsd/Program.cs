@@ -15,16 +15,19 @@ using SharpGLTF.Materials;
 using SharpGLTF.Scenes;
 using HSDRaw.Common.Animation;
 using HSDRaw.Tools;
+using HSDRaw.Melee.Pl;
 
 if (args.Length < 1)
 {
-    Console.Error.WriteLine("usage: the-shop-hsd <inspect|thumbnail|dump-textures|to-obj|to-gltf> ...");
+    Console.Error.WriteLine("usage: the-shop-hsd <identify|inspect|thumbnail|dump-textures|to-obj|to-gltf> ...");
     return 2;
 }
 
 return args[0] switch
 {
+    "identify" => Identify(args),
     "inspect" => Inspect(args),
+    "dump-materials" => DumpMaterials(args),
     "thumbnail" => Thumbnail(args),
     "dump-textures" => DumpTextures(args),
     "to-obj" => ToObj(args),
@@ -32,15 +35,169 @@ return args[0] switch
     _ => Usage(),
 };
 
+// One-off diagnostic. For each DObj/MOBJ in the file, print the TOBJ list with
+// flags + sizes so we can see what we're picking vs. what's actually in the file.
+static int DumpMaterials(string[] args)
+{
+    if (args.Length < 2) return Usage();
+    var file = new HSDRawFile(args[1]);
+    int matIdx = 0;
+    foreach (var root in file.Roots)
+    {
+        if (root.Data is not HSD_JOBJ rj) continue;
+        foreach (var jobj in rj.TreeList)
+        {
+            var dobj = jobj.Dobj;
+            int dObjIdx = 0;
+            while (dobj != null)
+            {
+                var mobj = dobj.Mobj;
+                int tobjCount = 0;
+                var tobjs = new List<HSD_TOBJ>();
+                var t = mobj?.Textures;
+                while (t != null) { tobjs.Add(t); tobjCount++; t = t.Next; }
+                var rf = mobj?.RenderFlags ?? 0;
+                Console.WriteLine($"mat[{matIdx:D3}] dobj[{dObjIdx}] tobjs={tobjCount} dif=({mobj?.Material?.DIF_R},{mobj?.Material?.DIF_G},{mobj?.Material?.DIF_B}) amb=({mobj?.Material?.AMB_R},{mobj?.Material?.AMB_G},{mobj?.Material?.AMB_B}) alpha={(mobj?.Material?.Alpha ?? 1f):F2} renderFlags=0x{(int)rf:x8} [DIF={rf.HasFlag(HSDRaw.Common.RENDER_MODE.DIFFUSE)} CONST={rf.HasFlag(HSDRaw.Common.RENDER_MODE.CONSTANT)} XLU={rf.HasFlag(HSDRaw.Common.RENDER_MODE.XLU)}]");
+                for (int i = 0; i < tobjs.Count; i++)
+                {
+                    var tt = tobjs[i];
+                    var img = tt.ImageData;
+                    Console.WriteLine($"    tobj[{i}] flags=0x{(int)tt.Flags:x8} dif={tt.DiffuseLightmap} coord={tt.CoordType} colorOp={tt.ColorOperation} alphaOp={tt.AlphaOperation} blend={tt.Blending:F2} size={(img?.Width ?? 0)}x{(img?.Height ?? 0)} fmt={(img?.Format.ToString() ?? "null")}");
+                }
+                matIdx++;
+                dObjIdx++;
+                dobj = dobj.Next;
+            }
+        }
+    }
+    return 0;
+}
+
 static int Usage()
 {
     Console.Error.WriteLine("commands:");
+    Console.Error.WriteLine("  identify <input.dat>             (emits JSON to stdout)");
     Console.Error.WriteLine("  inspect <input.dat>");
     Console.Error.WriteLine("  thumbnail <input.dat> <output.png>");
     Console.Error.WriteLine("  dump-textures <input.dat> <output_dir>");
     Console.Error.WriteLine("  to-obj <input.dat> <output.obj>");
     Console.Error.WriteLine("  to-gltf <input.dat> <output.glb>");
     return 2;
+}
+
+// Emit a single-line JSON describing what kind of HAL .dat this is and which
+// character it belongs to. Slot is intentionally NOT included — it lives on the
+// disk, not in the file.
+//
+// Schema: {"kind":"costume|fighter_data|common_data|effect|stage|unknown",
+//          "character_internal":"Fox"|null, "root_names":[...]}
+static int Identify(string[] args)
+{
+    if (args.Length < 2) return Usage();
+    var path = args[1];
+    HSDRawFile file;
+    try { file = new HSDRawFile(path); }
+    catch (Exception e)
+    {
+        Console.Error.WriteLine($"identify failed to open: {e.Message}");
+        return 3;
+    }
+    string kind = "unknown";
+    string? characterInternal = null;
+    var rootNames = new List<string>();
+    foreach (var r in file.Roots) rootNames.Add(r.Name ?? "");
+
+    foreach (var name in rootNames)
+    {
+        // Costume skin. Format is Ply<Name><Tier>K[<Slot>]_Share_joint, e.g.:
+        //   PlyFox5K_Share_joint           (Fox, default slot)
+        //   PlyFox5KBu_Share_joint         (Fox, "Bu" slot variant)
+        //   PlyFalco5KGr_Share_joint       (Falco, "Gr" slot variant)
+        //   PlyGamewatch5K_Share_joint     (G&W, default slot)
+        // The character name is everything up to (but not including) the first digit.
+        if (name.StartsWith("Ply") && name.Contains("Share_joint"))
+        {
+            kind = "costume";
+            int start = 3;
+            int end = name.IndexOf("Share_joint");
+            if (end > start)
+            {
+                var middle = name.Substring(start, end - start).TrimEnd('_');
+                int firstDigit = -1;
+                for (int i = 0; i < middle.Length; i++)
+                {
+                    if (char.IsDigit(middle[i])) { firstDigit = i; break; }
+                }
+                characterInternal = firstDigit > 0 ? middle.Substring(0, firstDigit) : middle;
+            }
+            break;
+        }
+        // Fighter data (per-character common file like PlGw.dat, PlFx.dat): ftDataGamewatch, ftDataFox
+        if (name.StartsWith("ftData"))
+        {
+            kind = "fighter_data";
+            characterInternal = name.Substring("ftData".Length);
+            break;
+        }
+        // Common load data (PlCo.dat)
+        if (name == "ftLoadCommonData" || name.StartsWith("ftLoadCommon"))
+        {
+            kind = "common_data";
+            break;
+        }
+        // Effect file (EfFxData.dat etc): effFoxDataTable
+        if (name.StartsWith("eff") && name.EndsWith("DataTable"))
+        {
+            kind = "effect";
+            int start = 3;
+            int end = name.Length - "DataTable".Length;
+            if (end > start) characterInternal = name.Substring(start, end - start);
+            break;
+        }
+        // Stage data: roots typically begin with "Grd", "ALD", "map_", or contain "_image"
+        if (name.StartsWith("Grd") || name.StartsWith("ALD") || name.StartsWith("map_"))
+        {
+            kind = "stage";
+            break;
+        }
+    }
+
+    // JSON emission — manual to avoid pulling System.Text.Json into the trim graph.
+    var sb = new System.Text.StringBuilder();
+    sb.Append("{\"kind\":\"").Append(kind).Append('"');
+    sb.Append(",\"character_internal\":");
+    if (characterInternal == null) sb.Append("null");
+    else sb.Append('"').Append(JsonEscape(characterInternal)).Append('"');
+    sb.Append(",\"root_names\":[");
+    for (int i = 0; i < rootNames.Count; i++)
+    {
+        if (i > 0) sb.Append(',');
+        sb.Append('"').Append(JsonEscape(rootNames[i])).Append('"');
+    }
+    sb.Append("]}");
+    Console.WriteLine(sb.ToString());
+    return 0;
+}
+
+static string JsonEscape(string s)
+{
+    var sb = new System.Text.StringBuilder(s.Length);
+    foreach (var c in s)
+    {
+        switch (c)
+        {
+            case '\\': sb.Append("\\\\"); break;
+            case '"': sb.Append("\\\""); break;
+            case '\n': sb.Append("\\n"); break;
+            case '\r': sb.Append("\\r"); break;
+            case '\t': sb.Append("\\t"); break;
+            default:
+                if (c < 0x20) sb.AppendFormat("\\u{0:x4}", (int)c);
+                else sb.Append(c);
+                break;
+        }
+    }
+    return sb.ToString();
 }
 
 static int Inspect(string[] args)
@@ -255,6 +412,7 @@ static int ToObj(string[] args)
         }
     }
 
+    var emptyLowPoly = new Dictionary<int, HashSet<int>>();
     foreach (var root in file.Roots)
     {
         if (root.Data is HSD_JOBJ rootJobj)
@@ -262,9 +420,10 @@ static int ToObj(string[] args)
             WalkAndEmit(
                 rootJobj, jobjWorlds, invBindCache,
                 materials, mobjToMatIdx, tobjHashToFilename,
+                emptyLowPoly,
+                false,
                 positions, normals, uvs, vertColors, vertMatIdx,
-                facesByMat,
-                new HashSet<int>());
+                facesByMat);
         }
     }
 
@@ -414,64 +573,80 @@ static Matrix4x4 NormalMatrix(Matrix4x4 m)
 }
 
 static void WalkAndEmit(
-    HSD_JOBJ? jobj,
+    HSD_JOBJ? rootJobj,
     Dictionary<int, Matrix4x4> jobjWorlds,
     Dictionary<int, Matrix4x4> invBindCache,
     List<MaterialEntry> materials,
     Dictionary<int, int> mobjToMatIdx,
     Dictionary<int, string> tobjHashToFilename,
+    Dictionary<int, HashSet<int>> lowPolyDObjsByJObj,
+    bool noTextures,
     List<Vector3> positions,
     List<Vector3> normals,
     List<Vector2> uvs,
     List<Vector3> vertColors,
     List<int> vertMatIdx,
-    Dictionary<int, List<(int v, int n, int t)[]>> facesByMat,
-    HashSet<int> seen)
+    Dictionary<int, List<(int v, int n, int t)[]>> facesByMat)
 {
-    if (jobj == null) return;
-    int hash = jobj.GetHashCode();
-    if (!seen.Add(hash)) return;
-
-    var parentTransform = GetWorld(jobj, jobjWorlds);
+    if (rootJobj == null) return;
 
     bool skipEnvelope = Environment.GetEnvironmentVariable("THE_SHOP_HSD_SKIP_ENVELOPE") == "1";
-    var dobj = jobj.Dobj;
-    while (dobj != null)
-    {
-        var matIdx = GetOrAddMaterial(dobj.Mobj, mobjToMatIdx, materials, tobjHashToFilename);
-        var matEntry = materials[matIdx];
-        if (!facesByMat.ContainsKey(matIdx))
-            facesByMat[matIdx] = new List<(int v, int n, int t)[]>();
-        var faceBucket = facesByMat[matIdx];
+    int hidden = 0;
 
-        var pobj = dobj.Pobj;
-        while (pobj != null)
+    // Iterate via TreeList so jObjIdx aligns with the fighter-data lookup keys.
+    var jobjs = rootJobj.TreeList;
+    for (int jObjIdx = 0; jObjIdx < jobjs.Count; jObjIdx++)
+    {
+        var jobj = jobjs[jObjIdx];
+        var parentTransform = GetWorld(jobj, jobjWorlds);
+        lowPolyDObjsByJObj.TryGetValue(jObjIdx, out var lowPolySet);
+
+        int dObjIdx = 0;
+        var dobj = jobj.Dobj;
+        while (dobj != null)
         {
-            bool isEnvelope = pobj.Flags.HasFlag(POBJ_FLAG.ENVELOPE)
-                || pobj.HasAttribute(GXAttribName.GX_VA_PNMTXIDX);
-            if (skipEnvelope && isEnvelope)
+            if (lowPolySet != null && lowPolySet.Contains(dObjIdx))
             {
-                pobj = pobj.Next;
+                hidden++;
+                dObjIdx++;
+                dobj = dobj.Next;
                 continue;
             }
-            try
+
+            var matIdx = GetOrAddMaterial(dobj.Mobj, mobjToMatIdx, materials, tobjHashToFilename, noTextures);
+            var matEntry = materials[matIdx];
+            if (!facesByMat.ContainsKey(matIdx))
+                facesByMat[matIdx] = new List<(int v, int n, int t)[]>();
+            var faceBucket = facesByMat[matIdx];
+
+            var pobj = dobj.Pobj;
+            while (pobj != null)
             {
-                EmitPobj(pobj, jobj, parentTransform, jobjWorlds, invBindCache, matEntry, matIdx,
-                    positions, normals, uvs, vertColors, vertMatIdx, faceBucket);
+                bool isEnvelope = pobj.Flags.HasFlag(POBJ_FLAG.ENVELOPE)
+                    || pobj.HasAttribute(GXAttribName.GX_VA_PNMTXIDX);
+                if (skipEnvelope && isEnvelope)
+                {
+                    pobj = pobj.Next;
+                    continue;
+                }
+                try
+                {
+                    EmitPobj(pobj, jobj, parentTransform, jobjWorlds, invBindCache, matEntry, matIdx,
+                        positions, normals, uvs, vertColors, vertMatIdx, faceBucket);
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine($"skipping POBJ: {e.Message}");
+                }
+                pobj = pobj.Next;
             }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine($"skipping POBJ: {e.Message}");
-            }
-            pobj = pobj.Next;
+            dObjIdx++;
+            dobj = dobj.Next;
         }
-        dobj = dobj.Next;
     }
 
-    WalkAndEmit(jobj.Child, jobjWorlds, invBindCache, materials, mobjToMatIdx, tobjHashToFilename,
-        positions, normals, uvs, vertColors, vertMatIdx, facesByMat, seen);
-    WalkAndEmit(jobj.Next, jobjWorlds, invBindCache, materials, mobjToMatIdx, tobjHashToFilename,
-        positions, normals, uvs, vertColors, vertMatIdx, facesByMat, seen);
+    if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_LOWPOLY") == "1")
+        Console.Error.WriteLine($"WalkAndEmit: hid {hidden} low-poly DObjs");
 }
 
 static Vector3 MaterialDiffuseFallback(MaterialEntry e) =>
@@ -496,6 +671,7 @@ static void EmitPobj(
     var allVerts = GX_VertexAccessor.GetDecodedVertices(dl, pobj);
     var envelopes = pobj.EnvelopeWeights;
     bool hasPNMTXIDX = pobj.HasAttribute(GXAttribName.GX_VA_PNMTXIDX);
+    bool hasClr0 = pobj.HasAttribute(GXAttribName.GX_VA_CLR0);
     var singleBind = pobj.SingleBoundJOBJ;
     var singleBindTransform = GetWorld(singleBind, jobjWorlds);
 
@@ -613,7 +789,19 @@ static void EmitPobj(
             normals.Add(localNrm);
             var rawUv = new Vector2(gv.TEX0.X, gv.TEX0.Y);
             uvs.Add(TransformUV(rawUv, matEntry));
-            vertColors.Add(MaterialDiffuseFallback(matEntry));
+            // Vertex color emission is gated on whether the material has a
+            // texture. For TEXTURED materials we always push white — CLR0 in
+            // the file is part of a GX TEV combine we can't reproduce, and
+            // multiplying it naively (e.g. CLR0=(0,0,0)) turns surfaces fully
+            // black even when in-game they render normally. For UNTEXTURED
+            // materials we push the real CLR0 because it IS the surface color
+            // there. Without per-vertex color, untextured surfaces fall back
+            // to the material's flat MOBJ.diffuse base color.
+            bool matIsTextured = matEntry.HasDiffuseTexture;
+            if (hasClr0 && !matIsTextured)
+                vertColors.Add(new Vector3(gv.CLR0.R, gv.CLR0.G, gv.CLR0.B));
+            else
+                vertColors.Add(new Vector3(1f, 1f, 1f));
             vertMatIdx.Add(matIdx);
         }
 
@@ -659,17 +847,40 @@ static void EmitFaces(
 static (int v, int n, int t)[] Tri(int a, int b, int c) =>
     new[] { (a, a, a), (b, b, b), (c, c, c) };
 
+static void CollectLookup(
+    HSDRaw.HSDArrayAccessor<HSDRaw.Melee.Pl.SBM_LookupTable>? root,
+    Dictionary<int, HashSet<int>> outDict)
+{
+    if (root == null) return;
+    foreach (var table in root.Array)
+    {
+        if (table.LookupEntries == null) continue;
+        int jObjIdx = 0;
+        foreach (var entry in table.LookupEntries.Array)
+        {
+            if (entry.Entries != null)
+            {
+                if (!outDict.ContainsKey(jObjIdx))
+                    outDict[jObjIdx] = new HashSet<int>();
+                foreach (var b in entry.Entries) outDict[jObjIdx].Add(b);
+            }
+            jObjIdx++;
+        }
+    }
+}
+
 static int GetOrAddMaterial(
     HSD_MOBJ? mobj,
     Dictionary<int, int> mobjToMatIdx,
     List<MaterialEntry> materials,
-    Dictionary<int, string> tobjHashToFilename)
+    Dictionary<int, string> tobjHashToFilename,
+    bool noTextures)
 {
     int hash = mobj == null ? 0 : System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(mobj);
     if (mobjToMatIdx.TryGetValue(hash, out var existing))
         return existing;
 
-    var entry = new MaterialEntry { Name = $"mat_{materials.Count:D3}" };
+    var entry = new MaterialEntry { Name = $"mat_{materials.Count:D3}", RenderFlags = mobj?.RenderFlags ?? 0 };
     var mat = mobj?.Material;
     if (mat != null)
     {
@@ -689,7 +900,7 @@ static int GetOrAddMaterial(
         entry.Shininess = 50f;
     }
 
-    if (mobj?.Textures != null)
+    if (!noTextures && mobj?.Textures != null)
     {
         HSD_TOBJ? primary = null;
         HSD_TOBJ? fallback = null;
@@ -708,13 +919,26 @@ static int GetOrAddMaterial(
         {
             entry.DiffuseTobj = chosen;
             entry.DiffuseFromFallback = primary == null;
+            entry.TexColorOp = chosen.ColorOperation;
             entry.UvSX = chosen.SX; entry.UvSY = chosen.SY; entry.UvSZ = chosen.SZ;
             entry.UvRX = chosen.RX; entry.UvRY = chosen.RY; entry.UvRZ = chosen.RZ;
             entry.UvTX = chosen.TX; entry.UvTY = chosen.TY; entry.UvTZ = chosen.TZ;
-            var imgBytes = chosen.ImageData?.ImageData;
-            int thash = imgBytes != null
-                ? System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(imgBytes)
-                : System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(chosen);
+            // Content-hash the *decoded* image bytes. Object-identity hashing
+            // (RuntimeHelpers.GetHashCode on the byte[]) collapses distinct
+            // textures of the same dimensions because HSDLib hands back shared
+            // references — that's how SPOOKY-FALCO's 38 unique textures got
+            // squashed to 2 in earlier builds. Dedupe still works for genuinely
+            // identical content (e.g. shared head texture across slots).
+            int thash;
+            try
+            {
+                var decoded = chosen.GetDecodedImageData();
+                thash = ContentHash32(decoded, chosen.ImageData?.Width ?? 0, chosen.ImageData?.Height ?? 0);
+            }
+            catch
+            {
+                thash = System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(chosen);
+            }
             if (!tobjHashToFilename.TryGetValue(thash, out var existingFile))
             {
                 existingFile = $"tex_{tobjHashToFilename.Count:D3}.png";
@@ -800,16 +1024,72 @@ static int ToGltf(string[] args)
     SkinStats.Reset();
 
     string? posePath = null;
+    string? fighterPath = null;
     int animIndex = 0;
     float poseFrame = 0f;
+    bool noTextures = false;
     for (int i = 3; i < args.Length; i++)
     {
         if (args[i] == "--pose" && i + 1 < args.Length) posePath = args[++i];
+        else if (args[i] == "--fighter" && i + 1 < args.Length) fighterPath = args[++i];
         else if (args[i] == "--anim-index" && i + 1 < args.Length) int.TryParse(args[++i], out animIndex);
         else if (args[i] == "--pose-frame" && i + 1 < args.Length) float.TryParse(args[++i], System.Globalization.CultureInfo.InvariantCulture, out poseFrame);
+        else if (args[i] == "--no-textures") noTextures = true;
     }
 
     var file = new HSDRawFile(input);
+
+    // Read the fighter data file (Pl<CC>.dat) for low-poly DObj visibility info.
+    // Each costume ships both high-poly and low-poly versions of certain meshes
+    // (head, hands, feet); the game hides low-poly variants when rendering at
+    // close range. Without this filter, both versions render overlapped and the
+    // model looks duplicated/jagged (e.g. TAILS shows 6 hair tufts instead of 3).
+    var lowPolyDObjsByJObj = new Dictionary<int, HashSet<int>>();
+    var highPolyDObjsByJObj = new Dictionary<int, HashSet<int>>();
+    bool disableLodFilter = Environment.GetEnvironmentVariable("THE_SHOP_HSD_DISABLE_LOD") == "1";
+    if (!disableLodFilter && fighterPath != null && File.Exists(fighterPath))
+    {
+        try
+        {
+            var fighterFile = new HSDRawFile(fighterPath);
+            SBM_FighterData? fighterData = null;
+            foreach (var r in fighterFile.Roots)
+            {
+                if (r.Data is SBM_FighterData fd) { fighterData = fd; break; }
+            }
+            var costumes = fighterData?.ModelLookupTables?.CostumeVisibilityLookups;
+            if (costumes != null && costumes.Array.Length > 0)
+            {
+                // Costume index 0 (Nr/neutral) — low-poly DObj layout is the same
+                // across all costume variants of the same character.
+                var costume = costumes.Array[0];
+                CollectLookup(costume.LowPoly, lowPolyDObjsByJObj);
+                CollectLookup(costume.HighPoly, highPolyDObjsByJObj);
+            }
+            if (Environment.GetEnvironmentVariable("THE_SHOP_HSD_LOG_LOWPOLY") == "1")
+            {
+                int totalLow = 0, totalHigh = 0;
+                foreach (var s in lowPolyDObjsByJObj.Values) totalLow += s.Count;
+                foreach (var s in highPolyDObjsByJObj.Values) totalHigh += s.Count;
+                Console.Error.WriteLine($"loaded fighter data: {lowPolyDObjsByJObj.Count} jobjs with low-poly ({totalLow} total), {highPolyDObjsByJObj.Count} with high-poly ({totalHigh} total)");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.Error.WriteLine($"fighter data load failed (skipping LOD filter): {e.Message}");
+        }
+    }
+
+    // No per-skin compat heuristic — apply the fighter-data LowPoly hide
+    // unconditionally. Vanilla-shaped skins (TAILS, EVA UNITs) look correct;
+    // heavily-modded skins that repurpose LowPoly slots for unique content
+    // (e.g. TAILS-ANIMELEE) will show that content as missing. Use
+    // THE_SHOP_HSD_DISABLE_LOD=1 to opt out for those specific cases.
+    if (lowPolyDObjsByJObj.Count > 0)
+    {
+        // No-op block left for future per-skin handling; kept to preserve
+        // the file structure around the dictionary.
+    }
 
     // Compute bind-pose world inverses BEFORE applying any pose so we have
     // a true bind reference for skinning.
@@ -853,7 +1133,9 @@ static int ToGltf(string[] args)
 
     foreach (var root in file.Roots)
         if (root.Data is HSD_JOBJ rj) WalkAndEmit(rj, jobjWorlds, invBindCache, materials, mobjToMatIdx, tobjHashToFilename,
-            positions, normals, uvs, vertColors, vertMatIdx, facesByMat, new HashSet<int>());
+            lowPolyDObjsByJObj,
+            noTextures,
+            positions, normals, uvs, vertColors, vertMatIdx, facesByMat);
 
     // Build one MaterialBuilder per MaterialEntry. Textures are embedded as PNGs
     // inside the GLB binary buffer.
@@ -863,26 +1145,55 @@ static int ToGltf(string[] args)
     {
         var e = materials[matIdx];
         var builder = new MaterialBuilder(e.Name).WithDoubleSide(true);
-        if (e.DiffuseTobj != null && e.TexFilename != null)
+        bool textured = !noTextures && e.DiffuseTobj != null && e.TexFilename != null;
+        // Apply MOBJ.diffuse as a base-color factor only when (a) the TOBJ's
+        // GX TEV combine is MODULATE (texture × previous, so multiplying is
+        // semantically correct), AND (b) the diffuse is actually different
+        // from white. White (255,255,255) would be a no-op multiply on paper
+        // but emitting an explicit base-color factor in glTF can still flip
+        // three.js's alpha-mode detection — keep the simple WithBaseColor(img)
+        // path for the common no-op case.
+        bool diffuseIsWhiteOpaque = e.DifR == 255 && e.DifG == 255 && e.DifB == 255 && e.Alpha >= 0.999f;
+        bool useDiffuseFactor = e.TexColorOp == HSDRaw.Common.COLORMAP.MODULATE && !diffuseIsWhiteOpaque;
+        var diffuseFactor = new Vector4(e.DifR / 255f, e.DifG / 255f, e.DifB / 255f, e.Alpha);
+        if (textured)
         {
-            if (!texBytesByFilename.TryGetValue(e.TexFilename, out var pngBytes))
+            if (!texBytesByFilename.TryGetValue(e.TexFilename!, out var pngBytes))
             {
-                pngBytes = EncodeTobjAsPngBytes(e.DiffuseTobj);
-                texBytesByFilename[e.TexFilename] = pngBytes;
+                pngBytes = EncodeTobjAsPngBytes(e.DiffuseTobj!);
+                texBytesByFilename[e.TexFilename!] = pngBytes;
             }
             var img = new SharpGLTF.Memory.MemoryImage(pngBytes);
-            builder.WithBaseColor(img);
+            // Only multiply texture by MOBJ.diffuse when MOBJ says GX should
+            // use it as the modulator (RENDER_MODE.DIFFUSE). For CONSTANT-mode
+            // materials, GX's TEV reads its constant color from a register
+            // that's set up by HAL's TEV stage program — we can't reproduce
+            // that source faithfully without parsing the TEV blob, so we just
+            // pass the texture through. That matches in-game appearance for
+            // skins like TAILS-ANIMELEE / SPOOKY-FALCO that use CONSTANT mode
+            // and rely on the texture content alone.
+            if (useDiffuseFactor)
+                builder.WithBaseColor(img, diffuseFactor);
+            else
+                builder.WithBaseColor(img);
         }
         else
         {
-            builder.WithBaseColor(new Vector4(e.DifR / 255f, e.DifG / 255f, e.DifB / 255f, e.Alpha));
+            builder.WithBaseColor(diffuseFactor);
+            // Untextured-only: MOBJ ambient as glTF emissive (always-on
+            // additive brightness floor). Skipped for textured materials
+            // because adding emissive on top of a texture washes it out.
+            if (e.AmbR > 0 || e.AmbG > 0 || e.AmbB > 0)
+            {
+                builder.WithEmissive(new Vector3(e.AmbR / 255f, e.AmbG / 255f, e.AmbB / 255f) * 0.5f);
+            }
         }
         matBuilders[matIdx] = builder;
     }
 
     // Build a single MeshBuilder with one primitive per material. Each primitive
     // is keyed on its MaterialBuilder; SharpGLTF dedupes vertices within a primitive.
-    var mesh = new MeshBuilder<VertexPositionNormal, VertexTexture1>("character");
+    var mesh = new MeshBuilder<VertexPositionNormal, VertexColor1Texture1>("character");
     foreach (var (matIdx, bucket) in facesByMat)
     {
         if (bucket.Count == 0) continue;
@@ -890,9 +1201,9 @@ static int ToGltf(string[] args)
         foreach (var face in bucket)
         {
             if (face.Length < 3) continue;
-            var v0 = MakeVertex(face[0].v, face[0].n, face[0].t, positions, normals, uvs);
-            var v1 = MakeVertex(face[1].v, face[1].n, face[1].t, positions, normals, uvs);
-            var v2 = MakeVertex(face[2].v, face[2].n, face[2].t, positions, normals, uvs);
+            var v0 = MakeVertex(face[0].v, face[0].n, face[0].t, positions, normals, uvs, vertColors);
+            var v1 = MakeVertex(face[1].v, face[1].n, face[1].t, positions, normals, uvs, vertColors);
+            var v2 = MakeVertex(face[2].v, face[2].n, face[2].t, positions, normals, uvs, vertColors);
             prim.AddTriangle(v0, v1, v2);
         }
     }
@@ -912,6 +1223,24 @@ static int ToGltf(string[] args)
     return totalFaces > 0 ? 0 : 4;
 }
 
+// FNV-1a 32-bit. Cheap content hash used as a dedupe key for decoded image
+// bytes; collisions just mean two distinct textures share a PNG file in the
+// GLB, which is benign — same effect as our previous identity-hash dedupe but
+// driven by content instead of memory address.
+static int ContentHash32(byte[] data, int w, int h)
+{
+    unchecked
+    {
+        const uint OFFSET = 2166136261u;
+        const uint PRIME = 16777619u;
+        uint hash = OFFSET;
+        hash = (hash ^ (uint)w) * PRIME;
+        hash = (hash ^ (uint)h) * PRIME;
+        for (int i = 0; i < data.Length; i++) hash = (hash ^ data[i]) * PRIME;
+        return (int)hash;
+    }
+}
+
 static byte[] EncodeTobjAsPngBytes(HSD_TOBJ tobj)
 {
     var rgba = tobj.GetDecodedImageData();
@@ -923,16 +1252,20 @@ static byte[] EncodeTobjAsPngBytes(HSD_TOBJ tobj)
     return ms.ToArray();
 }
 
-static VertexBuilder<VertexPositionNormal, VertexTexture1, VertexEmpty> MakeVertex(
+static VertexBuilder<VertexPositionNormal, VertexColor1Texture1, VertexEmpty> MakeVertex(
     int vIdx, int nIdx, int tIdx,
-    List<Vector3> positions, List<Vector3> normals, List<Vector2> uvs)
+    List<Vector3> positions, List<Vector3> normals, List<Vector2> uvs,
+    List<Vector3> vertColors)
 {
     var pos = vIdx >= 0 && vIdx < positions.Count ? positions[vIdx] : Vector3.Zero;
     var nrm = nIdx >= 0 && nIdx < normals.Count ? normals[nIdx] : Vector3.UnitY;
     var uv = tIdx >= 0 && tIdx < uvs.Count ? uvs[tIdx] : Vector2.Zero;
-    return new VertexBuilder<VertexPositionNormal, VertexTexture1, VertexEmpty>(
+    // vertColors is parallel to positions; if it's short or empty we fall back to white
+    // (which acts as a no-op in the texture * vertex_color * base_color combine).
+    var col = vIdx >= 0 && vIdx < vertColors.Count ? vertColors[vIdx] : new Vector3(1f, 1f, 1f);
+    return new VertexBuilder<VertexPositionNormal, VertexColor1Texture1, VertexEmpty>(
         new VertexPositionNormal(pos, nrm),
-        new VertexTexture1(uv));
+        new VertexColor1Texture1(new Vector4(col.X, col.Y, col.Z, 1f), uv));
 }
 
 static void ApplyFigaTreePose(HSDRawFile costume, HSDRawFile anim, int animIndex, float frame)
@@ -1024,6 +1357,13 @@ class MaterialEntry
     public HSD_TOBJ? DiffuseTobj;
     public bool DiffuseFromFallback;
     public string? TexFilename;
+    public HSDRaw.Common.RENDER_MODE RenderFlags;
+    /// The chosen TOBJ's ColorOperation, the GX TEV combine mode. MODULATE
+    /// means `result = texture × previous` (so we should multiply by
+    /// MOBJ.diffuse when emitting). REPLACE means `result = texture` (don't
+    /// multiply). Other ops (ADD/BLEND/SUB) are rare; we approximate as
+    /// REPLACE since we can't faithfully reproduce them.
+    public HSDRaw.Common.COLORMAP TexColorOp = HSDRaw.Common.COLORMAP.MODULATE;
     public float UvSX = 1, UvSY = 1, UvSZ = 1;
     public float UvRX, UvRY, UvRZ;
     public float UvTX, UvTY, UvTZ;

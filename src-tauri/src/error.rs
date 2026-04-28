@@ -23,6 +23,13 @@ pub enum AppError {
     UnknownCharacter(String),
     #[error("unknown slot code '{slot}' for character '{character}'")]
     UnknownSlot { character: String, slot: String },
+    #[error("file kind '{kind}' is not yet supported (skin imports only)")]
+    UnsupportedFileKind { kind: String },
+    #[error("file's internal character ('{file_says}') disagrees with filename ('{filename_says}')")]
+    CharacterMismatch {
+        file_says: String,
+        filename_says: String,
+    },
     #[error("slot conflict: {character}/{slot} is already occupied by {existing}")]
     SlotConflict {
         character: String,
@@ -73,6 +80,8 @@ impl Serialize for AppError {
             AppError::BadSkinFilename(_) => "BadSkinFilename",
             AppError::UnknownCharacter(_) => "UnknownCharacter",
             AppError::UnknownSlot { .. } => "UnknownSlot",
+            AppError::UnsupportedFileKind { .. } => "UnsupportedFileKind",
+            AppError::CharacterMismatch { .. } => "CharacterMismatch",
             AppError::SlotConflict { .. } => "SlotConflict",
             AppError::Db(_) => "Db",
             AppError::Io(_) => "Io",

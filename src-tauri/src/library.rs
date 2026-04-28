@@ -70,7 +70,11 @@ fn hash_file(path: &Path) -> AppResult<(String, u64)> {
     Ok((hex::encode(h.finalize()), len))
 }
 
-pub fn import_files(db: &Db, paths_in: &[PathBuf]) -> AppResult<ImportReport> {
+pub fn import_files(
+    db: &Db,
+    paths_in: &[PathBuf],
+    hsd_binary: Option<&Path>,
+) -> AppResult<ImportReport> {
     let dest_dir = paths::skins_dir()?;
     let mut imported = 0;
     let mut skipped_duplicates = 0;
@@ -88,15 +92,25 @@ pub fn import_files(db: &Db, paths_in: &[PathBuf]) -> AppResult<ImportReport> {
             }
         };
 
-        if let Err(e) = manifest::parse(&filename) {
-            failed.push(ImportFailure {
-                filename,
-                error: e.to_string(),
-            });
-            continue;
-        }
+        // Identify against the file itself (authoritative) before doing any
+        // filesystem work, so we reject stages/effects/common/items files with
+        // a useful error instead of "could not parse filename".
+        let parsed = match manifest::identify(hsd_binary, src) {
+            Ok(p) => p,
+            Err(e) => {
+                failed.push(ImportFailure {
+                    filename,
+                    error: e.to_string(),
+                });
+                continue;
+            }
+        };
 
-        let dest = dest_dir.join(&filename);
+        // Re-derive the destination filename from the *identified* character
+        // code so we self-correct mislabeled files (e.g. one named PlFoo that
+        // identifies as Falco lands as PlFc...).
+        let canonical_filename = canonical_filename(&filename, &parsed);
+        let dest = dest_dir.join(&canonical_filename);
 
         if dest != *src {
             if let Err(e) = fs::copy(src, &dest) {
@@ -119,7 +133,7 @@ pub fn import_files(db: &Db, paths_in: &[PathBuf]) -> AppResult<ImportReport> {
             }
         };
 
-        let parsed = manifest::parse(&filename)?;
+        let filename = canonical_filename;
         let dest_str = dest.to_string_lossy().to_string();
 
         let inserted = db.with_conn(|c| {
@@ -156,6 +170,27 @@ pub fn import_files(db: &Db, paths_in: &[PathBuf]) -> AppResult<ImportReport> {
         skipped_duplicates,
         failed,
     })
+}
+
+/// If the file's identified character disagrees with what its filename
+/// implies, rewrite the filename to match the identified character. This makes
+/// the on-disk name + DB row a faithful reflection of the file's contents.
+fn canonical_filename(original: &str, parsed: &manifest::ParsedSkinFilename) -> String {
+    let canonical_prefix = format!("Pl{}{}", parsed.character_code, parsed.slot_code);
+    if original.starts_with(&canonical_prefix) {
+        return original.to_string();
+    }
+    if let Some(stem) = original.strip_suffix(".dat").or_else(|| original.strip_suffix(".usd")) {
+        if let Some(rest) = stem.strip_prefix("Pl") {
+            // skip 2 chars of (wrong) char code and the slot+digits
+            let suffix_start = 2 + parsed.slot_code.len();
+            if rest.len() >= suffix_start {
+                let trailing = &rest[suffix_start..];
+                return format!("{canonical_prefix}{trailing}.dat");
+            }
+        }
+    }
+    format!("{canonical_prefix}.dat")
 }
 
 pub fn list_packs(db: &Db) -> AppResult<Vec<SkinPack>> {

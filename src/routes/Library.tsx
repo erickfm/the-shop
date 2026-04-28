@@ -11,6 +11,11 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   const [packs, setPacks] = useState<SkinPack[]>([]);
   const [chars, setChars] = useState<CharacterDef[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
+  // Per-card "show textures" toggle. Session-only, defaults to true. Useful
+  // for skins that ship Dolphin-format texture-pack overrides where the
+  // .dat's embedded textures are placeholders — flip off to see flat
+  // material colors instead of the (often misleading) placeholder render.
+  const [texturesOff, setTexturesOff] = useState<Record<string, boolean>>({});
 
   const refresh = async () => {
     const [p, c] = await Promise.all([ipc.listSkinPacks(), ipc.listCharacters()]);
@@ -117,11 +122,16 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
           + Add skins
         </button>
       </div>
+      <p className="text-xs text-muted">
+        Previews are best-effort — heavily-modded skins may render with missing
+        or distorted parts. The in-game model is unaffected.
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {packs.map((p) => {
           const charDef = chars.find((c) => c.code === p.character_code);
           const allSlots = charDef?.slots ?? [];
           const myKey = `${p.character_code}/${p.pack_name}`;
+          const texOff = !!texturesOff[myKey];
           return (
             <div key={myKey} className="card overflow-hidden flex flex-col">
               <div className="relative aspect-square bg-bg">
@@ -129,11 +139,24 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
                   <SkinPreview3D
                     skinFileId={p.slots[0].skin_file_id}
                     size="100%"
+                    withTextures={!texOff}
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <CharacterBadge code={p.character_code} size={120} />
                   </div>
+                )}
+                {p.slots[0] && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setTexturesOff((s) => ({ ...s, [myKey]: !s[myKey] }))
+                    }
+                    className="absolute top-2 right-2 px-2 py-1 rounded text-[10px] font-medium bg-bg/80 border border-border hover:bg-bg"
+                    title={texOff ? "Show textures" : "Hide textures (flat material colors)"}
+                  >
+                    {texOff ? "tex: off" : "tex: on"}
+                  </button>
                 )}
               </div>
               <div className="p-4 space-y-3 flex-1 flex flex-col">

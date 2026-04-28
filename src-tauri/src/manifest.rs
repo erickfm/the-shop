@@ -1,5 +1,8 @@
 use crate::error::{AppError, AppResult};
 use crate::slot_codes;
+use serde::Deserialize;
+use std::path::Path;
+use std::process::Command;
 
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct ParsedSkinFilename {
@@ -11,7 +14,26 @@ pub struct ParsedSkinFilename {
     pub iso_target_filename: String,
 }
 
-pub fn parse(filename: &str) -> AppResult<ParsedSkinFilename> {
+/// What `the-shop-hsd identify` emits on stdout. Slot is intentionally absent —
+/// HAL doesn't store the slot inside the file, only as a disk filename.
+#[derive(Debug, Deserialize)]
+pub struct FileIdentity {
+    pub kind: String,
+    pub character_internal: Option<String>,
+    #[serde(default)]
+    pub root_names: Vec<String>,
+}
+
+#[derive(Debug, Clone)]
+struct FilenameParts {
+    character_code: String,
+    slot_code: String,
+    pack_name: Option<String>,
+}
+
+/// Pure-filename parser. Returns the structural pieces without validating
+/// against the character table — that happens in `identify`.
+fn parse_filename_parts(filename: &str) -> AppResult<FilenameParts> {
     let stem = filename
         .strip_suffix(".dat")
         .or_else(|| filename.strip_suffix(".usd"))
@@ -28,7 +50,6 @@ pub fn parse(filename: &str) -> AppResult<ParsedSkinFilename> {
     let character_code = &core[0..2];
     let after_char = &core[2..];
 
-    let slot_letters = &after_char[..2];
     let mut slot_end = 2;
     for ch in after_char[2..].chars() {
         if ch.is_ascii_digit() {
@@ -38,7 +59,6 @@ pub fn parse(filename: &str) -> AppResult<ParsedSkinFilename> {
         }
     }
     let slot_code = &after_char[..slot_end];
-    let _ = slot_letters;
 
     let pack_name = if after_char.len() == slot_end {
         None
@@ -52,6 +72,25 @@ pub fn parse(filename: &str) -> AppResult<ParsedSkinFilename> {
         }
     };
 
+    Ok(FilenameParts {
+        character_code: character_code.to_string(),
+        slot_code: slot_code.to_string(),
+        pack_name,
+    })
+}
+
+/// Filename-only fallback for when we can't run the identify tool. Validates
+/// the character + slot against our table.
+pub fn parse(filename: &str) -> AppResult<ParsedSkinFilename> {
+    let parts = parse_filename_parts(filename)?;
+    finalize_from_parts(&parts.character_code, &parts.slot_code, parts.pack_name)
+}
+
+fn finalize_from_parts(
+    character_code: &str,
+    slot_code: &str,
+    pack_name: Option<String>,
+) -> AppResult<ParsedSkinFilename> {
     let char_def = slot_codes::lookup(character_code)
         .ok_or_else(|| AppError::UnknownCharacter(character_code.to_string()))?;
 
@@ -77,6 +116,72 @@ pub fn parse(filename: &str) -> AppResult<ParsedSkinFilename> {
         pack_name,
         iso_target_filename,
     })
+}
+
+/// Run `the-shop-hsd identify` and parse its JSON. Returns `None` on any
+/// failure (binary missing, bad exit, malformed JSON) — the caller falls back
+/// to filename-only parsing.
+pub fn identify_via_tool(binary: &Path, file_path: &Path) -> Option<FileIdentity> {
+    let out = Command::new(binary)
+        .arg("identify")
+        .arg(file_path)
+        .output()
+        .ok()?;
+    if !out.status.success() {
+        return None;
+    }
+    serde_json::from_slice::<FileIdentity>(&out.stdout).ok()
+}
+
+/// Top-level identifier: combines file inspection (authoritative for
+/// character + kind) with filename parsing (only source for slot + pack name).
+///
+/// `binary` may be `None` if the resource isn't available (tests, etc.) — we
+/// then degrade to pure-filename parsing.
+pub fn identify(binary: Option<&Path>, file_path: &Path) -> AppResult<ParsedSkinFilename> {
+    let filename = file_path
+        .file_name()
+        .and_then(|s| s.to_str())
+        .ok_or_else(|| AppError::BadSkinFilename(file_path.display().to_string()))?
+        .to_string();
+
+    let from_file = binary.and_then(|b| identify_via_tool(b, file_path));
+
+    if let Some(id) = &from_file {
+        if id.kind != "costume" {
+            return Err(AppError::UnsupportedFileKind {
+                kind: id.kind.clone(),
+            });
+        }
+    }
+
+    let fn_parts = parse_filename_parts(&filename)?;
+
+    let character_code = if let Some(id) = &from_file {
+        if let Some(internal) = &id.character_internal {
+            if let Some(def) = slot_codes::lookup_by_internal(internal) {
+                if def.code != fn_parts.character_code {
+                    if slot_codes::lookup(&fn_parts.character_code).is_some() {
+                        return Err(AppError::CharacterMismatch {
+                            file_says: def.display.to_string(),
+                            filename_says: slot_codes::lookup(&fn_parts.character_code)
+                                .map(|d| d.display.to_string())
+                                .unwrap_or_else(|| fn_parts.character_code.clone()),
+                        });
+                    }
+                }
+                def.code.to_string()
+            } else {
+                fn_parts.character_code.clone()
+            }
+        } else {
+            fn_parts.character_code.clone()
+        }
+    } else {
+        fn_parts.character_code.clone()
+    };
+
+    finalize_from_parts(&character_code, &fn_parts.slot_code, fn_parts.pack_name)
 }
 
 #[cfg(test)]
@@ -136,5 +241,13 @@ mod tests {
         let p = parse("PlFxOr11-MEGA.dat").unwrap();
         assert_eq!(p.slot_code, "Or11");
         assert_eq!(p.iso_target_filename, "PlFxOr11.dat");
+    }
+
+    #[test]
+    fn identify_falls_back_to_filename_when_no_tool() {
+        let path = std::path::PathBuf::from("PlFcNr-TEST.dat");
+        let p = identify(None, &path).unwrap();
+        assert_eq!(p.character_code, "Fc");
+        assert_eq!(p.character_display, "Falco");
     }
 }

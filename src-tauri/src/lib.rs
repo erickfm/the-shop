@@ -178,10 +178,16 @@ fn list_characters() -> Vec<serde_json::Value> {
 #[tauri::command]
 fn import_skin_files(
     state: State<'_, AppState>,
+    app: tauri::AppHandle,
     paths_in: Vec<String>,
 ) -> AppResult<library::ImportReport> {
     let pbs: Vec<PathBuf> = paths_in.into_iter().map(PathBuf::from).collect();
-    library::import_files(&state.db, &pbs)
+    let resource_dir = app
+        .path()
+        .resource_dir()
+        .map_err(|e| error::AppError::Other(format!("resource_dir: {e}")))?;
+    let hsd = preview::hsd_tool_binary(&resource_dir);
+    library::import_files(&state.db, &pbs, hsd.as_deref())
 }
 
 #[tauri::command]
@@ -217,6 +223,7 @@ fn get_skin_preview(
     state: State<'_, AppState>,
     app: tauri::AppHandle,
     skin_file_id: i64,
+    with_textures: Option<bool>,
 ) -> AppResult<preview::SkinPreview> {
     use rusqlite::params;
     let (source, char_code): (String, String) = state.db.with_conn(|c| {
@@ -242,6 +249,7 @@ fn get_skin_preview(
         std::path::Path::new(&source),
         &char_code,
         vanilla_iso.as_deref(),
+        with_textures.unwrap_or(true),
     )
 }
 

@@ -6,12 +6,17 @@ pub struct CharacterDef {
     pub code: &'static str,
     pub display: &'static str,
     pub slots: &'static [(&'static str, &'static str)],
+    /// HAL's internal name as it appears inside the .dat root symbol
+    /// (e.g. `Ply<INTERNAL>5K_Share_joint`). `None` if not yet mapped — the
+    /// importer will fall back to filename parsing in that case.
+    pub internal_symbol: Option<&'static str>,
 }
 
 const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Mr",
         display: "Mario",
+        internal_symbol: Some("Mario"),
         slots: &[
             ("Nr", "Default"),
             ("Ye", "Yellow"),
@@ -23,6 +28,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Fx",
         display: "Fox",
+        internal_symbol: Some("Fox"),
         slots: &[
             ("Nr", "Default"),
             ("Or", "Orange"),
@@ -33,6 +39,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Ca",
         display: "Captain Falcon",
+        internal_symbol: Some("Captain"),
         slots: &[
             ("Nr", "Default"),
             ("Bk", "Black"),
@@ -45,6 +52,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Dk",
         display: "Donkey Kong",
+        internal_symbol: Some("Donkey"),
         slots: &[
             ("Nr", "Default"),
             ("Bk", "Black"),
@@ -56,6 +64,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Kb",
         display: "Kirby",
+        internal_symbol: Some("Kirby"),
         slots: &[
             ("Nr", "Default"),
             ("Ye", "Yellow"),
@@ -68,6 +77,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Kp",
         display: "Bowser",
+        internal_symbol: Some("Koopa"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -78,6 +88,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Lk",
         display: "Link",
+        internal_symbol: Some("Link"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -89,6 +100,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Ss",
         display: "Samus",
+        internal_symbol: Some("Samus"),
         slots: &[
             ("Nr", "Default"),
             ("Pi", "Pink"),
@@ -100,6 +112,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Ys",
         display: "Yoshi",
+        internal_symbol: Some("Yoshi"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -112,6 +125,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Pk",
         display: "Pikachu",
+        internal_symbol: Some("Pikachu"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -122,6 +136,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Lg",
         display: "Luigi",
+        internal_symbol: Some("Luigi"),
         slots: &[
             ("Nr", "Default"),
             ("Wh", "White"),
@@ -132,6 +147,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Nn",
         display: "Ness",
+        internal_symbol: Some("Ness"),
         slots: &[
             ("Nr", "Default"),
             ("Ye", "Yellow"),
@@ -142,6 +158,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Gw",
         display: "Mr. Game & Watch",
+        internal_symbol: Some("Gamewatch"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -152,6 +169,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Pe",
         display: "Peach",
+        internal_symbol: Some("Peach"),
         slots: &[
             ("Nr", "Default"),
             ("Ye", "Yellow"),
@@ -163,6 +181,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Pr",
         display: "Jigglypuff",
+        internal_symbol: Some("Purin"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -174,6 +193,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Pp",
         display: "Mewtwo",
+        internal_symbol: Some("Mewtwo"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -184,6 +204,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Mt",
         display: "Marth",
+        internal_symbol: Some("Mars"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -195,6 +216,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Cl",
         display: "Roy",
+        internal_symbol: Some("Roy"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -206,6 +228,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Fc",
         display: "Falco",
+        internal_symbol: Some("Falco"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -216,6 +239,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Sk",
         display: "Sheik",
+        internal_symbol: Some("Seak"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -227,6 +251,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Zd",
         display: "Zelda",
+        internal_symbol: Some("Zelda"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -238,6 +263,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Pc",
         display: "Pichu",
+        internal_symbol: Some("Pichu"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -248,6 +274,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Gn",
         display: "Ganondorf",
+        internal_symbol: Some("Ganon"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -259,6 +286,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Ic",
         display: "Ice Climbers",
+        internal_symbol: Some("Nana"),
         slots: &[
             ("Nr", "Default"),
             ("Gr", "Green"),
@@ -269,6 +297,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Ne",
         display: "Young Link",
+        internal_symbol: Some("Clink"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -280,6 +309,7 @@ const CHARACTERS: &[CharacterDef] = &[
     CharacterDef {
         code: "Mh",
         display: "Dr. Mario",
+        internal_symbol: Some("Drmario"),
         slots: &[
             ("Nr", "Default"),
             ("Re", "Red"),
@@ -291,6 +321,7 @@ const CHARACTERS: &[CharacterDef] = &[
 ];
 
 static INDEX: OnceLock<HashMap<&'static str, &'static CharacterDef>> = OnceLock::new();
+static INTERNAL_INDEX: OnceLock<HashMap<&'static str, &'static CharacterDef>> = OnceLock::new();
 
 fn index() -> &'static HashMap<&'static str, &'static CharacterDef> {
     INDEX.get_or_init(|| CHARACTERS.iter().map(|c| (c.code, c)).collect())
@@ -298,6 +329,18 @@ fn index() -> &'static HashMap<&'static str, &'static CharacterDef> {
 
 pub fn lookup(code: &str) -> Option<&'static CharacterDef> {
     index().get(code).copied()
+}
+
+pub fn lookup_by_internal(internal: &str) -> Option<&'static CharacterDef> {
+    INTERNAL_INDEX
+        .get_or_init(|| {
+            CHARACTERS
+                .iter()
+                .filter_map(|c| c.internal_symbol.map(|s| (s, c)))
+                .collect()
+        })
+        .get(internal)
+        .copied()
 }
 
 pub fn slot_display(character_code: &str, slot_code: &str) -> Option<&'static str> {

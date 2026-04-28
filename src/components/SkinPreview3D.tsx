@@ -17,10 +17,12 @@ export function SkinPreview3D({
   skinFileId,
   size = 96,
   autoRotate = true,
+  withTextures = true,
 }: {
   skinFileId: number;
   size?: number | string;
   autoRotate?: boolean;
+  withTextures?: boolean;
 }) {
   const [bundle, setBundle] = useState<SkinPreviewBundle | null>(null);
   const [parsed, setParsed] = useState<{ scene: THREE.Group } | null>(null);
@@ -32,7 +34,7 @@ export function SkinPreview3D({
     setParsed(null);
     setError(null);
     ipc
-      .getSkinPreview(skinFileId)
+      .getSkinPreview(skinFileId, withTextures)
       .then((b) => {
         if (alive) setBundle(b);
       })
@@ -42,7 +44,7 @@ export function SkinPreview3D({
     return () => {
       alive = false;
     };
-  }, [skinFileId]);
+  }, [skinFileId, withTextures]);
 
   useEffect(() => {
     if (!bundle) return;
