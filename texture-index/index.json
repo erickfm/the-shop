@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "creators": [
+    {
+      "id": "vancity_primal",
+      "display_name": "Primal",
+      "patreon_url": "https://www.patreon.com/vancity_primal",
+      "tagline": "Animelee project lead — cell-shaded character mods over the cast"
+    },
+    {
+      "id": "mooshies",
+      "display_name": "Mooshies",
+      "patreon_url": "https://www.patreon.com/mooshies",
+      "tagline": "High-quality Slippi-compatible character mods"
+    },
+    {
+      "id": "shiggles",
+      "display_name": "shiggles",
+      "patreon_url": "https://www.patreon.com/shiggles",
+      "tagline": "Animelee Fox skins (Peco/Ping Pong) and general Melee mods"
+    },
+    {
+      "id": "LazloSSBM",
+      "display_name": "Lazlo",
+      "patreon_url": "https://www.patreon.com/LazloSSBM",
+      "tagline": "Character skins — Thief Falco, Ryu Hayabusa Sheik, Tony Falcon"
+    },
+    {
+      "id": "gonko",
+      "display_name": "gonko",
+      "patreon_url": "https://www.patreon.com/gonko",
+      "tagline": "Melee mods"
+    },
+    {
+      "id": "skraton",
+      "display_name": "Skraton",
+      "patreon_url": "https://www.patreon.com/skraton",
+      "tagline": "Stage skins and custom stages with 1:1 collisions for Slippi netplay"
+    },
+    {
+      "id": "sinaa_ssbm",
+      "display_name": "sinaa",
+      "patreon_url": "https://www.patreon.com/sinaa_ssbm",
+      "tagline": "Character mods"
+    },
+    {
+      "id": "xRunRiot_Textures",
+      "display_name": "xRunRiot Textures",
+      "patreon_url": "https://www.patreon.com/xRunRiot_Textures",
+      "tagline": "Skins, models, and textures"
+    },
+    {
+      "id": "chiefneif",
+      "display_name": "chief neif",
+      "patreon_url": "https://www.patreon.com/chiefneif",
+      "tagline": "Stage mods (e.g. Claymation Yoshi's Story)"
+    },
+    {
+      "id": "Dewrion",
+      "display_name": "Dewrion",
+      "patreon_url": "https://www.patreon.com/cw/Dewrion",
+      "tagline": "Animelee character skins"
+    }
+  ],
+  "skins": []
+}

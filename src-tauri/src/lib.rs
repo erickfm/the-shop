@@ -7,10 +7,13 @@ mod launch;
 mod library;
 mod manifest;
 mod paths;
-mod preview;
+mod patreon;
+mod patreon_download;
 mod reset;
+mod skin_index;
 mod slippi_config;
 mod slot_codes;
+
 
 use db::Db;
 use error::AppResult;
@@ -22,8 +25,8 @@ const VANILLA_ISO_KEY: &str = "vanilla_iso_path";
 const LAUNCHER_KEY: &str = "slippi_launcher_executable";
 const SLIPPI_USER_DIR_KEY: &str = "slippi_user_dir";
 
-struct AppState {
-    db: Arc<Db>,
+pub(crate) struct AppState {
+    pub db: Arc<Db>,
 }
 
 #[derive(serde::Serialize)]
@@ -178,16 +181,10 @@ fn list_characters() -> Vec<serde_json::Value> {
 #[tauri::command]
 fn import_skin_files(
     state: State<'_, AppState>,
-    app: tauri::AppHandle,
     paths_in: Vec<String>,
 ) -> AppResult<library::ImportReport> {
     let pbs: Vec<PathBuf> = paths_in.into_iter().map(PathBuf::from).collect();
-    let resource_dir = app
-        .path()
-        .resource_dir()
-        .map_err(|e| error::AppError::Other(format!("resource_dir: {e}")))?;
-    let hsd = preview::hsd_tool_binary(&resource_dir);
-    library::import_files(&state.db, &pbs, hsd.as_deref())
+    library::import_files(&state.db, &pbs, None)
 }
 
 #[tauri::command]
@@ -217,42 +214,6 @@ fn reset_to_vanilla(state: State<'_, AppState>) -> AppResult<reset::ResetReport>
 fn launch_slippi(state: State<'_, AppState>) -> AppResult<()> {
     launch::launch(&state.db)
 }
-
-#[tauri::command]
-fn get_skin_preview(
-    state: State<'_, AppState>,
-    app: tauri::AppHandle,
-    skin_file_id: i64,
-    with_textures: Option<bool>,
-) -> AppResult<preview::SkinPreview> {
-    use rusqlite::params;
-    let (source, char_code): (String, String) = state.db.with_conn(|c| {
-        let row: (String, String) = c.query_row(
-            "SELECT source_path, character_code FROM skin_files WHERE id = ?1",
-            params![skin_file_id],
-            |r| Ok((r.get(0)?, r.get(1)?)),
-        )?;
-        Ok(row)
-    })?;
-    let vanilla_iso = state
-        .db
-        .get_setting(VANILLA_ISO_KEY)
-        .ok()
-        .flatten()
-        .map(std::path::PathBuf::from);
-    let resource_dir = app
-        .path()
-        .resource_dir()
-        .map_err(|e| error::AppError::Other(format!("resource_dir: {e}")))?;
-    preview::ensure_preview(
-        &resource_dir,
-        std::path::Path::new(&source),
-        &char_code,
-        vanilla_iso.as_deref(),
-        with_textures.unwrap_or(true),
-    )
-}
-
 
 fn reconcile_on_startup(db: &Db) {
     let vanilla = match db.get_setting(VANILLA_ISO_KEY) {
@@ -299,7 +260,15 @@ pub fn run() {
             uninstall_pack,
             reset_to_vanilla,
             launch_slippi,
-            get_skin_preview,
+            patreon::patreon_connect,
+            patreon::patreon_connect_via_browser,
+            patreon::detect_browsers_with_patreon,
+            patreon::patreon_status,
+            patreon::patreon_disconnect,
+            patreon::list_backed_creators,
+            skin_index::refresh_skin_index,
+            skin_index::list_skin_index,
+            patreon_download::install_patreon_skin,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

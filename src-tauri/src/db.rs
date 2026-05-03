@@ -82,6 +82,29 @@ CREATE TABLE IF NOT EXISTS settings (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS patreon_session (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  session_cookie TEXT NOT NULL,
+  user_id TEXT,
+  user_name TEXT,
+  user_avatar_url TEXT,
+  connected_at INTEGER NOT NULL,
+  last_verified_at INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS patreon_memberships_cache (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  json TEXT NOT NULL,
+  fetched_at INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS skin_index_cache (
+  id INTEGER PRIMARY KEY CHECK (id = 1),
+  json TEXT NOT NULL,
+  fetched_at INTEGER NOT NULL,
+  source_url TEXT NOT NULL
+);
 "#;
 
 fn ensure_column(conn: &Connection, table: &str, column: &str, decl: &str) -> AppResult<()> {

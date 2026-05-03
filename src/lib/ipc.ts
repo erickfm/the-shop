@@ -1,12 +1,19 @@
 import { invoke } from "@tauri-apps/api/core";
 import type {
+  AnnotatedSkin,
+  BackedCreator,
+  BrowserConnectResult,
+  BrowserProbe,
   CharacterDef,
   DetectedPaths,
   ImportReport,
   InstallResult,
   IsoInfo,
+  PatreonInstallResult,
+  PatreonStatus,
   ResetReport,
   Settings,
+  SkinIndex,
   SkinPack,
   UninstallResult,
 } from "./types";
@@ -30,10 +37,20 @@ export const ipc = {
     invoke<UninstallResult>("uninstall_pack", { character, packName }),
   resetToVanilla: () => invoke<ResetReport>("reset_to_vanilla"),
   launchSlippi: () => invoke<void>("launch_slippi"),
-  getSkinPreview: (skinFileId: number, withTextures: boolean = true) =>
-    invoke<SkinPreviewBundle>("get_skin_preview", { skinFileId, withTextures }),
-};
 
-export type SkinPreviewBundle = {
-  glb: string;
+  patreonConnect: () => invoke<void>("patreon_connect"),
+  patreonConnectViaBrowser: (preferBrowser?: string) =>
+    invoke<BrowserConnectResult>("patreon_connect_via_browser", {
+      preferBrowser: preferBrowser ?? null,
+    }),
+  detectBrowsersWithPatreon: () =>
+    invoke<BrowserProbe[]>("detect_browsers_with_patreon"),
+  patreonStatus: () => invoke<PatreonStatus>("patreon_status"),
+  patreonDisconnect: () => invoke<void>("patreon_disconnect"),
+  listBackedCreators: (forceRefresh = false) =>
+    invoke<BackedCreator[]>("list_backed_creators", { forceRefresh }),
+  refreshSkinIndex: () => invoke<SkinIndex>("refresh_skin_index"),
+  listSkinIndex: () => invoke<AnnotatedSkin[]>("list_skin_index"),
+  installPatreonSkin: (skinId: string) =>
+    invoke<PatreonInstallResult>("install_patreon_skin", { skinId }),
 };

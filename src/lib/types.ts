@@ -95,3 +95,80 @@ export type ResetReport = {
   slippi_reverted_to: string | null;
   packs_uninstalled: number;
 };
+
+export type PatreonUser = {
+  id: string;
+  name: string;
+  avatar_url: string | null;
+};
+
+export type PatreonStatus = {
+  connected: boolean;
+  user: PatreonUser | null;
+  last_verified_at: number | null;
+};
+
+export type BackedCreator = {
+  campaign_id: string;
+  campaign_name: string;
+  campaign_url: string | null;
+  creator_avatar_url: string | null;
+  patron_status: string | null;
+  currently_entitled_amount_cents: number;
+  is_follower: boolean;
+  tier_titles: string[];
+};
+
+export type IndexedCreator = {
+  id: string;
+  display_name: string;
+  patreon_campaign_id: string;
+  patreon_url: string;
+  tagline: string | null;
+  avatar_url: string | null;
+};
+
+export type IndexedSkinEntry = {
+  id: string;
+  creator_id: string;
+  display_name: string;
+  character_code: string;
+  slot_code: string;
+  patreon_post_id: string;
+  filename_in_post: string;
+  tier_required_cents: number;
+  sha256: string | null;
+  preview_url: string | null;
+  notes: string | null;
+};
+
+export type AnnotatedSkin = IndexedSkinEntry & {
+  creator: IndexedCreator | null;
+  backed: boolean;
+  current_tier_cents: number;
+  tier_satisfied: boolean;
+  installed: boolean;
+};
+
+export type SkinIndex = {
+  schema_version: number;
+  creators: IndexedCreator[];
+  skins: IndexedSkinEntry[];
+};
+
+export type PatreonInstallResult = {
+  skin_id: string;
+  bytes: number;
+  install: InstallResult;
+};
+
+export type BrowserConnectResult = {
+  user: PatreonUser;
+  browser: string;
+};
+
+export type BrowserProbe = {
+  browser: string;
+  has_session_cookie: boolean;
+  error: string | null;
+};

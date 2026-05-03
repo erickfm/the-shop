@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import { Library } from "./routes/Library";
 import { Settings } from "./routes/Settings";
+import { Connect } from "./routes/Connect";
+import { Browse } from "./routes/Browse";
 import { FirstRunModal } from "./components/FirstRunModal";
 import { Toaster, toast } from "./components/Toaster";
 import { BusyOverlay, busy } from "./components/BusyOverlay";
 import { ipc } from "./lib/ipc";
+import type { PatreonStatus } from "./lib/types";
 
-type Route = "library" | "settings";
+type Route = "connect" | "browse" | "library" | "settings";
 
 export default function App() {
-  const [route, setRoute] = useState<Route>("library");
+  const [route, setRoute] = useState<Route>("connect");
   const [needsFirstRun, setNeedsFirstRun] = useState<boolean | null>(null);
+  const [patreon, setPatreon] = useState<PatreonStatus | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const checkFirstRun = async () => {
@@ -19,8 +23,24 @@ export default function App() {
     setNeedsFirstRun(need);
   };
 
+  const refreshPatreon = async () => {
+    try {
+      const s = await ipc.patreonStatus();
+      setPatreon(s);
+      setRoute((r) => {
+        if (r === "settings") return r;
+        if (r === "connect" && s.connected) return "browse";
+        if ((r === "browse" || r === "library") && !s.connected) return "connect";
+        return r;
+      });
+    } catch {
+      setPatreon({ connected: false, user: null, last_verified_at: null });
+    }
+  };
+
   useEffect(() => {
     checkFirstRun();
+    refreshPatreon();
   }, [refreshKey]);
 
   const launch = async () => {
@@ -32,6 +52,17 @@ export default function App() {
     }
   };
 
+  const disconnect = async () => {
+    try {
+      await ipc.patreonDisconnect();
+      setPatreon({ connected: false, user: null, last_verified_at: null });
+      setRoute("connect");
+      toast({ kind: "ok", text: "Disconnected from Patreon" });
+    } catch (e: any) {
+      toast({ kind: "danger", text: `Disconnect failed: ${e?.message || e}` });
+    }
+  };
+
   const reset = async () => {
     const ok = confirm(
       [
@@ -39,11 +70,10 @@ export default function App() {
         "",
         "This will:",
         "  • Delete the-shop-patched.iso",
-        "  • Mark every installed skin as not-installed in the library",
-        "  • Point Slippi back at your original ISO (or m-ex base if you have one)",
+        "  • Mark every installed skin as not-installed",
+        "  • Point Slippi back at your original ISO",
         "",
-        "Your imported skin files in the library are kept. Your m-ex base ISO is kept.",
-        "Use this if installs got into a weird state, or to start fresh.",
+        "Your imported skin files in the library are kept.",
       ].join("\n"),
     );
     if (!ok) return;
@@ -59,9 +89,26 @@ export default function App() {
     }
   };
 
-  if (needsFirstRun === null) {
+  if (needsFirstRun === null || patreon === null) {
     return <div className="p-8 text-muted">Loading…</div>;
   }
+
+  const navButton = (target: Route, label: string, disabled = false) => (
+    <button
+      key={target}
+      className={`px-2.5 py-1 rounded ${
+        route === target
+          ? "bg-bg text-white"
+          : disabled
+            ? "text-muted opacity-40 cursor-not-allowed"
+            : "text-muted hover:text-white"
+      }`}
+      onClick={() => !disabled && setRoute(target)}
+      disabled={disabled}
+    >
+      {label}
+    </button>
+  );
 
   return (
     <div className="h-full flex flex-col">
@@ -69,25 +116,35 @@ export default function App() {
         <div className="flex items-center gap-6">
           <div className="text-base font-bold tracking-tight">the shop</div>
           <nav className="flex gap-1 text-sm">
-            <button
-              className={`px-2.5 py-1 rounded ${route === "library" ? "bg-bg text-white" : "text-muted hover:text-white"}`}
-              onClick={() => setRoute("library")}
-            >
-              Library
-            </button>
-            <button
-              className={`px-2.5 py-1 rounded ${route === "settings" ? "bg-bg text-white" : "text-muted hover:text-white"}`}
-              onClick={() => setRoute("settings")}
-            >
-              Settings
-            </button>
+            {patreon.connected
+              ? [
+                  navButton("browse", "Browse"),
+                  navButton("library", "Local"),
+                  navButton("settings", "Settings"),
+                ]
+              : [
+                  navButton("connect", "Connect"),
+                  navButton("library", "Local", false),
+                  navButton("settings", "Settings"),
+                ]}
           </nav>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
+          {patreon.connected && patreon.user ? (
+            <button
+              className="text-xs text-muted hover:text-white px-2 py-1 rounded border border-border"
+              onClick={disconnect}
+              title="Sign out of Patreon"
+            >
+              {patreon.user.name || "Connected"} · disconnect
+            </button>
+          ) : (
+            <span className="text-xs text-muted">not connected</span>
+          )}
           <button
             className="btn-danger"
             onClick={reset}
-            title="Uninstall all skins and remove the patched ISO. Your library and m-ex base are kept."
+            title="Uninstall all skins and remove the patched ISO."
           >
             Clear all installs
           </button>
@@ -98,10 +155,31 @@ export default function App() {
       </header>
 
       <main className="flex-1 overflow-y-auto">
-        {route === "library" ? (
-          <Library key={refreshKey} onAfterAction={() => setRefreshKey((k) => k + 1)} />
-        ) : (
-          <Settings key={refreshKey} onChange={() => setRefreshKey((k) => k + 1)} />
+        {route === "connect" && (
+          <Connect
+            onConnected={() => {
+              setRefreshKey((k) => k + 1);
+              setRoute("browse");
+            }}
+          />
+        )}
+        {route === "browse" && (
+          <Browse
+            key={refreshKey}
+            onAfterAction={() => setRefreshKey((k) => k + 1)}
+          />
+        )}
+        {route === "library" && (
+          <Library
+            key={refreshKey}
+            onAfterAction={() => setRefreshKey((k) => k + 1)}
+          />
+        )}
+        {route === "settings" && (
+          <Settings
+            key={refreshKey}
+            onChange={() => setRefreshKey((k) => k + 1)}
+          />
         )}
       </main>
 
