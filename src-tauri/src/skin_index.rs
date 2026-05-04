@@ -74,6 +74,15 @@ pub struct AnnotatedSkin {
     pub installed: bool,
 }
 
+#[derive(Debug, Clone, Serialize)]
+pub struct AnnotatedCreator {
+    #[serde(flatten)]
+    pub creator: IndexedCreator,
+    pub backed: bool,
+    pub current_tier_cents: i64,
+    pub skin_count: i64,
+}
+
 fn now_secs() -> i64 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -184,48 +193,52 @@ fn read_cached_index(db: &Db) -> AppResult<Option<SkinIndex>> {
     Ok(Some(parse_index(&body)?))
 }
 
+/// Single source of truth for "give me the current index" with the bundled
+/// fallback baked in. `list_skin_index` and `list_indexed_creators` both
+/// route through this so they never blank out on a transient remote miss.
+async fn load_index_with_fallback(db: &Db) -> AppResult<SkinIndex> {
+    if let Some(cached) = read_cached_index(db)? {
+        return Ok(cached);
+    }
+    let url = current_index_url(db)?;
+    match fetch_index_from_url(&url).await {
+        Ok(body) => {
+            let parsed = parse_index(&body)?;
+            write_cache(db, &body, &url)?;
+            Ok(parsed)
+        }
+        Err(_) => {
+            let parsed = parse_index(BUNDLED_INDEX_JSON)?;
+            write_cache(db, BUNDLED_INDEX_JSON, "bundled")?;
+            Ok(parsed)
+        }
+    }
+}
+
+async fn backed_by_campaign_id(
+    state: &State<'_, AppState>,
+) -> std::collections::HashMap<String, BackedCreator> {
+    if patreon::load_session_cookie(&state.db).ok().flatten().is_none() {
+        return std::collections::HashMap::new();
+    }
+    let backed = patreon::list_backed_creators(state.clone(), Some(false))
+        .await
+        .unwrap_or_default();
+    backed
+        .into_iter()
+        .map(|b| (b.campaign_id.clone(), b))
+        .collect()
+}
+
 #[tauri::command]
 pub async fn list_skin_index(state: State<'_, AppState>) -> AppResult<Vec<AnnotatedSkin>> {
-    let index = match read_cached_index(&state.db)? {
-        Some(i) => i,
-        None => {
-            let url = current_index_url(&state.db)?;
-            match fetch_index_from_url(&url).await {
-                Ok(body) => {
-                    let parsed = parse_index(&body)?;
-                    write_cache(&state.db, &body, &url)?;
-                    parsed
-                }
-                Err(_) => {
-                    // Remote unreachable / not yet created — fall back to the
-                    // bundled stub so the rest of the app stays usable.
-                    let parsed = parse_index(BUNDLED_INDEX_JSON)?;
-                    write_cache(&state.db, BUNDLED_INDEX_JSON, "bundled")?;
-                    parsed
-                }
-            }
-        }
-    };
-
-    let backed = if patreon::load_session_cookie(&state.db)?.is_some() {
-        match patreon::list_backed_creators(state.clone(), Some(false)).await {
-            Ok(v) => v,
-            Err(_) => Vec::new(),
-        }
-    } else {
-        Vec::new()
-    };
-    let backed_by_campaign: std::collections::HashMap<String, &BackedCreator> = backed
-        .iter()
-        .map(|b| (b.campaign_id.clone(), b))
-        .collect();
-
+    let index = load_index_with_fallback(&state.db).await?;
+    let backed_by_campaign = backed_by_campaign_id(&state).await;
     let creators_by_id: std::collections::HashMap<String, IndexedCreator> = index
         .creators
         .iter()
         .map(|c| (c.id.clone(), c.clone()))
         .collect();
-
     let installed_set = read_installed_keys(&state.db)?;
 
     let mut out = Vec::with_capacity(index.skins.len());
@@ -250,6 +263,36 @@ pub async fn list_skin_index(state: State<'_, AppState>) -> AppResult<Vec<Annota
         });
     }
     Ok(out)
+}
+
+#[tauri::command]
+pub async fn list_indexed_creators(state: State<'_, AppState>) -> AppResult<Vec<AnnotatedCreator>> {
+    let index = load_index_with_fallback(&state.db).await?;
+    let backed_by_campaign = backed_by_campaign_id(&state).await;
+
+    let mut skin_counts: std::collections::HashMap<String, i64> =
+        std::collections::HashMap::new();
+    for skin in &index.skins {
+        *skin_counts.entry(skin.creator_id.clone()).or_insert(0) += 1;
+    }
+
+    Ok(index
+        .creators
+        .into_iter()
+        .map(|c| {
+            let (backed, cents) = match backed_by_campaign.get(&c.patreon_campaign_id) {
+                Some(b) => (true, b.currently_entitled_amount_cents),
+                None => (false, 0),
+            };
+            let skin_count = *skin_counts.get(&c.id).unwrap_or(&0);
+            AnnotatedCreator {
+                creator: c,
+                backed,
+                current_tier_cents: cents,
+                skin_count,
+            }
+        })
+        .collect())
 }
 
 fn pack_key(character_code: &str, pack_name: &str) -> String {

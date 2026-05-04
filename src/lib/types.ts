@@ -150,6 +150,12 @@ export type AnnotatedSkin = IndexedSkinEntry & {
   installed: boolean;
 };
 
+export type AnnotatedCreator = IndexedCreator & {
+  backed: boolean;
+  current_tier_cents: number;
+  skin_count: number;
+};
+
 export type SkinIndex = {
   schema_version: number;
   creators: IndexedCreator[];

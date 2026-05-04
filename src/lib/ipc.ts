@@ -1,5 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import type {
+  AnnotatedCreator,
   AnnotatedSkin,
   BackedCreator,
   BrowserConnectResult,
@@ -51,6 +52,8 @@ export const ipc = {
     invoke<BackedCreator[]>("list_backed_creators", { forceRefresh }),
   refreshSkinIndex: () => invoke<SkinIndex>("refresh_skin_index"),
   listSkinIndex: () => invoke<AnnotatedSkin[]>("list_skin_index"),
+  listIndexedCreators: () =>
+    invoke<AnnotatedCreator[]>("list_indexed_creators"),
   installPatreonSkin: (skinId: string) =>
     invoke<PatreonInstallResult>("install_patreon_skin", { skinId }),
 };

@@ -268,6 +268,7 @@ pub fn run() {
             patreon::list_backed_creators,
             skin_index::refresh_skin_index,
             skin_index::list_skin_index,
+            skin_index::list_indexed_creators,
             patreon_download::install_patreon_skin,
         ])
         .run(tauri::generate_context!())
