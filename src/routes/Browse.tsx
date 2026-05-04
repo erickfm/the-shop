@@ -10,6 +10,12 @@ import type {
   BackedCreator,
   SkinKind,
 } from "../lib/types";
+import {
+  characterDisplay,
+  requiresUnzip,
+  slotDisplay,
+  stageDisplay,
+} from "../lib/melee";
 
 function dollars(cents: number): string {
   if (cents <= 0) return "free";
@@ -284,8 +290,22 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
                       </div>
                       <div className="text-xs text-muted truncate">
                         {s.creator?.display_name || s.creator_id}
-                        {s.character_code &&
-                          ` · ${s.character_code}${s.slot_code ? ` · ${s.slot_code}` : ""}`}
+                        {s.kind === "stage" && s.iso_target_filename &&
+                          ` · ${stageDisplay(s.iso_target_filename)}`}
+                        {(s.kind === "character_skin" ||
+                          s.kind === "effect" ||
+                          s.kind === "animation") &&
+                          s.character_code &&
+                          ` · ${characterDisplay(s.character_code)}${
+                            s.slot_code ? ` · ${slotDisplay(s.slot_code)}` : ""
+                          }`}
+                        {requiresUnzip(s.filename_in_post) && (
+                          <span
+                            title={`Bundled inside ${s.filename_in_post}; will be extracted at install`}
+                          >
+                            {" · zip"}
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1.5 text-xs">
