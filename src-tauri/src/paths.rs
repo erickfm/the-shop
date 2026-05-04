@@ -168,34 +168,42 @@ pub fn app_data_dir() -> std::io::Result<PathBuf> {
 }
 
 /// The Dolphin/Slippi runtime texture override directory for Melee. Texture
-/// packs land in here as subfolders. Resolved relative to the user's Slippi
-/// Launcher netplay user dir, which already varies cross-platform.
+/// packs land in here as subfolders. Resolved relative to the Slippi
+/// Launcher's netplay user dir, which already varies cross-platform.
 ///
-/// Returns None when we can't resolve the Slippi user dir at all (first-run,
-/// no install, etc.) — caller should surface a clear error in that case.
+/// Slippi-Dolphin's actual layout is `<netplay>/Load/Textures/GALE01/` where
+/// `<netplay>` is the Slippi Dolphin user root. The Slippi *Launcher*'s
+/// "User" dir we resolve via [`default_slippi_user_dir`] points one level
+/// deeper (`<netplay>/User`), so the textures directory is the parent of
+/// our user-dir, not under it.
+///
+/// Returns None when we can't resolve any candidate at all (no Slippi
+/// install) — caller should surface a clear error.
 pub fn slippi_textures_dir(user_dir_override: Option<&Path>) -> Option<PathBuf> {
     let base = user_dir_override
         .map(|p| p.to_path_buf())
         .or_else(default_slippi_user_dir)?;
-    // The Slippi Dolphin user-dir layout is `<user>/Load/Textures/GALE01/`.
-    // Slippi Launcher's "User" dir we resolve above is one level deeper than
-    // Dolphin's user root in some installs; on Linux it's the netplay user
-    // root directly. Check both.
-    let direct = base.join("Load").join("Textures").join("GALE01");
-    if direct.exists() {
-        return Some(direct);
-    }
+    // Two candidates we look for, in priority order:
+    //   1. <netplay>/Load/Textures/GALE01  (real Slippi-Dolphin location)
+    //   2. <user>/Load/Textures/GALE01     (defensive fallback for installs
+    //      where someone passed the netplay dir itself as the user dir)
     let parent_load = base
         .parent()
         .map(|p| p.join("Load").join("Textures").join("GALE01"));
-    if let Some(p) = parent_load {
+    let direct_load = base.join("Load").join("Textures").join("GALE01");
+
+    if let Some(p) = parent_load.as_ref() {
         if p.exists() {
-            return Some(p);
+            return Some(p.clone());
         }
     }
-    // Default to the direct path even if it doesn't exist yet — we'll
-    // create it on first install.
-    Some(direct)
+    if direct_load.exists() {
+        return Some(direct_load);
+    }
+    // Neither exists yet — return the parent_load location so the first
+    // install creates the directory where Dolphin actually looks. Falls
+    // back to direct only if base has no parent.
+    parent_load.or(Some(direct_load))
 }
 
 pub fn skins_dir() -> std::io::Result<PathBuf> {

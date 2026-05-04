@@ -318,7 +318,7 @@ pub async fn list_skin_index(state: State<'_, AppState>) -> AppResult<Vec<Annota
         .iter()
         .map(|c| (c.id.clone(), c.clone()))
         .collect();
-    let installed_set = read_installed_keys(&state.db)?;
+    let installed_set = read_installed_pack_names(&state.db)?;
 
     let mut out = Vec::with_capacity(index.skins.len());
     for skin in index.skins {
@@ -331,7 +331,7 @@ pub async fn list_skin_index(state: State<'_, AppState>) -> AppResult<Vec<Annota
             None => (false, 0),
         };
         let tier_satisfied = current_tier_cents >= skin.tier_required_cents;
-        let installed = installed_set.contains(&pack_key(&skin.character_code, &skin.id));
+        let installed = installed_set.contains(&skin.id);
         out.push(AnnotatedSkin {
             entry: skin,
             creator,
@@ -374,24 +374,35 @@ pub async fn list_indexed_creators(state: State<'_, AppState>) -> AppResult<Vec<
         .collect())
 }
 
-fn pack_key(character_code: &str, pack_name: &str) -> String {
-    format!("{character_code}/{pack_name}")
-}
-
-fn read_installed_keys(db: &Db) -> AppResult<std::collections::HashSet<String>> {
+/// "Is this index entry currently installed?" — the set of identifiers we
+/// match against `IndexedSkinEntry::id`. For character skins, the same
+/// `entry.id` is written as `installed_pack.pack_name`. For non-skin ISO
+/// assets it's `installed_iso_asset.pack_name`. For texture packs it's
+/// `installed_texture_pack.pack_name`. All three tables must be unioned;
+/// otherwise non-skin entries display as "not installed" forever even after
+/// a successful install.
+fn read_installed_pack_names(db: &Db) -> AppResult<std::collections::HashSet<String>> {
     db.with_conn(|c| {
-        let mut stmt =
-            c.prepare("SELECT character_code, pack_name FROM installed_pack")?;
-        let rows = stmt.query_map([], |r| {
-            Ok((r.get::<_, String>(0)?, r.get::<_, Option<String>>(1)?))
-        })?;
         let mut set = std::collections::HashSet::new();
-        for row in rows {
-            let (ch, pn) = row?;
-            if let Some(p) = pn {
-                set.insert(pack_key(&ch, &p));
-            }
+
+        let mut stmt =
+            c.prepare("SELECT pack_name FROM installed_pack WHERE pack_name IS NOT NULL")?;
+        for row in stmt.query_map([], |r| r.get::<_, String>(0))? {
+            set.insert(row?);
         }
+
+        let mut stmt = c.prepare(
+            "SELECT pack_name FROM installed_iso_asset WHERE pack_name IS NOT NULL",
+        )?;
+        for row in stmt.query_map([], |r| r.get::<_, String>(0))? {
+            set.insert(row?);
+        }
+
+        let mut stmt = c.prepare("SELECT pack_name FROM installed_texture_pack")?;
+        for row in stmt.query_map([], |r| r.get::<_, String>(0))? {
+            set.insert(row?);
+        }
+
         Ok(set)
     })
 }

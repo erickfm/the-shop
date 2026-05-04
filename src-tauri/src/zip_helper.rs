@@ -1,7 +1,7 @@
 use crate::error::{AppError, AppResult};
 use std::fs::{self, File};
 use std::io;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// Extract every file in `archive_path` into `dest_dir`, preserving relative
 /// directory structure. Skips directory entries (created via parent on file
@@ -78,59 +78,3 @@ pub fn extract_named_file(
     )))
 }
 
-/// Heuristic: does this archive look like a Dolphin texture pack? True when
-/// it contains any `tex1_<dim>_<hash>_<fmt>.png`-style file. Used by the
-/// installer to auto-detect texture-pack zips even when the index entry's
-/// kind is generic.
-pub fn looks_like_texture_pack(archive_path: &Path) -> AppResult<bool> {
-    let file = File::open(archive_path)?;
-    let mut archive =
-        zip::ZipArchive::new(file).map_err(|e| AppError::Other(format!("zip: {e}")))?;
-    for i in 0..archive.len() {
-        let entry = archive
-            .by_index(i)
-            .map_err(|e| AppError::Other(format!("zip entry {i}: {e}")))?;
-        if let Some(name) = entry.enclosed_name() {
-            if let Some(b) = name.file_name().and_then(|s| s.to_str()) {
-                let bl = b.to_ascii_lowercase();
-                if bl.starts_with("tex1_") && bl.ends_with(".png") {
-                    return Ok(true);
-                }
-            }
-        }
-    }
-    Ok(false)
-}
-
-/// List filenames (basenames only) in the archive — used when surfacing
-/// what's inside a zip in error messages.
-pub fn list_basenames(archive_path: &Path) -> AppResult<Vec<String>> {
-    let file = File::open(archive_path)?;
-    let mut archive =
-        zip::ZipArchive::new(file).map_err(|e| AppError::Other(format!("zip: {e}")))?;
-    let mut out = Vec::new();
-    for i in 0..archive.len() {
-        let entry = archive
-            .by_index(i)
-            .map_err(|e| AppError::Other(format!("zip entry {i}: {e}")))?;
-        if let Some(p) = entry.enclosed_name() {
-            if let Some(b) = p.file_name().and_then(|s| s.to_str()) {
-                out.push(b.to_string());
-            }
-        }
-    }
-    Ok(out)
-}
-
-#[allow(dead_code)]
-pub fn is_zip_filename(name: &str) -> bool {
-    let lower = name.to_ascii_lowercase();
-    lower.ends_with(".zip")
-}
-
-#[allow(dead_code)]
-pub fn temp_extract_dir() -> AppResult<PathBuf> {
-    let d = tempfile::tempdir()
-        .map_err(|e| AppError::Other(format!("tempdir: {e}")))?;
-    Ok(d.into_path())
-}

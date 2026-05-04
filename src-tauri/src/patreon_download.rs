@@ -162,19 +162,6 @@ async fn download_to_path(
     Ok((total, hex::encode(hasher.finalize())))
 }
 
-// Adapter: keep older callers compiling. New code should use
-// register_skin_file_from which returns the row id and supports kind +
-// iso_target_filename.
-fn register_skin_file(
-    db: &Db,
-    entry: &IndexedSkinEntry,
-    dest: &PathBuf,
-    sha256: &str,
-    bytes: u64,
-) -> AppResult<i64> {
-    register_skin_file_from(db, entry, dest.as_path(), sha256, bytes)
-}
-
 fn is_zip_archive(name: &str) -> bool {
     let l = name.to_ascii_lowercase();
     l.ends_with(".zip") || l.ends_with(".rar") || l.ends_with(".7z")
@@ -250,7 +237,6 @@ async fn dispatch_install(
         if attachment_is_zip {
             zip_helper::extract_all(downloaded, temp.path())?;
         } else {
-            // Single PNG / file as a "pack" of one — rare but possible.
             let target = temp
                 .path()
                 .join(downloaded.file_name().unwrap_or_else(|| std::ffi::OsStr::new("file")));
@@ -266,11 +252,18 @@ async fn dispatch_install(
             Some(&entry.creator_id),
             Some(&entry.display_name),
         )?;
+        // texture_pack::install_pack_from_dir copied the contents into
+        // Slippi's textures dir; the original zip in skins_dir is no longer
+        // needed (the skin_files row points at it but won't be re-read by
+        // any flow). Remove it to stop the disk-leak on repeated installs.
+        let _ = std::fs::remove_file(downloaded);
         return Ok(PatreonInstallOutcome::TexturePack(result));
     }
 
     // ISO-inject kinds. If the attachment is a zip, extract the named inner
-    // file (or auto-pick a single .dat / .usd / .hps inside).
+    // file. The extracted file lands in skins_dir/<entry.id>-extracted/ and
+    // becomes the canonical source_path on the skin_files row. The downloaded
+    // zip itself is then redundant — delete it after successful extraction.
     let real_file: PathBuf = if attachment_is_zip {
         let extracted = paths::skins_dir()?.join(format!("{}-extracted", entry.id));
         std::fs::create_dir_all(&extracted)?;
@@ -285,6 +278,7 @@ async fn dispatch_install(
         };
         let dest = extracted.join(&inner_name);
         zip_helper::extract_named_file(downloaded, &inner_name, &dest)?;
+        let _ = std::fs::remove_file(downloaded);
         dest
     } else {
         downloaded.to_path_buf()
