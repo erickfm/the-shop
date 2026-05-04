@@ -179,6 +179,15 @@ pub fn install_pack(db: &Db, character: &str, pack_name: &str) -> AppResult<Inst
         ops_targets.push((target_filename, PathBuf::from(src)));
     }
 
+    // Also re-inject any non-skin ISO assets (stages, music, UI, etc.) so a
+    // skin install doesn't clobber a previously-installed stage.
+    for (target, src) in installed_iso_assets(db)? {
+        if new_targets.contains(&target) {
+            continue;
+        }
+        ops_targets.push((target, src));
+    }
+
     let patched = iso::rebuild_patched_iso(&working)?;
     if !ops_targets.is_empty() {
         let ops: Vec<gc_fst::IsoOp> = ops_targets
@@ -375,4 +384,211 @@ pub fn uninstall_pack(db: &Db, character: &str, pack_name: &str) -> AppResult<Un
         patched_iso_remaining: patched_remaining,
         slippi_reverted_to,
     })
+}
+
+#[derive(Debug, serde::Serialize)]
+pub struct AssetInstallResult {
+    pub iso_target_filename: String,
+    pub patched_iso_path: String,
+    pub previous_slippi_iso: Option<String>,
+}
+
+/// Returns (iso_target_filename, source_path) for every non-skin asset
+/// currently installed via installed_iso_asset. Used by both install_pack
+/// and install_iso_asset to re-inject all assets when rebuilding the ISO.
+pub fn installed_iso_assets(db: &Db) -> AppResult<Vec<(String, PathBuf)>> {
+    db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT ia.iso_target_filename, sf.source_path
+             FROM installed_iso_asset ia
+             JOIN skin_files sf ON sf.id = ia.source_skin_file_id",
+        )?;
+        let mapped = stmt.query_map([], |r| {
+            Ok((r.get::<_, String>(0)?, r.get::<_, String>(1)?))
+        })?;
+        let mut out = Vec::new();
+        for r in mapped {
+            let (t, s) = r?;
+            out.push((t, PathBuf::from(s)));
+        }
+        Ok(out)
+    })
+}
+
+/// Install a non-character-skin ISO asset (stage, music, UI, effect, etc.).
+/// Identified by its destination filename in the ISO. Ratchets all currently
+/// installed character-skin packs and other iso assets back into the rebuilt
+/// patched ISO so this install doesn't clobber them.
+pub fn install_iso_asset(
+    db: &Db,
+    skin_file_id: i64,
+    kind: &str,
+    iso_target_filename: &str,
+    pack_name: Option<&str>,
+) -> AppResult<AssetInstallResult> {
+    let working = working_iso(db)?;
+
+    let source_path: String = db.with_conn(|c| {
+        let mut stmt = c.prepare("SELECT source_path FROM skin_files WHERE id = ?1")?;
+        let row: String = stmt.query_row(params![skin_file_id], |r| r.get(0))?;
+        Ok(row)
+    })?;
+
+    // Build the full target list: the new asset + all existing skins + all
+    // other installed iso assets. The new one overrides any existing entry
+    // at the same target filename.
+    let mut ops_targets: Vec<(String, PathBuf)> = Vec::new();
+    ops_targets.push((
+        iso_target_filename.to_string(),
+        PathBuf::from(&source_path),
+    ));
+
+    let new_targets: std::collections::HashSet<String> = ops_targets
+        .iter()
+        .map(|(t, _)| t.clone())
+        .collect();
+
+    let skin_installs: Vec<(String, String, String)> = db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT ip.character_code, COALESCE(ip.actual_slot_code, ip.slot_code), sf.source_path
+             FROM installed_pack ip
+             JOIN skin_files sf ON sf.id = ip.source_skin_file_id",
+        )?;
+        let mapped = stmt.query_map([], |r| {
+            Ok((
+                r.get::<_, String>(0)?,
+                r.get::<_, String>(1)?,
+                r.get::<_, String>(2)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in mapped {
+            out.push(r?);
+        }
+        Ok(out)
+    })?;
+    for (ch, actual, src) in &skin_installs {
+        let target = format!("Pl{ch}{actual}.dat");
+        if new_targets.contains(&target) {
+            continue;
+        }
+        ops_targets.push((target, PathBuf::from(src)));
+    }
+
+    for (target, src) in installed_iso_assets(db)? {
+        if new_targets.contains(&target) {
+            continue;
+        }
+        ops_targets.push((target, src));
+    }
+
+    let patched = iso::rebuild_patched_iso(&working)?;
+    let ops: Vec<gc_fst::IsoOp> = ops_targets
+        .iter()
+        .map(|(t, s)| gc_fst::IsoOp::Insert {
+            iso_path: Path::new(t.as_str()),
+            input_path: s.as_path(),
+        })
+        .collect();
+    gc_fst::operate_on_iso(&patched, &ops).map_err(|e| match e {
+        gc_fst::OperateISOError::TOCTooLarge => AppError::IsoWrite(
+            "The working ISO is too tightly packed for this many file changes. \
+             If you have m-ex applied, revert it (Settings → Revert m-ex) and try again."
+                .into(),
+        ),
+        other => AppError::IsoWrite(format!("operate_on_iso({} ops): {other:?}", ops_targets.len())),
+    })?;
+
+    db.with_conn(|c| {
+        c.execute(
+            "INSERT INTO installed_iso_asset
+               (iso_target_filename, kind, pack_name, source_skin_file_id, installed_at)
+             VALUES (?1, ?2, ?3, ?4, ?5)
+             ON CONFLICT(iso_target_filename) DO UPDATE SET
+               kind = excluded.kind,
+               pack_name = excluded.pack_name,
+               source_skin_file_id = excluded.source_skin_file_id,
+               installed_at = excluded.installed_at",
+            params![iso_target_filename, kind, pack_name, skin_file_id, now_secs()],
+        )?;
+        Ok(())
+    })?;
+
+    let previous_slippi_iso = match slippi_config::read_iso_path()? {
+        Some(prev) if prev != patched.display().to_string() => {
+            db.set_setting(ORIGINAL_ISO_KEY, &prev)?;
+            let _ = slippi_config::write_iso_path(&patched.display().to_string())?;
+            Some(prev)
+        }
+        Some(prev) => Some(prev),
+        None => None,
+    };
+
+    Ok(AssetInstallResult {
+        iso_target_filename: iso_target_filename.to_string(),
+        patched_iso_path: patched.display().to_string(),
+        previous_slippi_iso,
+    })
+}
+
+/// Uninstall a non-skin ISO asset by its target filename. Rebuilds the ISO
+/// without that file (the original vanilla file from the source ISO is what
+/// remains after rebuild_patched_iso, since we no longer inject our copy).
+pub fn uninstall_iso_asset(db: &Db, iso_target_filename: &str) -> AppResult<()> {
+    let working = working_iso(db)?;
+
+    db.with_conn(|c| {
+        c.execute(
+            "DELETE FROM installed_iso_asset WHERE iso_target_filename = ?1",
+            params![iso_target_filename],
+        )?;
+        Ok(())
+    })?;
+
+    // Rebuild the ISO from vanilla, then re-inject everything that's still
+    // installed (skins + remaining iso assets). The uninstalled asset is
+    // simply absent from the rebuild, so the vanilla file stands.
+    let mut ops_targets: Vec<(String, PathBuf)> = Vec::new();
+    let skin_installs: Vec<(String, String, String)> = db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT ip.character_code, COALESCE(ip.actual_slot_code, ip.slot_code), sf.source_path
+             FROM installed_pack ip
+             JOIN skin_files sf ON sf.id = ip.source_skin_file_id",
+        )?;
+        let mapped = stmt.query_map([], |r| {
+            Ok((
+                r.get::<_, String>(0)?,
+                r.get::<_, String>(1)?,
+                r.get::<_, String>(2)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in mapped {
+            out.push(r?);
+        }
+        Ok(out)
+    })?;
+    for (ch, actual, src) in &skin_installs {
+        ops_targets.push((format!("Pl{ch}{actual}.dat"), PathBuf::from(src)));
+    }
+    for (target, src) in installed_iso_assets(db)? {
+        ops_targets.push((target, src));
+    }
+
+    let patched = iso::rebuild_patched_iso(&working)?;
+    if !ops_targets.is_empty() {
+        let ops: Vec<gc_fst::IsoOp> = ops_targets
+            .iter()
+            .map(|(t, s)| gc_fst::IsoOp::Insert {
+                iso_path: Path::new(t.as_str()),
+                input_path: s.as_path(),
+            })
+            .collect();
+        gc_fst::operate_on_iso(&patched, &ops).map_err(|e| {
+            AppError::IsoWrite(format!("operate_on_iso (uninstall asset): {e:?}"))
+        })?;
+    }
+
+    let _ = slippi_config::write_iso_path(&patched.display().to_string())?;
+    Ok(())
 }

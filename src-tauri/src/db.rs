@@ -13,6 +13,20 @@ impl Db {
         let conn = Connection::open(path)?;
         conn.execute_batch(SCHEMA)?;
         ensure_column(&conn, "installed_pack", "actual_slot_code", "TEXT")?;
+        ensure_column(
+            &conn,
+            "skin_files",
+            "kind",
+            "TEXT NOT NULL DEFAULT 'character_skin'",
+        )?;
+        ensure_column(&conn, "skin_files", "iso_target_filename", "TEXT")?;
+        ensure_column(
+            &conn,
+            "installed_pack",
+            "kind",
+            "TEXT NOT NULL DEFAULT 'character_skin'",
+        )?;
+        ensure_column(&conn, "installed_pack", "iso_target_filename", "TEXT")?;
         Ok(Self {
             conn: Mutex::new(conn),
         })
@@ -104,6 +118,23 @@ CREATE TABLE IF NOT EXISTS skin_index_cache (
   json TEXT NOT NULL,
   fetched_at INTEGER NOT NULL,
   source_url TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS installed_texture_pack (
+  pack_name TEXT PRIMARY KEY,
+  install_dir TEXT NOT NULL,
+  source_skin_file_id INTEGER,
+  creator_id TEXT,
+  display_name TEXT,
+  installed_at INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS installed_iso_asset (
+  iso_target_filename TEXT PRIMARY KEY,
+  kind TEXT NOT NULL,
+  pack_name TEXT,
+  source_skin_file_id INTEGER,
+  installed_at INTEGER NOT NULL
 );
 "#;
 

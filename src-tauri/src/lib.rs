@@ -13,6 +13,8 @@ mod reset;
 mod skin_index;
 mod slippi_config;
 mod slot_codes;
+mod texture_pack;
+mod zip_helper;
 
 
 use db::Db;

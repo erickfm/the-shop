@@ -167,6 +167,37 @@ pub fn app_data_dir() -> std::io::Result<PathBuf> {
     Ok(dir)
 }
 
+/// The Dolphin/Slippi runtime texture override directory for Melee. Texture
+/// packs land in here as subfolders. Resolved relative to the user's Slippi
+/// Launcher netplay user dir, which already varies cross-platform.
+///
+/// Returns None when we can't resolve the Slippi user dir at all (first-run,
+/// no install, etc.) — caller should surface a clear error in that case.
+pub fn slippi_textures_dir(user_dir_override: Option<&Path>) -> Option<PathBuf> {
+    let base = user_dir_override
+        .map(|p| p.to_path_buf())
+        .or_else(default_slippi_user_dir)?;
+    // The Slippi Dolphin user-dir layout is `<user>/Load/Textures/GALE01/`.
+    // Slippi Launcher's "User" dir we resolve above is one level deeper than
+    // Dolphin's user root in some installs; on Linux it's the netplay user
+    // root directly. Check both.
+    let direct = base.join("Load").join("Textures").join("GALE01");
+    if direct.exists() {
+        return Some(direct);
+    }
+    let parent_load = base
+        .parent()
+        .map(|p| p.join("Load").join("Textures").join("GALE01"));
+    if let Some(p) = parent_load {
+        if p.exists() {
+            return Some(p);
+        }
+    }
+    // Default to the direct path even if it doesn't exist yet — we'll
+    // create it on first install.
+    Some(direct)
+}
+
 pub fn skins_dir() -> std::io::Result<PathBuf> {
     let p = app_data_dir()?.join("skins");
     std::fs::create_dir_all(&p)?;

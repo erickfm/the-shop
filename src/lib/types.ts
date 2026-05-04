@@ -128,10 +128,23 @@ export type IndexedCreator = {
   avatar_url: string | null;
 };
 
+export type SkinKind =
+  | "character_skin"
+  | "stage"
+  | "music"
+  | "effect"
+  | "animation"
+  | "ui"
+  | "item"
+  | "texture_pack";
+
 export type IndexedSkinEntry = {
   id: string;
   creator_id: string;
   display_name: string;
+  kind: SkinKind;
+  iso_target_filename: string | null;
+  inner_filename: string | null;
   character_code: string;
   slot_code: string;
   patreon_post_id: string;
@@ -162,10 +175,27 @@ export type SkinIndex = {
   skins: IndexedSkinEntry[];
 };
 
+export type AssetInstallResult = {
+  iso_target_filename: string;
+  patched_iso_path: string;
+  previous_slippi_iso: string | null;
+};
+
+export type TexturePackInstallResult = {
+  install_dir: string;
+  bytes_copied: number;
+  file_count: number;
+};
+
+export type PatreonInstallOutcome =
+  | ({ kind: "character_skin" } & InstallResult)
+  | ({ kind: "iso_asset" } & AssetInstallResult)
+  | ({ kind: "texture_pack" } & TexturePackInstallResult);
+
 export type PatreonInstallResult = {
   skin_id: string;
   bytes: number;
-  install: InstallResult;
+  outcome: PatreonInstallOutcome;
 };
 
 export type BrowserConnectResult = {

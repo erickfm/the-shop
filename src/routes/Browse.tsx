@@ -4,18 +4,47 @@ import { ipc } from "../lib/ipc";
 import { toast } from "../components/Toaster";
 import { busy as withBusy } from "../components/BusyOverlay";
 import { CharacterBadge } from "../components/CharacterBadge";
-import type { AnnotatedCreator, AnnotatedSkin, BackedCreator } from "../lib/types";
+import type {
+  AnnotatedCreator,
+  AnnotatedSkin,
+  BackedCreator,
+  SkinKind,
+} from "../lib/types";
 
 function dollars(cents: number): string {
   if (cents <= 0) return "free";
   return `$${(cents / 100).toFixed(cents % 100 === 0 ? 0 : 2)}`;
 }
 
+const KIND_LABELS: Record<SkinKind, string> = {
+  character_skin: "Character",
+  stage: "Stage",
+  music: "Music",
+  effect: "Effect",
+  animation: "Animation",
+  ui: "UI",
+  item: "Item",
+  texture_pack: "Texture pack",
+};
+
+const KIND_FILTER_ORDER: (SkinKind | "all")[] = [
+  "all",
+  "character_skin",
+  "stage",
+  "texture_pack",
+  "music",
+  "ui",
+  "effect",
+  "animation",
+  "item",
+];
+
 export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
   const [creators, setCreators] = useState<BackedCreator[]>([]);
   const [indexedCreators, setIndexedCreators] = useState<AnnotatedCreator[]>([]);
   const [skins, setSkins] = useState<AnnotatedSkin[]>([]);
   const [filterCreatorId, setFilterCreatorId] = useState<string | null>(null);
+  const [filterKind, setFilterKind] = useState<SkinKind | "all">("all");
   const [busyKey, setBusyKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,9 +85,22 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
   }, []);
 
   const filteredSkins = useMemo(() => {
-    if (!filterCreatorId) return skins;
-    return skins.filter((s) => s.creator?.id === filterCreatorId);
-  }, [skins, filterCreatorId]);
+    return skins.filter((s) => {
+      if (filterCreatorId && s.creator?.id !== filterCreatorId) return false;
+      if (filterKind !== "all" && (s.kind ?? "character_skin") !== filterKind)
+        return false;
+      return true;
+    });
+  }, [skins, filterCreatorId, filterKind]);
+
+  const kindCounts = useMemo(() => {
+    const counts = new Map<SkinKind, number>();
+    for (const s of skins) {
+      const k = (s.kind ?? "character_skin") as SkinKind;
+      counts.set(k, (counts.get(k) ?? 0) + 1);
+    }
+    return counts;
+  }, [skins]);
 
   const installSkin = async (s: AnnotatedSkin) => {
     setBusyKey(s.id);
@@ -169,11 +211,35 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
         <div>
           <div className="flex items-center justify-between pb-3">
             <h3 className="text-base font-semibold">
-              {filterCreatorId ? "Skins from this creator" : "All skins"}
+              {filterCreatorId ? "Mods from this creator" : "All mods"}
             </h3>
             <div className="text-xs text-muted">
-              {filteredSkins.length} skin{filteredSkins.length === 1 ? "" : "s"}
+              {filteredSkins.length} item{filteredSkins.length === 1 ? "" : "s"}
             </div>
+          </div>
+          <div className="flex flex-wrap gap-1.5 pb-4">
+            {KIND_FILTER_ORDER.map((k) => {
+              const count =
+                k === "all"
+                  ? skins.length
+                  : (kindCounts.get(k as SkinKind) ?? 0);
+              if (k !== "all" && count === 0) return null;
+              const active = filterKind === k;
+              return (
+                <button
+                  key={k}
+                  className={`text-xs px-2 py-1 rounded border ${
+                    active
+                      ? "bg-accent text-white border-accent"
+                      : "bg-surface text-muted border-border hover:text-white"
+                  }`}
+                  onClick={() => setFilterKind(k)}
+                >
+                  {k === "all" ? "All" : KIND_LABELS[k as SkinKind]}{" "}
+                  <span className="opacity-60">{count}</span>
+                </button>
+              );
+            })}
           </div>
 
           {filteredSkins.length === 0 && !error && (
@@ -208,12 +274,18 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
                   </div>
                   <div className="p-4 space-y-3 flex-1 flex flex-col">
                     <div className="min-w-0">
-                      <div className="text-base font-semibold truncate">
-                        {s.display_name}
+                      <div className="flex items-center gap-2">
+                        <div className="text-base font-semibold truncate flex-1">
+                          {s.display_name}
+                        </div>
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
+                          {KIND_LABELS[(s.kind ?? "character_skin") as SkinKind]}
+                        </span>
                       </div>
                       <div className="text-xs text-muted truncate">
-                        {s.creator?.display_name || s.creator_id} ·{" "}
-                        {s.character_code} · {s.slot_code}
+                        {s.creator?.display_name || s.creator_id}
+                        {s.character_code &&
+                          ` · ${s.character_code}${s.slot_code ? ` · ${s.slot_code}` : ""}`}
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1.5 text-xs">

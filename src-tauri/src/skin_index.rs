@@ -35,12 +35,35 @@ pub struct IndexedCreator {
     pub avatar_url: Option<String>,
 }
 
+fn default_kind() -> String {
+    "character_skin".to_string()
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IndexedSkinEntry {
     pub id: String,
     pub creator_id: String,
     pub display_name: String,
+    /// One of: character_skin, stage, music, effect, animation, ui, item,
+    /// texture_pack. Defaults to character_skin so existing entries with
+    /// no `kind` continue to work.
+    #[serde(default = "default_kind")]
+    pub kind: String,
+    /// The HAL filesystem name of the file once injected into the ISO
+    /// (e.g. `PlFcNr.dat`, `GrFd.usd`, `ff_a01.hps`). For character_skin
+    /// this can be omitted and is derived from `Pl{character_code}{slot_code}.dat`.
+    /// Required for non-character_skin ISO-inject kinds. Ignored for
+    /// `texture_pack` kind (folder install, no single ISO target).
+    #[serde(default)]
+    pub iso_target_filename: Option<String>,
+    /// When `filename_in_post` is a `.zip`/`.rar`/`.7z`, this is the file
+    /// inside the archive to extract for ISO inject. For texture packs the
+    /// whole archive contents are extracted (not just one file).
+    #[serde(default)]
+    pub inner_filename: Option<String>,
+    #[serde(default)]
     pub character_code: String,
+    #[serde(default)]
     pub slot_code: String,
     pub patreon_post_id: String,
     pub filename_in_post: String,
@@ -52,6 +75,29 @@ pub struct IndexedSkinEntry {
     pub preview_url: Option<String>,
     #[serde(default)]
     pub notes: Option<String>,
+}
+
+impl IndexedSkinEntry {
+    /// Returns the canonical ISO target filename for this entry, deriving
+    /// it from character_code/slot_code if the explicit field is absent and
+    /// kind is character_skin. None for kinds that don't ISO-inject.
+    pub fn resolved_iso_target(&self) -> Option<String> {
+        if let Some(t) = self.iso_target_filename.as_ref() {
+            if !t.is_empty() {
+                return Some(t.clone());
+            }
+        }
+        if self.kind == "character_skin"
+            && !self.character_code.is_empty()
+            && !self.slot_code.is_empty()
+        {
+            return Some(format!(
+                "Pl{}{}.dat",
+                self.character_code, self.slot_code
+            ));
+        }
+        None
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
