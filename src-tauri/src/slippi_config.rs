@@ -26,7 +26,8 @@ pub fn read_iso_path() -> AppResult<Option<String>> {
         Err(_) => return Ok(None),
     };
     let raw = fs::read_to_string(&path).map_err(|e| AppError::Io(e.to_string()))?;
-    let json: Value = serde_json::from_str(&raw)?;
+    let json: Value = serde_json::from_str(&raw)
+        .map_err(|e| AppError::SlippiConfigParse(format!("{}: {e}", path.display())))?;
     Ok(find_iso_path(&json))
 }
 
@@ -51,10 +52,12 @@ fn find_iso_path(v: &Value) -> Option<String> {
 pub fn write_iso_path(new_iso: &str) -> AppResult<String> {
     let path = locate_settings_file()?;
     let raw = fs::read_to_string(&path).map_err(|e| AppError::Io(e.to_string()))?;
-    let mut json: Value = serde_json::from_str(&raw)?;
+    let mut json: Value = serde_json::from_str(&raw)
+        .map_err(|e| AppError::SlippiConfigParse(format!("{}: {e}", path.display())))?;
     let previous = set_iso_path(&mut json, new_iso)
         .ok_or_else(|| AppError::SlippiConfigParse("could not locate isoPath key".into()))?;
-    let new_text = serde_json::to_string_pretty(&json)?;
+    let new_text = serde_json::to_string_pretty(&json)
+        .map_err(|e| AppError::SlippiConfigParse(format!("re-serialize: {e}")))?;
     write_atomic(&path, &new_text)?;
     Ok(previous)
 }

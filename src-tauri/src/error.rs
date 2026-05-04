@@ -40,6 +40,8 @@ pub enum AppError {
     Db(String),
     #[error("io error: {0}")]
     Io(String),
+    #[error("json parse error: {0}")]
+    Json(String),
     #[error("{0}")]
     Other(String),
 }
@@ -58,7 +60,11 @@ impl From<rusqlite::Error> for AppError {
 
 impl From<serde_json::Error> for AppError {
     fn from(e: serde_json::Error) -> Self {
-        AppError::SlippiConfigParse(e.to_string())
+        // Generic serde_json failures are NOT slippi-config failures — that
+        // mapping was wrong and made every JSON glitch in the app report as
+        // a Slippi Launcher settings error. Slippi-config-specific call sites
+        // construct AppError::SlippiConfigParse directly.
+        AppError::Json(e.to_string())
     }
 }
 
@@ -85,6 +91,7 @@ impl Serialize for AppError {
             AppError::SlotConflict { .. } => "SlotConflict",
             AppError::Db(_) => "Db",
             AppError::Io(_) => "Io",
+            AppError::Json(_) => "Json",
             AppError::Other(_) => "Other",
         };
         Wire {

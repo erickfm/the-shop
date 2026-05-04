@@ -39,6 +39,27 @@ fn default_kind() -> String {
     "character_skin".to_string()
 }
 
+/// Accept missing, null, or string-valued JSON for a `String` field. The
+/// scrape pipeline emits explicit `null`s for character_code/slot_code on
+/// non-character entries (stages, effects, etc.), and serde's default for
+/// `String` only handles "missing" — not "present but null". This bridges
+/// the gap so the index loads cleanly.
+fn string_or_null<'de, D>(d: D) -> Result<String, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let opt: Option<String> = serde::Deserialize::deserialize(d)?;
+    Ok(opt.unwrap_or_default())
+}
+
+fn kind_or_null<'de, D>(d: D) -> Result<String, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let opt: Option<String> = serde::Deserialize::deserialize(d)?;
+    Ok(opt.unwrap_or_else(|| "character_skin".to_string()))
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct IndexedSkinEntry {
     pub id: String,
@@ -46,8 +67,8 @@ pub struct IndexedSkinEntry {
     pub display_name: String,
     /// One of: character_skin, stage, music, effect, animation, ui, item,
     /// texture_pack. Defaults to character_skin so existing entries with
-    /// no `kind` continue to work.
-    #[serde(default = "default_kind")]
+    /// no `kind` continue to work; nulls are treated as the default too.
+    #[serde(default = "default_kind", deserialize_with = "kind_or_null")]
     pub kind: String,
     /// The HAL filesystem name of the file once injected into the ISO
     /// (e.g. `PlFcNr.dat`, `GrFd.usd`, `ff_a01.hps`). For character_skin
@@ -61,9 +82,9 @@ pub struct IndexedSkinEntry {
     /// whole archive contents are extracted (not just one file).
     #[serde(default)]
     pub inner_filename: Option<String>,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "string_or_null")]
     pub character_code: String,
-    #[serde(default)]
+    #[serde(default, deserialize_with = "string_or_null")]
     pub slot_code: String,
     pub patreon_post_id: String,
     pub filename_in_post: String,
