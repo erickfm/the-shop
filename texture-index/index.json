@@ -84,7 +84,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-b0xx-spacies-la",
@@ -97,7 +98,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-bab-activated-captain-falcon-bu",
@@ -110,7 +112,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-bab-activated-captain-falcon-gr",
@@ -123,7 +126,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-randall-falcon-wh",
@@ -136,7 +140,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-freestyle-falco-skin-gr",
@@ -149,7 +154,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-wii-fit-trainer-falcon-re",
@@ -162,7 +168,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-buzz-lightyear-falcon-bu",
@@ -175,7 +182,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-buzz-lightyear-falcon-wh",
@@ -188,7 +196,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-buzz-lightyear-falcon-wh-2",
@@ -201,7 +210,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-emg-moky-fox-skins-gr",
@@ -214,7 +224,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-emg-moky-fox-skins-la",
@@ -227,7 +238,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-emg-moky-fox-skins-nr",
@@ -240,7 +252,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-emg-moky-fox-skins-or",
@@ -253,7 +266,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-emg-falco-skins-bu",
@@ -266,7 +280,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-emg-falco-skins-gr",
@@ -279,7 +294,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-emg-falco-skins-nr",
@@ -292,7 +308,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-emg-falco-skins-re",
@@ -305,7 +322,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-magneto-fox-or",
@@ -318,7 +336,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-clown-ganondorf-bu",
@@ -331,7 +350,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-clown-ganondorf-la",
@@ -344,7 +364,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-speed-racer-falcon-bu",
@@ -357,7 +378,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-deadass-ganon-bu",
@@ -370,7 +392,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-deadass-ganon-nr",
@@ -383,7 +406,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-chef-rachman-falcon-skin-re",
@@ -396,7 +420,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-lg-ginger-falco-bu",
@@ -409,7 +434,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-uyu-n0ne-ganondorf-skins-nr-2",
@@ -422,7 +448,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-uyu-n0ne-ganondorf-skins-nr",
@@ -435,7 +462,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-uyu-n0ne-falcon-skins-re",
@@ -448,7 +476,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-uyu-n0ne-falcon-skins-wh",
@@ -461,7 +490,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-brown-striped-falco-nr",
@@ -474,7 +504,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-silver-ganondorf-la",
@@ -487,7 +518,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-chill-beats-fox-la",
@@ -500,7 +532,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-society-skin-pack-la",
@@ -513,7 +546,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-society-skin-pack-re",
@@ -526,7 +560,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-slippi-fox-gr",
@@ -539,7 +574,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gg-n0ne-falcon-ganondorf-la",
@@ -552,7 +588,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-texas-falcon-nr",
@@ -565,7 +602,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-texas-falcon-re",
@@ -578,7 +616,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-viewtiful-joe-falcon-re",
@@ -591,7 +630,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-mega-man-falcon-bu",
@@ -604,7 +644,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-joseph-joestar-falcon-gr",
@@ -617,7 +658,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-joseph-joestar-falcon-nr",
@@ -630,7 +672,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-one-punch-falcon-wh",
@@ -643,7 +686,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gg-wizzyfan109-wh",
@@ -656,7 +700,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-king-falcon-tekken-3-nr",
@@ -669,7 +714,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-envy-wizzrobe-falcon-skins-bu",
@@ -682,7 +728,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-envy-wizzrobe-falcon-skins-nr",
@@ -695,7 +742,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-powerline-falcon-wh",
@@ -708,7 +756,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-sora-marth-bk",
@@ -721,7 +770,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-re",
@@ -734,7 +784,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-or",
@@ -747,7 +798,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-re-2",
@@ -760,7 +812,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-nr",
@@ -773,7 +826,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-haikyuu-skin-pack-or",
@@ -786,7 +840,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-haikyuu-skin-pack-bk",
@@ -799,7 +854,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-haikyuu-skin-pack-wh",
@@ -812,7 +868,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-9s-fox-or",
@@ -825,7 +882,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-9s-fox-or-2",
@@ -838,7 +896,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-tanjiro-fox-gr",
@@ -851,7 +910,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-tanjiro-fox-la",
@@ -864,7 +924,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-bk-2",
@@ -877,7 +938,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-bk",
@@ -890,7 +952,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-bk-3",
@@ -903,7 +966,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-gr",
@@ -916,7 +980,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-gr-2",
@@ -929,7 +994,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-gr-3",
@@ -942,7 +1008,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-la",
@@ -955,7 +1022,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-la-2",
@@ -968,7 +1036,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-la-3",
@@ -981,7 +1050,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-la-4",
@@ -994,7 +1064,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-nr",
@@ -1007,7 +1078,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-nr-2",
@@ -1020,7 +1092,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gc-samus-skin-pack-nr-3",
@@ -1033,7 +1106,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-fox-gr",
@@ -1046,7 +1120,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-fox-gr-2",
@@ -1059,7 +1134,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-fox-la",
@@ -1072,7 +1148,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-fox-la-2",
@@ -1085,7 +1162,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-fox-nr",
@@ -1098,7 +1176,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-fox-nr-2",
@@ -1111,7 +1190,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-fox-or",
@@ -1124,7 +1204,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-fox-or-2",
@@ -1137,7 +1218,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-falco-bu",
@@ -1150,7 +1232,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-falco-bu-2",
@@ -1163,7 +1246,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-falco-gr-2",
@@ -1176,7 +1260,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-falco-gr",
@@ -1189,7 +1274,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-falco-nr",
@@ -1202,7 +1288,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-falco-nr-2",
@@ -1215,7 +1302,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-falco-re",
@@ -1228,7 +1316,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-falco-re-2",
@@ -1241,7 +1330,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-vaporwave-falcon-nr",
@@ -1254,7 +1344,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-phantom-ganondorf-bu",
@@ -1267,7 +1358,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-phantom-ganondorf-la",
@@ -1280,7 +1372,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-phantom-ganondorf-nr",
@@ -1293,7 +1386,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-bk",
@@ -1306,7 +1400,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-bk-2",
@@ -1319,7 +1414,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-gr",
@@ -1332,7 +1428,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-gr-2",
@@ -1345,7 +1442,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-nr-2",
@@ -1358,7 +1456,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-nr",
@@ -1371,7 +1470,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-re-2",
@@ -1384,7 +1484,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-re",
@@ -1397,7 +1498,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-wh",
@@ -1410,7 +1512,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-marth-wh-2",
@@ -1423,7 +1526,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-bu",
@@ -1436,7 +1540,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-bu-2",
@@ -1449,7 +1554,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-gr-2",
@@ -1462,7 +1568,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-gr",
@@ -1475,7 +1582,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-nr",
@@ -1488,7 +1596,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-nr-2",
@@ -1501,7 +1610,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-re",
@@ -1514,7 +1624,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-re-2",
@@ -1527,7 +1638,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-ye",
@@ -1540,7 +1652,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-roy-ye-2",
@@ -1553,7 +1666,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-miles-morales-falco-re",
@@ -1566,7 +1680,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-bu-2",
@@ -1579,7 +1694,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-bu",
@@ -1592,7 +1708,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-bu-3",
@@ -1605,7 +1722,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-gr",
@@ -1618,7 +1736,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-nr",
@@ -1631,7 +1750,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-re",
@@ -1644,7 +1764,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-wh-3",
@@ -1657,7 +1778,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-wh-2",
@@ -1670,7 +1792,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-wh",
@@ -1683,7 +1806,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-ye-2",
@@ -1696,7 +1820,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-yoshi-ye",
@@ -1709,7 +1834,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-luigi-aq",
@@ -1722,7 +1848,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-luigi-aq-2",
@@ -1735,7 +1862,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-luigi-nr",
@@ -1748,7 +1876,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-luigi-nr-2",
@@ -1761,7 +1890,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-luigi-wh",
@@ -1774,7 +1904,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-luigi-wh-2",
@@ -1787,7 +1918,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-bk-2",
@@ -1800,7 +1932,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-bk",
@@ -1813,7 +1946,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-bu",
@@ -1826,7 +1960,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-bu-2",
@@ -1839,7 +1974,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-gr",
@@ -1852,7 +1988,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-gr-2",
@@ -1865,7 +2002,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-nr-2",
@@ -1878,7 +2016,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-nr",
@@ -1891,7 +2030,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-re",
@@ -1904,7 +2044,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-donkey-kong-re-2",
@@ -1917,7 +2058,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-bu-3",
@@ -1930,7 +2072,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-bu",
@@ -1943,7 +2086,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-bu-2",
@@ -1956,7 +2100,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-gr-2",
@@ -1969,7 +2114,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-gr",
@@ -1982,7 +2128,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-gr-3",
@@ -1995,7 +2142,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-nr",
@@ -2008,7 +2156,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-nr-3",
@@ -2021,7 +2170,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-nr-2",
@@ -2034,7 +2184,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-re",
@@ -2047,7 +2198,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-re-2",
@@ -2060,7 +2212,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-pikachu-re-3",
@@ -2073,7 +2226,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-bowser-bk-2",
@@ -2086,7 +2240,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-bowser-bk",
@@ -2099,7 +2254,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-bowser-bu",
@@ -2112,7 +2268,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-bowser-bu-2",
@@ -2125,7 +2282,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-bowser-nr",
@@ -2138,7 +2296,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-bowser-nr-2",
@@ -2151,7 +2310,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-bowser-re-2",
@@ -2164,7 +2324,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-bowser-re",
@@ -2177,7 +2338,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-bk-2",
@@ -2190,7 +2352,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-bk",
@@ -2203,7 +2366,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-bu",
@@ -2216,7 +2380,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-bu-2",
@@ -2229,7 +2394,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-nr",
@@ -2242,7 +2408,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-nr-2",
@@ -2255,7 +2422,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-re",
@@ -2268,7 +2436,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-re-2",
@@ -2281,7 +2450,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-wh",
@@ -2294,7 +2464,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-link-wh-2",
@@ -2307,7 +2478,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-bu-2",
@@ -2320,7 +2492,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-bu",
@@ -2333,7 +2506,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-gr",
@@ -2346,7 +2520,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-gr-2",
@@ -2359,7 +2534,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-nr",
@@ -2372,7 +2548,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-nr-2",
@@ -2385,7 +2562,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-re",
@@ -2398,7 +2576,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-re-2",
@@ -2411,7 +2590,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-wh-2",
@@ -2424,7 +2604,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-captain-falcon-wh",
@@ -2437,7 +2618,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gonko-s-animelee-link-bk",
@@ -2450,7 +2632,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gonko-s-animelee-link-bu",
@@ -2463,7 +2646,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gonko-s-animelee-link-nr",
@@ -2476,7 +2660,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gonko-s-animelee-link-re",
@@ -2489,7 +2674,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-gonko-s-animelee-link-wh",
@@ -2502,7 +2688,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-bk",
@@ -2515,7 +2702,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-bk-2",
@@ -2528,7 +2716,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-bu",
@@ -2541,7 +2730,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-bu-2",
@@ -2554,7 +2744,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-gr",
@@ -2567,7 +2758,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-gr-2",
@@ -2580,7 +2772,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-nr",
@@ -2593,7 +2786,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-nr-2",
@@ -2606,7 +2800,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-re",
@@ -2619,7 +2814,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-doctor-mario-re-2",
@@ -2632,7 +2828,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-bu-2",
@@ -2645,7 +2842,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-bu",
@@ -2658,7 +2856,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-gr",
@@ -2671,7 +2870,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-gr-2",
@@ -2684,7 +2884,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-la",
@@ -2697,7 +2898,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-la-2",
@@ -2710,7 +2912,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-nr",
@@ -2723,7 +2926,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-nr-2",
@@ -2736,7 +2940,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-re",
@@ -2749,7 +2954,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-ganondorf-re-2",
@@ -2762,7 +2968,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-bu-2",
@@ -2775,7 +2982,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-bu",
@@ -2788,7 +2996,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-gr",
@@ -2801,7 +3010,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-gr-2",
@@ -2814,7 +3024,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-nr",
@@ -2827,7 +3038,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-nr-2",
@@ -2840,7 +3052,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-wh",
@@ -2853,7 +3066,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-wh-2",
@@ -2866,7 +3080,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-ye",
@@ -2879,7 +3094,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-peach-ye-2",
@@ -2892,7 +3108,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-mewtwo-bu",
@@ -2905,7 +3122,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-mewtwo-bu-2",
@@ -2918,7 +3136,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-mewtwo-gr",
@@ -2931,7 +3150,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-mewtwo-gr-2",
@@ -2944,7 +3164,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-mewtwo-nr",
@@ -2957,7 +3178,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-mewtwo-nr-2",
@@ -2970,7 +3192,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-mewtwo-re-2",
@@ -2983,7 +3206,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "gonko-ultimate-mewtwo-re",
@@ -2996,7 +3220,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-crazy-fox-all-colors-gr",
@@ -3009,7 +3234,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-crazy-fox-all-colors-la",
@@ -3022,7 +3248,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-crazy-fox-all-colors-nr",
@@ -3035,7 +3262,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-crazy-fox-all-colors-or",
@@ -3048,7 +3276,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-animelee-chosen-undead-link-skin-nr",
@@ -3061,7 +3290,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-animelee-bob-omb-buddy-jigglypuff-skin-re",
@@ -3074,7 +3304,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-animelee-gon-mario-bk",
@@ -3087,7 +3318,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-animelee-gon-mario-bu",
@@ -3100,7 +3332,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-animelee-gon-mario-gr",
@@ -3113,7 +3346,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-animelee-gon-mario-nr",
@@ -3126,7 +3360,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-animelee-gon-mario-ye",
@@ -3139,7 +3374,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-animelee-viewtiful-joe-fox-v1-1-nr",
@@ -3152,7 +3388,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-robloxian-fox-gr",
@@ -3165,7 +3402,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-robloxian-fox-la",
@@ -3178,7 +3416,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-robloxian-fox-nr",
@@ -3191,7 +3430,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "shiggles-robloxian-fox-or",
@@ -3204,7 +3444,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
@@ -3217,7 +3458,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu-2",
@@ -3230,7 +3472,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-gr",
@@ -3243,7 +3486,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-gr-2",
@@ -3256,7 +3500,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-nr",
@@ -3269,7 +3514,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-nr-2",
@@ -3282,7 +3528,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-re",
@@ -3295,7 +3542,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-re-2",
@@ -3308,7 +3556,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-paper-melee-64-public-release-nr",
@@ -3321,7 +3570,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
@@ -3334,7 +3584,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-la",
@@ -3347,7 +3598,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-nr",
@@ -3360,7 +3612,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-or",
@@ -3373,7 +3626,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-plague-doctor-nr",
@@ -3386,7 +3640,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-bu",
@@ -3399,7 +3654,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-gr",
@@ -3412,7 +3668,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-nr",
@@ -3425,7 +3682,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-re",
@@ -3438,7 +3696,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-gr",
@@ -3451,7 +3710,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-la",
@@ -3464,7 +3724,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-nr",
@@ -3477,7 +3738,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-or",
@@ -3490,7 +3752,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
@@ -3503,7 +3766,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-bk-2",
@@ -3516,7 +3780,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-bu",
@@ -3529,7 +3794,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-bu-2",
@@ -3542,7 +3808,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-gr",
@@ -3555,7 +3822,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-gr-2",
@@ -3568,7 +3836,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-nr",
@@ -3581,7 +3850,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-nr-2",
@@ -3594,7 +3864,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-ye",
@@ -3607,7 +3878,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-ye-2",
@@ -3620,7 +3892,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh",
@@ -3633,7 +3906,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh-2",
@@ -3646,7 +3920,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-bu",
@@ -3659,7 +3934,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-gr",
@@ -3672,7 +3948,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-nr",
@@ -3685,7 +3962,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-re",
@@ -3698,7 +3976,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-gr-2",
@@ -3711,7 +3990,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-gr",
@@ -3724,7 +4004,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-la-2",
@@ -3737,7 +4018,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-la",
@@ -3750,7 +4032,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-nr-2",
@@ -3763,7 +4046,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-nr",
@@ -3776,7 +4060,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-or-2",
@@ -3789,7 +4074,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-or",
@@ -3802,7 +4088,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-bk",
@@ -3815,7 +4102,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-gr",
@@ -3828,7 +4116,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-nr",
@@ -3841,7 +4130,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-re",
@@ -3854,7 +4144,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-wh",
@@ -3867,7 +4158,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-bu",
@@ -3880,7 +4172,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-gr-2",
@@ -3893,7 +4186,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-nr-2",
@@ -3906,7 +4200,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-re",
@@ -3919,7 +4214,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-gr",
@@ -3932,7 +4228,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-la",
@@ -3945,7 +4242,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-nr",
@@ -3958,7 +4256,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-or",
@@ -3971,7 +4270,8 @@
       "tier_required_cents": 0,
       "sha256": null,
       "preview_url": null,
-      "notes": null
+      "notes": null,
+      "kind": "character_skin"
     },
     {
       "id": "Dewrion-perry-fox-fxnr-plfxnr-dat",
@@ -4172,8 +4472,8 @@
       "kind": "stage",
       "iso_target_filename": "GrPs.usd",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "154643091",
       "filename_in_post": "GrPsCoO.usd",
       "tier_required_cents": 0,
@@ -4188,8 +4488,8 @@
       "kind": "stage",
       "iso_target_filename": "GrSt.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "100734982",
       "filename_in_post": "GrSt_Newport_Animelee.dat",
       "tier_required_cents": 0,
@@ -4204,8 +4504,8 @@
       "kind": "stage",
       "iso_target_filename": "GrSt.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "100734982",
       "filename_in_post": "GrSt_Newport_Vanilla.dat",
       "tier_required_cents": 0,
@@ -4316,8 +4616,8 @@
       "kind": "stage",
       "iso_target_filename": "GrPs.usd",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "54899624",
       "filename_in_post": "GrPs (NV).usd",
       "tier_required_cents": 0,
@@ -4333,7 +4633,7 @@
       "iso_target_filename": "EfFxData.dat",
       "inner_filename": null,
       "character_code": "Fx",
-      "slot_code": null,
+      "slot_code": "",
       "patreon_post_id": "57046769",
       "filename_in_post": "EfFxData.dat",
       "tier_required_cents": 0,
@@ -4349,7 +4649,7 @@
       "iso_target_filename": "EfFxData.dat",
       "inner_filename": null,
       "character_code": "Fx",
-      "slot_code": null,
+      "slot_code": "",
       "patreon_post_id": "57728734",
       "filename_in_post": "EfFxData (Shine).dat",
       "tier_required_cents": 0,
@@ -4365,7 +4665,7 @@
       "iso_target_filename": "EfFxData.dat",
       "inner_filename": null,
       "character_code": "Fx",
-      "slot_code": null,
+      "slot_code": "",
       "patreon_post_id": "57728734",
       "filename_in_post": "EfFxData (Translucent).dat",
       "tier_required_cents": 0,
@@ -4988,8 +5288,8 @@
       "kind": "stage",
       "iso_target_filename": "GrNBa.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "84913899",
       "filename_in_post": "GrNBa.dat",
       "tier_required_cents": 0,
@@ -5004,8 +5304,8 @@
       "kind": "stage",
       "iso_target_filename": "GrNLa.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "84916702",
       "filename_in_post": "GrNLa.dat",
       "tier_required_cents": 0,
@@ -5020,8 +5320,8 @@
       "kind": "stage",
       "iso_target_filename": "GrOp.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "87747874",
       "filename_in_post": "GrOp.dat",
       "tier_required_cents": 0,
@@ -5036,8 +5336,8 @@
       "kind": "stage",
       "iso_target_filename": "GrPs.usd",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "90215619",
       "filename_in_post": "GrPs.usd",
       "tier_required_cents": 0,
@@ -5052,8 +5352,8 @@
       "kind": "stage",
       "iso_target_filename": "GrPs.usd",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "136420417",
       "filename_in_post": "GrPs-20XX-STADIUM.usd",
       "tier_required_cents": 0,
@@ -5068,8 +5368,8 @@
       "kind": "stage",
       "iso_target_filename": "GrIz.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "138762482",
       "filename_in_post": "GrIz-PM64-SHIVER-MOUNTAIN.dat",
       "tier_required_cents": 0,
@@ -5084,8 +5384,8 @@
       "kind": "stage",
       "iso_target_filename": "GrNBa.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "138762482",
       "filename_in_post": "GrNBa-PM64-TOYBOX.dat",
       "tier_required_cents": 0,
@@ -5100,8 +5400,8 @@
       "kind": "stage",
       "iso_target_filename": "GrNLa.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "138762482",
       "filename_in_post": "GrNLa-PM64-JADE-JUNGLE-FIX.dat",
       "tier_required_cents": 0,
@@ -5116,8 +5416,8 @@
       "kind": "stage",
       "iso_target_filename": "GrOp.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "138762482",
       "filename_in_post": "GrOp-PM64-FLOWER-FIELDS.dat",
       "tier_required_cents": 0,
@@ -5132,8 +5432,8 @@
       "kind": "stage",
       "iso_target_filename": "GrPs.usd",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "138762482",
       "filename_in_post": "GrPs-PM64-MT-RUGGED.usd",
       "tier_required_cents": 0,
@@ -5148,8 +5448,8 @@
       "kind": "stage",
       "iso_target_filename": "GrSt.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "138762482",
       "filename_in_post": "GrSt-PM64-STAR-SUMMIT.dat",
       "tier_required_cents": 0,
@@ -5164,8 +5464,8 @@
       "kind": "stage",
       "iso_target_filename": "GrNBa.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "141397481",
       "filename_in_post": "GrNBa-ICY-BATTLEFIELD.dat",
       "tier_required_cents": 0,
@@ -5180,8 +5480,8 @@
       "kind": "stage",
       "iso_target_filename": "GrNLa.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "141397481",
       "filename_in_post": "GrNLa-ICY-DESTINATION.dat",
       "tier_required_cents": 0,
@@ -5196,8 +5496,8 @@
       "kind": "stage",
       "iso_target_filename": "GrOp.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "141397481",
       "filename_in_post": "GrOp-ICY-DREAMLAND.dat",
       "tier_required_cents": 0,
@@ -5212,8 +5512,8 @@
       "kind": "stage",
       "iso_target_filename": "GrPs.usd",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "141397481",
       "filename_in_post": "GrPs-ICY-STADIUM.usd",
       "tier_required_cents": 0,
@@ -5228,8 +5528,8 @@
       "kind": "stage",
       "iso_target_filename": "GrSt.dat",
       "inner_filename": null,
-      "character_code": null,
-      "slot_code": null,
+      "character_code": "",
+      "slot_code": "",
       "patreon_post_id": "141397481",
       "filename_in_post": "GrSt-ICY-STORY.dat",
       "tier_required_cents": 0,
@@ -5245,7 +5545,7 @@
       "iso_target_filename": "EfFxData.dat",
       "inner_filename": null,
       "character_code": "Fx",
-      "slot_code": null,
+      "slot_code": "",
       "patreon_post_id": "142282188",
       "filename_in_post": "EfFxData-EVA-AT-FIELD-SHINE.dat",
       "tier_required_cents": 0,
