@@ -239,14 +239,39 @@ fn read_cached_index(db: &Db) -> AppResult<Option<SkinIndex>> {
     Ok(Some(parse_index(&body)?))
 }
 
+/// Auto-refresh window for the cached index. Older than this and we go back
+/// to the network on the next browse. Short enough that "click Refresh"
+/// rarely needs to be the answer, long enough that we don't pummel GitHub
+/// raw on every navigation.
+const CACHE_TTL_SECS: i64 = 300;
+
 /// Single source of truth for "give me the current index" with the bundled
 /// fallback baked in. `list_skin_index` and `list_indexed_creators` both
 /// route through this so they never blank out on a transient remote miss.
+///
+/// Cache is invalidated when:
+///   1. It's older than CACHE_TTL_SECS, OR
+///   2. The configured source_url changed (user pointed at a different repo), OR
+///   3. The upstream is unreachable AND the cached body matches BUNDLED_INDEX_JSON
+///      (treat that as a bundled-only state — try the network anyway in case
+///      the URL is now live).
 async fn load_index_with_fallback(db: &Db) -> AppResult<SkinIndex> {
-    if let Some(cached) = read_cached_index(db)? {
-        return Ok(cached);
-    }
     let url = current_index_url(db)?;
+    let cached = read_cache(db)?;
+
+    let cache_is_fresh_for_url = match cached.as_ref() {
+        Some((_body, fetched_at, src)) => {
+            src == &url && now_secs() - fetched_at < CACHE_TTL_SECS
+        }
+        None => false,
+    };
+
+    if cache_is_fresh_for_url {
+        if let Some((body, _, _)) = cached.as_ref() {
+            return parse_index(body);
+        }
+    }
+
     match fetch_index_from_url(&url).await {
         Ok(body) => {
             let parsed = parse_index(&body)?;
@@ -254,6 +279,14 @@ async fn load_index_with_fallback(db: &Db) -> AppResult<SkinIndex> {
             Ok(parsed)
         }
         Err(_) => {
+            // Network miss — prefer any non-empty cached body (even if stale)
+            // over the bundled stub, since a stale real index beats a bundled
+            // empty one. Otherwise fall back to bundled.
+            if let Some((body, _, _)) = cached {
+                if !body.trim().is_empty() {
+                    return parse_index(&body);
+                }
+            }
             let parsed = parse_index(BUNDLED_INDEX_JSON)?;
             write_cache(db, BUNDLED_INDEX_JSON, "bundled")?;
             Ok(parsed)
