@@ -256,7 +256,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     <div className="p-8 space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1 max-w-2xl">
-          <h2 className="text-lg font-semibold">Skins &amp; assets</h2>
+          <h2 className="section-title">Skins &amp; assets</h2>
           <p className="text-sm text-muted">
             Everything <span className="text-white">on this machine</span> —
             character skins (from Patreon or imported by hand), plus stages /
@@ -338,7 +338,7 @@ function IsoAssetsSection({
     <section>
       <div className="flex items-baseline justify-between pb-2 gap-3">
         <div>
-          <h3 className="text-base font-semibold">Stages, effects, UI</h3>
+          <h3 className="section-title text-base">Stages, effects, UI</h3>
           <p className="text-xs text-muted">
             Non-character ISO assets — file names like{" "}
             <code className="px-1 rounded bg-bg border border-border">
@@ -471,7 +471,7 @@ function Section({
     <section>
       <div className="flex items-baseline justify-between pb-2 gap-3">
         <div>
-          <h3 className="text-base font-semibold">{title}</h3>
+          <h3 className="section-title text-base">{title}</h3>
           <p className="text-xs text-muted">{subtitle}</p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
@@ -495,13 +495,13 @@ function Section({
       {packs.length === 0 ? (
         <div className="card p-8 text-center text-sm text-muted">{emptyText}</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 off-kilter">
           {packs.map((p) => {
             const charDef = chars.find((c) => c.code === p.character_code);
             const allSlots = charDef?.slots ?? [];
             const myKey = `${p.character_code}/${p.pack_name}`;
             return (
-              <div key={myKey} className="card overflow-hidden flex flex-col">
+              <div key={myKey} className="card tactile overflow-hidden flex flex-col">
                 <div className="relative aspect-square bg-bg flex items-center justify-center">
                   <CharacterBadge code={p.character_code} size={120} />
                   <span

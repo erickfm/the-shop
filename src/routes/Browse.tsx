@@ -606,8 +606,8 @@ function Section({
 }) {
   return (
     <section className="px-8 pt-10">
-      <div className="flex items-baseline justify-between pb-3">
-        <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
+      <div className="flex items-baseline justify-between pb-3 gap-4">
+        <h2 className="section-title">{title}</h2>
         {trailing}
       </div>
       {children}
@@ -885,9 +885,9 @@ function FeaturedCreatorBand({
         </div>
       }
     >
-      <div className="card p-5 flex flex-col gap-4">
+      <div className="glass-card glass-glow rounded-lg p-5 flex flex-col gap-4">
         <div className="flex items-start gap-4">
-          <div className="w-14 h-14 rounded-full bg-bg border border-border shrink-0 flex items-center justify-center text-lg font-semibold text-muted">
+          <div className="w-14 h-14 rounded-full bg-bg border border-border shrink-0 flex items-center justify-center font-display italic text-2xl text-marquee">
             {creator.avatar_url ? (
               <SafeImage
                 src={creator.avatar_url}
@@ -903,7 +903,7 @@ function FeaturedCreatorBand({
             <button
               type="button"
               onClick={onCreatorClick}
-              className="text-xl font-semibold hover:underline text-left"
+              className="font-display italic text-2xl font-normal hover:underline text-left text-marquee"
             >
               {creator.display_name}
             </button>
@@ -988,7 +988,7 @@ function MiniPackCard({
   const previews = previewList(pack);
   const isMulti = pack.slot_count > 1;
   return (
-    <div className="card overflow-hidden flex flex-col w-48 shrink-0">
+    <div className="card tactile overflow-hidden flex flex-col w-48 shrink-0">
       <button
         type="button"
         onClick={onSelect}
@@ -1005,12 +1005,12 @@ function MiniPackCard({
           <CharacterBadge code={pack.character_code} size={80} />
         )}
         {isMulti && (
-          <span className="absolute top-1.5 left-1.5 text-[9px] px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white">
+          <span className="label-mono absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white">
             {pack.slot_count} slots
           </span>
         )}
         {pack.installed_count > 0 && (
-          <span className="absolute bottom-1.5 right-1.5 text-[9px] px-1.5 py-0.5 rounded bg-ok/30 border border-ok text-ok">
+          <span className="label-mono absolute bottom-1.5 right-1.5 px-1.5 py-0.5 rounded bg-ok/30 border border-ok text-ok">
             {pack.installed_count === pack.slot_count
               ? "installed"
               : `${pack.installed_count}/${pack.slot_count}`}
@@ -1029,7 +1029,7 @@ function MiniPackCard({
           <button
             type="button"
             onClick={onCreatorClick}
-            className="text-xs text-muted hover:text-white hover:underline truncate text-left w-full disabled:opacity-100 disabled:no-underline"
+            className="font-display italic text-xs text-muted hover:text-white hover:underline truncate text-left w-full disabled:opacity-100 disabled:no-underline"
             disabled={!pack.creator?.id}
           >
             {pack.creator?.display_name || pack.creator_id}
@@ -1177,7 +1177,7 @@ function AllModsSection({
           No mods match this filter.
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-12 off-kilter">
           {packs.map((p) => (
             <PackCard
               key={p.pack_id}
@@ -1233,7 +1233,7 @@ function PackCard({
   const mySoloBusy = pack.slots[0] && busyKey === `slot:${pack.slots[0].id}`;
 
   return (
-    <div className="card overflow-hidden flex flex-col">
+    <div className="card tactile overflow-hidden flex flex-col">
       <button
         type="button"
         onClick={onSelect}
@@ -1250,12 +1250,12 @@ function PackCard({
           <CharacterBadge code={pack.character_code} size={120} />
         )}
         {extra > 0 && (
-          <span className="absolute bottom-2 right-2 text-[10px] px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white">
+          <span className="label-mono absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white">
             +{extra}
           </span>
         )}
         {isMulti && (
-          <span className="absolute top-2 left-2 text-[10px] px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white">
+          <span className="label-mono absolute top-2 left-2 px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white">
             {pack.slot_count} slots
           </span>
         )}
@@ -1272,7 +1272,7 @@ function PackCard({
             >
               {stripColorSuffix(pack.display_name)}
             </button>
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
+            <span className="label-mono px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
               {KIND_LABELS[(pack.kind ?? "character_skin") as SkinKind]}
             </span>
           </div>
@@ -1280,7 +1280,7 @@ function PackCard({
             <button
               type="button"
               onClick={onCreatorClick}
-              className="hover:text-white hover:underline disabled:opacity-100 disabled:no-underline"
+              className="font-display italic hover:text-white hover:underline disabled:opacity-100 disabled:no-underline"
               disabled={!pack.creator?.id}
             >
               {pack.creator?.display_name || pack.creator_id}
@@ -1463,7 +1463,7 @@ function PackDetailDrawer({
       />
       <aside className="fixed top-0 right-0 bottom-0 w-full max-w-xl bg-surface border-l border-border z-50 overflow-y-auto">
         <div className="flex items-center justify-between p-4 border-b border-border sticky top-0 bg-surface z-10">
-          <div className="text-xs uppercase tracking-wide text-muted">
+          <div className="label-mono">
             {kindLabel}
             {isMulti && ` · ${pack.slot_count} slots`}
           </div>
@@ -1579,7 +1579,7 @@ function PackDetailDrawer({
 
           {isMulti ? (
             <div className="border border-border rounded">
-              <div className="text-xs uppercase tracking-wide text-muted px-3 py-2 border-b border-border">
+              <div className="label-mono px-3 py-2 border-b border-border">
                 Slots
               </div>
               <div className="divide-y divide-border">
@@ -1708,9 +1708,9 @@ function CreatorHeader({
   onSubscribe: () => void;
 }) {
   return (
-    <div className="card p-6 flex items-start justify-between gap-4">
+    <div className="glass-card glass-glow rounded-lg p-6 flex items-start justify-between gap-4">
       <div className="space-y-1 min-w-0 flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-bg border border-border shrink-0 flex items-center justify-center text-xl font-semibold text-muted">
+        <div className="w-16 h-16 rounded-full bg-bg border border-border shrink-0 flex items-center justify-center font-display italic text-3xl text-marquee">
           {creator.avatar_url ? (
             <SafeImage
               src={creator.avatar_url}
@@ -1723,7 +1723,7 @@ function CreatorHeader({
           )}
         </div>
         <div className="min-w-0">
-          <div className="text-2xl font-semibold truncate">
+          <div className="font-display italic text-3xl text-marquee truncate">
             {creator.display_name}
           </div>
           {creator.tagline && (
