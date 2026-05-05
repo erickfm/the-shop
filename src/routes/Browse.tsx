@@ -1484,12 +1484,16 @@ function PackDetailDrawer({
           </button>
         </div>
         <div className="p-6 space-y-5">
-          <div className="aspect-square bg-bg rounded overflow-hidden flex items-center justify-center">
+          {/* Natural-aspect image area — caps height so the largest portrait
+              images don't push the rest of the drawer offscreen, but keeps
+              the original aspect ratio so nothing gets cropped. min-h
+              keeps the slot from collapsing while the image loads. */}
+          <div className="bg-bg rounded overflow-hidden flex items-center justify-center min-h-[14rem]">
             {active ? (
               <SafeImage
                 src={active}
                 alt={pack.display_name}
-                className="max-w-full max-h-full object-contain"
+                className="block max-w-full max-h-[70vh] w-auto h-auto object-contain"
                 fallback={
                   <CharacterBadge code={pack.character_code} size={200} />
                 }
