@@ -18,7 +18,9 @@ import {
   requiresUnzip,
   slotDisplay,
   stageDisplay,
+  stripColorSuffix,
 } from "../lib/melee";
+import { SearchBar } from "../components/SearchBar";
 
 function dollars(cents: number): string {
   if (cents <= 0) return "free";
@@ -335,6 +337,7 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
           featuredCreatorPacks={featuredCreatorPacks}
           backedPacks={backedPacks}
           allPacks={filteredPacks}
+          searchPacks={packs}
           totalPackCount={packs.length}
           totalCreatorCount={indexedCreators.length}
           kindCounts={kindCounts}
@@ -490,6 +493,7 @@ function Storefront(props: {
   featuredCreatorPacks: IndexedPack[];
   backedPacks: IndexedPack[];
   allPacks: IndexedPack[];
+  searchPacks: IndexedPack[];
   totalPackCount: number;
   totalCreatorCount: number;
   kindCounts: Map<SkinKind, number>;
@@ -510,6 +514,19 @@ function Storefront(props: {
 }) {
   return (
     <div>
+      <div className="sticky top-0 z-20 bg-bg/95 backdrop-blur border-b border-border px-8 py-4 flex items-center gap-4">
+        <SearchBar
+          packs={props.searchPacks}
+          onSelectPack={props.onSelectPack}
+          onCreatorClick={props.onCreatorClick}
+        />
+        <div className="text-xs text-muted hidden md:block">
+          {props.totalPackCount} pack{props.totalPackCount === 1 ? "" : "s"}{" "}
+          across {props.totalCreatorCount} creator
+          {props.totalCreatorCount === 1 ? "" : "s"}
+        </div>
+      </div>
+
       {props.featuredPacks.length > 0 && (
         <div className="px-8 pt-8 relative">
           <button
@@ -705,7 +722,7 @@ function FeaturedHero({
             )}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold leading-tight text-white drop-shadow">
-            {pack.display_name}
+            {stripColorSuffix(pack.display_name)}
           </h1>
           <button
             type="button"
@@ -1006,7 +1023,7 @@ function MiniPackCard({
           onClick={onSelect}
           className="text-sm font-medium truncate text-left w-full hover:underline"
         >
-          {pack.display_name}
+          {stripColorSuffix(pack.display_name)}
         </button>
         {onCreatorClick && (
           <button
@@ -1253,7 +1270,7 @@ function PackCard({
               onClick={onSelect}
               className="text-base font-semibold truncate flex-1 text-left hover:underline"
             >
-              {pack.display_name}
+              {stripColorSuffix(pack.display_name)}
             </button>
             <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
               {KIND_LABELS[(pack.kind ?? "character_skin") as SkinKind]}
@@ -1503,7 +1520,7 @@ function PackDetailDrawer({
 
           <div>
             <h2 className="text-2xl font-semibold leading-tight">
-              {pack.display_name}
+              {stripColorSuffix(pack.display_name)}
             </h2>
             <button
               type="button"

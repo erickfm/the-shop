@@ -105,6 +105,53 @@ export function stageDisplay(isoTargetFilename: string | null | undefined): stri
   return STAGE_LABELS[code] ?? isoTargetFilename;
 }
 
+/// All the slot/color tokens we recognize as "this is just naming the slot,
+/// not part of the skin's identity." Used by `stripColorSuffix` so titles
+/// don't repeat the info that already lives in the slot pill.
+const COLOR_SUFFIX_TOKENS = new Set([
+  // HAL slot codes
+  "nr", "re", "bu", "gr", "or", "ye", "aq", "wh", "bk", "la", "pi", "gy",
+  // Color words
+  "default", "red", "blue", "green", "orange", "yellow", "aqua", "white",
+  "black", "lavender", "pink", "grey", "gray", "purple", "neutral",
+  // Player slot phrasings
+  "player 1", "player 2", "p1", "p2", "1p", "2p",
+]);
+
+/// Remove trailing color/slot suffix from a pack title so it doesn't repeat
+/// what the slot pill already says. Handles parens-wrapped tokens
+/// ("Falco (Bu)"), separator-prefixed tokens ("Falco - Red", "Falco · Blue",
+/// "Falco | Bu"), and a couple of common version tokens that often trail
+/// re-uploads. Iterates so compound suffixes ("Falco (Bu) - v2") fully strip.
+/// Defensive — the index *should* already populate `pack_display_name`
+/// without these, but the frontend doesn't trust that.
+export function stripColorSuffix(name: string): string {
+  let s = name.trim();
+  for (let i = 0; i < 5; i++) {
+    const before = s;
+    // Parens-wrapped color/slot at end: "Falco (Bu)" / "Falco (Default)"
+    s = s.replace(/\s*\(\s*([^()]+)\s*\)\s*$/i, (full, inner) => {
+      return COLOR_SUFFIX_TOKENS.has(String(inner).toLowerCase().trim())
+        ? ""
+        : full;
+    });
+    // Separator-prefixed color/slot at end: " - Red", " · Default", " | Bu"
+    s = s.replace(
+      /\s*[-·|,]\s*([A-Za-z][A-Za-z ]*)\s*$/,
+      (full, inner) => {
+        return COLOR_SUFFIX_TOKENS.has(String(inner).toLowerCase().trim())
+          ? ""
+          : full;
+      },
+    );
+    // Version tokens: " v2", " (v3)", " - updated"
+    s = s.replace(/\s*(\(v\d+\)|v\d+|\(updated\)|- updated)\s*$/i, "");
+    s = s.trim().replace(/\s*[-·|,]\s*$/, "").trim();
+    if (s === before) break;
+  }
+  return s.length > 0 ? s : name;
+}
+
 /// True iff the entry's `filename_in_post` is an archive that needs unpacking
 /// before install. Used as a UI hint and matches the backend's
 /// is_zip_archive logic.
