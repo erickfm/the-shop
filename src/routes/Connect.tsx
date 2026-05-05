@@ -86,7 +86,7 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
   return (
     <div className="p-12 max-w-2xl mx-auto space-y-6">
       <div className="card p-10 text-center space-y-4">
-        <div className="text-2xl font-bold tracking-tight">connect patreon</div>
+        <div className="text-2xl tracking-tight">connect patreon</div>
         <p className="text-sm text-muted max-w-md mx-auto leading-relaxed">
           The shop reads your Patreon login from the browser you're already
           signed into. Files come straight from Patreon's CDN to your machine —
@@ -135,7 +135,7 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
         </div>
       ) : (
         <div className="card p-6 space-y-3">
-          <div className="text-sm font-semibold">no patreon login detected</div>
+          <div className="text-sm">no patreon login detected</div>
           <p className="text-xs text-muted leading-relaxed">
             We didn't find a Patreon session in any browser on this machine.
             Sign into patreon.com in your normal browser (any login method —

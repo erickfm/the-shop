@@ -45,7 +45,7 @@ export function BusyOverlay() {
           />
         </svg>
         <div>
-          <div className="text-sm font-medium">{label}</div>
+          <div className="text-sm">{label}</div>
           <div className="text-xs text-muted">Working — don't close the app.</div>
         </div>
       </div>

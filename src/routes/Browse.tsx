@@ -723,7 +723,7 @@ function FeaturedHero({
               </>
             )}
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold leading-tight text-white drop-shadow">
+          <h1 className="text-3xl md:text-4xl leading-tight text-white drop-shadow">
             {stripColorSuffix(pack.display_name)}
           </h1>
           <button
@@ -1026,7 +1026,7 @@ function MiniPackCard({
         <button
           type="button"
           onClick={onSelect}
-          className="text-sm font-medium truncate text-left w-full hover:underline"
+          className="text-sm truncate text-left w-full hover:underline"
         >
           {stripColorSuffix(pack.display_name)}
         </button>
@@ -1276,7 +1276,7 @@ function PackCard({
             <button
               type="button"
               onClick={onSelect}
-              className="text-base font-semibold truncate flex-1 text-left hover:underline"
+              className="text-base truncate flex-1 text-left hover:underline"
             >
               {stripColorSuffix(pack.display_name)}
             </button>
@@ -1527,7 +1527,7 @@ function PackDetailDrawer({
           )}
 
           <div>
-            <h2 className="text-2xl font-semibold leading-tight">
+            <h2 className="text-2xl leading-tight">
               {stripColorSuffix(pack.display_name)}
             </h2>
             <button
@@ -1778,7 +1778,7 @@ function CreatorsIndex({
   return (
     <div>
       <div className="flex items-center justify-between pb-3">
-        <h2 className="text-lg font-semibold">all creators</h2>
+        <h2 className="text-lg">all creators</h2>
         <div className="text-xs text-muted">
           {creators.length} creator{creators.length === 1 ? "" : "s"}
         </div>
@@ -1790,7 +1790,7 @@ function CreatorsIndex({
               <div className="min-w-0">
                 <button
                   type="button"
-                  className="text-base font-semibold truncate hover:underline text-left"
+                  className="text-base truncate hover:underline text-left"
                   onClick={() => onPick(c.id)}
                 >
                   {c.display_name}

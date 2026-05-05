@@ -527,7 +527,7 @@ function Section({
                 <div className="p-4 space-y-3 flex-1 flex flex-col">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <div className="text-base font-semibold truncate">
+                      <div className="text-base truncate">
                         {p.pack_name}
                       </div>
                       <div className="text-xs text-muted truncate">

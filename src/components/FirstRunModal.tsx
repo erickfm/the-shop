@@ -71,7 +71,7 @@ export function FirstRunModal({
     <div className="fixed inset-0 z-40 bg-black/70 flex items-center justify-center p-8">
       <div className="card max-w-2xl w-full p-6 space-y-6">
         <div>
-          <h1 className="text-xl font-bold">welcome to the shop</h1>
+          <h1 className="text-xl">welcome to the shop</h1>
           <p className="text-sm text-muted mt-1">
             Two things to set up before we can install skins.
           </p>
@@ -167,7 +167,7 @@ function Step({
   return (
     <div className="flex gap-3">
       <div
-        className={`flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center text-xs font-semibold ${
+        className={`flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center text-xs ${
           done ? "bg-ok/20 text-ok border-ok/40" : "bg-surface border-border"
         }`}
       >

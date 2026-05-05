@@ -6,6 +6,7 @@ import { Browse } from "./routes/Browse";
 import { FirstRunModal } from "./components/FirstRunModal";
 import { Toaster, toast } from "./components/Toaster";
 import { Wordmark } from "./components/Wordmark";
+import { Logo } from "./components/Logo";
 import { BusyOverlay } from "./components/BusyOverlay";
 import { ipc } from "./lib/ipc";
 import type { PatreonStatus } from "./lib/types";
@@ -89,9 +90,12 @@ export default function App() {
   return (
     <div className="h-full flex flex-col">
       <header className="border-b border-border/60 bg-surface flex items-center justify-between px-6 py-2.5 gap-6">
-        <nav className="flex items-baseline gap-5 min-w-0">
-          <Wordmark />
-          <span className="text-muted/40 text-sm">·</span>
+        <nav className="flex items-center gap-5 min-w-0">
+          <span className="flex items-center gap-2.5 text-muted">
+            <Logo size={26} />
+            <Wordmark />
+          </span>
+          <span className="text-muted/30 text-sm">·</span>
           {patreon.connected
             ? [
                 navLink("browse", "browse"),

@@ -23,28 +23,39 @@
 }
 
 @layer components {
+  /* All buttons are ghost: thin outline + transparent fill. The accent
+     color goes on the OUTLINE, never as a block. Hover increases outline
+     opacity + adds a faint tinted wash. No solid blocks anywhere. */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium
-           border border-border bg-surface hover:bg-border/60 transition-colors
-           disabled:opacity-50 disabled:pointer-events-none;
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-3 py-1.5
+           text-sm font-normal text-muted bg-transparent
+           border border-border/60
+           hover:text-white hover:border-white/50
+           transition-colors
+           disabled:opacity-40 disabled:pointer-events-none;
   }
   .btn-primary {
-    @apply btn bg-accent text-white border-accent hover:bg-accentdim hover:border-accentdim;
+    @apply btn border-accent/60 text-accent
+           hover:text-white hover:border-accent hover:bg-accent/10;
   }
   .btn-danger {
-    @apply btn bg-transparent text-danger border-danger/40 hover:bg-danger/10;
+    @apply btn border-danger/40 text-danger
+           hover:border-danger/80 hover:bg-danger/10;
   }
   .pill {
-    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium border;
+    @apply inline-flex items-center gap-1 rounded-full px-2 py-0.5
+           text-xs font-normal border;
   }
-  .pill-ok { @apply pill bg-ok/10 text-ok border-ok/30; }
-  .pill-muted { @apply pill bg-surface text-muted border-border; }
+  .pill-ok { @apply pill bg-transparent text-ok border-ok/40; }
+  .pill-muted { @apply pill bg-transparent text-muted border-border/60; }
   .input {
-    @apply w-full rounded-md border border-border bg-surface px-3 py-1.5 text-sm
-           placeholder:text-muted focus:outline-none focus:border-accent;
+    @apply w-full rounded-md border border-border/60 bg-transparent
+           px-3 py-1.5 text-sm font-normal
+           placeholder:text-muted
+           focus:outline-none focus:border-accent;
   }
   .card {
-    @apply rounded-lg border border-border bg-surface;
+    @apply rounded-lg border border-border/70 bg-surface;
   }
 }
 
