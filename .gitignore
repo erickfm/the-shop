@@ -34,3 +34,10 @@ NERV-*.png
 # Local sqlite
 *.sqlite3
 *.sqlite
+
+# Tauri-icon outputs we don't ship: mobile icon trees + Windows Store logos.
+# CI regenerates them via `pnpm tauri icon` on demand.
+src-tauri/icons/android/
+src-tauri/icons/ios/
+src-tauri/icons/Square*Logo.png
+src-tauri/icons/StoreLogo.png

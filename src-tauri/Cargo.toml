@@ -1,6 +1,6 @@
 [package]
 name = "the-shop"
-version = "0.1.0"
+version = "0.4.0"
 description = "Slippi skin manager"
 authors = ["Erick Martinez"]
 edition = "2021"

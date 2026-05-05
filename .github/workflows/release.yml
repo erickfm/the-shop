@@ -1,0 +1,121 @@
+name: Release
+
+# Builds cross-platform installers and drafts a GitHub Release.
+#
+# Trigger by pushing a tag matching v*, e.g.:
+#     git tag v0.4.0
+#     git push origin v0.4.0
+#
+# Or fire manually from the Actions tab via "Run workflow".
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            args: --target universal-apple-darwin
+            label: macOS (universal)
+            rust-targets: aarch64-apple-darwin,x86_64-apple-darwin
+          - platform: ubuntu-22.04
+            args: ''
+            label: Linux (x86_64)
+            rust-targets: ''
+          - platform: windows-latest
+            args: ''
+            label: Windows (x86_64)
+            rust-targets: ''
+
+    name: ${{ matrix.label }}
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: pnpm
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust-targets }}
+
+      - name: Cache Rust build artifacts
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: ./src-tauri -> target
+
+      - name: Install Linux build deps
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            libxdo-dev \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            libsoup-3.0-dev \
+            build-essential \
+            curl \
+            wget \
+            file
+
+      - name: Install frontend deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Regenerate platform icons
+        # Idempotent: rebuilds .icns / .ico / Square*.png from icon.png so
+        # the per-platform bundlers find what they need even if the repo's
+        # PNGs have drifted from the source.
+        run: pnpm tauri icon src-tauri/icons/icon.png
+
+      - name: Build & release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'the shop ${{ github.ref_name }}'
+          releaseBody: |
+            ## Downloads
+
+            - **macOS (universal — Apple Silicon + Intel):** `.dmg`
+            - **Windows (x64):** `.msi` or `.exe` (NSIS) installer
+            - **Linux (x64):** `.AppImage` (portable) or `.deb` (Debian / Ubuntu)
+
+            ## First launch
+
+            On launch you'll be asked for:
+            1. A **vanilla Melee NTSC 1.02 ISO** — used as the base for patched ISOs.
+            2. Your **Slippi Launcher** install (auto-detected on most setups).
+
+            Then click **Connect Patreon** in the header and either let it read your `session_id` from your normal browser (Firefox / Chrome / Brave / Edge / Safari) or sign in via the in-app webview.
+
+            ## Notes
+
+            - **macOS:** the .app bundle is **unsigned**. First launch: right-click → Open → Open. macOS will remember the choice. (Apple Developer signing isn't set up for v0 — coming when there's enough demand to justify the $99/yr.)
+            - **Windows:** SmartScreen will warn on the unsigned `.exe` — click "More info" → "Run anyway". The installer / app still runs.
+            - **Linux:** the `.AppImage` is portable — chmod +x and double-click. The `.deb` integrates with your package manager. Requires `webkit2gtk-4.1`.
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
