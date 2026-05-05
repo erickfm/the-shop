@@ -4,17 +4,38 @@ import { ipc } from "../lib/ipc";
 import { bytes } from "../lib/format";
 import { toast } from "../components/Toaster";
 import { busy } from "../components/BusyOverlay";
-import type { DetectedPaths, Settings as SettingsT } from "../lib/types";
+import type {
+  DetectedPaths,
+  PatreonStatus,
+  Settings as SettingsT,
+} from "../lib/types";
 
 export function Settings({ onChange }: { onChange?: () => void }) {
   const [settings, setSettings] = useState<SettingsT | null>(null);
   const [detected, setDetected] = useState<DetectedPaths | null>(null);
+  const [patreon, setPatreon] = useState<PatreonStatus | null>(null);
   const [isoBusy, setIsoBusy] = useState(false);
 
   const refresh = async () => {
-    const [s, d] = await Promise.all([ipc.getSettings(), ipc.detectPaths()]);
+    const [s, d, p] = await Promise.all([
+      ipc.getSettings(),
+      ipc.detectPaths(),
+      ipc.patreonStatus(),
+    ]);
     setSettings(s);
     setDetected(d);
+    setPatreon(p);
+  };
+
+  const disconnectPatreon = async () => {
+    try {
+      await ipc.patreonDisconnect();
+      toast({ kind: "ok", text: "disconnected from patreon" });
+      await refresh();
+      onChange?.();
+    } catch (e: any) {
+      toast({ kind: "danger", text: `disconnect failed: ${e?.message || e}` });
+    }
   };
 
   useEffect(() => {
@@ -154,6 +175,31 @@ export function Settings({ onChange }: { onChange?: () => void }) {
               {settings.current_slippi_iso_path ?? "(none / cannot read)"}
             </span>
           </div>
+        </div>
+      </div>
+
+      <div>
+        <h2 className="section-title text-base mb-3">patreon</h2>
+        <div className="card p-4 text-sm space-y-2">
+          {patreon?.connected && patreon.user ? (
+            <>
+              <div className="text-muted">
+                connected as{" "}
+                <span className="text-white lowercase">
+                  {patreon.user.name || "(no name)"}
+                </span>
+              </div>
+              <button
+                className="text-xs text-muted hover:text-danger transition-colors"
+                onClick={disconnectPatreon}
+                title="sign out of patreon"
+              >
+                disconnect →
+              </button>
+            </>
+          ) : (
+            <div className="text-muted">not connected</div>
+          )}
         </div>
       </div>
 

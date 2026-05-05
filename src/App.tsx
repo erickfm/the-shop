@@ -5,7 +5,6 @@ import { Connect } from "./routes/Connect";
 import { Browse } from "./routes/Browse";
 import { FirstRunModal } from "./components/FirstRunModal";
 import { Toaster, toast } from "./components/Toaster";
-import { Wordmark } from "./components/Wordmark";
 import { Logo } from "./components/Logo";
 import { BusyOverlay } from "./components/BusyOverlay";
 import { ipc } from "./lib/ipc";
@@ -54,17 +53,6 @@ export default function App() {
     }
   };
 
-  const disconnect = async () => {
-    try {
-      await ipc.patreonDisconnect();
-      setPatreon({ connected: false, user: null, last_verified_at: null });
-      setRoute("connect");
-      toast({ kind: "ok", text: "disconnected from patreon" });
-    } catch (e: any) {
-      toast({ kind: "danger", text: `disconnect failed: ${e?.message || e}` });
-    }
-  };
-
 
   if (needsFirstRun === null || patreon === null) {
     return <div className="p-8 text-muted">loading…</div>;
@@ -89,13 +77,18 @@ export default function App() {
 
   return (
     <div className="h-full flex flex-col">
-      <header className="border-b border-border/60 bg-surface flex items-center justify-between px-6 py-2.5 gap-6">
-        <nav className="flex items-center gap-5 min-w-0">
-          <span className="flex items-center gap-2.5 text-muted">
-            <Logo size={26} />
-            <Wordmark />
-          </span>
-          <span className="text-muted/30 text-sm">·</span>
+      <header className="border-b border-border/60 bg-surface flex items-center justify-between px-6 py-2.5 gap-8">
+        <button
+          type="button"
+          onClick={() =>
+            setRoute(patreon.connected ? "browse" : "connect")
+          }
+          aria-label="home"
+          className="shrink-0 hover:opacity-80 transition-opacity"
+        >
+          <Logo size={40} />
+        </button>
+        <nav className="flex items-center gap-6 min-w-0 flex-1">
           {patreon.connected
             ? [
                 navLink("browse", "browse"),
@@ -108,26 +101,13 @@ export default function App() {
                 navLink("settings", "settings"),
               ]}
         </nav>
-        <div className="flex items-baseline gap-5 shrink-0">
-          {patreon.connected && patreon.user ? (
-            <button
-              className="text-xs text-muted hover:text-white transition-colors lowercase"
-              onClick={disconnect}
-              title="sign out of patreon"
-            >
-              as {patreon.user.name || "connected"}
-            </button>
-          ) : (
-            <span className="text-xs text-muted">not connected</span>
-          )}
-          <button
-            className="text-sm text-muted hover:text-white transition-colors"
-            onClick={launch}
-            title="launch slippi"
-          >
-            ▶ launch
-          </button>
-        </div>
+        <button
+          className="text-sm text-muted hover:text-white transition-colors shrink-0"
+          onClick={launch}
+          title="launch slippi"
+        >
+          ▶ launch
+        </button>
       </header>
 
       <main className="flex-1 overflow-y-auto">
