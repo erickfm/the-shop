@@ -1281,7 +1281,7 @@ function PackCard({
           </div>
         </div>
 
-        {isMulti && (
+        {pack.kind === "character_skin" && (
           <div className="flex flex-wrap gap-1">
             {pack.slots.map((s) => (
               <span
@@ -1419,6 +1419,17 @@ function PackDetailDrawer({
     pack.character_code
   ) {
     metaPills.push(characterDisplay(pack.character_code));
+  }
+  // For solo character_skin packs the SlotRow list is hidden (one button is
+  // simpler than a one-row list), so the slot the install will overwrite
+  // wouldn't show up anywhere otherwise. Multi-slot packs surface this in
+  // the SlotRow list instead.
+  if (
+    pack.kind === "character_skin" &&
+    pack.slot_count === 1 &&
+    pack.slots[0]?.slot_code
+  ) {
+    metaPills.push(slotDisplay(pack.slots[0].slot_code));
   }
   metaPills.push(
     pack.tier_required_cents === 0
