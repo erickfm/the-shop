@@ -12,10 +12,6 @@ export default {
         muted: "rgb(140 148 168)",
         danger: "rgb(231 102 102)",
         ok: "rgb(116 196 138)",
-        // Warm pop for serif-italic display headings — gives the wordmark
-        // and section titles a hand-set / boutique tone against the cool-gray
-        // body sans.
-        marquee: "rgb(231 196 128)",
       },
       fontFamily: {
         sans: ["ui-sans-serif", "system-ui", "-apple-system", "Inter", "sans-serif"],

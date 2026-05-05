@@ -5,6 +5,7 @@ import { Connect } from "./routes/Connect";
 import { Browse } from "./routes/Browse";
 import { FirstRunModal } from "./components/FirstRunModal";
 import { Toaster, toast } from "./components/Toaster";
+import { Wordmark } from "./components/Wordmark";
 import { BusyOverlay, busy } from "./components/BusyOverlay";
 import { ipc } from "./lib/ipc";
 import type { PatreonStatus } from "./lib/types";
@@ -46,9 +47,9 @@ export default function App() {
   const launch = async () => {
     try {
       await ipc.launchSlippi();
-      toast({ kind: "ok", text: "Slippi Launcher started" });
+      toast({ kind: "ok", text: "slippi launcher started" });
     } catch (e: any) {
-      toast({ kind: "danger", text: `Launch failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `launch failed: ${e?.message || e}` });
     }
   };
 
@@ -57,40 +58,40 @@ export default function App() {
       await ipc.patreonDisconnect();
       setPatreon({ connected: false, user: null, last_verified_at: null });
       setRoute("connect");
-      toast({ kind: "ok", text: "Disconnected from Patreon" });
+      toast({ kind: "ok", text: "disconnected from patreon" });
     } catch (e: any) {
-      toast({ kind: "danger", text: `Disconnect failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `disconnect failed: ${e?.message || e}` });
     }
   };
 
   const reset = async () => {
     const ok = confirm(
       [
-        "Uninstall ALL skins and clear the patched ISO?",
+        "uninstall all skins and clear the patched iso?",
         "",
-        "This will:",
+        "this will:",
         "  • Delete the-shop-patched.iso",
         "  • Mark every installed skin as not-installed",
         "  • Point Slippi back at your original ISO",
         "",
-        "Your imported skin files in the library are kept.",
+        "your imported skin files in the library are kept.",
       ].join("\n"),
     );
     if (!ok) return;
     try {
-      const r = await busy("Clearing installs…", () => ipc.resetToVanilla());
+      const r = await busy("clearing installs…", () => ipc.resetToVanilla());
       toast({
         kind: "ok",
-        text: `Cleared · removed patched ISO: ${r.patched_iso_removed ? "yes" : "no"} · ${r.packs_uninstalled} packs cleared`,
+        text: `cleared · removed patched ISO: ${r.patched_iso_removed ? "yes" : "no"} · ${r.packs_uninstalled} packs cleared`,
       });
       setRefreshKey((k) => k + 1);
     } catch (e: any) {
-      toast({ kind: "danger", text: `Reset failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `reset failed: ${e?.message || e}` });
     }
   };
 
   if (needsFirstRun === null || patreon === null) {
-    return <div className="p-8 text-muted">Loading…</div>;
+    return <div className="p-8 text-muted">loading…</div>;
   }
 
   const navButton = (target: Route, label: string, disabled = false) => (
@@ -114,18 +115,18 @@ export default function App() {
     <div className="h-full flex flex-col">
       <header className="border-b border-border bg-surface flex items-center justify-between px-6 py-3">
         <div className="flex items-center gap-6">
-          <div className="wordmark">the shop</div>
+          <Wordmark />
           <nav className="flex gap-1 text-sm">
             {patreon.connected
               ? [
-                  navButton("browse", "Browse"),
-                  navButton("library", "Skins"),
-                  navButton("settings", "Settings"),
+                  navButton("browse", "browse"),
+                  navButton("library", "skins"),
+                  navButton("settings", "settings"),
                 ]
               : [
-                  navButton("connect", "Connect"),
-                  navButton("library", "Skins", false),
-                  navButton("settings", "Settings"),
+                  navButton("connect", "connect"),
+                  navButton("library", "skins", false),
+                  navButton("settings", "settings"),
                 ]}
           </nav>
         </div>
@@ -134,9 +135,9 @@ export default function App() {
             <button
               className="text-xs text-muted hover:text-white px-2 py-1 rounded border border-border"
               onClick={disconnect}
-              title="Sign out of Patreon"
+              title="sign out of patreon"
             >
-              {patreon.user.name || "Connected"} · disconnect
+              {patreon.user.name || "connected"} · disconnect
             </button>
           ) : (
             <span className="text-xs text-muted">not connected</span>
@@ -144,12 +145,12 @@ export default function App() {
           <button
             className="btn-danger"
             onClick={reset}
-            title="Uninstall all skins and remove the patched ISO."
+            title="uninstall all skins and remove the patched iso."
           >
-            Clear all installs
+            clear all installs
           </button>
           <button className="btn-primary" onClick={launch}>
-            ▶ Launch Slippi
+            ▶ launch slippi
           </button>
         </div>
       </header>

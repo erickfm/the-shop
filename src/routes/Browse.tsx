@@ -28,14 +28,14 @@ function dollars(cents: number): string {
 }
 
 const KIND_LABELS: Record<SkinKind, string> = {
-  character_skin: "Character",
-  stage: "Stage",
-  music: "Music",
-  effect: "Effect",
-  animation: "Animation",
-  ui: "UI",
-  item: "Item",
-  texture_pack: "Texture pack",
+  character_skin: "character",
+  stage: "stage",
+  music: "music",
+  effect: "effect",
+  animation: "animation",
+  ui: "ui",
+  item: "item",
+  texture_pack: "texture pack",
 };
 
 const KIND_FILTER_ORDER: (SkinKind | "all")[] = [
@@ -88,11 +88,11 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
       try {
         await ipc.refreshSkinIndex();
         await loadList();
-        toast({ kind: "ok", text: "Index refreshed" });
+        toast({ kind: "ok", text: "index refreshed" });
       } catch (e: any) {
         toast({
           kind: "danger",
-          text: `Couldn't refresh from upstream (using bundled): ${e?.message || e}`,
+          text: `couldn't refresh from upstream (using bundled): ${e?.message || e}`,
         });
       }
     }
@@ -243,14 +243,14 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
   const installSlot = async (slot: AnnotatedSkin) => {
     setBusyKey(`slot:${slot.id}`);
     try {
-      await withBusy(`Installing ${slot.display_name}…`, () =>
+      await withBusy(`installing ${slot.display_name}…`, () =>
         ipc.installPatreonSkin(slot.id),
       );
-      toast({ kind: "ok", text: `Installed ${slot.display_name}` });
+      toast({ kind: "ok", text: `installed ${slot.display_name}` });
       await refresh(false);
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Install failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `install failed: ${e?.message || e}` });
     } finally {
       setBusyKey(null);
     }
@@ -262,7 +262,7 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
     setBusyKey(`pack:${pack.pack_id}`);
     try {
       const result = await withBusy(
-        `Installing ${installable.length} slot${
+        `installing ${installable.length} slot${
           installable.length === 1 ? "" : "s"
         } from ${pack.display_name}…`,
         () => ipc.installPatreonSkinsBulk(installable.map((s) => s.id)),
@@ -273,18 +273,18 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
         const detail = result.failed.slice(0, 2).map((f) => f.error).join(" · ");
         toast({
           kind: okCount > 0 ? "info" : "danger",
-          text: `Installed ${okCount}/${okCount + failCount} from ${pack.display_name}. Failed: ${detail}`,
+          text: `installed ${okCount}/${okCount + failCount} from ${pack.display_name}. Failed: ${detail}`,
         });
       } else {
         toast({
           kind: "ok",
-          text: `Installed ${okCount} slot${okCount === 1 ? "" : "s"} from ${pack.display_name}`,
+          text: `installed ${okCount} slot${okCount === 1 ? "" : "s"} from ${pack.display_name}`,
         });
       }
       await refresh(false);
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Install failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `install failed: ${e?.message || e}` });
     } finally {
       setBusyKey(null);
     }
@@ -533,9 +533,9 @@ function Storefront(props: {
             type="button"
             onClick={props.onReshuffle}
             className="absolute right-10 top-10 z-10 text-xs text-white/70 hover:text-white px-2 py-1 rounded bg-bg/60 hover:bg-bg/80 border border-border"
-            title="Pick different featured packs and creator"
+            title="pick different featured packs and creator"
           >
-            ↻ Shuffle
+            ↻ shuffle
           </button>
           <FeaturedHero
             packs={props.featuredPacks}
@@ -563,7 +563,7 @@ function Storefront(props: {
       )}
 
       {props.backedPacks.length > 0 && (
-        <Section title="From creators you back">
+        <Section title="from creators you back">
           <HorizontalPackStrip
             packs={props.backedPacks}
             onSelectPack={props.onSelectPack}
@@ -703,7 +703,7 @@ function FeaturedHero({
       <div className="absolute bottom-0 left-0 right-0 p-8 flex items-end justify-between gap-6">
         <div className="min-w-0 max-w-2xl">
           <div className="flex items-center gap-2 text-xs text-muted uppercase tracking-wide pb-2">
-            <span>Featured</span>
+            <span>featured</span>
             <span>·</span>
             <span>{KIND_LABELS[(pack.kind ?? "character_skin") as SkinKind]}</span>
             {isMulti && (
@@ -760,7 +760,7 @@ function FeaturedHero({
               className="btn-primary px-6"
               onClick={() => onSelectPack(pack.pack_id)}
             >
-              Manage slots
+              manage slots
             </button>
           ) : isMulti ? (
             installable > 0 ? (
@@ -769,7 +769,7 @@ function FeaturedHero({
                 onClick={() => onInstallAll(pack)}
                 disabled={myBusy}
               >
-                {myBusy ? "Installing…" : `Install all (${installable})`}
+                {myBusy ? "installing…" : `install all (${installable})`}
               </button>
             ) : (
               <button
@@ -780,7 +780,7 @@ function FeaturedHero({
                   )
                 }
               >
-                Subscribe on Patreon
+                subscribe on patreon
               </button>
             )
           ) : pack.slots[0]?.installed ? (
@@ -793,7 +793,7 @@ function FeaturedHero({
               onClick={() => onInstallSingle(pack)}
               disabled={soloBusy}
             >
-              {soloBusy ? "Installing…" : "Install"}
+              {soloBusy ? "installing…" : "install"}
             </button>
           ) : (
             <button
@@ -804,7 +804,7 @@ function FeaturedHero({
                 )
               }
             >
-              Subscribe on Patreon
+              subscribe on patreon
             </button>
           )}
           <button
@@ -873,21 +873,21 @@ function FeaturedCreatorBand({
 }) {
   return (
     <Section
-      title={isBacked ? "Featured · You back" : "Featured creator"}
+      title={isBacked ? "featured · you back" : "featured creator"}
       trailing={
         <div className="flex items-center gap-3 text-xs">
           <button
             className="text-muted hover:text-white hover:underline"
             onClick={onSubscribe}
           >
-            Open on Patreon →
+            open on patreon →
           </button>
         </div>
       }
     >
       <div className="glass-card glass-glow rounded-lg p-5 flex flex-col gap-4">
         <div className="flex items-start gap-4">
-          <div className="w-14 h-14 rounded-full bg-bg border border-border shrink-0 flex items-center justify-center font-display italic text-2xl text-marquee">
+          <div className="w-14 h-14 rounded-full bg-bg border border-border shrink-0 flex items-center justify-center stat-num text-2xl">
             {creator.avatar_url ? (
               <SafeImage
                 src={creator.avatar_url}
@@ -903,7 +903,7 @@ function FeaturedCreatorBand({
             <button
               type="button"
               onClick={onCreatorClick}
-              className="font-display italic text-2xl font-normal hover:underline text-left text-marquee"
+              className="page-title text-xl hover:underline text-left"
             >
               {creator.display_name}
             </button>
@@ -1029,7 +1029,7 @@ function MiniPackCard({
           <button
             type="button"
             onClick={onCreatorClick}
-            className="font-display italic text-xs text-muted hover:text-white hover:underline truncate text-left w-full disabled:opacity-100 disabled:no-underline"
+            className="text-xs text-muted hover:text-white hover:underline truncate text-left w-full disabled:opacity-100 disabled:no-underline"
             disabled={!pack.creator?.id}
           >
             {pack.creator?.display_name || pack.creator_id}
@@ -1085,7 +1085,7 @@ function AllModsSection({
 }) {
   return (
     <Section
-      title={title ?? "All mods"}
+      title={title ?? "all mods"}
       trailing={
         !hideTopActions ? (
           <div className="flex items-center gap-3 text-xs">
@@ -1096,16 +1096,16 @@ function AllModsSection({
               >
                 {totalCreatorCount
                   ? `Browse all ${totalCreatorCount} creators →`
-                  : "Browse all creators →"}
+                  : "browse all creators →"}
               </button>
             )}
             {onRefresh && (
               <button
                 className="text-muted hover:text-white hover:underline"
                 onClick={onRefresh}
-                title="Pull the latest texture index"
+                title="pull the latest texture index"
               >
-                ↻ Refresh index
+                ↻ refresh index
               </button>
             )}
           </div>
@@ -1133,7 +1133,7 @@ function AllModsSection({
               }`}
               onClick={() => setFilterKind(k)}
             >
-              {k === "all" ? "All" : KIND_LABELS[k as SkinKind]}{" "}
+              {k === "all" ? "all" : KIND_LABELS[k as SkinKind]}{" "}
               <span className="opacity-60">{count}</span>
             </button>
           );
@@ -1150,7 +1150,7 @@ function AllModsSection({
             }`}
             onClick={() => setFilterCharacter(null)}
           >
-            All characters
+            all characters
           </button>
           {sortedCharacters.map(([code, count]) => {
             const active = filterCharacter === code;
@@ -1280,7 +1280,7 @@ function PackCard({
             <button
               type="button"
               onClick={onCreatorClick}
-              className="font-display italic hover:text-white hover:underline disabled:opacity-100 disabled:no-underline"
+              className="hover:text-white hover:underline disabled:opacity-100 disabled:no-underline"
               disabled={!pack.creator?.id}
             >
               {pack.creator?.display_name || pack.creator_id}
@@ -1293,7 +1293,7 @@ function PackCard({
               pack.character_code &&
               ` · ${characterDisplay(pack.character_code)}`}
             {pack.slots[0] && requiresUnzip(pack.slots[0].filename_in_post) && (
-              <span title="Bundled inside an archive">{" · zip"}</span>
+              <span title="bundled inside an archive">{" · zip"}</span>
             )}
           </div>
         </div>
@@ -1349,7 +1349,7 @@ function PackCard({
         <div className="mt-auto pt-2">
           {allInstalled ? (
             <button className="btn w-full" onClick={onSelect}>
-              Manage slots
+              manage slots
             </button>
           ) : isMulti ? (
             installable > 0 ? (
@@ -1359,7 +1359,7 @@ function PackCard({
                   onClick={onInstallAll}
                   disabled={myPackBusy}
                 >
-                  {myPackBusy ? "Installing…" : `Install all (${installable})`}
+                  {myPackBusy ? "installing…" : `install all (${installable})`}
                 </button>
                 <button className="btn shrink-0" onClick={onSelect}>
                   Pick
@@ -1367,7 +1367,7 @@ function PackCard({
               </div>
             ) : (
               <button className="btn w-full" onClick={onSubscribe}>
-                Subscribe on Patreon
+                subscribe on patreon
               </button>
             )
           ) : pack.slots[0]?.installed ? (
@@ -1380,11 +1380,11 @@ function PackCard({
               onClick={onInstallSingle}
               disabled={mySoloBusy}
             >
-              {mySoloBusy ? "Installing…" : "Install"}
+              {mySoloBusy ? "installing…" : "install"}
             </button>
           ) : (
             <button className="btn w-full" onClick={onSubscribe}>
-              Subscribe on Patreon
+              subscribe on patreon
             </button>
           )}
         </div>
@@ -1450,7 +1450,7 @@ function PackDetailDrawer({
   }
   metaPills.push(
     pack.tier_required_cents === 0
-      ? "Free"
+      ? "free"
       : `${dollars(pack.tier_required_cents)}/mo`,
   );
 
@@ -1571,7 +1571,7 @@ function PackDetailDrawer({
                 disabled={myPackBusy}
               >
                 {myPackBusy
-                  ? "Installing…"
+                  ? "installing…"
                   : `Install all available (${installable})`}
               </button>
             </div>
@@ -1604,7 +1604,7 @@ function PackDetailDrawer({
           )}
 
           <button className="btn w-full text-xs" onClick={onOpenPost}>
-            Open Patreon post →
+            open patreon post →
           </button>
         </div>
       </aside>
@@ -1623,7 +1623,7 @@ function SlotRow({
   onInstall: () => void;
   onSubscribe: () => void;
 }) {
-  const slotName = slotDisplay(slot.slot_code) || slot.slot_code || "Slot";
+  const slotName = slotDisplay(slot.slot_code) || slot.slot_code || "slot";
   return (
     <div className="flex items-center gap-3 px-3 py-2.5 text-sm">
       <div className="min-w-0 flex-1">
@@ -1653,7 +1653,7 @@ function SlotRow({
             onClick={onInstall}
             disabled={busy}
           >
-            {busy ? "Installing…" : "Install"}
+            {busy ? "installing…" : "install"}
           </button>
         ) : (
           <button className="btn text-xs" onClick={onSubscribe}>
@@ -1687,13 +1687,13 @@ function SoloInstallButton({
   if (slot.tier_satisfied) {
     return (
       <button className="btn-primary w-full" onClick={onInstall} disabled={busy}>
-        {busy ? "Installing…" : "Install"}
+        {busy ? "installing…" : "install"}
       </button>
     );
   }
   return (
     <button className="btn w-full" onClick={onSubscribe}>
-      Subscribe on Patreon
+      subscribe on patreon
     </button>
   );
 }
@@ -1710,7 +1710,7 @@ function CreatorHeader({
   return (
     <div className="glass-card glass-glow rounded-lg p-6 flex items-start justify-between gap-4">
       <div className="space-y-1 min-w-0 flex items-center gap-4">
-        <div className="w-16 h-16 rounded-full bg-bg border border-border shrink-0 flex items-center justify-center font-display italic text-3xl text-marquee">
+        <div className="w-16 h-16 rounded-full bg-bg border border-border shrink-0 flex items-center justify-center stat-num text-3xl">
           {creator.avatar_url ? (
             <SafeImage
               src={creator.avatar_url}
@@ -1723,7 +1723,7 @@ function CreatorHeader({
           )}
         </div>
         <div className="min-w-0">
-          <div className="font-display italic text-3xl text-marquee truncate">
+          <div className="page-title text-2xl truncate">
             {creator.display_name}
           </div>
           {creator.tagline && (
@@ -1770,7 +1770,7 @@ function CreatorsIndex({
   return (
     <div>
       <div className="flex items-center justify-between pb-3">
-        <h2 className="text-lg font-semibold">All creators</h2>
+        <h2 className="text-lg font-semibold">all creators</h2>
         <div className="text-xs text-muted">
           {creators.length} creator{creators.length === 1 ? "" : "s"}
         </div>

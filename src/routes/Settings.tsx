@@ -43,7 +43,7 @@ export function Settings({ onChange }: { onChange?: () => void }) {
     const sel = await open({ multiple: false });
     if (typeof sel !== "string") return;
     await ipc.setSlippiLauncherExecutable(sel);
-    toast({ kind: "ok", text: "Slippi Launcher path saved" });
+    toast({ kind: "ok", text: "slippi launcher path saved" });
     await refresh();
   };
 
@@ -51,7 +51,7 @@ export function Settings({ onChange }: { onChange?: () => void }) {
     const sel = await open({ multiple: false, directory: true });
     if (typeof sel !== "string") return;
     await ipc.setSlippiUserDir(sel);
-    toast({ kind: "ok", text: "Slippi user dir saved" });
+    toast({ kind: "ok", text: "slippi user dir saved" });
     await refresh();
   };
 
@@ -73,7 +73,7 @@ export function Settings({ onChange }: { onChange?: () => void }) {
               placeholder="No ISO selected"
             />
             <button className="btn-primary" onClick={pickIso} disabled={isoBusy}>
-              {isoBusy ? "Reading…" : "Browse…"}
+              {isoBusy ? "reading…" : "browse…"}
             </button>
           </div>
           {settings.vanilla_iso && (
@@ -101,7 +101,7 @@ export function Settings({ onChange }: { onChange?: () => void }) {
               className="input font-mono"
               value={settings.slippi_launcher_executable ?? ""}
               readOnly
-              placeholder={detected?.slippi_launcher_executable || "Not detected"}
+              placeholder={detected?.slippi_launcher_executable || "not detected"}
             />
             <button className="btn" onClick={pickLauncher}>
               Browse…
@@ -112,7 +112,7 @@ export function Settings({ onChange }: { onChange?: () => void }) {
               className="input font-mono"
               value={settings.slippi_user_dir ?? ""}
               readOnly
-              placeholder={detected?.slippi_user_dir || "Not detected"}
+              placeholder={detected?.slippi_user_dir || "not detected"}
             />
             <button className="btn" onClick={pickUserDir}>
               Browse user dir…

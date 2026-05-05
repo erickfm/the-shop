@@ -8,11 +8,11 @@ import type { CharacterDef, IsoAssetRow, SkinPack } from "../lib/types";
 import { characterDisplay, stageDisplay } from "../lib/melee";
 
 const KIND_LABEL: Record<string, string> = {
-  effect: "Effect",
-  stage: "Stage",
-  ui: "UI",
-  item: "Item",
-  animation: "Animation",
+  effect: "effect",
+  stage: "stage",
+  ui: "ui",
+  item: "item",
+  animation: "animation",
 };
 
 export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
@@ -60,12 +60,12 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         : "";
       toast({
         kind: r.failed.length ? "danger" : "ok",
-        text: `Imported ${r.imported}, skipped ${r.skipped_duplicates}${failed}`,
+        text: `imported ${r.imported}, skipped ${r.skipped_duplicates}${failed}`,
       });
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Import failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `import failed: ${e?.message || e}` });
     }
   };
 
@@ -73,7 +73,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     setBusy(`${p.character_code}/${p.pack_name}`);
     try {
       const r = await withBusy(
-        `Installing ${p.character_display} · ${p.pack_name}…`,
+        `installing ${p.character_display} · ${p.pack_name}…`,
         () => ipc.installPack(p.character_code, p.pack_name),
       );
       const installedCount = r.installed_slots.length;
@@ -81,7 +81,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
       const routed = r.installed_slots.filter((s) => s.routed);
       const routedNote =
         routed.length > 0
-          ? ` · Routed to extended slots: ${routed
+          ? ` · routed to extended slots: ${routed
               .map((s) => `${s.requested_slot_code}→${s.actual_slot_code}`)
               .join(", ")}`
           : "";
@@ -91,18 +91,18 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
           .join(" · ");
         toast({
           kind: installedCount > 0 ? "info" : "danger",
-          text: `Installed ${installedCount}/${installedCount + skipped} slots${routedNote}. Skipped: ${detail}`,
+          text: `installed ${installedCount}/${installedCount + skipped} slots${routedNote}. skipped: ${detail}`,
         });
       } else {
         toast({
           kind: "ok",
-          text: `Installed ${p.character_display} · ${p.pack_name}${routedNote}`,
+          text: `installed ${p.character_display} · ${p.pack_name}${routedNote}`,
         });
       }
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Install failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `install failed: ${e?.message || e}` });
     } finally {
       setBusy(null);
     }
@@ -111,9 +111,9 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   const removeAll = async (source: "manual" | "patreon") => {
     const list = source === "patreon" ? patreonPacks : manualPacks;
     if (list.length === 0) return;
-    const verb = source === "patreon" ? "Remove" : "Unimport";
+    const verb = source === "patreon" ? "remove" : "unimport";
     const ok = window.confirm(
-      `${verb} all ${list.length} ${source === "patreon" ? "Patreon-installed" : "manually-imported"} skin${
+      `${verb} all ${list.length} ${source === "patreon" ? "patreon-installed" : "manually-imported"} skin${
         list.length === 1 ? "" : "s"
       }? Files will be deleted from disk and the ISO rebuilt once.${
         source === "patreon"
@@ -125,7 +125,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     setBusy(`__bulk_${source}`);
     try {
       const r = await withBusy(
-        `${verb === "Remove" ? "Removing" : "Unimporting"} ${list.length} skin${
+        `${verb === "remove" ? "removing" : "unimporting"} ${list.length} skin${
           list.length === 1 ? "" : "s"
         }…`,
         () => ipc.deleteSkinPacksBulk(source),
@@ -146,7 +146,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   };
 
   const removePack = async (p: SkinPack) => {
-    const verb = p.source === "patreon" ? "Remove" : "Unimport";
+    const verb = p.source === "patreon" ? "remove" : "unimport";
     const ok = window.confirm(
       `${verb} "${p.pack_name}" (${p.character_display})? This deletes the file${
         p.slots.length === 1 ? "" : "s"
@@ -163,19 +163,19 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     if (!ok) return;
     setBusy(`${p.character_code}/${p.pack_name}`);
     try {
-      const r = await withBusy(`Removing ${p.pack_name}…`, () =>
+      const r = await withBusy(`removing ${p.pack_name}…`, () =>
         ipc.deleteSkinPack(p.character_code, p.pack_name),
       );
       toast({
         kind: "ok",
-        text: `Removed ${p.pack_name} (${r.files_removed} file${
+        text: `removed ${p.pack_name} (${r.files_removed} file${
           r.files_removed === 1 ? "" : "s"
         })`,
       });
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Remove failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `remove failed: ${e?.message || e}` });
     } finally {
       setBusy(null);
     }
@@ -184,14 +184,14 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   const installAsset = async (a: IsoAssetRow) => {
     setBusy(`asset:${a.id}`);
     try {
-      await withBusy(`Installing ${a.filename}…`, () =>
+      await withBusy(`installing ${a.filename}…`, () =>
         ipc.installIsoAssetFromFile(a.id),
       );
-      toast({ kind: "ok", text: `Installed ${a.filename}` });
+      toast({ kind: "ok", text: `installed ${a.filename}` });
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Install failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `install failed: ${e?.message || e}` });
     } finally {
       setBusy(null);
     }
@@ -200,14 +200,14 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   const uninstallAsset = async (a: IsoAssetRow) => {
     setBusy(`asset:${a.id}`);
     try {
-      await withBusy(`Uninstalling ${a.filename}…`, () =>
+      await withBusy(`uninstalling ${a.filename}…`, () =>
         ipc.uninstallIsoAsset(a.iso_target_filename),
       );
-      toast({ kind: "ok", text: `Uninstalled ${a.filename}` });
+      toast({ kind: "ok", text: `uninstalled ${a.filename}` });
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Uninstall failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `uninstall failed: ${e?.message || e}` });
     } finally {
       setBusy(null);
     }
@@ -215,21 +215,21 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
 
   const removeAsset = async (a: IsoAssetRow) => {
     const ok = window.confirm(
-      `Remove "${a.filename}"? File will be deleted from disk${
+      `remove "${a.filename}"? File will be deleted from disk${
         a.installed ? " and uninstalled from the ISO" : ""
       }.`,
     );
     if (!ok) return;
     setBusy(`asset:${a.id}`);
     try {
-      await withBusy(`Removing ${a.filename}…`, () =>
+      await withBusy(`removing ${a.filename}…`, () =>
         ipc.deleteIsoAsset(a.id),
       );
-      toast({ kind: "ok", text: `Removed ${a.filename}` });
+      toast({ kind: "ok", text: `removed ${a.filename}` });
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Remove failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `remove failed: ${e?.message || e}` });
     } finally {
       setBusy(null);
     }
@@ -239,14 +239,14 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     setBusy(`${p.character_code}/${p.pack_name}`);
     try {
       await withBusy(
-        `Uninstalling ${p.character_display} · ${p.pack_name}…`,
+        `uninstalling ${p.character_display} · ${p.pack_name}…`,
         () => ipc.uninstallPack(p.character_code, p.pack_name),
       );
-      toast({ kind: "ok", text: `Uninstalled ${p.character_display} · ${p.pack_name}` });
+      toast({ kind: "ok", text: `uninstalled ${p.character_display} · ${p.pack_name}` });
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Uninstall failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `uninstall failed: ${e?.message || e}` });
     } finally {
       setBusy(null);
     }
@@ -256,7 +256,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     <div className="p-8 space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1 max-w-2xl">
-          <h2 className="section-title">Skins &amp; assets</h2>
+          <h2 className="section-title">skins Skins &amp; assetsamp; assets</h2>
           <p className="text-sm text-muted">
             Everything <span className="text-white">on this machine</span> —
             character skins (from Patreon or imported by hand), plus stages /
@@ -271,9 +271,9 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
       </div>
 
       <Section
-        title="From Patreon"
-        subtitle="Character skins you installed by clicking Install in Browse."
-        emptyText="No Patreon-installed character skins yet. Head to Browse to install one."
+        title="from patreon"
+        subtitle="character skins you installed by clicking install in browse."
+        emptyText="no patreon-installed character skins yet. head to browse to install one."
         packs={patreonPacks}
         chars={chars}
         busy={busy}
@@ -282,11 +282,11 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         onRemove={removePack}
         onRemoveAll={() => removeAll("patreon")}
         bulkBusy={busy === "__bulk_patreon"}
-        bulkLabel="Remove all"
+        bulkLabel="remove all"
       />
 
       <Section
-        title="Imported from your filesystem"
+        title="imported from your filesystem"
         subtitle={
           <>
             Character skins you dropped in by hand (
@@ -307,7 +307,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         onRemove={removePack}
         onRemoveAll={() => removeAll("manual")}
         bulkBusy={busy === "__bulk_manual"}
-        bulkLabel="Unimport all"
+        bulkLabel="unimport all"
       />
 
       <IsoAssetsSection
@@ -338,7 +338,7 @@ function IsoAssetsSection({
     <section>
       <div className="flex items-baseline justify-between pb-2 gap-3">
         <div>
-          <h3 className="section-title text-base">Stages, effects, UI</h3>
+          <h3 className="section-title text-base">stages, effects, ui</h3>
           <p className="text-xs text-muted">
             Non-character ISO assets — file names like{" "}
             <code className="px-1 rounded bg-bg border border-border">
@@ -402,7 +402,7 @@ function IsoAssetsSection({
                   </div>
                 </div>
                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
-                  {a.source === "patreon" ? "Patreon" : "Imported"}
+                  {a.source === "patreon" ? "patreon" : "imported"}
                 </span>
                 <div className="flex flex-col gap-1.5 shrink-0 items-stretch">
                   {a.installed ? (
@@ -411,7 +411,7 @@ function IsoAssetsSection({
                       onClick={() => onUninstall(a)}
                       disabled={busy === myKey}
                     >
-                      {busy === myKey ? "Uninstalling…" : "Uninstall"}
+                      {busy === myKey ? "uninstalling…" : "uninstall"}
                     </button>
                   ) : (
                     <button
@@ -419,16 +419,16 @@ function IsoAssetsSection({
                       onClick={() => onInstall(a)}
                       disabled={busy === myKey}
                     >
-                      {busy === myKey ? "Installing…" : "Install"}
+                      {busy === myKey ? "installing…" : "install"}
                     </button>
                   )}
                   <button
                     className="text-xs text-muted hover:text-danger px-2 py-1"
                     onClick={() => onRemove(a)}
                     disabled={busy === myKey}
-                    title="Delete file from disk"
+                    title="delete file from disk"
                   >
-                    {a.source === "patreon" ? "Remove" : "Unimport"}
+                    {a.source === "patreon" ? "remove" : "unimport"}
                   </button>
                 </div>
               </div>
@@ -508,15 +508,15 @@ function Section({
                     className="absolute top-2 left-2 text-[10px] px-1.5 py-0.5 rounded bg-surface/90 border border-border text-muted"
                     title={
                       p.source === "patreon"
-                        ? `Installed from Patreon${
+                        ? `installed from Patreon${
                             p.source_creator_display
                               ? ` (${p.source_creator_display})`
                               : ""
                           }`
-                        : "Imported from your filesystem"
+                        : "imported from your filesystem"
                     }
                   >
-                    {p.source === "patreon" ? "Patreon" : "Imported"}
+                    {p.source === "patreon" ? "patreon" : "imported"}
                   </span>
                 </div>
                 <div className="p-4 space-y-3 flex-1 flex flex-col">
@@ -551,7 +551,7 @@ function Section({
                               <BusyDot /> Uninstalling…
                             </span>
                           ) : (
-                            "Uninstall"
+                            "uninstall"
                           )}
                         </button>
                       ) : (
@@ -565,7 +565,7 @@ function Section({
                               <BusyDot /> Installing…
                             </span>
                           ) : (
-                            "Install"
+                            "install"
                           )}
                         </button>
                       )}
@@ -575,11 +575,11 @@ function Section({
                         disabled={busy === myKey}
                         title={
                           p.source === "patreon"
-                            ? "Delete file from disk (re-installable from Browse)"
-                            : "Delete file from disk (forgets the import)"
+                            ? "delete file from disk (re-installable from browse)"
+                            : "delete file from disk (forgets the import)"
                         }
                       >
-                        {p.source === "patreon" ? "Remove" : "Unimport"}
+                        {p.source === "patreon" ? "remove" : "unimport"}
                       </button>
                     </div>
                   </div>

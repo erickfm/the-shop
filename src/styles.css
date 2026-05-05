@@ -61,30 +61,36 @@
   opacity: 0.6;
 }
 
-/* Section titles — serif italic + a slight typesetter's lean. */
+/* Page / section titles — serif italic with a slight typesetter's lean.
+   Stays in the foreground color (white in dark) — the FONT does the work,
+   not a brand color. Bank's pattern. */
+.page-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+  transform: rotate(-0.5deg);
+  transform-origin: left center;
+  display: inline-block;
+}
+
 .section-title {
   font-family: Georgia, "Times New Roman", serif;
   font-style: italic;
   font-weight: 400;
   font-size: 1.25rem;
   letter-spacing: -0.01em;
-  color: rgb(231 196 128); /* marquee */
-  transform: rotate(-0.4deg);
+  transform: rotate(-0.3deg);
   transform-origin: left center;
   display: inline-block;
 }
 
-/* Page-level wordmark — bigger lean, same family. */
-.wordmark {
+/* Big numbers / counts — serif. Stats look hand-set instead of system. */
+.stat-num {
   font-family: Georgia, "Times New Roman", serif;
-  font-style: italic;
   font-weight: 400;
-  font-size: 1.15rem;
   letter-spacing: -0.02em;
-  color: rgb(231 196 128);
-  transform: rotate(-1deg);
-  transform-origin: left center;
-  display: inline-block;
 }
 
 /* ─── Tactile interaction (lift + tilt + scale on hover) ─────────────────── */

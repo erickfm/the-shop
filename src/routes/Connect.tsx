@@ -112,7 +112,7 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
               onClick={() => connectAuto()}
               disabled={busy !== null}
             >
-              {busy === "auto" ? "Connecting…" : "Connect"}
+              {busy === "auto" ? "connecting…" : "connect"}
             </button>
             {found.length > 1 &&
               found.map((p) => (
@@ -123,7 +123,7 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
                   disabled={busy !== null}
                 >
                   {busy === p.browser
-                    ? "Connecting…"
+                    ? "connecting…"
                     : `Use ${BROWSER_LABELS[p.browser] || p.browser}`}
                 </button>
               ))}

@@ -79,7 +79,7 @@ export function FirstRunModal({
 
         <Step
           n={1}
-          title="Vanilla Melee ISO"
+          title="vanilla melee iso"
           done={hasIso}
           body={
             hasIso ? (
@@ -96,7 +96,7 @@ export function FirstRunModal({
 
         <Step
           n={2}
-          title="Slippi Launcher"
+          title="slippi launcher"
           done={hasLauncher}
           body={
             hasLauncher ? (
