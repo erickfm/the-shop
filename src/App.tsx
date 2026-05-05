@@ -6,7 +6,7 @@ import { Browse } from "./routes/Browse";
 import { FirstRunModal } from "./components/FirstRunModal";
 import { Toaster, toast } from "./components/Toaster";
 import { Wordmark } from "./components/Wordmark";
-import { BusyOverlay, busy } from "./components/BusyOverlay";
+import { BusyOverlay } from "./components/BusyOverlay";
 import { ipc } from "./lib/ipc";
 import type { PatreonStatus } from "./lib/types";
 
@@ -64,44 +64,19 @@ export default function App() {
     }
   };
 
-  const reset = async () => {
-    const ok = confirm(
-      [
-        "uninstall all skins and clear the patched iso?",
-        "",
-        "this will:",
-        "  • Delete the-shop-patched.iso",
-        "  • Mark every installed skin as not-installed",
-        "  • Point Slippi back at your original ISO",
-        "",
-        "your imported skin files in the library are kept.",
-      ].join("\n"),
-    );
-    if (!ok) return;
-    try {
-      const r = await busy("clearing installs…", () => ipc.resetToVanilla());
-      toast({
-        kind: "ok",
-        text: `cleared · removed patched ISO: ${r.patched_iso_removed ? "yes" : "no"} · ${r.packs_uninstalled} packs cleared`,
-      });
-      setRefreshKey((k) => k + 1);
-    } catch (e: any) {
-      toast({ kind: "danger", text: `reset failed: ${e?.message || e}` });
-    }
-  };
 
   if (needsFirstRun === null || patreon === null) {
     return <div className="p-8 text-muted">loading…</div>;
   }
 
-  const navButton = (target: Route, label: string, disabled = false) => (
+  const navLink = (target: Route, label: string, disabled = false) => (
     <button
       key={target}
-      className={`px-2.5 py-1 rounded ${
+      className={`text-sm transition-colors ${
         route === target
-          ? "bg-bg text-white"
+          ? "text-white"
           : disabled
-            ? "text-muted opacity-40 cursor-not-allowed"
+            ? "text-muted opacity-30 cursor-not-allowed"
             : "text-muted hover:text-white"
       }`}
       onClick={() => !disabled && setRoute(target)}
@@ -113,44 +88,40 @@ export default function App() {
 
   return (
     <div className="h-full flex flex-col">
-      <header className="border-b border-border bg-surface flex items-center justify-between px-6 py-3">
-        <div className="flex items-center gap-6">
+      <header className="border-b border-border/60 bg-surface flex items-center justify-between px-6 py-2.5 gap-6">
+        <nav className="flex items-baseline gap-5 min-w-0">
           <Wordmark />
-          <nav className="flex gap-1 text-sm">
-            {patreon.connected
-              ? [
-                  navButton("browse", "browse"),
-                  navButton("library", "skins"),
-                  navButton("settings", "settings"),
-                ]
-              : [
-                  navButton("connect", "connect"),
-                  navButton("library", "skins", false),
-                  navButton("settings", "settings"),
-                ]}
-          </nav>
-        </div>
-        <div className="flex gap-2 items-center">
+          <span className="text-muted/40 text-sm">·</span>
+          {patreon.connected
+            ? [
+                navLink("browse", "browse"),
+                navLink("library", "skins"),
+                navLink("settings", "settings"),
+              ]
+            : [
+                navLink("connect", "connect"),
+                navLink("library", "skins", false),
+                navLink("settings", "settings"),
+              ]}
+        </nav>
+        <div className="flex items-baseline gap-5 shrink-0">
           {patreon.connected && patreon.user ? (
             <button
-              className="text-xs text-muted hover:text-white px-2 py-1 rounded border border-border"
+              className="text-xs text-muted hover:text-white transition-colors lowercase"
               onClick={disconnect}
               title="sign out of patreon"
             >
-              {patreon.user.name || "connected"} · disconnect
+              as {patreon.user.name || "connected"}
             </button>
           ) : (
             <span className="text-xs text-muted">not connected</span>
           )}
           <button
-            className="btn-danger"
-            onClick={reset}
-            title="uninstall all skins and remove the patched iso."
+            className="text-sm text-muted hover:text-white transition-colors"
+            onClick={launch}
+            title="launch slippi"
           >
-            clear all installs
-          </button>
-          <button className="btn-primary" onClick={launch}>
-            ▶ launch slippi
+            ▶ launch
           </button>
         </div>
       </header>
