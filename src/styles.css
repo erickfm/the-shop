@@ -14,6 +14,15 @@
        graceful fallbacks on Apple/Linux; Times is the floor. */
     font-family: Georgia, "Iowan Old Style", "Palatino Linotype",
       "Times New Roman", Times, serif;
+    /* Everything reads lowercase — the underground-shop signature.
+       Catches data-driven copy too (pack titles, creator names) so we
+       don't have to .toLowerCase() at every render site. */
+    text-transform: lowercase;
+  }
+  /* Exempt monospace text (filenames, paths, slot codes, kbd) — those
+     are technical strings whose case carries meaning. */
+  code, kbd, samp, pre, .font-mono, .label-mono {
+    text-transform: none;
   }
   /* Form controls + buttons inherit the body serif so they don't snap back
      to the browser's default sans. */
@@ -77,9 +86,10 @@
 .label-mono {
   font-family: ui-monospace, "JetBrains Mono", monospace;
   font-size: 0.7rem;
-  text-transform: uppercase;
   letter-spacing: 0.08em;
   opacity: 0.6;
+  /* Inherits the body's lowercase transform — the small-caps look is
+     gone in favor of consistent lowercase across the app. */
 }
 
 /* Page / section titles — serif italic with a slight typesetter's lean.

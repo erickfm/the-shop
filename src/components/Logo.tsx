@@ -1,44 +1,51 @@
-/// the-shop logo — a chunky-dotted rounded square with a rounded
-/// exclamation point inside, riffing on Melee's item-crate. Currents
-/// inherit `currentColor` so the logo recolors with the surrounding text.
-export function Logo({ size = 28 }: { size?: number }) {
+/// the-shop logo — monochrome riff on Melee's metal-box item:
+///   - Chunky rounded square outline
+///   - Four corner rivets / bolts
+///   - A fat, cartoony, slightly bulb-topped exclamation point in the
+///     middle (not a thin straight line — a tapered pillar with a fat dot)
+/// All paths inherit `currentColor` so the logo recolors with surrounding
+/// text. Keep the front-facing flat perspective; no fake gradients.
+export function Logo({ size = 30 }: { size?: number }) {
   return (
     <svg
-      viewBox="0 0 64 64"
+      viewBox="0 0 32 32"
       width={size}
       height={size}
       aria-hidden
       role="img"
       style={{ flex: "none" }}
     >
-      {/* Chunky dotted rounded square. `stroke-dasharray="0 11"` with
-          rounded line caps draws fat circular dots spaced 11 units
-          apart — same trick used for stippled UI borders. */}
+      {/* Outer rounded square — the box body, outline only. */}
       <rect
-        x="8"
-        y="8"
-        width="48"
-        height="48"
-        rx="11"
-        ry="11"
+        x="2.5"
+        y="2.5"
+        width="27"
+        height="27"
+        rx="5.5"
+        ry="5.5"
         fill="none"
         stroke="currentColor"
-        strokeWidth={5}
-        strokeLinecap="round"
-        strokeDasharray="0 11"
+        strokeWidth="2.4"
+        strokeLinejoin="round"
       />
-      {/* Exclamation stem — thick line with round caps reads as a pill. */}
-      <line
-        x1="32"
-        y1="22"
-        x2="32"
-        y2="38"
-        stroke="currentColor"
-        strokeWidth={6}
-        strokeLinecap="round"
+
+      {/* Corner rivets — small filled bolts at each corner of the box. */}
+      <circle cx="6" cy="6" r="1.1" fill="currentColor" />
+      <circle cx="26" cy="6" r="1.1" fill="currentColor" />
+      <circle cx="6" cy="26" r="1.1" fill="currentColor" />
+      <circle cx="26" cy="26" r="1.1" fill="currentColor" />
+
+      {/* Cartoony exclamation stem — a fat pillar that bulges at the top
+          and tapers slightly toward the bottom. The top is a wide rounded
+          arch (like a balloon), the bottom is a smaller rounded edge. */}
+      <path
+        d="M 12 8.5 Q 12 6 16 6 Q 20 6 20 8.5 L 18.5 18 Q 18.5 19.5 16 19.5 Q 13.5 19.5 13.5 18 Z"
+        fill="currentColor"
       />
-      {/* Exclamation dot. */}
-      <circle cx="32" cy="46" r="3.2" fill="currentColor" />
+
+      {/* Fat round exclamation dot — proportionally chunky, sits below
+          the stem with a clean gap. */}
+      <circle cx="16" cy="23" r="2.5" fill="currentColor" />
     </svg>
   );
 }

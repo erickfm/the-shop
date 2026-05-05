@@ -700,11 +700,20 @@ function FeaturedHero({
         </div>
       )}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
+
+      {/* Click-capture for the top half of the hero — opens the drawer.
+          Partial-area so the bottom panel's own buttons stay reachable. */}
+      <button
+        type="button"
+        onClick={() => onSelectPack(pack.pack_id)}
+        aria-label={`open ${pack.display_name}`}
+        className="absolute top-0 left-0 right-0 h-[55%] cursor-pointer"
+      />
 
       <div className="absolute bottom-0 left-0 right-0 p-8 flex items-end justify-between gap-6">
         <div className="min-w-0 max-w-2xl">
-          <div className="flex items-center gap-2 text-xs text-muted uppercase tracking-wide pb-2">
+          <div className="flex items-center gap-2 text-xs text-muted tracking-wide pb-2">
             <span>featured</span>
             <span>·</span>
             <span>{KIND_LABELS[(pack.kind ?? "character_skin") as SkinKind]}</span>
@@ -809,12 +818,6 @@ function FeaturedHero({
               subscribe on patreon
             </button>
           )}
-          <button
-            className="btn px-6"
-            onClick={() => onSelectPack(pack.pack_id)}
-          >
-            Details
-          </button>
         </div>
       </div>
 

@@ -213,7 +213,7 @@ export function SearchBar({
             </div>
           ) : (
             <>
-              <div className="px-3 py-1.5 text-[10px] uppercase tracking-wide text-muted border-b border-border bg-bg/60 sticky top-0">
+              <div className="px-3 py-1.5 text-[10px] tracking-wide text-muted border-b border-border bg-bg/60 sticky top-0">
                 {results.length} match{results.length === 1 ? "" : "es"}
                 {" · "}↑↓ navigate{" · "}↵ open{" · "}esc clear
               </div>
