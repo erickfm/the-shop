@@ -142,16 +142,17 @@
   will-change: transform;
 }
 
-/* On hover, jump above neighbors AND amplify the rotation so the card
-   pops out of the grid — feels like picking up a card from a stack. */
+/* On hover, jump above neighbors and tilt slightly. Rest is flat (no
+   resting rotation — only hover moves), and the hover rotation is
+   modest so the motion feels deliberate rather than chaotic. */
 .tactile:hover {
   z-index: 50;
   border-color: rgb(99 130 255 / 0.55);
-  transform: translateY(-5px) rotate(var(--tilt-hover, 5deg)) scale(1.04);
+  transform: translateY(-3px) rotate(var(--tilt-hover, 3deg)) scale(1.025);
   box-shadow:
-    0 4px 8px rgb(0 0 0 / 0.3),
-    0 12px 32px rgb(0 0 0 / 0.4),
-    0 24px 60px rgb(99 130 255 / 0.14);
+    0 3px 6px rgb(0 0 0 / 0.25),
+    0 8px 24px rgb(0 0 0 / 0.32),
+    0 16px 40px rgb(99 130 255 / 0.10);
 }
 
 .tactile:active {

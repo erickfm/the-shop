@@ -171,26 +171,21 @@ export function hash32(s: string): number {
   return h >>> 0;
 }
 
-/// Per-pack rotation values driven by pack_id. Returns rest (small) and
-/// hover (larger, opposite-leaning) angles in degrees, as a CSS-var-friendly
-/// object. Stable per-id so a card always tilts the same way.
+/// Per-pack rotation driven by pack_id. Returns CSS vars for rest and
+/// hover angles. Rest is always 0° (cards sit flat at rest); hover gives
+/// each card its own modest tilt (±2–4°) keyed off the id hash, so the
+/// only motion is on interaction. Stable per-id so a given card always
+/// tilts the same way when hovered.
 export function packTilt(id: string): {
   "--tilt-rest": string;
   "--tilt-hover": string;
 } {
   const h = hash32(id || "x");
-  // Rest tilt: roughly ±3°, never closer to zero than 0.6° (so tilts are
-  // visible, not invisible).
-  const restMag = 0.6 + ((h % 1000) / 1000) * 2.4;
-  const restSign = (h & 1) === 0 ? 1 : -1;
-  const rest = restSign * restMag;
-  // Hover tilt: larger (±5–8°), often flipping direction so hovering feels
-  // like a counter-rotation rather than a continuation.
-  const hoverMag = 5 + (((h >>> 8) % 1000) / 1000) * 3;
-  const hoverSign = (h & 0b10) === 0 ? -restSign : restSign;
+  const hoverMag = 2 + ((h % 1000) / 1000) * 2; // 2.0–4.0°
+  const hoverSign = (h & 1) === 0 ? -1 : 1;
   const hover = hoverSign * hoverMag;
   return {
-    "--tilt-rest": `${rest.toFixed(2)}deg`,
+    "--tilt-rest": "0deg",
     "--tilt-hover": `${hover.toFixed(2)}deg`,
   };
 }
