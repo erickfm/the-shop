@@ -5,6 +5,7 @@ import { Browse } from "./routes/Browse";
 import { FirstRunModal } from "./components/FirstRunModal";
 import { Toaster, toast } from "./components/Toaster";
 import { Wordmark } from "./components/Wordmark";
+import { Logo } from "./components/Logo";
 import { BusyOverlay } from "./components/BusyOverlay";
 import { ipc } from "./lib/ipc";
 import type { PatreonStatus } from "./lib/types";
@@ -68,8 +69,9 @@ export default function App() {
           type="button"
           onClick={goHome}
           aria-label="home"
-          className="shrink-0 hover:opacity-80 transition-opacity"
+          className="shrink-0 flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
+          <Logo size={36} />
           <Wordmark />
         </button>
         <div className="flex items-baseline gap-5 shrink-0 text-sm">
