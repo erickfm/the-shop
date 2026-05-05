@@ -38,7 +38,7 @@ export function FirstRunModal({
       const s = await ipc.getSettings();
       setSettings(s);
     } catch (e: any) {
-      toast({ kind: "danger", text: `ISO error: ${e?.message || e}` });
+      toast({ kind: "danger", text: `iso error: ${e?.message || e}` });
     } finally {
       setBusy(false);
     }
@@ -58,7 +58,7 @@ export function FirstRunModal({
       const r = await ipc.importSkinFiles(projectDats);
       toast({
         kind: "ok",
-        text: `Imported ${r.imported} files (${r.skipped_duplicates} duplicates)`,
+        text: `imported ${r.imported} files (${r.skipped_duplicates} duplicates)`,
       });
     } finally {
       setBusy(false);
@@ -71,7 +71,7 @@ export function FirstRunModal({
     <div className="fixed inset-0 z-40 bg-black/70 flex items-center justify-center p-8">
       <div className="card max-w-2xl w-full p-6 space-y-6">
         <div>
-          <h1 className="text-xl font-bold">Welcome to the shop</h1>
+          <h1 className="text-xl font-bold">welcome to the shop</h1>
           <p className="text-sm text-muted mt-1">
             Two things to set up before we can install skins.
           </p>

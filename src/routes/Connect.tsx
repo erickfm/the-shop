@@ -6,16 +6,16 @@ import { toast } from "../components/Toaster";
 import type { BrowserProbe, PatreonUser } from "../lib/types";
 
 const BROWSER_LABELS: Record<string, string> = {
-  firefox: "Firefox",
-  librewolf: "LibreWolf",
-  chrome: "Chrome",
-  chromium: "Chromium",
-  brave: "Brave",
-  edge: "Edge",
-  opera: "Opera",
-  opera_gx: "Opera GX",
-  vivaldi: "Vivaldi",
-  safari: "Safari",
+  firefox: "firefox",
+  librewolf: "librewolf",
+  chrome: "chrome",
+  chromium: "chromium",
+  brave: "brave",
+  edge: "edge",
+  opera: "opera",
+  opera_gx: "opera gx",
+  vivaldi: "vivaldi",
+  safari: "safari",
 };
 
 export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => void }) {
@@ -29,18 +29,18 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
       setProbes(list);
     } catch (e: any) {
       setProbes([]);
-      toast({ kind: "danger", text: `Browser scan failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `browser scan failed: ${e?.message || e}` });
     }
   };
 
   useEffect(() => {
     refreshProbes();
     const unlistenPromise = listen<PatreonUser>("patreon-connected", (e) => {
-      toast({ kind: "ok", text: `Connected as ${e.payload.name}` });
+      toast({ kind: "ok", text: `connected as ${e.payload.name}` });
       onConnected(e.payload);
     });
     const unlistenErrPromise = listen<string>("patreon-connect-error", (e) => {
-      toast({ kind: "danger", text: `Patreon login failed: ${e.payload}` });
+      toast({ kind: "danger", text: `patreon login failed: ${e.payload}` });
     });
     return () => {
       unlistenPromise.then((u) => u());
@@ -54,7 +54,7 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
       const result = await ipc.patreonConnectViaBrowser(preferBrowser);
       toast({
         kind: "ok",
-        text: `Connected as ${result.user.name} (via ${BROWSER_LABELS[result.browser] || result.browser})`,
+        text: `connected as ${result.user.name} (via ${BROWSER_LABELS[result.browser] || result.browser})`,
       });
       onConnected(result.user);
     } catch (e: any) {
@@ -68,7 +68,7 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
     try {
       await openExternal("https://www.patreon.com/login");
     } catch (e: any) {
-      toast({ kind: "danger", text: `Could not open browser: ${e?.message || e}` });
+      toast({ kind: "danger", text: `could not open browser: ${e?.message || e}` });
     }
   };
 
@@ -76,7 +76,7 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
     try {
       await ipc.patreonConnect();
     } catch (e: any) {
-      toast({ kind: "danger", text: `Connect failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `connect failed: ${e?.message || e}` });
     }
   };
 
@@ -86,7 +86,7 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
   return (
     <div className="p-12 max-w-2xl mx-auto space-y-6">
       <div className="card p-10 text-center space-y-4">
-        <div className="text-2xl font-bold tracking-tight">Connect Patreon</div>
+        <div className="text-2xl font-bold tracking-tight">connect patreon</div>
         <p className="text-sm text-muted max-w-md mx-auto leading-relaxed">
           The shop reads your Patreon login from the browser you're already
           signed into. Files come straight from Patreon's CDN to your machine —
@@ -135,7 +135,7 @@ export function Connect({ onConnected }: { onConnected: (user: PatreonUser) => v
         </div>
       ) : (
         <div className="card p-6 space-y-3">
-          <div className="text-sm font-semibold">No Patreon login detected</div>
+          <div className="text-sm font-semibold">no patreon login detected</div>
           <p className="text-xs text-muted leading-relaxed">
             We didn't find a Patreon session in any browser on this machine.
             Sign into patreon.com in your normal browser (any login method —

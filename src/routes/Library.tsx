@@ -5,7 +5,8 @@ import { toast } from "../components/Toaster";
 import { busy as withBusy } from "../components/BusyOverlay";
 import { CharacterBadge } from "../components/CharacterBadge";
 import type { CharacterDef, IsoAssetRow, SkinPack } from "../lib/types";
-import { characterDisplay, stageDisplay } from "../lib/melee";
+import { characterDisplay, packTilt, stageDisplay } from "../lib/melee";
+import type { CSSProperties } from "react";
 
 const KIND_LABEL: Record<string, string> = {
   effect: "effect",
@@ -501,7 +502,11 @@ function Section({
             const allSlots = charDef?.slots ?? [];
             const myKey = `${p.character_code}/${p.pack_name}`;
             return (
-              <div key={myKey} className="card tactile overflow-hidden flex flex-col">
+              <div
+                key={myKey}
+                className="card tactile overflow-hidden flex flex-col"
+                style={packTilt(myKey) as CSSProperties}
+              >
                 <div className="relative aspect-square bg-bg flex items-center justify-center">
                   <CharacterBadge code={p.character_code} size={120} />
                   <span

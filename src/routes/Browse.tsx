@@ -14,12 +14,14 @@ import type {
 } from "../lib/types";
 import {
   characterDisplay,
+  packTilt,
   previewList,
   requiresUnzip,
   slotDisplay,
   stageDisplay,
   stripColorSuffix,
 } from "../lib/melee";
+import type { CSSProperties } from "react";
 import { SearchBar } from "../components/SearchBar";
 
 function dollars(cents: number): string {
@@ -294,7 +296,7 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
     try {
       await openExternal(url);
     } catch (e: any) {
-      toast({ kind: "danger", text: `Could not open browser: ${e?.message || e}` });
+      toast({ kind: "danger", text: `could not open browser: ${e?.message || e}` });
     }
   };
 
@@ -302,7 +304,7 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
     try {
       await openExternal(`https://www.patreon.com/posts/${postId}`);
     } catch (e: any) {
-      toast({ kind: "danger", text: `Could not open browser: ${e?.message || e}` });
+      toast({ kind: "danger", text: `could not open browser: ${e?.message || e}` });
     }
   };
 
@@ -957,8 +959,8 @@ function HorizontalPackStrip({
   hideCreator?: boolean;
 }) {
   return (
-    <div className="overflow-x-auto -mx-1 pb-2">
-      <div className="flex gap-3 px-1">
+    <div className="overflow-x-auto tilt-cradle">
+      <div className="flex gap-3 px-2">
         {packs.map((p) => (
           <MiniPackCard
             key={p.pack_id}
@@ -988,7 +990,10 @@ function MiniPackCard({
   const previews = previewList(pack);
   const isMulti = pack.slot_count > 1;
   return (
-    <div className="card tactile overflow-hidden flex flex-col w-48 shrink-0">
+    <div
+      className="card tactile overflow-hidden flex flex-col w-48 shrink-0"
+      style={packTilt(pack.pack_id) as CSSProperties}
+    >
       <button
         type="button"
         onClick={onSelect}
@@ -1233,7 +1238,10 @@ function PackCard({
   const mySoloBusy = pack.slots[0] && busyKey === `slot:${pack.slots[0].id}`;
 
   return (
-    <div className="card tactile overflow-hidden flex flex-col">
+    <div
+      className="card tactile overflow-hidden flex flex-col"
+      style={packTilt(pack.pack_id) as CSSProperties}
+    >
       <button
         type="button"
         onClick={onSelect}

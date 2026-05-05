@@ -29,11 +29,11 @@ export function Settings({ onChange }: { onChange?: () => void }) {
     setIsoBusy(true);
     try {
       const info = await ipc.setVanillaIsoPath(sel);
-      toast({ kind: "ok", text: `ISO recognized: ${info.recognized || "unknown — proceed at your own risk"}` });
+      toast({ kind: "ok", text: `iso recognized: ${info.recognized || "unknown — proceed at your own risk"}` });
       await refresh();
       onChange?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `ISO error: ${e?.message || e}` });
+      toast({ kind: "danger", text: `iso error: ${e?.message || e}` });
     } finally {
       setIsoBusy(false);
     }
@@ -55,12 +55,12 @@ export function Settings({ onChange }: { onChange?: () => void }) {
     await refresh();
   };
 
-  if (!settings) return <div className="p-8 text-muted">Loading…</div>;
+  if (!settings) return <div className="p-8 text-muted">loading…</div>;
 
   return (
     <div className="p-8 max-w-3xl space-y-8">
       <div>
-        <h2 className="text-lg font-semibold mb-1">Vanilla Melee ISO</h2>
+        <h2 className="text-lg font-semibold mb-1">vanilla melee iso</h2>
         <p className="text-sm text-muted mb-3">
           A clean, unmodified ISO. The Shop never modifies this file — it's read-only here.
         </p>
@@ -70,7 +70,7 @@ export function Settings({ onChange }: { onChange?: () => void }) {
               className="input font-mono"
               value={settings.vanilla_iso_path ?? ""}
               readOnly
-              placeholder="No ISO selected"
+              placeholder="no iso selected"
             />
             <button className="btn-primary" onClick={pickIso} disabled={isoBusy}>
               {isoBusy ? "reading…" : "browse…"}
@@ -91,7 +91,7 @@ export function Settings({ onChange }: { onChange?: () => void }) {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-1">Slippi Launcher</h2>
+        <h2 className="text-lg font-semibold mb-1">slippi launcher</h2>
         <p className="text-sm text-muted mb-3">
           Where to find the Slippi Launcher binary so we can launch it for you.
         </p>
@@ -128,7 +128,7 @@ export function Settings({ onChange }: { onChange?: () => void }) {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-1">Storage</h2>
+        <h2 className="text-lg font-semibold mb-1">storage</h2>
         <div className="card p-4 text-xs text-muted font-mono space-y-1">
           <div>skins: {settings.skins_dir}</div>
           <div>patched ISO: {settings.patched_iso_path}</div>

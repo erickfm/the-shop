@@ -4,33 +4,33 @@
 // HSDLib's codes don't match the actual ISO file names. The texture-index is
 // authoritative; HSDLib's mapping is only used for thumbnail/badge lookups.
 const CHARACTER_LABELS_HAL: Record<string, string> = {
-  Mr: "Mario",
-  Lg: "Luigi",
-  Pe: "Peach",
-  Ys: "Yoshi",
-  Dk: "Donkey Kong",
-  Kp: "Bowser",
-  Pk: "Pikachu",
-  Pc: "Pichu",
-  Fx: "Fox",
-  Fc: "Falco",
-  Ca: "Captain Falcon",
-  Gn: "Ganondorf",
-  Sk: "Sheik",
-  Zd: "Zelda",
-  Lk: "Link",
-  Cl: "Young Link",
-  Ss: "Samus",
-  Pr: "Jigglypuff",
-  Mt: "Mewtwo",
-  Pp: "Popo",
-  Nn: "Nana",
-  Ms: "Marth",
-  Fe: "Roy",
-  Ne: "Ness",
-  Kb: "Kirby",
-  Gw: "Mr. Game & Watch",
-  Dr: "Dr. Mario",
+  Mr: "mario",
+  Lg: "luigi",
+  Pe: "peach",
+  Ys: "yoshi",
+  Dk: "donkey kong",
+  Kp: "bowser",
+  Pk: "pikachu",
+  Pc: "pichu",
+  Fx: "fox",
+  Fc: "falco",
+  Ca: "captain falcon",
+  Gn: "ganondorf",
+  Sk: "sheik",
+  Zd: "zelda",
+  Lk: "link",
+  Cl: "young link",
+  Ss: "samus",
+  Pr: "jigglypuff",
+  Mt: "mewtwo",
+  Pp: "popo",
+  Nn: "nana",
+  Ms: "marth",
+  Fe: "roy",
+  Ne: "ness",
+  Kb: "kirby",
+  Gw: "mr. game & watch",
+  Dr: "dr. mario",
 };
 
 export function characterDisplay(code: string | null | undefined): string {
@@ -39,18 +39,18 @@ export function characterDisplay(code: string | null | undefined): string {
 }
 
 const SLOT_LABELS: Record<string, string> = {
-  Nr: "Default",
-  Re: "Red",
-  Bu: "Blue",
-  Gr: "Green",
-  Or: "Orange",
-  Ye: "Yellow",
-  Aq: "Aqua",
-  Wh: "White",
-  Bk: "Black",
-  La: "Lavender",
-  Pi: "Pink",
-  Gy: "Grey",
+  Nr: "default",
+  Re: "red",
+  Bu: "blue",
+  Gr: "green",
+  Or: "orange",
+  Ye: "yellow",
+  Aq: "aqua",
+  Wh: "white",
+  Bk: "black",
+  La: "lavender",
+  Pi: "pink",
+  Gy: "grey",
 };
 
 export function slotDisplay(code: string | null | undefined): string {
@@ -62,43 +62,43 @@ export function slotDisplay(code: string | null | undefined): string {
 // `.dat`/`.usd`. We only label codes we've verified; unknown codes fall
 // through to the raw filename so the UI degrades gracefully.
 const STAGE_LABELS: Record<string, string> = {
-  Iz: "Icicle Mountain",
-  Ps: "Pokémon Stadium",
-  St: "Yoshi's Story",
-  Op: "Onett",
-  Ba: "Battlefield",
-  Bf: "Battlefield",
-  Fn: "Final Destination",
-  Fs: "Final Destination",
-  Fz: "Fountain of Dreams",
-  Mc: "Mute City",
-  Te: "Temple",
-  Cs: "Corneria",
-  Ve: "Venom",
-  Rc: "Rainbow Cruise",
-  Yj: "Yoshi's Island (N64)",
-  Kg: "Kongo Jungle (N64)",
-  Kr: "Kongo Jungle",
-  Gb: "Great Bay",
-  Gd: "Green Greens",
-  Gr: "Green Greens",
-  Px: "Princess Peach's Castle",
-  Im: "Icicle Mountain",
-  Hr: "Home-Run Contest",
+  Iz: "icicle mountain",
+  Ps: "pokémon stadium",
+  St: "yoshi's story",
+  Op: "onett",
+  Ba: "battlefield",
+  Bf: "battlefield",
+  Fn: "final destination",
+  Fs: "final destination",
+  Fz: "fountain of dreams",
+  Mc: "mute city",
+  Te: "temple",
+  Cs: "corneria",
+  Ve: "venom",
+  Rc: "rainbow cruise",
+  Yj: "yoshi's island (n64)",
+  Kg: "kongo jungle (n64)",
+  Kr: "kongo jungle",
+  Gb: "great bay",
+  Gd: "green greens",
+  Gr: "green greens",
+  Px: "princess peach's castle",
+  Im: "icicle mountain",
+  Hr: "home-run contest",
   // N-prefixed codes are commonly Animelee / training-mode / new variants
   // of standard stages — we keep them but label as "(variant)" until verified.
-  NBa: "Battlefield (variant)",
-  NFn: "Final Destination (variant)",
-  NLa: "Stage (NLa variant)",
-  NZr: "Stage (NZr variant)",
+  NBa: "battlefield (variant)",
+  NFn: "final destination (variant)",
+  NLa: "stage (nla variant)",
+  NZr: "stage (nzr variant)",
 };
 
 /// Returns a human-readable stage name given the iso_target_filename
-/// (e.g. "GrFs.usd" -> "Final Destination") or the raw filename if we don't
+/// (e.g. "grfs.usd" -> "final destination") or the raw filename if we don't
 /// recognize the code yet.
 export function stageDisplay(isoTargetFilename: string | null | undefined): string {
   if (!isoTargetFilename) return "";
-  // Strip "Gr" prefix and ".dat"/".usd" suffix.
+  // Strip "gr" prefix and ".dat"/".usd" suffix.
   const m = isoTargetFilename.match(/^Gr(.+?)\.(?:dat|usd)$/i);
   if (!m) return isoTargetFilename;
   const code = m[1];
@@ -122,16 +122,16 @@ const COLOR_SUFFIX_TOKENS = new Set([
 
 /// Remove trailing color/slot suffix from a pack title so it doesn't repeat
 /// what the slot pill already says. Handles parens-wrapped tokens
-/// ("Falco (Bu)"), separator-prefixed tokens ("Falco - Red", "Falco · Blue",
-/// "Falco | Bu"), and a couple of common version tokens that often trail
-/// re-uploads. Iterates so compound suffixes ("Falco (Bu) - v2") fully strip.
+/// ("falco (bu)"), separator-prefixed tokens ("falco - red", "falco · blue",
+/// "falco | bu"), and a couple of common version tokens that often trail
+/// re-uploads. Iterates so compound suffixes ("falco (bu) - v2") fully strip.
 /// Defensive — the index *should* already populate `pack_display_name`
 /// without these, but the frontend doesn't trust that.
 export function stripColorSuffix(name: string): string {
   let s = name.trim();
   for (let i = 0; i < 5; i++) {
     const before = s;
-    // Parens-wrapped color/slot at end: "Falco (Bu)" / "Falco (Default)"
+    // Parens-wrapped color/slot at end: "falco (bu)" / "falco (default)"
     s = s.replace(/\s*\(\s*([^()]+)\s*\)\s*$/i, (full, inner) => {
       return COLOR_SUFFIX_TOKENS.has(String(inner).toLowerCase().trim())
         ? ""
@@ -160,6 +160,39 @@ export function stripColorSuffix(name: string): string {
 export function requiresUnzip(filenameInPost: string): boolean {
   const l = filenameInPost.toLowerCase();
   return l.endsWith(".zip") || l.endsWith(".rar") || l.endsWith(".7z");
+}
+
+/// Stable string-hash used to derive per-card random tilts that don't
+/// re-roll on every render. Tiny djb2 variant — good enough for evenly
+/// distributing rotation values across pack ids.
+export function hash32(s: string): number {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0;
+  return h >>> 0;
+}
+
+/// Per-pack rotation values driven by pack_id. Returns rest (small) and
+/// hover (larger, opposite-leaning) angles in degrees, as a CSS-var-friendly
+/// object. Stable per-id so a card always tilts the same way.
+export function packTilt(id: string): {
+  "--tilt-rest": string;
+  "--tilt-hover": string;
+} {
+  const h = hash32(id || "x");
+  // Rest tilt: roughly ±3°, never closer to zero than 0.6° (so tilts are
+  // visible, not invisible).
+  const restMag = 0.6 + ((h % 1000) / 1000) * 2.4;
+  const restSign = (h & 1) === 0 ? 1 : -1;
+  const rest = restSign * restMag;
+  // Hover tilt: larger (±5–8°), often flipping direction so hovering feels
+  // like a counter-rotation rather than a continuation.
+  const hoverMag = 5 + (((h >>> 8) % 1000) / 1000) * 3;
+  const hoverSign = (h & 0b10) === 0 ? -restSign : restSign;
+  const hover = hoverSign * hoverMag;
+  return {
+    "--tilt-rest": `${rest.toFixed(2)}deg`,
+    "--tilt-hover": `${hover.toFixed(2)}deg`,
+  };
 }
 
 /// Combined preview URLs for a skin entry, deduped, hero first. The index

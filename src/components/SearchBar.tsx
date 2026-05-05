@@ -10,14 +10,14 @@ import { CharacterBadge } from "./CharacterBadge";
 import { SafeImage } from "./SafeImage";
 
 const KIND_LABELS_LITE: Record<string, string> = {
-  character_skin: "Character",
-  stage: "Stage",
-  music: "Music",
-  effect: "Effect",
-  animation: "Animation",
-  ui: "UI",
-  item: "Item",
-  texture_pack: "Texture pack",
+  character_skin: "character",
+  stage: "stage",
+  music: "music",
+  effect: "effect",
+  animation: "animation",
+  ui: "ui",
+  item: "item",
+  texture_pack: "texture pack",
 };
 
 /// Map a pack into the flat shape Fuse.js searches against. Pre-computing
@@ -189,13 +189,13 @@ export function SearchBar({
           }}
           onFocus={() => setOpen(true)}
           onKeyDown={handleInputKeyDown}
-          placeholder="Search packs, creators, characters, colors…"
+          placeholder="search packs, creators, characters, colors…"
           className="w-full pl-9 pr-12 py-2.5 bg-surface border border-border rounded-lg text-sm focus:border-accent focus:outline-none placeholder:text-muted"
-          aria-label="Search the texture index"
+          aria-label="search the texture index"
         />
         <kbd
           className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] px-1.5 py-0.5 rounded border border-border text-muted bg-bg pointer-events-none"
-          title="Press / to focus"
+          title="press / to focus"
         >
           /
         </kbd>
@@ -208,8 +208,8 @@ export function SearchBar({
         >
           {results.length === 0 ? (
             <div className="p-6 text-center text-sm text-muted">
-              No matches for <span className="text-white">"{trimmed}"</span>.
-              Try a creator or character name.
+              no matches for <span className="text-white">"{trimmed}"</span>.
+              try a creator or character name.
             </div>
           ) : (
             <>
