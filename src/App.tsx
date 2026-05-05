@@ -82,9 +82,9 @@ export default function App() {
                 : "text-muted hover:text-white"
             }`}
             onClick={() => setRoute("account")}
-            title="installed skins, paths, account"
+            title="your installed skins, paths, account"
           >
-            you
+            stash
           </button>
           <button
             className="text-muted hover:text-white transition-colors"

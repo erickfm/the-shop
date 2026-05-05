@@ -116,9 +116,9 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     const ok = window.confirm(
       `${verb} all ${list.length} ${source === "patreon" ? "patreon-installed" : "manually-imported"} skin${
         list.length === 1 ? "" : "s"
-      }? Files will be deleted from disk and the ISO rebuilt once.${
+      }? files will be deleted from disk and the ISO rebuilt once.${
         source === "patreon"
-          ? " You can reinstall any of them from Browse."
+          ? " you can reinstall any of them from browse."
           : ""
       }`,
     );
@@ -149,15 +149,15 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   const removePack = async (p: SkinPack) => {
     const verb = p.source === "patreon" ? "remove" : "unimport";
     const ok = window.confirm(
-      `${verb} "${p.pack_name}" (${p.character_display})? This deletes the file${
+      `${verb} "${p.pack_name}" (${p.character_display})? this deletes the file${
         p.slots.length === 1 ? "" : "s"
       } from disk${
         p.fully_installed || p.partially_installed
-          ? " and uninstalls from the ISO"
+          ? " and uninstalls from the iso"
           : ""
       }.${
         p.source === "patreon"
-          ? " You can reinstall from Browse anytime."
+          ? " you can reinstall from browse anytime."
           : ""
       }`,
     );
@@ -216,8 +216,8 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
 
   const removeAsset = async (a: IsoAssetRow) => {
     const ok = window.confirm(
-      `remove "${a.filename}"? File will be deleted from disk${
-        a.installed ? " and uninstalled from the ISO" : ""
+      `remove "${a.filename}"? file will be deleted from disk${
+        a.installed ? " and uninstalled from the iso" : ""
       }.`,
     );
     if (!ok) return;
@@ -257,17 +257,15 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     <div className="p-8 space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1 max-w-2xl">
-          <h2 className="section-title">skins Skins &amp; assetsamp; assets</h2>
+          <h2 className="section-title">your stash</h2>
           <p className="text-sm text-muted">
-            Everything <span className="text-white">on this machine</span> —
-            character skins (from Patreon or imported by hand), plus stages /
-            effects / UI / animation files you've imported. Use{" "}
-            <span className="text-white">+ Import .dat / .usd files</span> for
-            anything you've downloaded outside of Browse.
+            everything on this machine — character skins (from patreon or
+            imported by hand), plus stages / effects / ui / animation files
+            you've imported.
           </p>
         </div>
         <button className="btn shrink-0" onClick={addSkins}>
-          + Import .dat / .usd files
+          + import .dat / .usd
         </button>
       </div>
 
@@ -290,16 +288,14 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         title="imported from your filesystem"
         subtitle={
           <>
-            Character skins you dropped in by hand (
+            character skins you dropped in by hand (
             <code className="px-1 rounded bg-bg border border-border">
               PlFxNr-Name.dat
             </code>{" "}
-            etc.). Use{" "}
-            <span className="text-white">+ Import .dat / .usd files</span>{" "}
-            above.
+            etc.). use the import button above.
           </>
         }
-        emptyText='No manually-imported skins yet. Click "+ Import .dat / .usd files" to add some.'
+        emptyText="no manually-imported skins yet. import some via the button above."
         packs={manualPacks}
         chars={chars}
         busy={busy}

@@ -516,12 +516,14 @@ function Storefront(props: {
 }) {
   return (
     <div>
-      <div className="px-8 pt-6 pb-2 flex justify-end">
-        <SearchBar
-          packs={props.searchPacks}
-          onSelectPack={props.onSelectPack}
-          onCreatorClick={props.onCreatorClick}
-        />
+      <div className="sticky top-0 z-20 px-8 pt-4 pb-2 flex justify-end pointer-events-none">
+        <div className="pointer-events-auto">
+          <SearchBar
+            packs={props.searchPacks}
+            onSelectPack={props.onSelectPack}
+            onCreatorClick={props.onCreatorClick}
+          />
+        </div>
       </div>
 
       {props.featuredPacks.length > 0 && (
@@ -529,7 +531,7 @@ function Storefront(props: {
           <button
             type="button"
             onClick={props.onReshuffle}
-            className="absolute right-10 top-10 z-10 text-xs text-white/70 hover:text-white px-2 py-1 rounded bg-bg/60 hover:bg-bg/80 border border-border"
+            className="absolute left-10 top-10 z-10 text-xs text-white/70 hover:text-white px-2 py-1 rounded bg-bg/60 hover:bg-bg/80 border border-border/60"
             title="pick different featured packs and creator"
           >
             ↻ shuffle
