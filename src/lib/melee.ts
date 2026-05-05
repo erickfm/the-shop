@@ -114,6 +114,8 @@ const COLOR_SUFFIX_TOKENS = new Set([
   // Color words
   "default", "red", "blue", "green", "orange", "yellow", "aqua", "white",
   "black", "lavender", "pink", "grey", "gray", "purple", "neutral",
+  // Melee-specific slot colors used by some character roster expansions
+  "brown", "indigo", "cyan", "teal", "tan", "magenta",
   // Player slot phrasings
   "player 1", "player 2", "p1", "p2", "1p", "2p",
 ]);
