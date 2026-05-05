@@ -118,6 +118,96 @@ fn finalize_from_parts(
     })
 }
 
+/// Filename-only parser for non-character_skin ISO assets (effects, stages,
+/// UI screens, items, animations). Recognizes the HAL filename conventions
+/// used inside Melee's filesystem and returns enough info to register the
+/// file as an ISO inject target.
+///
+/// Filename convention is `<canonical>[-<custom-name>].<dat|usd>` where
+/// `<canonical>` is the HAL name (e.g. `EfFxData`, `GrFs`, `MnSlChr`,
+/// `IfAll`, `ItStandard`, `PlFxAJ`) and the optional `-...` suffix is the
+/// modder's variant name. Examples:
+/// - `EfFxData-EVA-AT-FIELD-SHINE.dat` → effect, Fox, target `EfFxData.dat`
+/// - `GrFs-NewFD.usd` → stage, target `GrFs.usd`
+/// - `MnSlChr-AnimatedCSS.usd` → ui, target `MnSlChr.usd`
+/// - `PlFxAJ-Walk.dat` → animation, Fox, target `PlFxAJ.dat`
+#[derive(Debug, Clone)]
+pub struct ParsedIsoAsset {
+    pub kind: String,
+    /// Empty for global assets (stages, generic UI, items).
+    pub character_code: String,
+    pub iso_target_filename: String,
+    pub pack_name: Option<String>,
+}
+
+pub fn parse_iso_asset_filename(filename: &str) -> Option<ParsedIsoAsset> {
+    let (stem, ext) = if let Some(s) = filename.strip_suffix(".dat") {
+        (s, "dat")
+    } else if let Some(s) = filename.strip_suffix(".usd") {
+        (s, "usd")
+    } else {
+        return None;
+    };
+
+    let (core, pack_name) = match stem.split_once('-') {
+        Some((c, n)) if !n.is_empty() => (c, Some(n.to_string())),
+        _ => (stem, None),
+    };
+    let canonical = format!("{core}.{ext}");
+
+    // Per-character animation banks: PlXxAJ
+    if core.starts_with("Pl") && core.ends_with("AJ") && core.len() >= 6 {
+        return Some(ParsedIsoAsset {
+            kind: "animation".into(),
+            character_code: core[2..4].to_string(),
+            iso_target_filename: canonical,
+            pack_name,
+        });
+    }
+
+    // Per-character effect banks: EfXxData
+    if core.starts_with("Ef") && core.ends_with("Data") && core.len() >= 8 {
+        return Some(ParsedIsoAsset {
+            kind: "effect".into(),
+            character_code: core[2..4].to_string(),
+            iso_target_filename: canonical,
+            pack_name,
+        });
+    }
+
+    // Stages: Gr*
+    if core.starts_with("Gr") && core.len() >= 4 {
+        return Some(ParsedIsoAsset {
+            kind: "stage".into(),
+            character_code: String::new(),
+            iso_target_filename: canonical,
+            pack_name,
+        });
+    }
+
+    // UI / menus
+    if core.starts_with("Mn") || core.starts_with("If") || core.starts_with("Ty") {
+        return Some(ParsedIsoAsset {
+            kind: "ui".into(),
+            character_code: String::new(),
+            iso_target_filename: canonical,
+            pack_name,
+        });
+    }
+
+    // Items / Pokemon
+    if core.starts_with("It") || core.starts_with("Pk") {
+        return Some(ParsedIsoAsset {
+            kind: "item".into(),
+            character_code: String::new(),
+            iso_target_filename: canonical,
+            pack_name,
+        });
+    }
+
+    None
+}
+
 /// Run `the-shop-hsd identify` and parse its JSON. Returns `None` on any
 /// failure (binary missing, bad exit, malformed JSON) — the caller falls back
 /// to filename-only parsing.

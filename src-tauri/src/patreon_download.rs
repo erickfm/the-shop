@@ -35,7 +35,7 @@ fn now_secs() -> i64 {
         .unwrap_or(0)
 }
 
-fn read_index_entry(db: &Db, skin_id: &str) -> AppResult<IndexedSkinEntry> {
+fn read_index(db: &Db) -> AppResult<skin_index::SkinIndex> {
     let cached = db.with_conn(|c| {
         let mut stmt = c.prepare("SELECT json FROM skin_index_cache WHERE id = 1")?;
         let mut rows = stmt.query([])?;
@@ -48,12 +48,25 @@ fn read_index_entry(db: &Db, skin_id: &str) -> AppResult<IndexedSkinEntry> {
     let body = cached.ok_or_else(|| {
         AppError::Other("skin index not loaded — refresh required".into())
     })?;
-    let parsed: skin_index::SkinIndex = serde_json::from_str(&body)?;
+    Ok(serde_json::from_str(&body)?)
+}
+
+fn read_index_entry(db: &Db, skin_id: &str) -> AppResult<IndexedSkinEntry> {
+    let parsed = read_index(db)?;
     parsed
         .skins
         .into_iter()
         .find(|s| s.id == skin_id)
         .ok_or_else(|| AppError::Other(format!("skin '{skin_id}' not found in index")))
+}
+
+fn resolve_creator_display(db: &Db, creator_id: &str) -> Option<String> {
+    let parsed = read_index(db).ok()?;
+    parsed
+        .creators
+        .into_iter()
+        .find(|c| c.id == creator_id)
+        .map(|c| c.display_name)
 }
 
 fn pick_attachment_url(json: &serde_json::Value, filename: &str) -> Option<(String, String)> {
@@ -129,10 +142,17 @@ async fn fetch_post_metadata(
 async fn download_to_path(
     client: &reqwest::Client,
     url: &str,
+    session_cookie: &str,
     dest: &std::path::Path,
 ) -> AppResult<(u64, String)> {
+    // Most c10.patreonusercontent.com URLs are self-authenticating via the
+    // ?token-time / ?token-hash query string. But Patreon also serves some
+    // attachments through cookie-protected paths — sending the session cookie
+    // defensively here means a request that would otherwise come back as an
+    // HTML "log in" stub returns the real binary instead.
     let resp = client
         .get(url)
+        .header("Cookie", format!("session_id={session_cookie}"))
         .send()
         .await
         .map_err(|e| AppError::Other(format!("cdn http: {e}")))?;
@@ -140,6 +160,26 @@ async fn download_to_path(
         return Err(AppError::Other(format!(
             "cdn fetch: HTTP {} for {url}",
             resp.status()
+        )));
+    }
+    let content_type = resp
+        .headers()
+        .get(reqwest::header::CONTENT_TYPE)
+        .and_then(|v| v.to_str().ok())
+        .map(|s| s.to_string())
+        .unwrap_or_default();
+    // Patreon's CDN serves real attachments as application/octet-stream or
+    // type-specific binary mimes. If we get text/html or application/json
+    // back, the URL didn't deliver the file we asked for — fail here with a
+    // useful message instead of writing an HTML page to disk and tripping the
+    // zip parser later.
+    if content_type.starts_with("text/html")
+        || content_type.starts_with("application/json")
+    {
+        return Err(AppError::Other(format!(
+            "cdn returned non-binary content ({content_type}) for {url} — \
+             the signed URL may be expired, or the post may be locked behind \
+             a tier you don't currently entitle. Try refreshing the index."
         )));
     }
     let mut hasher = Sha256::new();
@@ -193,7 +233,8 @@ pub async fn install_patreon_skin(
         })?;
 
     let dest = paths::skins_dir()?.join(&matched_filename);
-    let (bytes, downloaded_sha) = download_to_path(&client, &signed_url, &dest).await?;
+    let (bytes, downloaded_sha) =
+        download_to_path(&client, &signed_url, &session_cookie, &dest).await?;
 
     if let Some(expected) = entry.sha256.as_ref() {
         if !expected.is_empty() && !downloaded_sha.eq_ignore_ascii_case(expected) {
@@ -212,6 +253,259 @@ pub async fn install_patreon_skin(
         bytes: bytes as i64,
         outcome,
     })
+}
+
+/// Bulk install report — one outcome per requested slot, plus an optional
+/// global error if the post-install ISO finalize step fails.
+#[derive(Debug, serde::Serialize)]
+pub struct PatreonBulkInstallResult {
+    pub installed: Vec<PatreonInstallResult>,
+    pub failed: Vec<BulkInstallFailure>,
+    /// Net per-slot ISO ops applied during the single rebuild at the end.
+    pub iso_rebuilt: bool,
+}
+
+#[derive(Debug, serde::Serialize)]
+pub struct BulkInstallFailure {
+    pub skin_id: String,
+    pub error: String,
+}
+
+/// Bulk variant of install_patreon_skin: downloads N attachments and writes
+/// their skin_files rows, reserves slots for character_skin entries in the
+/// DB, then rebuilds the patched ISO ONCE at the end. Avoids the N-rebuilds
+/// the loop-through-single-installs path would do.
+///
+/// Non-character_skin entries (stages, effects, texture packs, etc.) in the
+/// list are handled via the per-entry path because they each touch a unique
+/// HAL filename / install table and don't benefit from the same batching.
+#[tauri::command]
+pub async fn install_patreon_skins_bulk(
+    state: State<'_, AppState>,
+    skin_ids: Vec<String>,
+) -> AppResult<PatreonBulkInstallResult> {
+    if skin_ids.is_empty() {
+        return Ok(PatreonBulkInstallResult {
+            installed: Vec::new(),
+            failed: Vec::new(),
+            iso_rebuilt: false,
+        });
+    }
+
+    let session_cookie = patreon::load_session_cookie(&state.db)?
+        .ok_or_else(|| AppError::Other("not connected to Patreon".into()))?;
+    let client = reqwest::Client::builder()
+        .user_agent("the-shop/0.1")
+        .timeout(Duration::from_secs(120))
+        .build()
+        .map_err(|e| AppError::Other(format!("reqwest: {e}")))?;
+
+    let mut installed = Vec::new();
+    let mut failed = Vec::new();
+    let mut character_skin_keys: Vec<(String, String, String, u64)> = Vec::new(); // (skin_id, character_code, pack_name, bytes)
+
+    for skin_id in &skin_ids {
+        let entry = match read_index_entry(&state.db, skin_id) {
+            Ok(e) => e,
+            Err(e) => {
+                failed.push(BulkInstallFailure {
+                    skin_id: skin_id.clone(),
+                    error: e.to_string(),
+                });
+                continue;
+            }
+        };
+
+        // Non-character_skin → fall through to the per-entry dispatcher,
+        // which handles texture_pack folder copies and stage/effect ISO
+        // injects on its own (they each rebuild the ISO once each, but
+        // they're rarely batched).
+        if entry.kind != "character_skin" {
+            match install_one_via_dispatch(&state.db, &client, &session_cookie, &entry).await {
+                Ok(r) => installed.push(r),
+                Err(e) => failed.push(BulkInstallFailure {
+                    skin_id: skin_id.clone(),
+                    error: e.to_string(),
+                }),
+            }
+            continue;
+        }
+
+        // character_skin: download + register the skin_file, but DEFER the
+        // ISO rebuild. We'll rebuild once at the end after all reservations.
+        match download_and_register_character_skin(
+            &state.db,
+            &client,
+            &session_cookie,
+            &entry,
+        )
+        .await
+        {
+            Ok(bytes) => {
+                character_skin_keys.push((
+                    entry.id.clone(),
+                    entry.character_code.clone(),
+                    entry.id.clone(),
+                    bytes,
+                ));
+            }
+            Err(e) => failed.push(BulkInstallFailure {
+                skin_id: skin_id.clone(),
+                error: e.to_string(),
+            }),
+        }
+    }
+
+    // Reserve all character_skin slots in the DB (no ISO writes).
+    let mut reservation_results: Vec<(String, u64, install::InstallResult)> = Vec::new();
+    for (skin_id, character, pack_name, bytes) in &character_skin_keys {
+        match install::reserve_pack_install_slots(&state.db, character, pack_name) {
+            Ok((slots_installed, slots_skipped)) => {
+                reservation_results.push((
+                    skin_id.clone(),
+                    *bytes,
+                    install::InstallResult {
+                        installed_slots: slots_installed,
+                        skipped_slots: slots_skipped,
+                        // patched path + previous slippi iso filled in
+                        // after finalize, since the rebuild hasn't happened
+                        // yet.
+                        patched_iso_path: String::new(),
+                        previous_slippi_iso: None,
+                    },
+                ));
+            }
+            Err(e) => failed.push(BulkInstallFailure {
+                skin_id: skin_id.clone(),
+                error: e.to_string(),
+            }),
+        }
+    }
+
+    // Single ISO rebuild for everything we just reserved.
+    let mut iso_rebuilt = false;
+    if !reservation_results.is_empty() {
+        match install::finalize_iso_state(&state.db) {
+            Ok((patched_path, previous)) => {
+                iso_rebuilt = true;
+                for (skin_id, bytes, mut r) in reservation_results.drain(..) {
+                    r.patched_iso_path = patched_path.clone();
+                    r.previous_slippi_iso = previous.clone();
+                    installed.push(PatreonInstallResult {
+                        skin_id,
+                        bytes: bytes as i64,
+                        outcome: PatreonInstallOutcome::CharacterSkin(r),
+                    });
+                }
+            }
+            Err(e) => {
+                // ISO rebuild failed after reservations — surface as a
+                // single failure so the caller knows the DB has rows that
+                // aren't reflected on disk yet.
+                for (skin_id, _, _) in reservation_results {
+                    failed.push(BulkInstallFailure {
+                        skin_id,
+                        error: format!("iso rebuild failed: {e}"),
+                    });
+                }
+            }
+        }
+    }
+
+    Ok(PatreonBulkInstallResult {
+        installed,
+        failed,
+        iso_rebuilt,
+    })
+}
+
+async fn install_one_via_dispatch(
+    db: &Db,
+    client: &reqwest::Client,
+    session_cookie: &str,
+    entry: &IndexedSkinEntry,
+) -> AppResult<PatreonInstallResult> {
+    let metadata = fetch_post_metadata(client, session_cookie, &entry.patreon_post_id).await?;
+    let (matched_filename, signed_url) =
+        pick_attachment_url(&metadata, &entry.filename_in_post).ok_or_else(|| {
+            AppError::Other(format!(
+                "attachment '{}' not found on post {}",
+                entry.filename_in_post, entry.patreon_post_id
+            ))
+        })?;
+    let dest = paths::skins_dir()?.join(&matched_filename);
+    let (bytes, downloaded_sha) =
+        download_to_path(client, &signed_url, session_cookie, &dest).await?;
+    if let Some(expected) = entry.sha256.as_ref() {
+        if !expected.is_empty() && !downloaded_sha.eq_ignore_ascii_case(expected) {
+            let _ = std::fs::remove_file(&dest);
+            return Err(AppError::Other(format!(
+                "integrity check failed for {}: expected {expected}, got {downloaded_sha}",
+                matched_filename
+            )));
+        }
+    }
+    let outcome = dispatch_install(db, entry, &dest, &downloaded_sha, bytes).await?;
+    Ok(PatreonInstallResult {
+        skin_id: entry.id.clone(),
+        bytes: bytes as i64,
+        outcome,
+    })
+}
+
+/// Download a character_skin entry's attachment, extract from zip if needed,
+/// register the skin_files row, and return the byte count. Doesn't touch
+/// installed_pack or the ISO — caller does those in a batch.
+async fn download_and_register_character_skin(
+    db: &Db,
+    client: &reqwest::Client,
+    session_cookie: &str,
+    entry: &IndexedSkinEntry,
+) -> AppResult<u64> {
+    let metadata = fetch_post_metadata(client, session_cookie, &entry.patreon_post_id).await?;
+    let (matched_filename, signed_url) =
+        pick_attachment_url(&metadata, &entry.filename_in_post).ok_or_else(|| {
+            AppError::Other(format!(
+                "attachment '{}' not found on post {}",
+                entry.filename_in_post, entry.patreon_post_id
+            ))
+        })?;
+    let dest = paths::skins_dir()?.join(&matched_filename);
+    let (bytes, downloaded_sha) =
+        download_to_path(client, &signed_url, session_cookie, &dest).await?;
+    if let Some(expected) = entry.sha256.as_ref() {
+        if !expected.is_empty() && !downloaded_sha.eq_ignore_ascii_case(expected) {
+            let _ = std::fs::remove_file(&dest);
+            return Err(AppError::Other(format!(
+                "integrity check failed for {}: expected {expected}, got {downloaded_sha}",
+                matched_filename
+            )));
+        }
+    }
+
+    let attachment_is_zip = is_zip_archive(&entry.filename_in_post);
+    let real_file: PathBuf = if attachment_is_zip {
+        let extracted = paths::skins_dir()?.join(format!("{}-extracted", entry.id));
+        std::fs::create_dir_all(&extracted)?;
+        let inner_name = match entry.inner_filename.as_deref() {
+            Some(n) if !n.is_empty() => n.to_string(),
+            _ => entry.resolved_iso_target().ok_or_else(|| {
+                AppError::Other(
+                    "zip archive entry has no inner_filename and kind has no canonical target"
+                        .into(),
+                )
+            })?,
+        };
+        let dest_inner = extracted.join(&inner_name);
+        zip_helper::extract_named_file(&dest, &inner_name, &dest_inner)?;
+        let _ = std::fs::remove_file(&dest);
+        dest_inner
+    } else {
+        dest
+    };
+
+    register_skin_file_from(db, entry, &real_file, &downloaded_sha, bytes)?;
+    Ok(bytes)
 }
 
 /// Routes the downloaded artifact based on entry.kind. Handles:
@@ -325,11 +619,12 @@ fn register_skin_file_from(
         .and_then(|s| s.to_str())
         .ok_or_else(|| AppError::Other("path filename".into()))?
         .to_string();
+    let creator_display = resolve_creator_display(db, &entry.creator_id);
     db.with_conn(|c| {
         c.execute(
             "INSERT INTO skin_files
-               (filename, character_code, slot_code, pack_name, source_path, size_bytes, sha256, imported_at, kind, iso_target_filename)
-             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)
+               (filename, character_code, slot_code, pack_name, source_path, size_bytes, sha256, imported_at, kind, iso_target_filename, source, source_creator_id, source_creator_display)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, 'patreon', ?11, ?12)
              ON CONFLICT(source_path) DO UPDATE SET
                sha256 = excluded.sha256,
                size_bytes = excluded.size_bytes,
@@ -337,7 +632,10 @@ fn register_skin_file_from(
                character_code = excluded.character_code,
                slot_code = excluded.slot_code,
                kind = excluded.kind,
-               iso_target_filename = excluded.iso_target_filename",
+               iso_target_filename = excluded.iso_target_filename,
+               source = excluded.source,
+               source_creator_id = excluded.source_creator_id,
+               source_creator_display = excluded.source_creator_display",
             rusqlite::params![
                 filename,
                 entry.character_code,
@@ -349,6 +647,8 @@ fn register_skin_file_from(
                 now_secs(),
                 entry.kind,
                 entry.resolved_iso_target(),
+                entry.creator_id,
+                creator_display,
             ],
         )?;
         let id: i64 = c.query_row(

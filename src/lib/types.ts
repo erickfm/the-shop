@@ -53,6 +53,9 @@ export type SkinPack = {
   slots: PackSlot[];
   fully_installed: boolean;
   partially_installed: boolean;
+  source: "manual" | "patreon";
+  source_creator_id: string | null;
+  source_creator_display: string | null;
 };
 
 export type ImportFailure = {
@@ -64,6 +67,33 @@ export type ImportReport = {
   imported: number;
   skipped_duplicates: number;
   failed: ImportFailure[];
+};
+
+export type DeletePackReport = {
+  character_code: string;
+  pack_name: string;
+  files_removed: number;
+  uninstalled: boolean;
+};
+
+export type BulkDeleteReport = {
+  packs_removed: number;
+  files_removed: number;
+  uninstalled_any: boolean;
+};
+
+export type IsoAssetRow = {
+  id: number;
+  filename: string;
+  kind: string;
+  iso_target_filename: string;
+  character_code: string;
+  pack_name: string;
+  source: "manual" | "patreon";
+  source_creator_display: string | null;
+  installed: boolean;
+  source_path: string;
+  size_bytes: number;
 };
 
 export type SkippedSlot = {
@@ -152,6 +182,9 @@ export type IndexedSkinEntry = {
   tier_required_cents: number;
   sha256: string | null;
   preview_url: string | null;
+  preview_urls: string[];
+  pack_id: string;
+  pack_display_name: string | null;
   notes: string | null;
 };
 
@@ -167,6 +200,26 @@ export type AnnotatedCreator = IndexedCreator & {
   backed: boolean;
   current_tier_cents: number;
   skin_count: number;
+};
+
+export type IndexedPack = {
+  pack_id: string;
+  display_name: string;
+  kind: SkinKind;
+  creator: IndexedCreator | null;
+  creator_id: string;
+  character_code: string;
+  patreon_post_id: string;
+  tier_required_cents: number;
+  preview_url: string | null;
+  preview_urls: string[];
+  slots: AnnotatedSkin[];
+  backed: boolean;
+  current_tier_cents: number;
+  any_tier_satisfied: boolean;
+  installed_count: number;
+  slot_count: number;
+  filename_in_post: string;
 };
 
 export type SkinIndex = {
@@ -196,6 +249,17 @@ export type PatreonInstallResult = {
   skin_id: string;
   bytes: number;
   outcome: PatreonInstallOutcome;
+};
+
+export type BulkInstallFailure = {
+  skin_id: string;
+  error: string;
+};
+
+export type PatreonBulkInstallResult = {
+  installed: PatreonInstallResult[];
+  failed: BulkInstallFailure[];
+  iso_rebuilt: boolean;
 };
 
 export type BrowserConnectResult = {

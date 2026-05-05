@@ -296,6 +296,206 @@ pub struct UninstallResult {
     pub slippi_reverted_to: Option<String>,
 }
 
+/// DB-only half of `install_pack`: resolves target slots considering current
+/// `installed_pack` reservations, inserts the new rows. Does NOT rebuild
+/// the patched ISO — the caller is expected to do that exactly once after
+/// a batch of these via `finalize_iso_state`. Used by the per-pack install
+/// path AND by the bulk Patreon-install path so a multi-slot pack rebuilds
+/// the ISO once instead of N times.
+pub fn reserve_pack_install_slots(
+    db: &Db,
+    character: &str,
+    pack_name: &str,
+) -> AppResult<(Vec<InstalledSlot>, Vec<SkippedSlot>)> {
+    let working = working_iso(db)?;
+    let working_fst = iso_patch::list_root_files(&working)?;
+
+    let pack_files: Vec<(i64, String, String)> = db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT id, slot_code, source_path
+             FROM skin_files
+             WHERE character_code = ?1 AND pack_name = ?2",
+        )?;
+        let mapped = stmt.query_map(params![character, pack_name], |r| {
+            Ok((
+                r.get::<_, i64>(0)?,
+                r.get::<_, String>(1)?,
+                r.get::<_, String>(2)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in mapped {
+            out.push(r?);
+        }
+        Ok(out)
+    })?;
+
+    if pack_files.is_empty() {
+        return Err(AppError::Other(format!(
+            "no files for {character}/{pack_name}"
+        )));
+    }
+
+    for (_id, slot_code, _src) in &pack_files {
+        let conflict: Option<Option<String>> = db.with_conn(|c| {
+            let mut stmt = c.prepare(
+                "SELECT pack_name FROM installed_pack
+                 WHERE character_code = ?1 AND slot_code = ?2",
+            )?;
+            let mut rows = stmt.query(params![character, slot_code])?;
+            if let Some(row) = rows.next()? {
+                Ok(Some(row.get::<_, Option<String>>(0)?))
+            } else {
+                Ok(None)
+            }
+        })?;
+        if let Some(existing) = conflict {
+            if existing.as_deref() != Some(pack_name) {
+                return Err(AppError::SlotConflict {
+                    character: character.into(),
+                    slot: slot_code.clone(),
+                    existing: existing.unwrap_or_else(|| "(unnamed)".into()),
+                });
+            }
+        }
+    }
+
+    let occupied: std::collections::HashSet<String> = db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT COALESCE(actual_slot_code, slot_code) FROM installed_pack
+             WHERE character_code = ?1",
+        )?;
+        let mapped = stmt.query_map(params![character], |r| r.get::<_, String>(0))?;
+        let mut out = std::collections::HashSet::new();
+        for r in mapped {
+            out.insert(r?);
+        }
+        Ok(out)
+    })?;
+
+    let mut to_apply: Vec<(i64, String, String)> = Vec::new();
+    let mut skipped = Vec::new();
+    let mut occupied_running = occupied;
+    for (id, requested_slot, _source_path) in &pack_files {
+        match find_target_slot(character, requested_slot, &working_fst, &occupied_running) {
+            Ok(target) => {
+                occupied_running.insert(target.actual_slot.clone());
+                to_apply.push((*id, requested_slot.clone(), target.actual_slot));
+            }
+            Err(e) => skipped.push(SkippedSlot {
+                slot_code: requested_slot.clone(),
+                reason: e.to_string(),
+            }),
+        }
+    }
+
+    let mut installed = Vec::new();
+    for (id, requested, actual) in &to_apply {
+        db.with_conn(|c| {
+            c.execute(
+                "INSERT INTO installed_pack
+                   (character_code, slot_code, pack_name, source_skin_file_id, installed_at, actual_slot_code)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6)
+                 ON CONFLICT(character_code, slot_code) DO UPDATE SET
+                   pack_name = excluded.pack_name,
+                   source_skin_file_id = excluded.source_skin_file_id,
+                   installed_at = excluded.installed_at,
+                   actual_slot_code = excluded.actual_slot_code",
+                params![character, requested, pack_name, id, now_secs(), actual],
+            )?;
+            Ok(())
+        })?;
+        installed.push(InstalledSlot {
+            requested_slot_code: requested.clone(),
+            actual_slot_code: actual.clone(),
+            routed: requested != actual,
+        });
+    }
+
+    Ok((installed, skipped))
+}
+
+/// Rebuilds the patched ISO from current `installed_pack` + `installed_iso_asset`
+/// state and points Slippi at it. Idempotent — call after a batch of slot
+/// reservations / asset registrations to make the on-disk ISO match the DB.
+/// Returns the patched ISO path and the previous Slippi iso path (for the
+/// install-result envelope).
+pub fn finalize_iso_state(db: &Db) -> AppResult<(String, Option<String>)> {
+    refresh_patched_iso(db)?;
+    let working = working_iso(db)?;
+    let patched = paths::patched_iso_path_for(&working)
+        .ok_or_else(|| AppError::Io("no parent for working iso".into()))?;
+
+    let previous_slippi_iso = match slippi_config::read_iso_path()? {
+        Some(prev) if prev != patched.display().to_string() => {
+            db.set_setting(ORIGINAL_ISO_KEY, &prev)?;
+            let _ = slippi_config::write_iso_path(&patched.display().to_string())?;
+            Some(prev)
+        }
+        Some(prev) => Some(prev),
+        None => None,
+    };
+
+    Ok((patched.display().to_string(), previous_slippi_iso))
+}
+
+/// Rebuild the patched ISO to match the current `installed_pack` state. If
+/// nothing is installed, removes the patched ISO and reverts Slippi's iso
+/// path to the original. Used by uninstall_pack for the single-pack case
+/// and by bulk-delete paths so the ISO is rebuilt exactly once for a batch
+/// of deletions.
+pub fn refresh_patched_iso(db: &Db) -> AppResult<()> {
+    let working = working_iso(db)?;
+
+    let remaining: Vec<(String, String, String)> = db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT ip.character_code, COALESCE(ip.actual_slot_code, ip.slot_code), sf.source_path
+             FROM installed_pack ip
+             JOIN skin_files sf ON sf.id = ip.source_skin_file_id",
+        )?;
+        let mapped = stmt.query_map([], |r| {
+            Ok((
+                r.get::<_, String>(0)?,
+                r.get::<_, String>(1)?,
+                r.get::<_, String>(2)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in mapped {
+            out.push(r?);
+        }
+        Ok(out)
+    })?;
+
+    if remaining.is_empty() {
+        let patched = paths::patched_iso_path_for(&working)
+            .ok_or_else(|| AppError::Io("working iso has no parent dir".into()))?;
+        let _ = fs::remove_file(&patched);
+        if let Some(orig) = db.get_setting(ORIGINAL_ISO_KEY)? {
+            let _ = slippi_config::write_iso_path(&orig)?;
+            db.clear_setting(ORIGINAL_ISO_KEY)?;
+        }
+        return Ok(());
+    }
+
+    let patched = iso::rebuild_patched_iso(&working)?;
+    let ops_targets: Vec<(String, PathBuf)> = remaining
+        .iter()
+        .map(|(ch, actual, src)| (format!("Pl{ch}{actual}.dat"), PathBuf::from(src)))
+        .collect();
+    let ops: Vec<gc_fst::IsoOp> = ops_targets
+        .iter()
+        .map(|(t, s)| gc_fst::IsoOp::Insert {
+            iso_path: Path::new(t.as_str()),
+            input_path: s.as_path(),
+        })
+        .collect();
+    gc_fst::operate_on_iso(&patched, &ops).map_err(|e| {
+        AppError::IsoWrite(format!("operate_on_iso({} ops): {e:?}", ops.len()))
+    })?;
+    Ok(())
+}
+
 pub fn uninstall_pack(db: &Db, character: &str, pack_name: &str) -> AppResult<UninstallResult> {
     let working = working_iso(db)?;
 

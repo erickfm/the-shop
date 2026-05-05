@@ -27,6 +27,14 @@ impl Db {
             "TEXT NOT NULL DEFAULT 'character_skin'",
         )?;
         ensure_column(&conn, "installed_pack", "iso_target_filename", "TEXT")?;
+        ensure_column(
+            &conn,
+            "skin_files",
+            "source",
+            "TEXT NOT NULL DEFAULT 'manual'",
+        )?;
+        ensure_column(&conn, "skin_files", "source_creator_id", "TEXT")?;
+        ensure_column(&conn, "skin_files", "source_creator_display", "TEXT")?;
         Ok(Self {
             conn: Mutex::new(conn),
         })

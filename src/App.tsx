@@ -119,12 +119,12 @@ export default function App() {
             {patreon.connected
               ? [
                   navButton("browse", "Browse"),
-                  navButton("library", "Local"),
+                  navButton("library", "Skins"),
                   navButton("settings", "Settings"),
                 ]
               : [
                   navButton("connect", "Connect"),
-                  navButton("library", "Local", false),
+                  navButton("library", "Skins", false),
                   navButton("settings", "Settings"),
                 ]}
           </nav>

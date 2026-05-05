@@ -94,6 +94,23 @@ pub struct IndexedSkinEntry {
     pub sha256: Option<String>,
     #[serde(default)]
     pub preview_url: Option<String>,
+    /// Additional preview images for posts with carousels / multi-image
+    /// galleries. Empty when the post has only the single hero. Frontend
+    /// concatenates `preview_url` with this when the entry is rendered.
+    #[serde(default)]
+    pub preview_urls: Vec<String>,
+    /// Group key for slot variants of the same multi-slot pack. Entries
+    /// sharing a `pack_id` are different color/slot options in the same
+    /// pack and should render as a single Browse card with N installable
+    /// slots. Empty / missing = treat the entry as its own 1-slot pack
+    /// keyed on its `id`. Set by texture-index/index.json's grouping pass.
+    #[serde(default)]
+    pub pack_id: String,
+    /// Optional pack-level display name (e.g. "B0XX Spacies" for a 4-slot
+    /// pack whose individual entries are named "B0XX Spacies (Bu)" etc.).
+    /// Falls back to the first slot's `display_name` when absent.
+    #[serde(default)]
+    pub pack_display_name: Option<String>,
     #[serde(default)]
     pub notes: Option<String>,
 }
@@ -148,6 +165,163 @@ pub struct AnnotatedCreator {
     pub backed: bool,
     pub current_tier_cents: i64,
     pub skin_count: i64,
+}
+
+/// A single pack as the user thinks about it: one Patreon post worth of slot
+/// variants for one character. Built by collapsing entries that share a
+/// `pack_id` (or, for legacy entries with no pack_id, a self-key on `id`).
+/// Each `slots[]` entry is still individually installable — the pack is a
+/// presentation grouping, not a backend install unit.
+#[derive(Debug, Clone, Serialize)]
+pub struct IndexedPack {
+    pub pack_id: String,
+    pub display_name: String,
+    /// One of the kinds — for character_skin packs this is "character_skin".
+    /// Non-skin entries (stage / effect / etc.) are always packs of 1 with
+    /// the entry's own kind here.
+    pub kind: String,
+    pub creator: Option<IndexedCreator>,
+    pub creator_id: String,
+    /// Empty for non-character kinds (stages, generic UI, etc.).
+    pub character_code: String,
+    pub patreon_post_id: String,
+    /// Highest tier required across all slots in this pack — i.e. what you'd
+    /// need to install everything. Per-slot tiers may be lower; the per-slot
+    /// `tier_satisfied` on each `AnnotatedSkin` is the source of truth for
+    /// the install button state.
+    pub tier_required_cents: i64,
+    pub preview_url: Option<String>,
+    pub preview_urls: Vec<String>,
+    pub slots: Vec<AnnotatedSkin>,
+    pub backed: bool,
+    pub current_tier_cents: i64,
+    /// True iff at least one slot in the pack meets its tier requirement.
+    pub any_tier_satisfied: bool,
+    pub installed_count: i64,
+    pub slot_count: i64,
+    /// Representative `filename_in_post` (first slot) — informational only,
+    /// not an install key. Each slot still installs from its own attachment.
+    pub filename_in_post: String,
+}
+
+fn pack_grouping_key(s: &AnnotatedSkin) -> String {
+    if !s.entry.pack_id.is_empty() {
+        s.entry.pack_id.clone()
+    } else {
+        s.entry.id.clone()
+    }
+}
+
+/// Group `AnnotatedSkin`s by their `pack_id` into pack-level cards. Order
+/// within a pack is the index's natural order (slots[].entry.id is the
+/// pre-grouping id, so we sort by that for stability). Packs themselves are
+/// returned in the order their first slot appears in the input.
+fn group_into_packs(skins: Vec<AnnotatedSkin>) -> Vec<IndexedPack> {
+    let mut order: Vec<String> = Vec::new();
+    let mut groups: std::collections::HashMap<String, Vec<AnnotatedSkin>> =
+        std::collections::HashMap::new();
+    for s in skins {
+        let k = pack_grouping_key(&s);
+        if !groups.contains_key(&k) {
+            order.push(k.clone());
+        }
+        groups.entry(k).or_default().push(s);
+    }
+
+    let mut packs = Vec::with_capacity(order.len());
+    for key in order {
+        let mut members = groups.remove(&key).unwrap_or_default();
+        if members.is_empty() {
+            continue;
+        }
+        members.sort_by(|a, b| a.entry.id.cmp(&b.entry.id));
+
+        let first = &members[0];
+        let display_name = first
+            .entry
+            .pack_display_name
+            .clone()
+            .unwrap_or_else(|| first.entry.display_name.clone());
+        let kind = first.entry.kind.clone();
+        let creator = first.creator.clone();
+        let creator_id = first.entry.creator_id.clone();
+        let character_code = first.entry.character_code.clone();
+        let patreon_post_id = first.entry.patreon_post_id.clone();
+        let filename_in_post = first.entry.filename_in_post.clone();
+
+        let mut tier_required_cents: i64 = 0;
+        let mut preview_url: Option<String> = None;
+        let mut all_previews: Vec<String> = Vec::new();
+        let mut seen_preview: std::collections::HashSet<String> = std::collections::HashSet::new();
+        let mut backed = false;
+        let mut current_tier_cents: i64 = 0;
+        let mut any_tier_satisfied = false;
+        let mut installed_count: i64 = 0;
+
+        for s in &members {
+            if s.entry.tier_required_cents > tier_required_cents {
+                tier_required_cents = s.entry.tier_required_cents;
+            }
+            if preview_url.is_none() {
+                if let Some(u) = &s.entry.preview_url {
+                    if !u.is_empty() {
+                        preview_url = Some(u.clone());
+                    }
+                }
+            }
+            if let Some(u) = &s.entry.preview_url {
+                if !u.is_empty() && seen_preview.insert(u.clone()) {
+                    all_previews.push(u.clone());
+                }
+            }
+            for u in &s.entry.preview_urls {
+                if !u.is_empty() && seen_preview.insert(u.clone()) {
+                    all_previews.push(u.clone());
+                }
+            }
+            if s.backed {
+                backed = true;
+            }
+            if s.current_tier_cents > current_tier_cents {
+                current_tier_cents = s.current_tier_cents;
+            }
+            if s.tier_satisfied {
+                any_tier_satisfied = true;
+            }
+            if s.installed {
+                installed_count += 1;
+            }
+        }
+
+        let slot_count = members.len() as i64;
+        packs.push(IndexedPack {
+            pack_id: key,
+            display_name,
+            kind,
+            creator,
+            creator_id,
+            character_code,
+            patreon_post_id,
+            tier_required_cents,
+            preview_url,
+            preview_urls: all_previews,
+            slots: members,
+            backed,
+            current_tier_cents,
+            any_tier_satisfied,
+            installed_count,
+            slot_count,
+            filename_in_post,
+        });
+    }
+
+    packs
+}
+
+#[tauri::command]
+pub async fn list_indexed_packs(state: State<'_, AppState>) -> AppResult<Vec<IndexedPack>> {
+    let skins = list_skin_index(state).await?;
+    Ok(group_into_packs(skins))
 }
 
 fn now_secs() -> i64 {

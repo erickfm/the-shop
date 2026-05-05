@@ -112,3 +112,25 @@ export function requiresUnzip(filenameInPost: string): boolean {
   const l = filenameInPost.toLowerCase();
   return l.endsWith(".zip") || l.endsWith(".rar") || l.endsWith(".7z");
 }
+
+/// Combined preview URLs for a skin entry, deduped, hero first. The index
+/// schema has both a singular `preview_url` (legacy / hero) and a `preview_urls`
+/// array (gallery). Either may be empty; this returns the union.
+export function previewList(skin: {
+  preview_url: string | null;
+  preview_urls?: string[] | null;
+}): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  if (skin.preview_url) {
+    seen.add(skin.preview_url);
+    out.push(skin.preview_url);
+  }
+  for (const u of skin.preview_urls ?? []) {
+    if (u && !seen.has(u)) {
+      seen.add(u);
+      out.push(u);
+    }
+  }
+  return out;
+}

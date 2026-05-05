@@ -20,6 +20,9 @@ pub struct SkinFileRow {
     pub source_path: String,
     pub size_bytes: i64,
     pub sha256: String,
+    pub source: String,
+    pub source_creator_id: Option<String>,
+    pub source_creator_display: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
@@ -40,6 +43,12 @@ pub struct SkinPack {
     pub slots: Vec<PackSlot>,
     pub fully_installed: bool,
     pub partially_installed: bool,
+    /// "manual" or "patreon" — derived from the underlying skin_files rows.
+    /// If a pack somehow mixes sources (shouldn't happen in practice), we
+    /// report "patreon" if any slot was sourced from Patreon.
+    pub source: String,
+    pub source_creator_id: Option<String>,
+    pub source_creator_display: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
@@ -97,10 +106,24 @@ pub fn import_files(
         // a useful error instead of "could not parse filename".
         let parsed = match manifest::identify(hsd_binary, src) {
             Ok(p) => p,
-            Err(e) => {
+            Err(_e) => {
+                // Character-skin parse failed — try the ISO-asset filename
+                // pattern (effects, stages, UI, items, animations) before
+                // giving up.
+                if let Some(iso) = manifest::parse_iso_asset_filename(&filename) {
+                    match import_iso_asset_file(db, src, &filename, &iso) {
+                        Ok(true) => imported += 1,
+                        Ok(false) => skipped_duplicates += 1,
+                        Err(e) => failed.push(ImportFailure {
+                            filename: filename.clone(),
+                            error: format!("ISO asset import: {e}"),
+                        }),
+                    }
+                    continue;
+                }
                 failed.push(ImportFailure {
                     filename,
-                    error: e.to_string(),
+                    error: _e.to_string(),
                 });
                 continue;
             }
@@ -139,8 +162,8 @@ pub fn import_files(
         let inserted = db.with_conn(|c| {
             let n = c.execute(
                 "INSERT INTO skin_files
-                   (filename, character_code, slot_code, pack_name, source_path, size_bytes, sha256, imported_at)
-                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
+                   (filename, character_code, slot_code, pack_name, source_path, size_bytes, sha256, imported_at, source, source_creator_id, source_creator_display)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, 'manual', NULL, NULL)
                  ON CONFLICT(source_path) DO UPDATE SET
                    sha256 = excluded.sha256,
                    size_bytes = excluded.size_bytes",
@@ -172,6 +195,327 @@ pub fn import_files(
     })
 }
 
+#[derive(Debug, Serialize)]
+pub struct DeletePackReport {
+    pub character_code: String,
+    pub pack_name: String,
+    pub files_removed: usize,
+    pub uninstalled: bool,
+}
+
+#[derive(Debug, Serialize)]
+pub struct BulkDeleteReport {
+    pub packs_removed: usize,
+    pub files_removed: usize,
+    pub uninstalled_any: bool,
+}
+
+/// Fully remove a pack: uninstalls it from the ISO if installed, deletes its
+/// rows from skin_files, and removes the underlying on-disk files. The
+/// inverse of "+ Import .dat files" for manual entries; for Patreon entries
+/// it's a "you can re-download from Browse anytime" remove.
+pub fn delete_pack(
+    db: &Db,
+    character_code: &str,
+    pack_name: &str,
+) -> AppResult<DeletePackReport> {
+    // First uninstall if installed — this rewrites the patched ISO without
+    // the pack's slots, so the on-disk skins_dir files become safe to remove.
+    let was_installed = db.with_conn(|c| {
+        let n: i64 = c.query_row(
+            "SELECT COUNT(*) FROM installed_pack WHERE character_code = ?1 AND pack_name = ?2",
+            params![character_code, pack_name],
+            |r| r.get(0),
+        )?;
+        Ok(n > 0)
+    })?;
+    if was_installed {
+        crate::install::uninstall_pack(db, character_code, pack_name)?;
+    }
+
+    let source_paths: Vec<String> = db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT source_path FROM skin_files WHERE character_code = ?1 AND pack_name = ?2",
+        )?;
+        let mapped =
+            stmt.query_map(params![character_code, pack_name], |r| r.get::<_, String>(0))?;
+        let mut out = Vec::new();
+        for r in mapped {
+            out.push(r?);
+        }
+        Ok(out)
+    })?;
+
+    let mut removed = 0usize;
+    for p in &source_paths {
+        if fs::remove_file(p).is_ok() {
+            removed += 1;
+        }
+        // Best-effort: a sibling -extracted/ directory may exist for
+        // zip-bundled imports; we don't track it explicitly, but if it sits
+        // next to the file we extracted, leave it — it'll get GC'd by reset.
+    }
+
+    db.with_conn(|c| {
+        c.execute(
+            "DELETE FROM skin_files WHERE character_code = ?1 AND pack_name = ?2",
+            params![character_code, pack_name],
+        )?;
+        Ok(())
+    })?;
+
+    Ok(DeletePackReport {
+        character_code: character_code.to_string(),
+        pack_name: pack_name.to_string(),
+        files_removed: removed,
+        uninstalled: was_installed,
+    })
+}
+
+/// Import a single non-character_skin file (effect / stage / UI / item /
+/// animation) into the library. Copies to skins_dir under its canonical HAL
+/// name (preserving the modder's `-Variant` suffix so distinct uploads
+/// don't overwrite each other), inserts a skin_files row tagged with the
+/// detected `kind` and `iso_target_filename`. Returns true on insert,
+/// false if the row already existed (duplicate source_path).
+fn import_iso_asset_file(
+    db: &Db,
+    src: &Path,
+    filename: &str,
+    parsed: &manifest::ParsedIsoAsset,
+) -> AppResult<bool> {
+    let dest_dir = paths::skins_dir()?;
+    let dest = dest_dir.join(filename);
+
+    if dest != src {
+        fs::copy(src, &dest).map_err(|e| AppError::Io(format!("copy: {e}")))?;
+    }
+
+    let (sha, size) = hash_file(&dest)?;
+    let dest_str = dest.to_string_lossy().to_string();
+
+    // pack_name uniquely identifies this *imported* asset within a kind.
+    // Use the variant name from the filename if present, else the canonical
+    // HAL name. Two manual imports of differently-suffixed `EfFxData-X.dat`
+    // / `EfFxData-Y.dat` get distinct rows; reimporting the same file is a
+    // no-op (source_path is UNIQUE).
+    let pack = parsed
+        .pack_name
+        .clone()
+        .unwrap_or_else(|| parsed.iso_target_filename.clone());
+
+    let inserted = db.with_conn(|c| {
+        let n = c.execute(
+            "INSERT INTO skin_files
+               (filename, character_code, slot_code, pack_name, source_path, size_bytes, sha256, imported_at, kind, iso_target_filename, source, source_creator_id, source_creator_display)
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, 'manual', NULL, NULL)
+             ON CONFLICT(source_path) DO UPDATE SET
+               sha256 = excluded.sha256,
+               size_bytes = excluded.size_bytes",
+            params![
+                filename,
+                parsed.character_code,
+                "",
+                pack,
+                dest_str,
+                size as i64,
+                sha,
+                now_secs(),
+                parsed.kind,
+                parsed.iso_target_filename,
+            ],
+        )?;
+        Ok(n > 0)
+    })?;
+    Ok(inserted)
+}
+
+#[derive(Debug, Serialize)]
+pub struct IsoAssetRow {
+    pub id: i64,
+    pub filename: String,
+    pub kind: String,
+    pub iso_target_filename: String,
+    pub character_code: String,
+    pub pack_name: String,
+    pub source: String,
+    pub source_creator_display: Option<String>,
+    pub installed: bool,
+    pub source_path: String,
+    pub size_bytes: i64,
+}
+
+/// All ISO-asset rows in skin_files (kind != 'character_skin'), with their
+/// install state derived from installed_iso_asset.
+pub fn list_iso_assets(db: &Db) -> AppResult<Vec<IsoAssetRow>> {
+    db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT sf.id, sf.filename, sf.kind, sf.iso_target_filename,
+                    sf.character_code, sf.pack_name, sf.source,
+                    sf.source_creator_display, sf.source_path, sf.size_bytes,
+                    iia.iso_target_filename IS NOT NULL AS installed
+             FROM skin_files sf
+             LEFT JOIN installed_iso_asset iia
+               ON iia.iso_target_filename = sf.iso_target_filename
+              AND iia.source_skin_file_id = sf.id
+             WHERE sf.kind != 'character_skin'
+               AND sf.iso_target_filename IS NOT NULL
+             ORDER BY sf.kind, sf.filename",
+        )?;
+        let rows = stmt.query_map([], |r| {
+            Ok(IsoAssetRow {
+                id: r.get(0)?,
+                filename: r.get(1)?,
+                kind: r.get(2)?,
+                iso_target_filename: r.get::<_, Option<String>>(3)?.unwrap_or_default(),
+                character_code: r.get::<_, String>(4)?,
+                pack_name: r.get::<_, Option<String>>(5)?.unwrap_or_default(),
+                source: r.get(6)?,
+                source_creator_display: r.get::<_, Option<String>>(7)?,
+                source_path: r.get(8)?,
+                size_bytes: r.get(9)?,
+                installed: r.get::<_, i64>(10)? != 0,
+            })
+        })?;
+        let mut out = Vec::new();
+        for r in rows {
+            out.push(r?);
+        }
+        Ok(out)
+    })
+}
+
+/// Delete an ISO asset from the library: uninstalls if installed, removes
+/// the skin_files row, and deletes the on-disk file.
+pub fn delete_iso_asset(db: &Db, skin_file_id: i64) -> AppResult<()> {
+    let row: Option<(String, Option<String>)> = db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT source_path, iso_target_filename FROM skin_files WHERE id = ?1",
+        )?;
+        let mut rows = stmt.query(params![skin_file_id])?;
+        if let Some(r) = rows.next()? {
+            Ok(Some((r.get::<_, String>(0)?, r.get::<_, Option<String>>(1)?)))
+        } else {
+            Ok(None)
+        }
+    })?;
+
+    let Some((source_path, iso_target)) = row else {
+        return Ok(());
+    };
+
+    if let Some(target) = iso_target.as_deref() {
+        let installed: bool = db.with_conn(|c| {
+            let n: i64 = c.query_row(
+                "SELECT COUNT(*) FROM installed_iso_asset
+                 WHERE iso_target_filename = ?1 AND source_skin_file_id = ?2",
+                params![target, skin_file_id],
+                |r| r.get(0),
+            )?;
+            Ok(n > 0)
+        })?;
+        if installed {
+            crate::install::uninstall_iso_asset(db, target)?;
+        }
+    }
+
+    let _ = fs::remove_file(&source_path);
+    db.with_conn(|c| {
+        c.execute("DELETE FROM skin_files WHERE id = ?1", params![skin_file_id])?;
+        Ok(())
+    })?;
+    Ok(())
+}
+
+/// Bulk variant of `delete_pack` — removes every pack matching the source
+/// filter ("manual", "patreon", or None for all) in one shot, then rebuilds
+/// the patched ISO exactly once at the end. Avoids the N-rebuilds problem
+/// you'd hit by looping `delete_pack` from the frontend.
+pub fn delete_packs_bulk(db: &Db, source_filter: Option<&str>) -> AppResult<BulkDeleteReport> {
+    let rows: Vec<(String, String, String, Option<String>)> = db.with_conn(|c| {
+        let (sql, params_vec): (&str, Vec<String>) = match source_filter {
+            Some(s) => (
+                "SELECT id, character_code, source_path, pack_name FROM skin_files
+                 WHERE pack_name IS NOT NULL AND source = ?1",
+                vec![s.to_string()],
+            ),
+            None => (
+                "SELECT id, character_code, source_path, pack_name FROM skin_files
+                 WHERE pack_name IS NOT NULL",
+                vec![],
+            ),
+        };
+        let mut stmt = c.prepare(sql)?;
+        let mapped = stmt.query_map(rusqlite::params_from_iter(params_vec.iter()), |r| {
+            Ok((
+                r.get::<_, i64>(0)?.to_string(),
+                r.get::<_, String>(1)?,
+                r.get::<_, String>(2)?,
+                r.get::<_, Option<String>>(3)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in mapped {
+            out.push(r?);
+        }
+        Ok(out)
+    })?;
+
+    if rows.is_empty() {
+        return Ok(BulkDeleteReport {
+            packs_removed: 0,
+            files_removed: 0,
+            uninstalled_any: false,
+        });
+    }
+
+    let pack_keys: std::collections::HashSet<(String, String)> = rows
+        .iter()
+        .filter_map(|(_, ch, _, pn)| pn.as_ref().map(|p| (ch.clone(), p.clone())))
+        .collect();
+
+    let uninstalled_any = db.with_conn(|c| {
+        let mut any = false;
+        for (ch, pn) in &pack_keys {
+            let n = c.execute(
+                "DELETE FROM installed_pack WHERE character_code = ?1 AND pack_name = ?2",
+                params![ch, pn],
+            )?;
+            if n > 0 {
+                any = true;
+            }
+        }
+        Ok(any)
+    })?;
+
+    let mut files_removed = 0usize;
+    for (_, _, source_path, _) in &rows {
+        if fs::remove_file(source_path).is_ok() {
+            files_removed += 1;
+        }
+    }
+
+    db.with_conn(|c| {
+        for (ch, pn) in &pack_keys {
+            c.execute(
+                "DELETE FROM skin_files WHERE character_code = ?1 AND pack_name = ?2",
+                params![ch, pn],
+            )?;
+        }
+        Ok(())
+    })?;
+
+    if uninstalled_any {
+        crate::install::refresh_patched_iso(db)?;
+    }
+
+    Ok(BulkDeleteReport {
+        packs_removed: pack_keys.len(),
+        files_removed,
+        uninstalled_any,
+    })
+}
+
 /// If the file's identified character disagrees with what its filename
 /// implies, rewrite the filename to match the identified character. This makes
 /// the on-disk name + DB row a faithful reflection of the file's contents.
@@ -196,7 +540,8 @@ fn canonical_filename(original: &str, parsed: &manifest::ParsedSkinFilename) -> 
 pub fn list_packs(db: &Db) -> AppResult<Vec<SkinPack>> {
     let rows: Vec<SkinFileRow> = db.with_conn(|c| {
         let mut stmt = c.prepare(
-            "SELECT id, filename, character_code, slot_code, pack_name, source_path, size_bytes, sha256
+            "SELECT id, filename, character_code, slot_code, pack_name, source_path, size_bytes, sha256,
+                    source, source_creator_id, source_creator_display
              FROM skin_files
              WHERE pack_name IS NOT NULL
              ORDER BY character_code, pack_name, slot_code",
@@ -211,6 +556,9 @@ pub fn list_packs(db: &Db) -> AppResult<Vec<SkinPack>> {
                 source_path: r.get(5)?,
                 size_bytes: r.get(6)?,
                 sha256: r.get(7)?,
+                source: r.get(8)?,
+                source_creator_id: r.get::<_, Option<String>>(9)?,
+                source_creator_display: r.get::<_, Option<String>>(10)?,
             })
         })?;
         let mut out = Vec::new();
@@ -261,6 +609,18 @@ pub fn list_packs(db: &Db) -> AppResult<Vec<SkinPack>> {
     for ((char_code, pack_name), files) in grouped {
         let char_def = slot_codes::lookup(&char_code)
             .ok_or_else(|| AppError::UnknownCharacter(char_code.clone()))?;
+
+        let any_patreon = files.iter().any(|f| f.source == "patreon");
+        let pack_source = if any_patreon { "patreon" } else { "manual" }.to_string();
+        let pack_creator_id = files
+            .iter()
+            .find(|f| f.source == "patreon")
+            .and_then(|f| f.source_creator_id.clone());
+        let pack_creator_display = files
+            .iter()
+            .find(|f| f.source == "patreon")
+            .and_then(|f| f.source_creator_display.clone());
+
         let mut slots: Vec<PackSlot> = files
             .into_iter()
             .map(|f| {
@@ -290,6 +650,9 @@ pub fn list_packs(db: &Db) -> AppResult<Vec<SkinPack>> {
             slots,
             fully_installed: installed_count == total && total > 0,
             partially_installed: installed_count > 0 && installed_count < total,
+            source: pack_source,
+            source_creator_id: pack_creator_id,
+            source_creator_display: pack_creator_display,
         });
     }
 

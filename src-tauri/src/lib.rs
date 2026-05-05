@@ -190,6 +190,73 @@ fn import_skin_files(
 }
 
 #[tauri::command]
+fn delete_skin_pack(
+    state: State<'_, AppState>,
+    character_code: String,
+    pack_name: String,
+) -> AppResult<library::DeletePackReport> {
+    library::delete_pack(&state.db, &character_code, &pack_name)
+}
+
+#[tauri::command]
+fn delete_skin_packs_bulk(
+    state: State<'_, AppState>,
+    source: Option<String>,
+) -> AppResult<library::BulkDeleteReport> {
+    library::delete_packs_bulk(&state.db, source.as_deref())
+}
+
+#[tauri::command]
+fn list_iso_assets(state: State<'_, AppState>) -> AppResult<Vec<library::IsoAssetRow>> {
+    library::list_iso_assets(&state.db)
+}
+
+#[tauri::command]
+fn install_iso_asset_from_file(
+    state: State<'_, AppState>,
+    skin_file_id: i64,
+) -> AppResult<install::AssetInstallResult> {
+    let (kind, target, pack_name) = state.db.with_conn(|c| {
+        let mut stmt = c.prepare(
+            "SELECT kind, iso_target_filename, pack_name FROM skin_files WHERE id = ?1",
+        )?;
+        let mut rows = stmt.query(rusqlite::params![skin_file_id])?;
+        let row = rows
+            .next()?
+            .ok_or_else(|| error::AppError::Other(format!("skin_file {skin_file_id} not found")))?;
+        Ok((
+            row.get::<_, String>(0)?,
+            row.get::<_, Option<String>>(1)?
+                .ok_or_else(|| error::AppError::Other("no iso_target_filename".into()))?,
+            row.get::<_, Option<String>>(2)?,
+        ))
+    })?;
+    install::install_iso_asset(
+        &state.db,
+        skin_file_id,
+        &kind,
+        &target,
+        pack_name.as_deref(),
+    )
+}
+
+#[tauri::command]
+fn uninstall_iso_asset_cmd(
+    state: State<'_, AppState>,
+    iso_target_filename: String,
+) -> AppResult<()> {
+    install::uninstall_iso_asset(&state.db, &iso_target_filename)
+}
+
+#[tauri::command]
+fn delete_iso_asset_cmd(
+    state: State<'_, AppState>,
+    skin_file_id: i64,
+) -> AppResult<()> {
+    library::delete_iso_asset(&state.db, skin_file_id)
+}
+
+#[tauri::command]
 fn install_pack(
     state: State<'_, AppState>,
     character: String,
@@ -258,6 +325,12 @@ pub fn run() {
             list_skin_packs,
             list_characters,
             import_skin_files,
+            delete_skin_pack,
+            delete_skin_packs_bulk,
+            list_iso_assets,
+            install_iso_asset_from_file,
+            uninstall_iso_asset_cmd,
+            delete_iso_asset_cmd,
             install_pack,
             uninstall_pack,
             reset_to_vanilla,
@@ -270,8 +343,10 @@ pub fn run() {
             patreon::list_backed_creators,
             skin_index::refresh_skin_index,
             skin_index::list_skin_index,
+            skin_index::list_indexed_packs,
             skin_index::list_indexed_creators,
             patreon_download::install_patreon_skin,
+            patreon_download::install_patreon_skins_bulk,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
