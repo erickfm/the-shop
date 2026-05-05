@@ -259,13 +259,11 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         <div className="space-y-1 max-w-2xl">
           <h2 className="section-title">your stash</h2>
           <p className="text-sm text-muted">
-            everything on this machine — character skins (from patreon or
-            imported by hand), plus stages / effects / ui / animation files
-            you've imported.
+            everything you've installed or imported.
           </p>
         </div>
         <button className="btn shrink-0" onClick={addSkins}>
-          + import .dat / .usd
+          + import
         </button>
       </div>
 

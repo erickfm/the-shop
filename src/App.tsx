@@ -76,15 +76,30 @@ export default function App() {
         </button>
         <div className="flex items-baseline gap-5 shrink-0 text-sm">
           <button
-            className={`transition-colors ${
+            className={`transition-colors p-1 -m-1 ${
               route === "account"
                 ? "text-white"
                 : "text-muted hover:text-white"
             }`}
             onClick={() => setRoute("account")}
             title="your installed skins, paths, account"
+            aria-label="open your stash and settings"
           >
-            stash
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              {/* Eight-tooth cog: gear teeth + center hole. */}
+              <path d="M12 2.5l1.6 2.4 2.9-.4.6 2.8 2.5 1.5-1 2.7 1 2.7-2.5 1.5-.6 2.8-2.9-.4L12 21.5l-1.6-2.4-2.9.4-.6-2.8L4.4 15.2l1-2.7-1-2.7L7 8.3l.6-2.8 2.9.4z" />
+              <circle cx="12" cy="12" r="3.2" />
+            </svg>
           </button>
           <button
             className="text-muted hover:text-white transition-colors"
