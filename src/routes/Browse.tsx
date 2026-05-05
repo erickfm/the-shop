@@ -516,17 +516,12 @@ function Storefront(props: {
 }) {
   return (
     <div>
-      <div className="sticky top-0 z-20 bg-bg/95 backdrop-blur border-b border-border px-8 py-4 flex items-center gap-4">
+      <div className="px-8 pt-6 pb-2 flex justify-end">
         <SearchBar
           packs={props.searchPacks}
           onSelectPack={props.onSelectPack}
           onCreatorClick={props.onCreatorClick}
         />
-        <div className="text-xs text-muted hidden md:block">
-          {props.totalPackCount} pack{props.totalPackCount === 1 ? "" : "s"}{" "}
-          across {props.totalCreatorCount} creator
-          {props.totalCreatorCount === 1 ? "" : "s"}
-        </div>
       </div>
 
       {props.featuredPacks.length > 0 && (

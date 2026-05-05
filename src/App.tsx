@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { Library } from "./routes/Library";
-import { Settings } from "./routes/Settings";
+import { Account } from "./routes/Account";
 import { Connect } from "./routes/Connect";
 import { Browse } from "./routes/Browse";
 import { FirstRunModal } from "./components/FirstRunModal";
 import { Toaster, toast } from "./components/Toaster";
-import { Logo } from "./components/Logo";
+import { Wordmark } from "./components/Wordmark";
 import { BusyOverlay } from "./components/BusyOverlay";
 import { ipc } from "./lib/ipc";
 import type { PatreonStatus } from "./lib/types";
 
-type Route = "connect" | "browse" | "library" | "settings";
+type Route = "connect" | "browse" | "account";
 
 export default function App() {
   const [route, setRoute] = useState<Route>("connect");
@@ -29,9 +28,12 @@ export default function App() {
       const s = await ipc.patreonStatus();
       setPatreon(s);
       setRoute((r) => {
-        if (r === "settings") return r;
+        // account stays open across (dis)connects so the user can still
+        // reach settings + reconnect controls; browse routes to connect
+        // when not signed in.
+        if (r === "account") return r;
         if (r === "connect" && s.connected) return "browse";
-        if ((r === "browse" || r === "library") && !s.connected) return "connect";
+        if (r === "browse" && !s.connected) return "connect";
         return r;
       });
     } catch {
@@ -53,61 +55,43 @@ export default function App() {
     }
   };
 
-
   if (needsFirstRun === null || patreon === null) {
     return <div className="p-8 text-muted">loading…</div>;
   }
 
-  const navLink = (target: Route, label: string, disabled = false) => (
-    <button
-      key={target}
-      className={`text-sm transition-colors ${
-        route === target
-          ? "text-white"
-          : disabled
-            ? "text-muted opacity-30 cursor-not-allowed"
-            : "text-muted hover:text-white"
-      }`}
-      onClick={() => !disabled && setRoute(target)}
-      disabled={disabled}
-    >
-      {label}
-    </button>
-  );
+  const goHome = () => setRoute(patreon.connected ? "browse" : "connect");
 
   return (
     <div className="h-full flex flex-col">
-      <header className="border-b border-border/60 bg-surface flex items-center justify-between px-6 py-2.5 gap-8">
+      <header className="flex items-center justify-between px-6 py-3 gap-6">
         <button
           type="button"
-          onClick={() =>
-            setRoute(patreon.connected ? "browse" : "connect")
-          }
+          onClick={goHome}
           aria-label="home"
           className="shrink-0 hover:opacity-80 transition-opacity"
         >
-          <Logo size={40} />
+          <Wordmark />
         </button>
-        <nav className="flex items-center gap-6 min-w-0 flex-1">
-          {patreon.connected
-            ? [
-                navLink("browse", "browse"),
-                navLink("library", "skins"),
-                navLink("settings", "settings"),
-              ]
-            : [
-                navLink("connect", "connect"),
-                navLink("library", "skins", false),
-                navLink("settings", "settings"),
-              ]}
-        </nav>
-        <button
-          className="text-sm text-muted hover:text-white transition-colors shrink-0"
-          onClick={launch}
-          title="launch slippi"
-        >
-          ▶ launch
-        </button>
+        <div className="flex items-baseline gap-5 shrink-0 text-sm">
+          <button
+            className={`transition-colors ${
+              route === "account"
+                ? "text-white"
+                : "text-muted hover:text-white"
+            }`}
+            onClick={() => setRoute("account")}
+            title="installed skins, paths, account"
+          >
+            you
+          </button>
+          <button
+            className="text-muted hover:text-white transition-colors"
+            onClick={launch}
+            title="launch slippi"
+          >
+            ▶ launch
+          </button>
+        </div>
       </header>
 
       <main className="flex-1 overflow-y-auto">
@@ -125,16 +109,10 @@ export default function App() {
             onAfterAction={() => setRefreshKey((k) => k + 1)}
           />
         )}
-        {route === "library" && (
-          <Library
+        {route === "account" && (
+          <Account
             key={refreshKey}
             onAfterAction={() => setRefreshKey((k) => k + 1)}
-          />
-        )}
-        {route === "settings" && (
-          <Settings
-            key={refreshKey}
-            onChange={() => setRefreshKey((k) => k + 1)}
           />
         )}
       </main>

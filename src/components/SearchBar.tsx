@@ -174,9 +174,9 @@ export function SearchBar({
   const showDropdown = open && trimmed.length >= 2;
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-2xl">
+    <div ref={containerRef} className="relative w-full max-w-xs">
       <div className="relative">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted text-sm pointer-events-none">
+        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-muted/70 text-xs pointer-events-none">
           ⌕
         </span>
         <input
@@ -190,11 +190,11 @@ export function SearchBar({
           onFocus={() => setOpen(true)}
           onKeyDown={handleInputKeyDown}
           placeholder="search packs, creators, characters, colors…"
-          className="w-full pl-9 pr-12 py-2.5 bg-surface border border-border rounded-lg text-sm focus:border-accent focus:outline-none placeholder:text-muted"
+          className="w-full pl-7 pr-9 py-1.5 bg-transparent border border-border/50 rounded-md text-xs focus:border-accent focus:outline-none placeholder:text-muted/70"
           aria-label="search the texture index"
         />
         <kbd
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] px-1.5 py-0.5 rounded border border-border text-muted bg-bg pointer-events-none"
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-[9px] px-1 py-0 rounded border border-border/50 text-muted bg-bg/60 pointer-events-none"
           title="press / to focus"
         >
           /
