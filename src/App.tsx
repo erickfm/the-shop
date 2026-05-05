@@ -74,7 +74,7 @@ export default function App() {
           <Logo size={36} />
           <Wordmark />
         </button>
-        <div className="flex items-baseline gap-5 shrink-0 text-sm">
+        <div className="flex items-center gap-5 shrink-0 text-sm">
           <button
             className={`transition-colors p-1 -m-1 ${
               route === "account"
