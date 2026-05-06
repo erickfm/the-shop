@@ -27,11 +27,15 @@ import argparse
 import json
 import os
 import re
+import shutil
 import sqlite3
+import subprocess
 import sys
+import tempfile
 import time
 import urllib.parse
 import urllib.request
+import zipfile
 from collections import defaultdict
 from pathlib import Path
 
@@ -438,6 +442,106 @@ ARCHIVE_EXTS = (".zip", ".rar", ".7z")
 HAL_EXTS = (".dat", ".usd", ".hps") + ARCHIVE_EXTS
 
 
+def is_archive(name: str) -> bool:
+    return name.lower().endswith(ARCHIVE_EXTS)
+
+
+def download_to(url: str, dest: Path, cookie: str) -> bool:
+    """Download to dest. Returns True on success. Sends the session cookie
+    defensively so attachments served from cookie-protected paths work."""
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={
+                "Cookie": f"session_id={cookie}",
+                "User-Agent": USER_AGENT,
+            },
+        )
+        with urllib.request.urlopen(req, timeout=60) as r:
+            ctype = r.headers.get("content-type", "")
+            if ctype.startswith(("text/html", "application/json")):
+                return False
+            with open(dest, "wb") as f:
+                shutil.copyfileobj(r, f)
+        return dest.stat().st_size > 0
+    except Exception:
+        return False
+
+
+def list_archive_contents(local: Path) -> list[str]:
+    """Return list of file names (with subpaths) inside the archive."""
+    name = str(local).lower()
+    if name.endswith(".zip"):
+        try:
+            with zipfile.ZipFile(local) as z:
+                return [
+                    info.filename
+                    for info in z.infolist()
+                    if not info.is_dir() and not info.filename.endswith("/")
+                ]
+        except Exception:
+            return []
+    if name.endswith(".rar"):
+        try:
+            r = subprocess.run(
+                ["unrar", "lb", str(local)],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            return [l.strip() for l in r.stdout.splitlines() if l.strip()]
+        except (FileNotFoundError, subprocess.CalledProcessError):
+            return []
+    if name.endswith(".7z"):
+        try:
+            r = subprocess.run(
+                ["7z", "l", "-slt", str(local)],
+                check=True,
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            paths = [
+                line[7:].strip()
+                for line in r.stdout.splitlines()
+                if line.startswith("Path = ")
+            ]
+            # First "Path = " is the archive itself; skip it.
+            return paths[1:] if paths else []
+        except (FileNotFoundError, subprocess.CalledProcessError):
+            return []
+    return []
+
+
+def expand_archive_attachment(
+    name: str,
+    url: str,
+    cookie: str,
+    cache_dir: Path,
+) -> list[tuple[str, str | None]]:
+    """For an archive attachment, return [(inner_filename, parent_archive_name)]
+    for every inner file matching a HAL pattern. Falls back to the
+    outer-name guess when download / extract fails (so we still produce
+    SOMETHING, just less accurately)."""
+    safe_name = re.sub(r"[^A-Za-z0-9._-]+", "_", name)[:120]
+    local = cache_dir / safe_name
+    if not local.exists():
+        ok = download_to(url, local, cookie)
+        if not ok:
+            return []
+    inner = list_archive_contents(local)
+    matches: list[tuple[str, str | None]] = []
+    for path in inner:
+        base = path.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
+        if not base.lower().endswith((".dat", ".usd", ".hps")):
+            continue
+        if parse_filename(base) is None:
+            continue
+        matches.append((base, name))
+    return matches
+
+
 def slug(s: str) -> str:
     return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", s.lower())).strip("-")
 
@@ -448,10 +552,15 @@ def post_preview_url(post: dict) -> str | None:
 
 
 def build_entries(
-    creator_id: str, posts: list[dict]
+    creator_id: str,
+    posts: list[dict],
+    cookie: str,
+    cache_dir: Path,
 ) -> list[dict]:
     out: list[dict] = []
     seen_ids: set[str] = set()
+    archives_seen = 0
+    archives_expanded = 0
 
     for bundle in posts:
         post = bundle["post"]
@@ -491,7 +600,29 @@ def build_entries(
             url = a.get("download_url") or a.get("url") or ""
             attachments.append((name, url))
 
-        for fname, _url in attachments:
+        # Expand archives: for any .zip/.rar/.7z attachment, download +
+        # crack open, then emit one entry per inner HAL file. Outer name
+        # remains `filename_in_post` so the install path matches; inner
+        # name lives in `inner_filename`.
+        expanded: list[tuple[str, str | None]] = []  # (entry_filename, archive_name|None)
+        for fname, url in attachments:
+            if is_archive(fname):
+                archives_seen += 1
+                inner_matches = expand_archive_attachment(
+                    fname, url, cookie, cache_dir
+                )
+                if inner_matches:
+                    archives_expanded += 1
+                    expanded.extend(inner_matches)
+                else:
+                    # Fall back to guessing from the outer archive name (the
+                    # original parse_filename does this for archives whose
+                    # stem itself looks HAL).
+                    expanded.append((fname, None))
+            else:
+                expanded.append((fname, None))
+
+        for fname, archive_outer in expanded:
             parsed = parse_filename(fname)
             if not parsed:
                 continue
@@ -507,17 +638,24 @@ def build_entries(
             seen_ids.add(unique)
 
             display_name = post_title or fname
+            # If we cracked open an archive: filename_in_post is the
+            # archive's outer name (what Patreon serves), inner_filename
+            # is the file inside the install path needs to extract.
+            outer_name = archive_outer or fname
+            inner_name = (
+                fname if archive_outer else parsed.get("inner_filename")
+            )
             entry = {
                 "id": unique,
                 "creator_id": creator_id,
                 "display_name": display_name,
                 "kind": parsed["kind"],
                 "iso_target_filename": parsed["iso_target_filename"],
-                "inner_filename": parsed["inner_filename"],
+                "inner_filename": inner_name,
                 "character_code": parsed["character_code"],
                 "slot_code": parsed["slot_code"],
                 "patreon_post_id": pid,
-                "filename_in_post": fname,
+                "filename_in_post": outer_name,
                 "tier_required_cents": tier_cents,
                 "sha256": None,
                 "preview_url": preview,
@@ -527,6 +665,11 @@ def build_entries(
                 "notes": None,
             }
             out.append(entry)
+    if archives_seen:
+        print(
+            f"  archives: {archives_expanded}/{archives_seen} expanded "
+            f"(rest fell back to outer-name guess or were skipped)"
+        )
     return out
 
 
@@ -547,7 +690,13 @@ def main() -> None:
     posts = fetch_posts(creator["patreon_campaign_id"], cookie)
     print(f"  posts seen: {len(posts)}")
 
-    new_entries = build_entries(creator_id, posts)
+    # Cache downloaded archives for the duration of this run so we don't
+    # re-fetch the same .zip multiple times. Cleaned up on exit.
+    cache_dir = Path(tempfile.mkdtemp(prefix=f"the-shop-scrape-{creator_id}-"))
+    try:
+        new_entries = build_entries(creator_id, posts, cookie, cache_dir)
+    finally:
+        shutil.rmtree(cache_dir, ignore_errors=True)
     print(f"  HAL-pattern attachments: {len(new_entries)}")
 
     if not new_entries:
