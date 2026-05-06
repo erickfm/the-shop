@@ -62,10 +62,10 @@ export function slotDisplay(code: string | null | undefined): string {
 // `.dat`/`.usd`. We only label codes we've verified; unknown codes fall
 // through to the raw filename so the UI degrades gracefully.
 const STAGE_LABELS: Record<string, string> = {
-  Iz: "icicle mountain",
+  Iz: "icicle mountain (adventure)",
   Ps: "pokémon stadium",
   St: "yoshi's story",
-  Op: "onett",
+  Op: "dreamland",
   Ba: "battlefield",
   Bf: "battlefield",
   Fn: "final destination",
