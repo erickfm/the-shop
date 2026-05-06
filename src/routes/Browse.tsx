@@ -1271,10 +1271,18 @@ function SafetyPill({
     );
   }
   if (safety.verdict === "unsafe") {
+    const baseTooltip =
+      kind === "stage"
+        ? "this stage's collision table differs from vanilla. desyncs online if the actual play surface or blastzones changed (most stage mods); harmless if only unreachable/disabled lines moved (rare). each client loads its own ISO's stage even in ranked."
+        : "structural mismatch from vanilla — will desync online.";
     return (
       <span
         className="label-mono px-1.5 py-0.5 rounded bg-bg border border-danger/60 text-danger shrink-0"
-        title={safety.warnings.join(" · ") || "structural mismatch — likely to desync online"}
+        title={
+          (safety.warnings.length
+            ? safety.warnings.join(" · ") + " · "
+            : "") + baseTooltip
+        }
       >
         may desync
       </span>

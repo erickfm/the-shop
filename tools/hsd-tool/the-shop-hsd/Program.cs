@@ -1426,13 +1426,14 @@ static int ValidateStage(string[] args)
     if (cLines == vLines) reasons.Add($"line_count_match:{cLines}");
     else warnings.Add($"line_count:{cLines}_vs_{vLines}");
 
-    string verdict;
-    int diffs = (cVerts != vVerts ? 1 : 0) + (cLines != vLines ? 1 : 0);
-    if (diffs == 0)      verdict = "safe";
-    else if (diffs == 1) verdict = "warn";
-    else                 verdict = "unsafe";
-
-    return EmitVerdict(verdict, reasons, warnings);
+    // Any collision change desyncs online when the stage gets selected.
+    // Slippi ranked draws from a fixed legal stage list, but each client
+    // loads that stage's .dat from its own local ISO — so if you've
+    // replaced e.g. GrSt.dat (Yoshi's Story), every ranked match that
+    // lands on that stage will desync against vanilla opponents. No
+    // middle "warn" verdict here — it's just unsafe.
+    bool anyDiff = (cVerts != vVerts) || (cLines != vLines);
+    return EmitVerdict(anyDiff ? "unsafe" : "safe", reasons, warnings);
 }
 
 // Find the costume's main JOBJ root. Costumes typically have one root

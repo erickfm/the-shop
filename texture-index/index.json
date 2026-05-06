@@ -99,7 +99,7 @@
       "pack_display_name": "Cave of Origin - Pokemon Stadium",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:136"
         ],
@@ -181,7 +181,7 @@
       "pack_display_name": "ENVY Stadium",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:136"
         ],
@@ -209,7 +209,7 @@
       "pack_display_name": "BF: Jungle Japes (Free)",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -291,7 +291,7 @@
       "pack_display_name": "PS: Syrox Stadium (Free)",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:136"
         ],
@@ -319,7 +319,7 @@
       "pack_display_name": "Slippi Updates - Stadium Transformations",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:136"
         ],
@@ -347,7 +347,7 @@
       "pack_display_name": "Paper Melee 64",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:34"
         ],
@@ -375,7 +375,7 @@
       "pack_display_name": "Paper Melee 64",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -457,7 +457,7 @@
       "pack_display_name": "Paper Melee 64",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:136"
         ],
@@ -512,7 +512,7 @@
       "pack_display_name": "Icy Melee",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -594,7 +594,7 @@
       "pack_display_name": "Icy Melee",
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:136"
         ],
@@ -650,7 +650,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -679,7 +679,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -708,7 +708,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -737,7 +737,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -766,7 +766,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -795,7 +795,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -824,7 +824,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
@@ -873,7 +873,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:136"
         ],
@@ -922,7 +922,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:34"
         ],
@@ -951,7 +951,7 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "warn",
+        "verdict": "unsafe",
         "reasons": [
           "line_count_match:23"
         ],
