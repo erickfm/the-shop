@@ -76,7 +76,7 @@ export default function App() {
         </button>
         <div className="flex items-center gap-5 shrink-0 text-sm">
           <button
-            className={`transition-colors p-1 -m-1 ${
+            className={`transition-colors p-1 -m-1 relative -top-[2px] ${
               route === "account"
                 ? "text-white"
                 : "text-muted hover:text-white"
@@ -86,8 +86,8 @@ export default function App() {
             aria-label="open your stash and settings"
           >
             <svg
-              width="18"
-              height="18"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
