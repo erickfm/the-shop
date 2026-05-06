@@ -43,3 +43,4 @@ src-tauri/icons/Square*Logo.png
 src-tauri/icons/StoreLogo.png
 .claude/
 .vanilla-cache/
+tools/__pycache__/
