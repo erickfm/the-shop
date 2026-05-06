@@ -516,7 +516,7 @@ function Storefront(props: {
 }) {
   return (
     <div>
-      <div className="px-8 pt-6 pb-2 flex justify-end">
+      <div className="px-8 pt-3 flex justify-end">
         <SearchBar
           packs={props.searchPacks}
           onSelectPack={props.onSelectPack}
@@ -525,7 +525,7 @@ function Storefront(props: {
       </div>
 
       {props.featuredPacks.length > 0 && (
-        <div className="px-8 pt-8 relative">
+        <div className="px-8 pt-4 relative">
           <button
             type="button"
             onClick={props.onReshuffle}
