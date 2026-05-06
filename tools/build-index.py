@@ -48,6 +48,8 @@ DB_CANDIDATES = [
     Path.home() / "Library/Application Support/the-shop/the-shop.sqlite3",  # macOS
     Path(os.environ.get("APPDATA", "")) / "the-shop/the-shop.sqlite3",  # Windows
 ]
+HSD_TOOL = REPO_ROOT / "src-tauri" / "resources" / "hsd-tool" / "the-shop-hsd"
+VANILLA_CACHE_DIR = REPO_ROOT / ".vanilla-cache"  # gitignored; holds extracted reference .dats
 
 
 def load_session_cookie() -> str:
@@ -63,6 +65,119 @@ def load_session_cookie() -> str:
     raise SystemExit(
         "no session cookie found — connect to patreon in the app first."
     )
+
+
+def load_vanilla_iso_path() -> str | None:
+    for p in DB_CANDIDATES:
+        if p.exists():
+            con = sqlite3.connect(str(p))
+            row = con.execute(
+                "SELECT value FROM settings WHERE key = 'vanilla_iso_path'"
+            ).fetchone()
+            con.close()
+            if row and row[0]:
+                return row[0]
+    return None
+
+
+# ─── HAL ISO FST reader (minimal) ────────────────────────────────────────────
+# Pulls a single named root-level file out of a GameCube ISO. Same parsing
+# pattern the Rust code uses; reimplemented here so the tool is self-contained.
+
+def _iso_extract(iso_path: Path, target_filenames: list[str], dest_dir: Path) -> dict[str, Path]:
+    out: dict[str, Path] = {}
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    with open(iso_path, "rb") as f:
+        f.seek(0x424)
+        fst_off = int.from_bytes(f.read(4), "big")
+        f.seek(fst_off + 8)
+        entry_count = int.from_bytes(f.read(4), "big")
+        str_off = fst_off + entry_count * 12
+        # Build name → (data_off, size) for root-level files
+        idx: dict[str, tuple[int, int]] = {}
+        for i in range(1, entry_count):
+            f.seek(fst_off + i * 12)
+            h = f.read(12)
+            if h[0] != 0:  # directory
+                continue
+            no = int.from_bytes(b"\x00" + h[1:4], "big")
+            do = int.from_bytes(h[4:8], "big")
+            dz = int.from_bytes(h[8:12], "big")
+            f.seek(str_off + no)
+            name_bytes = bytearray()
+            while True:
+                b = f.read(1)
+                if not b or b == b"\x00":
+                    break
+                name_bytes += b
+            idx[name_bytes.decode("utf-8", errors="replace")] = (do, dz)
+        for w in target_filenames:
+            if w in idx:
+                do, dz = idx[w]
+                f.seek(do)
+                data = f.read(dz)
+                out_path = dest_dir / w
+                out_path.write_bytes(data)
+                out[w] = out_path
+    return out
+
+
+def vanilla_costume_path(character_code: str, iso_path: str) -> Path | None:
+    """Returns a path to the vanilla `Pl{Char}Nr.dat` (default costume) for
+    the given HAL character code, extracting from the user's ISO on first
+    use and caching under .vanilla-cache/."""
+    target = f"Pl{character_code}Nr.dat"
+    cached = VANILLA_CACHE_DIR / target
+    if cached.exists():
+        return cached
+    extracted = _iso_extract(Path(iso_path), [target], VANILLA_CACHE_DIR)
+    return extracted.get(target)
+
+
+def vanilla_stage_path(iso_target_filename: str, iso_path: str) -> Path | None:
+    cached = VANILLA_CACHE_DIR / iso_target_filename
+    if cached.exists():
+        return cached
+    extracted = _iso_extract(Path(iso_path), [iso_target_filename], VANILLA_CACHE_DIR)
+    return extracted.get(iso_target_filename)
+
+
+# ─── HAL .dat safety validator (shells out to the-shop-hsd) ─────────────────
+
+def validate_dat(
+    candidate_path: Path,
+    vanilla_path: Path,
+    *,
+    kind: str,  # "costume" or "stage"
+) -> dict | None:
+    """Run the-shop-hsd's validate-{costume,stage} subcommand. Returns the
+    parsed JSON ({verdict, reasons, warnings}) or None on failure."""
+    if not HSD_TOOL.exists():
+        return None
+    sub = "validate-costume" if kind == "costume" else "validate-stage"
+    try:
+        r = subprocess.run(
+            [str(HSD_TOOL), sub, str(candidate_path), str(vanilla_path)],
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        if r.returncode != 0:
+            return {
+                "verdict": "unknown",
+                "reasons": [],
+                "warnings": [
+                    f"hsd-tool exit {r.returncode}: {r.stderr.strip()[:200]}"
+                ],
+            }
+        line = r.stdout.strip().splitlines()[-1] if r.stdout.strip() else ""
+        return json.loads(line)
+    except (subprocess.SubprocessError, OSError, json.JSONDecodeError) as e:
+        return {
+            "verdict": "unknown",
+            "reasons": [],
+            "warnings": [f"hsd-tool error: {e}"],
+        }
 
 
 # ─── HAL filename parser (port of manifest::identify + parse_iso_asset) ──────
@@ -594,11 +709,12 @@ def expand_archive_attachment(
     url: str,
     cookie: str,
     cache_dir: Path,
-) -> list[tuple[str, str | None]]:
-    """For an archive attachment, return [(inner_filename, parent_archive_name)]
-    for every inner file matching a HAL pattern. Falls back to the
-    outer-name guess when download / extract fails (so we still produce
-    SOMETHING, just less accurately)."""
+) -> list[tuple[str, str | None, Path | None]]:
+    """For an archive attachment, return [(inner_filename, parent_archive_name,
+    local_extracted_path)] for every inner file matching a HAL pattern. The
+    local path is the EXTRACTED inner file (.dat) if extraction succeeded,
+    so callers can validate it. Falls back to the outer-name guess (with
+    no local path) if download / extract fails."""
     safe_name = re.sub(r"[^A-Za-z0-9._-]+", "_", name)[:120]
     local = cache_dir / safe_name
     if not local.exists():
@@ -606,15 +722,66 @@ def expand_archive_attachment(
         if not ok:
             return []
     inner = list_archive_contents(local)
-    matches: list[tuple[str, str | None]] = []
+    matches: list[tuple[str, str | None, Path | None]] = []
     for path in inner:
         base = path.rsplit("/", 1)[-1].rsplit("\\", 1)[-1]
         if not base.lower().endswith((".dat", ".usd", ".hps")):
             continue
         if parse_filename(base) is None:
             continue
-        matches.append((base, name))
+        # Extract this inner file so the validator can read it.
+        extracted_path = _extract_inner(local, path, cache_dir)
+        matches.append((base, name, extracted_path))
     return matches
+
+
+def _extract_inner(archive: Path, inner_path: str, dest_dir: Path) -> Path | None:
+    """Extract one named entry from an archive into dest_dir; returns the
+    path or None on failure. Works with zip / 7z / rar via the same tools
+    used by list_archive_contents."""
+    name = str(archive).lower()
+    safe_inner = re.sub(r"[^A-Za-z0-9._-]+", "_", inner_path.rsplit("/", 1)[-1])[:120]
+    out = dest_dir / f"{archive.stem}__{safe_inner}"
+    if out.exists():
+        return out
+    if name.endswith(".zip"):
+        try:
+            with zipfile.ZipFile(archive) as z:
+                with z.open(inner_path) as src, open(out, "wb") as dst:
+                    shutil.copyfileobj(src, dst)
+            return out
+        except Exception:
+            return None
+    if name.endswith(".rar"):
+        try:
+            r = subprocess.run(
+                ["unrar", "p", "-inul", str(archive), inner_path],
+                capture_output=True,
+                timeout=30,
+            )
+            if r.returncode == 0 and r.stdout:
+                out.write_bytes(r.stdout)
+                return out
+        except (FileNotFoundError, subprocess.CalledProcessError):
+            pass
+        return None
+    if name.endswith(".7z"):
+        try:
+            subprocess.run(
+                ["7z", "e", "-y", f"-o{dest_dir}", str(archive), inner_path],
+                capture_output=True,
+                timeout=30,
+                check=True,
+            )
+            extracted = dest_dir / inner_path.rsplit("/", 1)[-1]
+            if extracted.exists():
+                if extracted != out:
+                    extracted.rename(out)
+                return out
+        except (FileNotFoundError, subprocess.CalledProcessError):
+            pass
+        return None
+    return None
 
 
 def slug(s: str) -> str:
@@ -626,16 +793,58 @@ def post_preview_url(post: dict) -> str | None:
     return img.get("large_url") or img.get("url") or None
 
 
+def run_validation(
+    parsed: dict,
+    local_path: Path | None,
+    vanilla_iso: str | None,
+    cache: dict[str, Path | None],
+) -> dict | None:
+    """Validate a candidate dat against the matching vanilla reference.
+    Returns the safety report dict, or None when we couldn't validate
+    (no local file, no vanilla iso configured, unsupported kind, etc.).
+    Cache is keyed by vanilla filename so we extract each ref once."""
+    if local_path is None or not local_path.exists() or vanilla_iso is None:
+        return None
+    kind = parsed.get("kind")
+    if kind == "character_skin":
+        char = parsed.get("character_code") or ""
+        if not char:
+            return None
+        key = f"Pl{char}Nr.dat"
+        if key not in cache:
+            cache[key] = vanilla_costume_path(char, vanilla_iso)
+        ref = cache[key]
+        if ref is None:
+            return None
+        return validate_dat(local_path, ref, kind="costume")
+    if kind == "stage":
+        target = parsed.get("iso_target_filename") or ""
+        if not target:
+            return None
+        if target not in cache:
+            cache[target] = vanilla_stage_path(target, vanilla_iso)
+        ref = cache[target]
+        if ref is None:
+            return None
+        return validate_dat(local_path, ref, kind="stage")
+    return None
+
+
 def build_entries(
     creator_id: str,
     posts: list[dict],
     cookie: str,
     cache_dir: Path,
+    vanilla_iso: str | None = None,
 ) -> list[dict]:
     out: list[dict] = []
     seen_ids: set[str] = set()
     archives_seen = 0
     archives_expanded = 0
+    # Vanilla reference cache (shared across the whole run): vanilla
+    # `PlFcNr.dat` etc. extracted from the user's ISO, kept on disk in
+    # .vanilla-cache/ so subsequent scrapes don't re-extract.
+    vanilla_cache: dict[str, Path | None] = {}
 
     for bundle in posts:
         post = bundle["post"]
@@ -678,8 +887,10 @@ def build_entries(
         # Expand archives: for any .zip/.rar/.7z attachment, download +
         # crack open, then emit one entry per inner HAL file. Outer name
         # remains `filename_in_post` so the install path matches; inner
-        # name lives in `inner_filename`.
-        expanded: list[tuple[str, str | None]] = []  # (entry_filename, archive_name|None)
+        # name lives in `inner_filename`. Each entry in `expanded` carries
+        # an optional local Path to the extracted (or directly downloaded)
+        # candidate file — consumed by the validation pass below.
+        expanded: list[tuple[str, str | None, Path | None]] = []
         for fname, url in attachments:
             if is_archive(fname):
                 archives_seen += 1
@@ -690,14 +901,21 @@ def build_entries(
                     archives_expanded += 1
                     expanded.extend(inner_matches)
                 else:
-                    # Fall back to guessing from the outer archive name (the
-                    # original parse_filename does this for archives whose
-                    # stem itself looks HAL).
-                    expanded.append((fname, None))
+                    expanded.append((fname, None, None))
             else:
-                expanded.append((fname, None))
+                # Direct .dat / .usd / .hps — download for validation.
+                local = None
+                if parse_filename(fname) is not None:
+                    safe = re.sub(r"[^A-Za-z0-9._-]+", "_", fname)[:120]
+                    candidate_path = cache_dir / safe
+                    if not candidate_path.exists():
+                        if download_to(url, candidate_path, cookie):
+                            local = candidate_path
+                    else:
+                        local = candidate_path
+                expanded.append((fname, None, local))
 
-        for fname, archive_outer in expanded:
+        for fname, archive_outer, local_path in expanded:
             parsed = parse_filename(fname)
             if not parsed:
                 continue
@@ -738,6 +956,7 @@ def build_entries(
                 "pack_id": "",
                 "pack_display_name": None,
                 "format": None,
+                "safety": run_validation(parsed, local_path, vanilla_iso, vanilla_cache),
                 "notes": None,
             }
             out.append(entry)
@@ -746,6 +965,15 @@ def build_entries(
             f"  archives: {archives_expanded}/{archives_seen} expanded "
             f"(rest fell back to outer-name guess or were skipped)"
         )
+    safety_seen = sum(1 for e in out if e.get("safety"))
+    if safety_seen:
+        verdicts: dict[str, int] = defaultdict(int)
+        for e in out:
+            v = (e.get("safety") or {}).get("verdict")
+            if v:
+                verdicts[v] += 1
+        summary = " ".join(f"{k}:{v}" for k, v in sorted(verdicts.items()))
+        print(f"  safety: {safety_seen} validated · {summary}")
     return out
 
 
@@ -768,12 +996,23 @@ def main() -> None:
              "(dedupes duplicate slot_codes within a group). use to "
              "migrate existing data after a grouping rule change.",
     )
+    p.add_argument(
+        "--revalidate-all",
+        action="store_true",
+        help="re-download every existing entry's attachment and run the "
+             "safety validator against the user's vanilla iso. slow.",
+    )
     args = p.parse_args()
 
-    if not args.target and not args.regroup_all:
-        p.error("provide a target (URL / id) or pass --regroup-all")
+    if not args.target and not args.regroup_all and not args.revalidate_all:
+        p.error("provide a target (URL / id) or pass --regroup-all / --revalidate-all")
 
     index = json.loads(INDEX_PATH.read_text())
+    vanilla_iso = load_vanilla_iso_path()
+    if vanilla_iso:
+        print(f"vanilla iso: {vanilla_iso}")
+    else:
+        print("vanilla iso: NOT CONFIGURED — safety validation will be skipped")
 
     if args.target:
         cookie = load_session_cookie()
@@ -787,7 +1026,9 @@ def main() -> None:
             tempfile.mkdtemp(prefix=f"the-shop-scrape-{creator_id}-")
         )
         try:
-            new_entries = build_entries(creator_id, posts, cookie, cache_dir)
+            new_entries = build_entries(
+                creator_id, posts, cookie, cache_dir, vanilla_iso=vanilla_iso
+            )
         finally:
             shutil.rmtree(cache_dir, ignore_errors=True)
         print(f"  HAL-pattern attachments: {len(new_entries)}")
@@ -825,6 +1066,88 @@ def main() -> None:
         print(
             f"regrouped: {before} → {after} skins ({dropped} alternate-slot "
             f"variants dropped); {n_packs} character_skin packs"
+        )
+
+    if args.revalidate_all:
+        if vanilla_iso is None:
+            p.error("--revalidate-all needs a vanilla iso configured in the app")
+        cookie = load_session_cookie()
+        cache_dir = Path(tempfile.mkdtemp(prefix="the-shop-revalidate-"))
+        vanilla_cache: dict[str, Path | None] = {}
+        verdicts: dict[str, int] = defaultdict(int)
+        attempted = 0
+        skipped = 0
+        try:
+            for e in index["skins"]:
+                if e.get("kind") not in ("character_skin", "stage"):
+                    continue
+                pid = e.get("patreon_post_id")
+                fname = e.get("filename_in_post")
+                inner = e.get("inner_filename")
+                if not pid or not fname:
+                    skipped += 1
+                    continue
+                # Re-fetch the post to get a fresh signed url for this attachment.
+                try:
+                    metadata = patreon_get(
+                        f"/api/posts/{pid}?include=attachments,attachments_media",
+                        cookie,
+                    )
+                except SystemExit:
+                    raise
+                except Exception:
+                    skipped += 1
+                    continue
+                # Find the attachment whose name matches filename_in_post.
+                signed_url = None
+                for inc in metadata.get("included", []):
+                    a = inc.get("attributes", {})
+                    n = (a.get("name") or a.get("file_name") or "").strip()
+                    if n.lower() == fname.lower():
+                        signed_url = (
+                            a.get("download_url")
+                            or a.get("url")
+                            or (a.get("download_urls") or {}).get("original")
+                        )
+                        break
+                if not signed_url:
+                    skipped += 1
+                    continue
+                # Download outer file to cache.
+                safe = re.sub(r"[^A-Za-z0-9._-]+", "_", fname)[:120]
+                outer = cache_dir / safe
+                if not outer.exists() and not download_to(signed_url, outer, cookie):
+                    skipped += 1
+                    continue
+                # Resolve candidate path (extract inner if archive).
+                if is_archive(fname) and inner:
+                    candidate = _extract_inner(outer, inner, cache_dir)
+                elif is_archive(fname):
+                    candidate = None
+                else:
+                    candidate = outer
+                if candidate is None or not candidate.exists():
+                    skipped += 1
+                    continue
+                report = run_validation(
+                    {
+                        "kind": e["kind"],
+                        "character_code": e.get("character_code"),
+                        "iso_target_filename": e.get("iso_target_filename"),
+                    },
+                    candidate,
+                    vanilla_iso,
+                    vanilla_cache,
+                )
+                if report:
+                    e["safety"] = report
+                    verdicts[report.get("verdict", "unknown")] += 1
+                    attempted += 1
+        finally:
+            shutil.rmtree(cache_dir, ignore_errors=True)
+        summary = " ".join(f"{k}:{v}" for k, v in sorted(verdicts.items()))
+        print(
+            f"revalidated: {attempted} attempted, {skipped} skipped · {summary}"
         )
 
     print(

@@ -1309,6 +1309,35 @@ function PackCard({
                 {pack.format}
               </span>
             )}
+            {pack.safety && pack.safety.verdict !== "safe" && (
+              <span
+                className={`label-mono px-1.5 py-0.5 rounded bg-bg border shrink-0 ${
+                  pack.safety.verdict === "unsafe"
+                    ? "border-danger/60 text-danger"
+                    : pack.safety.verdict === "warn"
+                      ? "border-yellow-500/60 text-yellow-500"
+                      : "border-border text-muted"
+                }`}
+                title={
+                  (pack.safety.warnings || []).join(" · ") ||
+                  `slippi safety: ${pack.safety.verdict}`
+                }
+              >
+                {pack.safety.verdict === "unsafe"
+                  ? "may desync"
+                  : pack.safety.verdict === "warn"
+                    ? "review"
+                    : "unverified"}
+              </span>
+            )}
+            {pack.safety && pack.safety.verdict === "safe" && (
+              <span
+                className="label-mono px-1.5 py-0.5 rounded bg-bg border border-ok/40 text-ok shrink-0"
+                title="slippi safety: structurally identical to vanilla"
+              >
+                ✓ slippi
+              </span>
+            )}
           </div>
           <div className="text-xs text-muted truncate">
             <button

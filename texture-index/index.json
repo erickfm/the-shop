@@ -97,7 +97,16 @@
       "notes": "Cave of Origin (Pokemon ORAS) over Pokémon Stadium; Patreon filename includes 'CoO' suffix",
       "pack_id": "Dewrion-cave-of-origin-pokemon-stadium-grps-usd",
       "pack_display_name": "Cave of Origin - Pokemon Stadium",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:136"
+        ],
+        "warnings": [
+          "vertex_count:156_vs_155"
+        ]
+      }
     },
     {
       "id": "LazloSSBM-animelee-yoshi-s-story-newport-randall-grst-dat",
@@ -116,7 +125,15 @@
       "notes": "Yoshi's Story with Newport randall, animelee art",
       "pack_id": "LazloSSBM-animelee-yoshi-s-story-newport-randall-grst-dat",
       "pack_display_name": "Animelee Yoshi's Story - Newport Randall",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:36_vs_34",
+          "line_count:30_vs_29"
+        ]
+      }
     },
     {
       "id": "LazloSSBM-vanilla-yoshi-s-story-newport-randall-grst-dat",
@@ -135,7 +152,15 @@
       "notes": "Yoshi's Story with Newport randall, vanilla art",
       "pack_id": "LazloSSBM-vanilla-yoshi-s-story-newport-randall-grst-dat",
       "pack_display_name": "Vanilla Yoshi's Story - Newport Randall",
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:36_vs_34",
+          "line_count:30_vs_29"
+        ]
+      }
     },
     {
       "id": "gonko-envy-stadium-grps-usd",
@@ -154,7 +179,16 @@
       "notes": "Pokémon Stadium ENVY-team skin",
       "pack_id": "gonko-envy-stadium-grps-usd",
       "pack_display_name": "ENVY Stadium",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:136"
+        ],
+        "warnings": [
+          "vertex_count:156_vs_155"
+        ]
+      }
     },
     {
       "id": "skraton-bf-jungle-japes-free-grnba-dat",
@@ -173,7 +207,16 @@
       "notes": "Battlefield skinned as Jungle Japes",
       "pack_id": "skraton-bf-jungle-japes-free-grnba-dat",
       "pack_display_name": "BF: Jungle Japes (Free)",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "skraton-fd-kongo-jungle-free-grnla-dat",
@@ -192,7 +235,15 @@
       "notes": "Final Destination skinned as Kongo Jungle 64",
       "pack_id": "skraton-fd-kongo-jungle-free-grnla-dat",
       "pack_display_name": "FD: Kongo Jungle (Free)",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "vertex_count_match:16",
+          "line_count_match:16"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "skraton-dl-return-to-dreamland-free-grop-dat",
@@ -211,7 +262,15 @@
       "notes": null,
       "pack_id": "skraton-dl-return-to-dreamland-free-grop-dat",
       "pack_display_name": "DL: Return to Dreamland (Free)",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:16_vs_14",
+          "line_count:12_vs_11"
+        ]
+      }
     },
     {
       "id": "skraton-ps-syrox-stadium-free-grps-usd",
@@ -230,7 +289,16 @@
       "notes": null,
       "pack_id": "skraton-ps-syrox-stadium-free-grps-usd",
       "pack_display_name": "PS: Syrox Stadium (Free)",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:136"
+        ],
+        "warnings": [
+          "vertex_count:156_vs_155"
+        ]
+      }
     },
     {
       "id": "vancity_primal-slippi-updates-stadium-transformations-grps-usd",
@@ -249,7 +317,16 @@
       "notes": "20XX-style Pokémon Stadium with all transformations",
       "pack_id": "vancity_primal-slippi-updates-stadium-transformations-grps-usd",
       "pack_display_name": "Slippi Updates - Stadium Transformations",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:136"
+        ],
+        "warnings": [
+          "vertex_count:156_vs_155"
+        ]
+      }
     },
     {
       "id": "vancity_primal-paper-melee-64-griz-dat",
@@ -268,7 +345,16 @@
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-griz-dat",
       "pack_display_name": "Paper Melee 64",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:34"
+        ],
+        "warnings": [
+          "vertex_count:40_vs_38"
+        ]
+      }
     },
     {
       "id": "vancity_primal-paper-melee-64-grnba-dat",
@@ -287,7 +373,16 @@
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grnba-dat",
       "pack_display_name": "Paper Melee 64",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "vancity_primal-paper-melee-64-grnla-dat",
@@ -306,7 +401,15 @@
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grnla-dat",
       "pack_display_name": "Paper Melee 64",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "vertex_count_match:16",
+          "line_count_match:16"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-paper-melee-64-grop-dat",
@@ -325,7 +428,15 @@
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grop-dat",
       "pack_display_name": "Paper Melee 64",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:16_vs_14",
+          "line_count:12_vs_11"
+        ]
+      }
     },
     {
       "id": "vancity_primal-paper-melee-64-grps-usd",
@@ -344,7 +455,16 @@
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grps-usd",
       "pack_display_name": "Paper Melee 64",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:136"
+        ],
+        "warnings": [
+          "vertex_count:156_vs_155"
+        ]
+      }
     },
     {
       "id": "vancity_primal-paper-melee-64-grst-dat",
@@ -363,7 +483,15 @@
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grst-dat",
       "pack_display_name": "Paper Melee 64",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:36_vs_34",
+          "line_count:30_vs_29"
+        ]
+      }
     },
     {
       "id": "vancity_primal-icy-melee-grnba-dat",
@@ -382,7 +510,16 @@
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grnba-dat",
       "pack_display_name": "Icy Melee",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "vancity_primal-icy-melee-grnla-dat",
@@ -401,7 +538,15 @@
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grnla-dat",
       "pack_display_name": "Icy Melee",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "vertex_count_match:16",
+          "line_count_match:16"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-icy-melee-grop-dat",
@@ -420,7 +565,15 @@
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grop-dat",
       "pack_display_name": "Icy Melee",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:16_vs_14",
+          "line_count:12_vs_11"
+        ]
+      }
     },
     {
       "id": "vancity_primal-icy-melee-grps-usd",
@@ -439,7 +592,16 @@
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grps-usd",
       "pack_display_name": "Icy Melee",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:136"
+        ],
+        "warnings": [
+          "vertex_count:156_vs_155"
+        ]
+      }
     },
     {
       "id": "vancity_primal-icy-melee-grst-dat",
@@ -458,7 +620,15 @@
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grst-dat",
       "pack_display_name": "Icy Melee",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:36_vs_34",
+          "line_count:30_vs_29"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-ganon-s-castle-bf-stage",
@@ -478,7 +648,16 @@
       "pack_id": "gay_lord_erika-ganon-s-castle-bf-stage",
       "pack_display_name": "Ganon's Castle - BF",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-ganon-s-castle-bf-stage-1",
@@ -498,7 +677,16 @@
       "pack_id": "gay_lord_erika-ganon-s-castle-bf-stage-1",
       "pack_display_name": "Ganon's Castle - BF",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-rainbow-bf-stage",
@@ -518,7 +706,16 @@
       "pack_id": "gay_lord_erika-rainbow-bf-stage",
       "pack_display_name": "Rainbow BF",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage",
@@ -538,7 +735,16 @@
       "pack_id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage",
       "pack_display_name": "Metal Gear Solid 1 VR Training - Battlefield",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage-1",
@@ -558,7 +764,16 @@
       "pack_id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage-1",
       "pack_display_name": "Metal Gear Solid 1 VR Training - Battlefield",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage-2",
@@ -578,7 +793,16 @@
       "pack_id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage-2",
       "pack_display_name": "Metal Gear Solid 1 VR Training - Battlefield",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-game-and-watch-bf-stage",
@@ -598,7 +822,16 @@
       "pack_id": "gay_lord_erika-game-and-watch-bf-stage",
       "pack_display_name": "Game and Watch BF",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-yoshi-s-story-pokemon-mystery-dungeon-hill-of-the-ancients-stage",
@@ -638,7 +871,16 @@
       "pack_id": "gay_lord_erika-yoshi-s-64-ps-stage",
       "pack_display_name": "Yoshi's 64 - PS",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:136"
+        ],
+        "warnings": [
+          "vertex_count:156_vs_155"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-rusty-bucket-bay-fd-stage",
@@ -678,7 +920,16 @@
       "pack_id": "gay_lord_erika-mushroom-kingdom-2-fod-stage",
       "pack_display_name": "Mushroom Kingdom 2 FoD",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:34"
+        ],
+        "warnings": [
+          "vertex_count:40_vs_38"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-beach-bowl-bf-mario-galaxy-stage",
@@ -698,7 +949,16 @@
       "pack_id": "gay_lord_erika-beach-bowl-bf-mario-galaxy-stage",
       "pack_display_name": "Beach Bowl BF (Mario Galaxy)",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "warn",
+        "reasons": [
+          "line_count_match:23"
+        ],
+        "warnings": [
+          "vertex_count:28_vs_26"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-duck-hunt-yoshi-s-story-stage",
@@ -758,7 +1018,15 @@
       "pack_id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage",
       "pack_display_name": "Wuhu Island (Yoshi's Story)",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:36_vs_34",
+          "line_count:30_vs_29"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage-1",
@@ -778,7 +1046,15 @@
       "pack_id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage-1",
       "pack_display_name": "Wuhu Island (Yoshi's Story)",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:36_vs_34",
+          "line_count:30_vs_29"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage-2",
@@ -798,7 +1074,15 @@
       "pack_id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage-2",
       "pack_display_name": "Wuhu Island (Yoshi's Story)",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "unsafe",
+        "reasons": [],
+        "warnings": [
+          "vertex_count:36_vs_34",
+          "line_count:30_vs_29"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-end-of-eva-fd-stage",
@@ -818,7 +1102,15 @@
       "pack_id": "gay_lord_erika-end-of-eva-fd-stage",
       "pack_display_name": "End of Eva FD",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "vertex_count_match:16",
+          "line_count_match:16"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-end-of-eva-fd-stage-1",
@@ -838,7 +1130,15 @@
       "pack_id": "gay_lord_erika-end-of-eva-fd-stage-1",
       "pack_display_name": "End of Eva FD",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "vertex_count_match:16",
+          "line_count_match:16"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-dragon-roost-island-fd-stage",
@@ -951,7 +1251,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-b0xx-spacies-bu",
       "pack_display_name": "B0XX Spacies",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-b0xx-spacies-la",
@@ -968,7 +1276,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-b0xx-spacies-la",
       "pack_display_name": "B0XX Spacies",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-bab-activated-captain-falcon-bu",
@@ -985,7 +1301,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-bab-activated-captain-falcon-bu",
       "pack_display_name": "Bab Activated Captain Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-bab-activated-captain-falcon-gr",
@@ -1002,7 +1326,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-bab-activated-captain-falcon-bu",
       "pack_display_name": "Bab Activated Captain Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-randall-falcon-wh",
@@ -1019,7 +1351,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-randall-falcon-wh",
       "pack_display_name": "Randall Falcon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-freestyle-falco-skin-gr",
@@ -1036,7 +1376,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-freestyle-falco-skin-gr",
       "pack_display_name": "Freestyle Falco Skin",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-wii-fit-trainer-falcon-re",
@@ -1053,7 +1401,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-wii-fit-trainer-falcon-re",
       "pack_display_name": "Wii Fit Trainer Falcon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-buzz-lightyear-falcon-bu",
@@ -1070,7 +1426,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-buzz-lightyear-falcon-bu",
       "pack_display_name": "Buzz Lightyear Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-buzz-lightyear-falcon-wh",
@@ -1087,7 +1451,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-buzz-lightyear-falcon-bu",
       "pack_display_name": "Buzz Lightyear Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-emg-moky-fox-skins-gr",
@@ -1104,7 +1476,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-emg-moky-fox-skins-gr",
       "pack_display_name": "EMG - moky Fox Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-emg-moky-fox-skins-la",
@@ -1121,7 +1501,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-emg-moky-fox-skins-gr",
       "pack_display_name": "EMG - moky Fox Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-emg-moky-fox-skins-nr",
@@ -1138,7 +1526,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-emg-moky-fox-skins-gr",
       "pack_display_name": "EMG - moky Fox Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-emg-moky-fox-skins-or",
@@ -1155,7 +1551,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-emg-moky-fox-skins-gr",
       "pack_display_name": "EMG - moky Fox Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-emg-falco-skins-bu",
@@ -1172,7 +1576,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-emg-falco-skins-bu",
       "pack_display_name": "EMG Falco Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-emg-falco-skins-gr",
@@ -1189,7 +1601,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-emg-falco-skins-bu",
       "pack_display_name": "EMG Falco Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-emg-falco-skins-nr",
@@ -1206,7 +1626,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-emg-falco-skins-bu",
       "pack_display_name": "EMG Falco Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-emg-falco-skins-re",
@@ -1223,7 +1651,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-emg-falco-skins-bu",
       "pack_display_name": "EMG Falco Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-magneto-fox-or",
@@ -1240,7 +1676,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-magneto-fox-or",
       "pack_display_name": "Magneto Fox",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-clown-ganondorf-bu",
@@ -1257,7 +1701,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-clown-ganondorf-bu",
       "pack_display_name": "Clown Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-clown-ganondorf-la",
@@ -1274,7 +1726,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-clown-ganondorf-bu",
       "pack_display_name": "Clown Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-speed-racer-falcon-bu",
@@ -1291,7 +1751,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-speed-racer-falcon-bu",
       "pack_display_name": "Speed Racer Falcon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-deadass-ganon-bu",
@@ -1308,7 +1776,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-deadass-ganon-bu",
       "pack_display_name": "Deadass Ganon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-deadass-ganon-nr",
@@ -1325,7 +1801,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-deadass-ganon-bu",
       "pack_display_name": "Deadass Ganon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-chef-rachman-falcon-skin-re",
@@ -1342,7 +1826,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-chef-rachman-falcon-skin-re",
       "pack_display_name": "Chef Rachman Falcon Skin",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-lg-ginger-falco-bu",
@@ -1359,7 +1851,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-lg-ginger-falco-bu",
       "pack_display_name": "LG - Ginger Falco",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-uyu-n0ne-ganondorf-skins-nr",
@@ -1376,7 +1876,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-uyu-n0ne-ganondorf-skins-nr",
       "pack_display_name": "UYU - n0ne Ganondorf Skins",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-uyu-n0ne-falcon-skins-re",
@@ -1393,7 +1901,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-uyu-n0ne-falcon-skins-re",
       "pack_display_name": "UYU - n0ne Falcon Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-uyu-n0ne-falcon-skins-wh",
@@ -1410,7 +1926,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-uyu-n0ne-falcon-skins-re",
       "pack_display_name": "UYU - n0ne Falcon Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-brown-striped-falco-nr",
@@ -1427,7 +1951,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-brown-striped-falco-nr",
       "pack_display_name": "Brown Striped Falco",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-silver-ganondorf-la",
@@ -1444,7 +1976,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-silver-ganondorf-la",
       "pack_display_name": "Silver Ganondorf",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-chill-beats-fox-la",
@@ -1461,7 +2001,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-chill-beats-fox-la",
       "pack_display_name": "Chill Beats Fox",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-society-skin-pack-la",
@@ -1478,7 +2026,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-society-skin-pack-la",
       "pack_display_name": "Society Skin Pack (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-society-skin-pack-re",
@@ -1495,7 +2051,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-society-skin-pack-la",
       "pack_display_name": "Society Skin Pack (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-slippi-fox-gr",
@@ -1512,7 +2076,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-slippi-fox-gr",
       "pack_display_name": "Slippi Fox",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gg-n0ne-falcon-ganondorf-la",
@@ -1529,7 +2101,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gg-n0ne-falcon-ganondorf-la",
       "pack_display_name": "GG - n0ne Falcon/Ganondorf",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-texas-falcon-nr",
@@ -1546,7 +2126,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-texas-falcon-nr",
       "pack_display_name": "Texas Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-texas-falcon-re",
@@ -1563,7 +2151,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-texas-falcon-nr",
       "pack_display_name": "Texas Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-viewtiful-joe-falcon-re",
@@ -1580,7 +2176,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-viewtiful-joe-falcon-re",
       "pack_display_name": "Viewtiful Joe Falcon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-mega-man-falcon-bu",
@@ -1597,7 +2201,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-mega-man-falcon-bu",
       "pack_display_name": "Mega Man Falcon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-joseph-joestar-falcon-gr",
@@ -1614,7 +2226,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-joseph-joestar-falcon-gr",
       "pack_display_name": "Joseph Joestar Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-joseph-joestar-falcon-nr",
@@ -1631,7 +2251,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-joseph-joestar-falcon-gr",
       "pack_display_name": "Joseph Joestar Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-one-punch-falcon-wh",
@@ -1648,7 +2276,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-one-punch-falcon-wh",
       "pack_display_name": "One Punch Falcon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gg-wizzyfan109-wh",
@@ -1665,7 +2301,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gg-wizzyfan109-wh",
       "pack_display_name": "GG - wizzyfan109",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-king-falcon-tekken-3-nr",
@@ -1682,7 +2326,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-king-falcon-tekken-3-nr",
       "pack_display_name": "King Falcon (Tekken 3)",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-envy-wizzrobe-falcon-skins-bu",
@@ -1699,7 +2351,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-envy-wizzrobe-falcon-skins-bu",
       "pack_display_name": "ENVY - Wizzrobe Falcon Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-envy-wizzrobe-falcon-skins-nr",
@@ -1716,7 +2376,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-envy-wizzrobe-falcon-skins-bu",
       "pack_display_name": "ENVY - Wizzrobe Falcon Skins (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-powerline-falcon-wh",
@@ -1733,7 +2401,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-powerline-falcon-wh",
       "pack_display_name": "Powerline Falcon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-sora-marth-bk",
@@ -1750,7 +2426,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-sora-marth-bk",
       "pack_display_name": "Sora Marth",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-re",
@@ -1767,7 +2451,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-fuck-nintendo-skin-pack-re",
       "pack_display_name": "Fuck Nintendo Skin Pack",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-or",
@@ -1784,7 +2476,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-fuck-nintendo-skin-pack-or",
       "pack_display_name": "Fuck Nintendo Skin Pack",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-re-2",
@@ -1801,7 +2501,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-fuck-nintendo-skin-pack-re-2",
       "pack_display_name": "Fuck Nintendo Skin Pack",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-nr",
@@ -1818,7 +2526,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-fuck-nintendo-skin-pack-nr",
       "pack_display_name": "Fuck Nintendo Skin Pack",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-haikyuu-skin-pack-or",
@@ -1835,7 +2551,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-haikyuu-skin-pack-or",
       "pack_display_name": "Haikyuu Skin Pack",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-haikyuu-skin-pack-bk",
@@ -1852,7 +2576,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-haikyuu-skin-pack-bk",
       "pack_display_name": "Haikyuu Skin Pack",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-haikyuu-skin-pack-wh",
@@ -1869,7 +2601,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-haikyuu-skin-pack-wh",
       "pack_display_name": "Haikyuu Skin Pack",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:58",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-9s-fox-or",
@@ -1886,7 +2626,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-9s-fox-or",
       "pack_display_name": "9S Fox",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-tanjiro-fox-gr",
@@ -1903,7 +2651,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-tanjiro-fox-gr",
       "pack_display_name": "Tanjiro Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-tanjiro-fox-la",
@@ -1920,7 +2676,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-tanjiro-fox-gr",
       "pack_display_name": "Tanjiro Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gc-samus-skin-pack-bk",
@@ -1937,7 +2701,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gc-samus-skin-pack-bk",
       "pack_display_name": "GC Samus Skin Pack (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gc-samus-skin-pack-gr",
@@ -1954,7 +2726,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gc-samus-skin-pack-bk",
       "pack_display_name": "GC Samus Skin Pack (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gc-samus-skin-pack-la",
@@ -1971,7 +2751,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gc-samus-skin-pack-bk",
       "pack_display_name": "GC Samus Skin Pack (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gc-samus-skin-pack-nr",
@@ -1988,7 +2776,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gc-samus-skin-pack-bk",
       "pack_display_name": "GC Samus Skin Pack (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-fox-gr",
@@ -2005,7 +2801,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-fox-gr",
       "pack_display_name": "Ultimate Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-fox-la",
@@ -2022,7 +2826,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-fox-gr",
       "pack_display_name": "Ultimate Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-fox-nr",
@@ -2039,7 +2851,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-fox-gr",
       "pack_display_name": "Ultimate Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-fox-or",
@@ -2056,7 +2876,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-fox-gr",
       "pack_display_name": "Ultimate Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-falco-bu",
@@ -2073,7 +2901,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-falco-bu",
       "pack_display_name": "Ultimate Falco (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-falco-gr",
@@ -2090,7 +2926,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-falco-bu",
       "pack_display_name": "Ultimate Falco (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-falco-nr",
@@ -2107,7 +2951,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-falco-bu",
       "pack_display_name": "Ultimate Falco (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-falco-re",
@@ -2124,7 +2976,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-falco-bu",
       "pack_display_name": "Ultimate Falco (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-vaporwave-falcon-nr",
@@ -2141,7 +3001,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-vaporwave-falcon-nr",
       "pack_display_name": "Vaporwave Falcon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-phantom-ganondorf-bu",
@@ -2158,7 +3026,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-phantom-ganondorf-bu",
       "pack_display_name": "Phantom Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-phantom-ganondorf-la",
@@ -2175,7 +3051,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-phantom-ganondorf-bu",
       "pack_display_name": "Phantom Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-phantom-ganondorf-nr",
@@ -2192,7 +3076,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-phantom-ganondorf-bu",
       "pack_display_name": "Phantom Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-marth-bk",
@@ -2209,7 +3101,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
       "pack_display_name": "Ultimate Marth (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-marth-gr",
@@ -2226,7 +3126,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
       "pack_display_name": "Ultimate Marth (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-marth-nr",
@@ -2243,7 +3151,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
       "pack_display_name": "Ultimate Marth (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-marth-re",
@@ -2260,7 +3176,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
       "pack_display_name": "Ultimate Marth (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-marth-wh",
@@ -2277,7 +3201,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
       "pack_display_name": "Ultimate Marth (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-roy-bu",
@@ -2294,7 +3226,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
       "pack_display_name": "Ultimate Roy (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:92",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-roy-gr",
@@ -2311,7 +3251,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
       "pack_display_name": "Ultimate Roy (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:92",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-roy-nr",
@@ -2328,7 +3276,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
       "pack_display_name": "Ultimate Roy (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:92",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-roy-re",
@@ -2345,7 +3301,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
       "pack_display_name": "Ultimate Roy (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:92",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-roy-ye",
@@ -2362,7 +3326,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
       "pack_display_name": "Ultimate Roy (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:92",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-miles-morales-falco-re",
@@ -2379,7 +3351,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-miles-morales-falco-re",
       "pack_display_name": "Miles Morales Falco",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-yoshi-bu",
@@ -2396,7 +3376,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
       "pack_display_name": "Ultimate Yoshi (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:70",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-yoshi-gr",
@@ -2430,7 +3418,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
       "pack_display_name": "Ultimate Yoshi (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:70",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-yoshi-re",
@@ -2447,7 +3443,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
       "pack_display_name": "Ultimate Yoshi (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:70",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-yoshi-wh",
@@ -2481,7 +3485,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
       "pack_display_name": "Ultimate Yoshi (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:70",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-luigi-aq",
@@ -2498,7 +3510,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-luigi-aq",
       "pack_display_name": "Ultimate Luigi (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-luigi-nr",
@@ -2515,7 +3535,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-luigi-aq",
       "pack_display_name": "Ultimate Luigi (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-luigi-wh",
@@ -2532,7 +3560,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-luigi-aq",
       "pack_display_name": "Ultimate Luigi (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-donkey-kong-bk",
@@ -2549,7 +3585,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
       "pack_display_name": "Ultimate Donkey Kong (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-donkey-kong-bu",
@@ -2566,7 +3610,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
       "pack_display_name": "Ultimate Donkey Kong (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-donkey-kong-gr",
@@ -2583,7 +3635,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
       "pack_display_name": "Ultimate Donkey Kong (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-donkey-kong-nr",
@@ -2600,7 +3660,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
       "pack_display_name": "Ultimate Donkey Kong (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-donkey-kong-re",
@@ -2617,7 +3685,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
       "pack_display_name": "Ultimate Donkey Kong (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-pikachu-bu",
@@ -2634,7 +3710,17 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-pikachu-bu",
       "pack_display_name": "Ultimate Pikachu (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:53",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gonko-ultimate-pikachu-gr",
@@ -2651,7 +3737,17 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-pikachu-bu",
       "pack_display_name": "Ultimate Pikachu (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:53",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gonko-ultimate-pikachu-nr",
@@ -2668,7 +3764,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-pikachu-bu",
       "pack_display_name": "Ultimate Pikachu (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:53",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-pikachu-re",
@@ -2685,7 +3789,17 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-pikachu-bu",
       "pack_display_name": "Ultimate Pikachu (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:53",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gonko-ultimate-bowser-bk",
@@ -2702,7 +3816,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-bowser-bk",
       "pack_display_name": "Ultimate Bowser (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:76",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-bowser-bu",
@@ -2719,7 +3841,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-bowser-bk",
       "pack_display_name": "Ultimate Bowser (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:76",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-bowser-nr",
@@ -2736,7 +3866,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-bowser-bk",
       "pack_display_name": "Ultimate Bowser (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:76",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-bowser-re",
@@ -2753,7 +3891,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-bowser-bk",
       "pack_display_name": "Ultimate Bowser (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:76",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-link-bk",
@@ -2770,7 +3916,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
       "pack_display_name": "Ultimate Link (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-link-bu",
@@ -2787,7 +3941,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
       "pack_display_name": "Ultimate Link (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-link-nr",
@@ -2804,7 +3966,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
       "pack_display_name": "Ultimate Link (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-link-re",
@@ -2821,7 +3991,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
       "pack_display_name": "Ultimate Link (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-link-wh",
@@ -2838,7 +4016,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
       "pack_display_name": "Ultimate Link (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-captain-falcon-bu",
@@ -2855,7 +4041,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
       "pack_display_name": "Ultimate Captain Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-captain-falcon-gr",
@@ -2872,7 +4066,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
       "pack_display_name": "Ultimate Captain Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-captain-falcon-nr",
@@ -2889,7 +4091,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
       "pack_display_name": "Ultimate Captain Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-captain-falcon-re",
@@ -2906,7 +4116,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
       "pack_display_name": "Ultimate Captain Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-captain-falcon-wh",
@@ -2923,7 +4141,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
       "pack_display_name": "Ultimate Captain Falcon (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gonko-s-animelee-link-bk",
@@ -2940,7 +4166,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
       "pack_display_name": "gonko's Animelee Link (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gonko-s-animelee-link-bu",
@@ -2957,7 +4191,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
       "pack_display_name": "gonko's Animelee Link (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gonko-s-animelee-link-nr",
@@ -2974,7 +4216,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
       "pack_display_name": "gonko's Animelee Link (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gonko-s-animelee-link-re",
@@ -2991,7 +4241,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
       "pack_display_name": "gonko's Animelee Link (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-gonko-s-animelee-link-wh",
@@ -3008,7 +4266,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
       "pack_display_name": "gonko's Animelee Link (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-doctor-mario-bk",
@@ -3025,7 +4291,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
       "pack_display_name": "Ultimate Doctor Mario (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:86",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-doctor-mario-bu",
@@ -3042,7 +4316,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
       "pack_display_name": "Ultimate Doctor Mario (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:86",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-doctor-mario-gr",
@@ -3059,7 +4341,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
       "pack_display_name": "Ultimate Doctor Mario (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:86",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-doctor-mario-nr",
@@ -3076,7 +4366,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
       "pack_display_name": "Ultimate Doctor Mario (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:86",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-doctor-mario-re",
@@ -3093,7 +4391,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
       "pack_display_name": "Ultimate Doctor Mario (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:86",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-ganondorf-bu",
@@ -3110,7 +4416,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
       "pack_display_name": "Ultimate Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-ganondorf-gr",
@@ -3127,7 +4441,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
       "pack_display_name": "Ultimate Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-ganondorf-la",
@@ -3144,7 +4466,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
       "pack_display_name": "Ultimate Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-ganondorf-nr",
@@ -3161,7 +4491,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
       "pack_display_name": "Ultimate Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-ganondorf-re",
@@ -3178,7 +4516,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
       "pack_display_name": "Ultimate Ganondorf (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-peach-bu",
@@ -3195,7 +4541,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
       "pack_display_name": "Ultimate Peach (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:114",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-peach-gr",
@@ -3212,7 +4566,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
       "pack_display_name": "Ultimate Peach (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:114",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-peach-nr",
@@ -3229,7 +4591,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
       "pack_display_name": "Ultimate Peach (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:114",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-peach-wh",
@@ -3246,7 +4616,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
       "pack_display_name": "Ultimate Peach (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:114",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-peach-ye",
@@ -3263,7 +4641,17 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
       "pack_display_name": "Ultimate Peach (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:114",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:2"
+        ]
+      }
     },
     {
       "id": "gonko-ultimate-mewtwo-bu",
@@ -3280,7 +4668,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-mewtwo-bu",
       "pack_display_name": "Ultimate Mewtwo (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:68",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-mewtwo-gr",
@@ -3297,7 +4693,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-mewtwo-bu",
       "pack_display_name": "Ultimate Mewtwo (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:68",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-mewtwo-nr",
@@ -3314,7 +4718,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-mewtwo-bu",
       "pack_display_name": "Ultimate Mewtwo (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:68",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gonko-ultimate-mewtwo-re",
@@ -3331,7 +4743,15 @@
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-mewtwo-bu",
       "pack_display_name": "Ultimate Mewtwo (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:68",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-crazy-fox-all-colors-gr",
@@ -3348,7 +4768,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-crazy-fox-all-colors-gr",
       "pack_display_name": "Crazy Fox - All Colors (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-crazy-fox-all-colors-la",
@@ -3365,7 +4793,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-crazy-fox-all-colors-gr",
       "pack_display_name": "Crazy Fox - All Colors (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-crazy-fox-all-colors-nr",
@@ -3382,7 +4818,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-crazy-fox-all-colors-gr",
       "pack_display_name": "Crazy Fox - All Colors (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-crazy-fox-all-colors-or",
@@ -3399,7 +4843,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-crazy-fox-all-colors-gr",
       "pack_display_name": "Crazy Fox - All Colors (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-animelee-chosen-undead-link-skin-nr",
@@ -3416,7 +4868,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-chosen-undead-link-skin-nr",
       "pack_display_name": "Animelee, Chosen Undead - Link Skin",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-animelee-bob-omb-buddy-jigglypuff-skin-re",
@@ -3433,7 +4893,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-bob-omb-buddy-jigglypuff-skin-re",
       "pack_display_name": "Animelee, Bob-omb Buddy - Jigglypuff Skin",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:50",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-animelee-gon-mario-bk",
@@ -3450,7 +4918,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
       "pack_display_name": "Animelee, Gon - Mario (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-animelee-gon-mario-bu",
@@ -3467,7 +4943,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
       "pack_display_name": "Animelee, Gon - Mario (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-animelee-gon-mario-gr",
@@ -3484,7 +4968,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
       "pack_display_name": "Animelee, Gon - Mario (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-animelee-gon-mario-nr",
@@ -3501,7 +4993,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
       "pack_display_name": "Animelee, Gon - Mario (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-animelee-gon-mario-ye",
@@ -3518,7 +5018,15 @@
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
       "pack_display_name": "Animelee, Gon - Mario (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "shiggles-animelee-viewtiful-joe-fox-v1-1-nr",
@@ -3535,7 +5043,17 @@
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-viewtiful-joe-fox-v1-1-nr",
       "pack_display_name": "Animelee, Viewtiful Joe - Fox (v1.1)",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "shiggles-robloxian-fox-gr",
@@ -3552,7 +5070,17 @@
       "kind": "character_skin",
       "pack_id": "shiggles-robloxian-fox-gr",
       "pack_display_name": "Robloxian - Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "shiggles-robloxian-fox-la",
@@ -3569,7 +5097,17 @@
       "kind": "character_skin",
       "pack_id": "shiggles-robloxian-fox-gr",
       "pack_display_name": "Robloxian - Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "shiggles-robloxian-fox-nr",
@@ -3586,7 +5124,17 @@
       "kind": "character_skin",
       "pack_id": "shiggles-robloxian-fox-gr",
       "pack_display_name": "Robloxian - Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "shiggles-robloxian-fox-or",
@@ -3603,7 +5151,17 @@
       "kind": "character_skin",
       "pack_id": "shiggles-robloxian-fox-gr",
       "pack_display_name": "Robloxian - Fox (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
@@ -3620,7 +5178,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
       "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-gr",
@@ -3637,7 +5205,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
       "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-nr",
@@ -3654,7 +5232,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
       "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-re",
@@ -3671,7 +5259,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
       "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "vancity_primal-paper-melee-64-public-release-nr",
@@ -3688,7 +5286,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-paper-melee-64-public-release-nr",
       "pack_display_name": "Paper Melee 64 - Public Release",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:53",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
@@ -3705,7 +5311,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
       "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-la",
@@ -3722,7 +5338,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
       "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-nr",
@@ -3739,7 +5365,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
       "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-or",
@@ -3756,7 +5392,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
       "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 (",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "vancity_primal-plague-doctor-nr",
@@ -3773,7 +5419,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-plague-doctor-nr",
       "pack_display_name": "Plague Doctor",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:53",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-bu",
@@ -3790,7 +5444,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-dbz-x-mangobb-1-1-bu",
       "pack_display_name": "DBZ x mangoBB - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-gr",
@@ -3807,7 +5469,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-dbz-x-mangobb-1-1-bu",
       "pack_display_name": "DBZ x mangoBB - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-nr",
@@ -3824,7 +5494,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-dbz-x-mangobb-1-1-bu",
       "pack_display_name": "DBZ x mangoBB - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-re",
@@ -3841,7 +5519,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-dbz-x-mangobb-1-1-bu",
       "pack_display_name": "DBZ x mangoBB - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-gr",
@@ -3858,7 +5544,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-akira-fox-ce-edition-gr",
       "pack_display_name": "Akira Fox - CE Edition (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-la",
@@ -3875,7 +5571,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-akira-fox-ce-edition-gr",
       "pack_display_name": "Akira Fox - CE Edition (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-nr",
@@ -3892,7 +5598,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-akira-fox-ce-edition-gr",
       "pack_display_name": "Akira Fox - CE Edition (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-or",
@@ -3909,7 +5625,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-akira-fox-ce-edition-gr",
       "pack_display_name": "Akira Fox - CE Edition (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
@@ -3926,7 +5652,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
       "pack_display_name": "Santa Mario - DTW and M-EX (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-bu",
@@ -3943,7 +5677,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
       "pack_display_name": "Santa Mario - DTW and M-EX (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-gr",
@@ -3960,7 +5702,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
       "pack_display_name": "Santa Mario - DTW and M-EX (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-nr",
@@ -3977,7 +5727,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
       "pack_display_name": "Santa Mario - DTW and M-EX (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-ye",
@@ -3994,7 +5752,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
       "pack_display_name": "Santa Mario - DTW and M-EX (",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh",
@@ -4011,7 +5777,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh",
       "pack_display_name": "Pro Skin - Jmook - FlyQuest Sheik",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:58",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh-2",
@@ -4028,7 +5802,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh-2",
       "pack_display_name": "Pro Skin - Jmook - FlyQuest Sheik",
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:58",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-bu",
@@ -4045,7 +5827,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-april-fools-fox-1-1-bu",
       "pack_display_name": "April Fools Fox - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-gr",
@@ -4062,7 +5854,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-april-fools-fox-1-1-bu",
       "pack_display_name": "April Fools Fox - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-nr",
@@ -4079,7 +5881,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-april-fools-fox-1-1-bu",
       "pack_display_name": "April Fools Fox - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-re",
@@ -4096,7 +5908,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-april-fools-fox-1-1-bu",
       "pack_display_name": "April Fools Fox - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-gr",
@@ -4113,7 +5935,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-eggdog-fox-1-1-gr",
       "pack_display_name": "Eggdog Fox - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-la",
@@ -4130,7 +5962,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-eggdog-fox-1-1-gr",
       "pack_display_name": "Eggdog Fox - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-nr",
@@ -4147,7 +5989,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-eggdog-fox-1-1-gr",
       "pack_display_name": "Eggdog Fox - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-or",
@@ -4164,7 +6016,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-eggdog-fox-1-1-gr",
       "pack_display_name": "Eggdog Fox - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-bk",
@@ -4181,7 +6043,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
       "pack_display_name": "Moist Esports - Mogi - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:4"
+        ]
+      }
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-gr",
@@ -4198,7 +6070,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
       "pack_display_name": "Moist Esports - Mogi - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:4"
+        ]
+      }
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-nr",
@@ -4215,7 +6097,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
       "pack_display_name": "Moist Esports - Mogi - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:4"
+        ]
+      }
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-re",
@@ -4232,7 +6124,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
       "pack_display_name": "Moist Esports - Mogi - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:4"
+        ]
+      }
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-wh",
@@ -4249,7 +6151,17 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
       "pack_display_name": "Moist Esports - Mogi - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:4"
+        ]
+      }
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-bu",
@@ -4266,7 +6178,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-bu",
       "pack_display_name": "Christmas Spacies - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-gr-2",
@@ -4283,7 +6203,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-bu",
       "pack_display_name": "Christmas Spacies - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-nr-2",
@@ -4300,7 +6228,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-bu",
       "pack_display_name": "Christmas Spacies - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-re",
@@ -4317,7 +6253,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-bu",
       "pack_display_name": "Christmas Spacies - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-gr",
@@ -4334,7 +6278,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-gr",
       "pack_display_name": "Christmas Spacies - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-la",
@@ -4351,7 +6303,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-gr",
       "pack_display_name": "Christmas Spacies - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-nr",
@@ -4368,7 +6328,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-gr",
       "pack_display_name": "Christmas Spacies - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-or",
@@ -4385,7 +6353,15 @@
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-gr",
       "pack_display_name": "Christmas Spacies - 1:1 (",
-      "format": "1:1"
+      "format": "1:1",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:73",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "Dewrion-perry-fox-fxnr-plfxnr-dat",
@@ -4689,7 +6665,15 @@
       "notes": null,
       "pack_id": "LazloSSBM-uni-falcon-nr",
       "pack_display_name": "Uni Falcon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "LazloSSBM-patriot-falco-neverforget-nr",
@@ -4708,7 +6692,15 @@
       "notes": null,
       "pack_id": "LazloSSBM-patriot-falco-neverforget-nr",
       "pack_display_name": "Patriot Falco (#neverforget)",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "chiefneif-x-ray-falcon-canr-plcanr-dat",
@@ -5849,7 +7841,17 @@
       "pack_id": "gay_lord_erika-alttp-young-link-bu",
       "pack_display_name": "ALTTP YOUNG LINK",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:79",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:6"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-alttp-young-link-nr",
@@ -5869,7 +7871,17 @@
       "pack_id": "gay_lord_erika-alttp-young-link-bu",
       "pack_display_name": "ALTTP YOUNG LINK",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:79",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:6"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-alttp-young-link-re",
@@ -5889,7 +7901,17 @@
       "pack_id": "gay_lord_erika-alttp-young-link-bu",
       "pack_display_name": "ALTTP YOUNG LINK",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:79",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:6"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-bu",
@@ -6029,7 +8051,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-gr-1",
@@ -6049,7 +8081,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-gy-1",
@@ -6069,7 +8111,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-re-1",
@@ -6089,7 +8141,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-wh-1",
@@ -6109,7 +8171,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
@@ -6129,7 +8201,17 @@
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bu",
@@ -6149,7 +8231,17 @@
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-gr",
@@ -6169,7 +8261,17 @@
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-nr",
@@ -6189,7 +8291,17 @@
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-re",
@@ -6209,7 +8321,17 @@
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-bu",
@@ -6389,7 +8511,17 @@
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:19"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-gr",
@@ -6409,7 +8541,17 @@
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:19"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-la",
@@ -6429,7 +8571,17 @@
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:19"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-nr",
@@ -6449,7 +8601,17 @@
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:19"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-pi",
@@ -6469,7 +8631,17 @@
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:60",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:19"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",

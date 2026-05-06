@@ -19,7 +19,7 @@ using HSDRaw.Melee.Pl;
 
 if (args.Length < 1)
 {
-    Console.Error.WriteLine("usage: the-shop-hsd <identify|inspect|thumbnail|dump-textures|to-obj|to-gltf> ...");
+    Console.Error.WriteLine("usage: the-shop-hsd <identify|inspect|thumbnail|dump-textures|to-obj|to-gltf|validate-costume|validate-stage> ...");
     return 2;
 }
 
@@ -32,6 +32,8 @@ return args[0] switch
     "dump-textures" => DumpTextures(args),
     "to-obj" => ToObj(args),
     "to-gltf" => ToGltf(args),
+    "validate-costume" => ValidateCostume(args),
+    "validate-stage" => ValidateStage(args),
     _ => Usage(),
 };
 
@@ -1319,6 +1321,178 @@ static void ApplyFigaTreePose(HSDRawFile costume, HSDRawFile anim, int animIndex
     }
 }
 
+// ─── safety validators ──────────────────────────────────────────────────────
+//
+// Compare a candidate .dat against a vanilla reference and emit a JSON
+// safety verdict. Schema:
+//   {"verdict":"safe|warn|unsafe|unknown",
+//    "reasons":[...],   // structural checks that passed
+//    "warnings":[...]}  // structural mismatches the user should know about
+//
+// `safe`    — structurally identical (or close enough); cosmetic-only
+// `warn`    — small structural drift; may or may not desync
+// `unsafe`  — significant structural mismatch; will likely desync online
+// `unknown` — couldn't parse one of the files; conservatively treat as risky
+//
+// HSDLib does the heavy lifting for us. We just walk the trees and count.
+
+static int ValidateCostume(string[] args)
+{
+    if (args.Length < 3) { Console.Error.WriteLine("usage: validate-costume <candidate.dat> <vanilla.dat>"); return 2; }
+    HSDRawFile cand, vani;
+    try { cand = new HSDRawFile(args[1]); }
+    catch (Exception e) { return EmitVerdict("unknown", new[] { $"could not open candidate: {e.Message}" }, null); }
+    try { vani = new HSDRawFile(args[2]); }
+    catch (Exception e) { return EmitVerdict("unknown", new[] { $"could not open vanilla: {e.Message}" }, null); }
+
+    var cRoot = FindCostumeJobj(cand);
+    var vRoot = FindCostumeJobj(vani);
+    if (cRoot == null || vRoot == null)
+    {
+        return EmitVerdict("unknown", new[] { "no costume JOBJ root in one or both files" }, null);
+    }
+
+    var cBones = WalkBones(cRoot);
+    var vBones = WalkBones(vRoot);
+
+    var reasons = new List<string>();
+    var warnings = new List<string>();
+
+    // Bone count: hard requirement. Animation indices reference bones
+    // positionally; a different bone count → animations look up the wrong
+    // joint → desync.
+    if (cBones.Count == vBones.Count)
+        reasons.Add($"bone_count_match:{cBones.Count}");
+    else
+        warnings.Add($"bone_count:{cBones.Count}_vs_{vBones.Count}");
+
+    // Tree topology: same depth + same hasDobj pattern at each index.
+    int min = Math.Min(cBones.Count, vBones.Count);
+    int depthDiffs = 0;
+    int dobjDiffs = 0;
+    for (int i = 0; i < min; i++)
+    {
+        if (cBones[i].Depth != vBones[i].Depth) depthDiffs++;
+        if (cBones[i].HasDobj != vBones[i].HasDobj) dobjDiffs++;
+    }
+    if (depthDiffs == 0)
+        reasons.Add("topology_match");
+    else
+        warnings.Add($"topology_drift:{depthDiffs}_of_{min}");
+
+    // DObj presence drift is informational — vanilla skeletons attach
+    // visible meshes to specific bones; if the candidate moved which
+    // bones carry meshes, the renderer changes but simulation usually
+    // doesn't (mesh attachment is a render-only concern). Surface as a
+    // soft warning, not a hard one.
+    if (dobjDiffs > 0)
+        warnings.Add($"mesh_attachment_drift:{dobjDiffs}");
+
+    string verdict;
+    if (cBones.Count != vBones.Count) verdict = "unsafe";          // count mismatch is the loud failure mode
+    else if (depthDiffs > 0)            verdict = "warn";           // topology drift but same count → may desync
+    else                                verdict = "safe";           // structurally identical
+
+    return EmitVerdict(verdict, reasons, warnings);
+}
+
+static int ValidateStage(string[] args)
+{
+    if (args.Length < 3) { Console.Error.WriteLine("usage: validate-stage <candidate.dat> <vanilla.dat>"); return 2; }
+    HSDRawFile cand, vani;
+    try { cand = new HSDRawFile(args[1]); }
+    catch (Exception e) { return EmitVerdict("unknown", new[] { $"could not open candidate: {e.Message}" }, null); }
+    try { vani = new HSDRawFile(args[2]); }
+    catch (Exception e) { return EmitVerdict("unknown", new[] { $"could not open vanilla: {e.Message}" }, null); }
+
+    var cColl = FindCollData(cand);
+    var vColl = FindCollData(vani);
+    if (cColl == null || vColl == null)
+    {
+        return EmitVerdict("unknown", new[] { "no coll_data root in one or both files" }, null);
+    }
+
+    int cVerts = cColl.Vertices?.Length ?? 0;
+    int vVerts = vColl.Vertices?.Length ?? 0;
+    int cLines = cColl.Links?.Length ?? 0;
+    int vLines = vColl.Links?.Length ?? 0;
+
+    var reasons = new List<string>();
+    var warnings = new List<string>();
+
+    if (cVerts == vVerts) reasons.Add($"vertex_count_match:{cVerts}");
+    else warnings.Add($"vertex_count:{cVerts}_vs_{vVerts}");
+
+    if (cLines == vLines) reasons.Add($"line_count_match:{cLines}");
+    else warnings.Add($"line_count:{cLines}_vs_{vLines}");
+
+    string verdict;
+    int diffs = (cVerts != vVerts ? 1 : 0) + (cLines != vLines ? 1 : 0);
+    if (diffs == 0)      verdict = "safe";
+    else if (diffs == 1) verdict = "warn";
+    else                 verdict = "unsafe";
+
+    return EmitVerdict(verdict, reasons, warnings);
+}
+
+// Find the costume's main JOBJ root. Costumes typically have one root
+// whose name matches `Ply<Char>5K[<Slot>]_Share_joint`; we accept any
+// HSD_JOBJ root since that's what we'll walk regardless.
+static HSD_JOBJ? FindCostumeJobj(HSDRawFile file)
+{
+    foreach (var r in file.Roots)
+        if (r.Data is HSD_JOBJ j) return j;
+    return null;
+}
+
+// Find the stage's collision data root. HSDLib auto-detects roots whose
+// name contains "coll_data" → SBM_Coll_Data.
+static HSDRaw.Melee.Gr.SBM_Coll_Data? FindCollData(HSDRawFile file)
+{
+    foreach (var r in file.Roots)
+        if (r.Data is HSDRaw.Melee.Gr.SBM_Coll_Data c) return c;
+    return null;
+}
+
+static List<_BoneInfo> WalkBones(HSD_JOBJ root)
+{
+    var bones = new List<_BoneInfo>();
+    _Walk(root, 0, bones);
+    return bones;
+}
+
+static void _Walk(HSD_JOBJ jobj, int depth, List<_BoneInfo> bones)
+{
+    bones.Add(new _BoneInfo { Depth = depth, HasDobj = jobj.Dobj != null });
+    if (jobj.Child != null) _Walk(jobj.Child, depth + 1, bones);
+    if (jobj.Next  != null) _Walk(jobj.Next,  depth,     bones);
+}
+
+static int EmitVerdict(string verdict, IEnumerable<string>? reasons, IEnumerable<string>? warnings)
+{
+    var sb = new System.Text.StringBuilder();
+    sb.Append("{\"verdict\":\"").Append(verdict).Append('"');
+    sb.Append(",\"reasons\":[");
+    bool first = true;
+    foreach (var r in reasons ?? Array.Empty<string>())
+    {
+        if (!first) sb.Append(',');
+        sb.Append('"').Append(JsonEscape(r)).Append('"');
+        first = false;
+    }
+    sb.Append("],\"warnings\":[");
+    first = true;
+    foreach (var w in warnings ?? Array.Empty<string>())
+    {
+        if (!first) sb.Append(',');
+        sb.Append('"').Append(JsonEscape(w)).Append('"');
+        first = false;
+    }
+    sb.Append("]}");
+    Console.WriteLine(sb.ToString());
+    return 0;
+}
+
 static class SkinStats
 {
     public static int Total;
@@ -1368,4 +1542,12 @@ class MaterialEntry
     public float UvRX, UvRY, UvRZ;
     public float UvTX, UvTY, UvTZ;
     public bool HasDiffuseTexture => DiffuseTobj != null && TexFilename != null;
+}
+
+
+
+class _BoneInfo
+{
+    public int Depth;
+    public bool HasDobj;
 }

@@ -118,8 +118,23 @@ pub struct IndexedSkinEntry {
     /// tools/build-index.py based on tokens in the source filenames.
     #[serde(default)]
     pub format: Option<String>,
+    /// Slippi safety verdict from the validator (skeleton-compare for
+    /// costumes, collision-compare for stages). Computed at scrape time
+    /// against the vanilla NTSC 1.02 ISO. None = not validated yet.
+    #[serde(default)]
+    pub safety: Option<SafetyReport>,
     #[serde(default)]
     pub notes: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SafetyReport {
+    /// "safe" | "warn" | "unsafe" | "unknown"
+    pub verdict: String,
+    #[serde(default)]
+    pub reasons: Vec<String>,
+    #[serde(default)]
+    pub warnings: Vec<String>,
 }
 
 impl IndexedSkinEntry {
@@ -212,6 +227,37 @@ pub struct IndexedPack {
     /// Format flavor (animelee / vanilla / 1:1 / null) carried up from
     /// the slots so the frontend can render a pill on the pack card.
     pub format: Option<String>,
+    /// Worst safety verdict among the slots (unsafe > warn > unknown >
+    /// safe > null). Surfaces a single ✓ / ⚠ / ✗ badge on the pack
+    /// card that reflects the most-suspicious slot — defensive default.
+    pub safety: Option<SafetyReport>,
+}
+
+fn pack_safety(members: &[AnnotatedSkin]) -> Option<SafetyReport> {
+    // Returns the WORST verdict among slots that have one. Verdicts are
+    // collapsed to a single rep — we don't aggregate the warnings list
+    // across slots because it's purely informational at the pack level.
+    fn rank(v: &str) -> u8 {
+        match v {
+            "unsafe" => 3,
+            "warn" => 2,
+            "unknown" => 1,
+            "safe" => 0,
+            _ => 0,
+        }
+    }
+    let mut worst: Option<&SafetyReport> = None;
+    for s in members {
+        if let Some(rep) = &s.entry.safety {
+            if worst
+                .map(|w| rank(&rep.verdict) > rank(&w.verdict))
+                .unwrap_or(true)
+            {
+                worst = Some(rep);
+            }
+        }
+    }
+    worst.cloned()
 }
 
 fn pack_grouping_key(s: &AnnotatedSkin) -> String {
@@ -259,6 +305,9 @@ fn group_into_packs(skins: Vec<AnnotatedSkin>) -> Vec<IndexedPack> {
         let patreon_post_id = first.entry.patreon_post_id.clone();
         let filename_in_post = first.entry.filename_in_post.clone();
         let format = first.entry.format.clone();
+        // Worst-case safety verdict: if any slot is unsafe, the pack is
+        // unsafe; warn beats safe; unknown beats safe but loses to warn.
+        let safety = pack_safety(&members);
 
         let mut tier_required_cents: i64 = 0;
         let mut preview_url: Option<String> = None;
@@ -324,6 +373,7 @@ fn group_into_packs(skins: Vec<AnnotatedSkin>) -> Vec<IndexedPack> {
             slot_count,
             filename_in_post,
             format,
+            safety,
         });
     }
 

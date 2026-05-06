@@ -186,7 +186,15 @@ export type IndexedSkinEntry = {
   pack_id: string;
   pack_display_name: string | null;
   format: string | null;
+  safety: SafetyReport | null;
   notes: string | null;
+};
+
+export type SafetyReport = {
+  /// "safe" | "warn" | "unsafe" | "unknown"
+  verdict: string;
+  reasons: string[];
+  warnings: string[];
 };
 
 export type AnnotatedSkin = IndexedSkinEntry & {
@@ -222,6 +230,7 @@ export type IndexedPack = {
   slot_count: number;
   filename_in_post: string;
   format: string | null;
+  safety: SafetyReport | null;
 };
 
 export type SkinIndex = {
