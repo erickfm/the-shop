@@ -58,39 +58,60 @@ export function slotDisplay(code: string | null | undefined): string {
   return SLOT_LABELS[code] ?? code;
 }
 
-// Stage codes pulled from `iso_target_filename` — the part between `Gr` and
-// `.dat`/`.usd`. We only label codes we've verified; unknown codes fall
-// through to the raw filename so the UI degrades gracefully.
+// HAL filesystem stage codes derived from the part between "Gr" and the
+// extension. The mapping is grounded in the actual asset-name fingerprints
+// inside each vanilla file (e.g. GrSt's roots all start with "GrdStory*";
+// GrIz's roots start with "GrdIzumi*", Izumi = "spring/fountain" → FoD)
+// plus Smashboards' stage-hacking documentation for the N-prefixed
+// adventure-mode arenas.
 const STAGE_LABELS: Record<string, string> = {
-  Iz: "icicle mountain (adventure)",
-  Ps: "pokémon stadium",
+  // Versus stages
   St: "yoshi's story",
-  Op: "dreamland",
-  Ba: "battlefield",
-  Bf: "battlefield",
-  Fn: "final destination",
-  Fs: "final destination",
-  Fz: "fountain of dreams",
+  Iz: "fountain of dreams",
+  Ps: "pokémon stadium",
+  Op: "dream land 64",
   Mc: "mute city",
-  Te: "temple",
-  Cs: "corneria",
+  Bb: "big blue",
+  Te: "hyrule temple",
+  Cn: "corneria",
   Ve: "venom",
   Rc: "rainbow cruise",
-  Yj: "yoshi's island (n64)",
-  Kg: "kongo jungle (n64)",
+  Im: "icicle mountain",
+  Kg: "kongo jungle 64",
   Kr: "kongo jungle",
   Gb: "great bay",
-  Gd: "green greens",
+  Gd: "mushroom kingdom ii",
   Gr: "green greens",
-  Px: "princess peach's castle",
-  Im: "icicle mountain",
   Hr: "home-run contest",
-  // N-prefixed codes are commonly Animelee / training-mode / new variants
-  // of standard stages — we keep them but label as "(variant)" until verified.
-  NBa: "battlefield (variant)",
-  NFn: "final destination (variant)",
-  NLa: "stage (nla variant)",
-  NZr: "stage (nzr variant)",
+  Cs: "princess peach's castle",
+  Ze: "brinstar",
+  Sh: "mushroom kingdom",
+  Pu: "pokémon floats",
+  Yt: "yoshi's island (past)",
+  Oy: "yoshi's island 64",
+  Fs: "fourside",
+  Fz: "flat zone",
+  // Fighter-specific intro/trophy stages: GrT* — handled with prefix below
+  // N-prefixed adventure-mode arenas. GrNBa is the actual Battlefield file
+  // and GrNLa is the actual Final Destination file — they're not "variants",
+  // those are their canonical filenames in vanilla Melee.
+  NBa: "battlefield",
+  NLa: "final destination",
+  NZr: "brinstar (adventure)",
+  NKr: "mushroom kingdom (adventure)",
+  NPo: "pokémon stadium (adventure)",
+  NSr: "underground maze (adventure)",
+  NFg: "all-star rest area",
+  NBr: "big blue (adventure)",
+  // Adventure-only / single-player
+  Ok: "kongo jungle (adventure)",
+  Ot: "onett",
+  He: "all-star heal",
+  // Pokémon Stadium transformations (Ps1-4); same name when shown.
+  Ps1: "pokémon stadium",
+  Ps2: "pokémon stadium",
+  Ps3: "pokémon stadium",
+  Ps4: "pokémon stadium",
 };
 
 /// Returns a human-readable stage name given the iso_target_filename
@@ -105,18 +126,19 @@ export function stageDisplay(isoTargetFilename: string | null | undefined): stri
   return STAGE_LABELS[code] ?? isoTargetFilename;
 }
 
-// HAL codes for the six legal Slippi ranked stages. A stage replacement
-// targeting one of these gets the "ranked" pill — desync risk hits the
-// ranked queue directly, not just unranked / direct-connect.
+// HAL codes for the six legal Slippi ranked stages. These are the
+// CANONICAL filenames Melee uses — `NBa` is the actual Battlefield file
+// in the ISO (its asset-name fingerprint is "GrdBattle*"), and `NLa` is
+// the actual Final Destination ("GrdLast*", literally "Last
+// Destination" in Japanese). Common myth that battlefield is `Ba` is
+// wrong — that code doesn't exist in the vanilla ISO.
 const LEGAL_RANKED_STAGE_CODES = new Set([
-  "Ba",  // Battlefield
-  "Bf",  // Battlefield (alt code, just in case)
-  "Fs",  // Final Destination
-  "Fn",  // Final Destination (alt)
-  "St",  // Yoshi's Story
-  "Ps",  // Pokémon Stadium
-  "Op",  // Dreamland
-  "Fz",  // Fountain of Dreams
+  "NBa",  // Battlefield
+  "NLa",  // Final Destination
+  "St",   // Yoshi's Story
+  "Ps",   // Pokémon Stadium (also Ps1-Ps4 transformations)
+  "Op",   // Dream Land 64
+  "Iz",   // Fountain of Dreams (Izumi = spring)
 ]);
 
 /// True iff the given iso_target_filename targets a legal Slippi ranked
