@@ -215,16 +215,34 @@ def normalize_pack_name(display_name: str, slot_code: str) -> str:
     return s if s else slot_code.lower()
 
 
-def group_into_packs(entries: list[dict]) -> None:
-    """Mutate entries in place: assign pack_id and pack_display_name."""
+def group_into_packs(entries: list[dict]) -> list[dict]:
+    """Group entries into packs and dedupe duplicate slot_codes.
+
+    The rule: same skin (same creator + character + normalized name) =
+    same pack, and within a pack each slot_code appears at most once.
+    When the input has multiple entries on the same slot (format
+    alternates — e.g. an archive with both `PlCaBu-ANIMELEE ZUKO.dat`
+    and `PlCaBu-ZUKO.dat`), the lowest-sorting `id` wins; the others
+    are dropped from the output.
+
+    Returns a new list, possibly shorter than the input. Mutates kept
+    entries in place to set `pack_id` + `pack_display_name`.
+    """
     by_kind: dict[str, list[dict]] = defaultdict(list)
     for e in entries:
         by_kind[e["kind"]].append(e)
 
+    out: list[dict] = []
+
     # Non-character_skin → packs of 1.
-    for e in [x for k, lst in by_kind.items() if k != "character_skin" for x in lst]:
+    for e in [
+        x for k, lst in by_kind.items() if k != "character_skin" for x in lst
+    ]:
         e["pack_id"] = e["id"]
-        e["pack_display_name"] = strip_color_suffix(e["display_name"]) or e["display_name"]
+        e["pack_display_name"] = (
+            strip_color_suffix(e["display_name"]) or e["display_name"]
+        )
+        out.append(e)
 
     # character_skin → group on (creator, character, normalized_name).
     groups: dict[tuple[str, str, str], list[dict]] = defaultdict(list)
@@ -237,30 +255,37 @@ def group_into_packs(entries: list[dict]) -> None:
         groups[key].append(e)
 
     for members in groups.values():
-        # Safety net: same slot_code in the group → split (format alternates).
-        slot_codes = [m["slot_code"] for m in members]
-        if len(slot_codes) != len(set(slot_codes)):
-            for m in members:
-                m["pack_id"] = m["id"]
-                m["pack_display_name"] = (
-                    strip_color_suffix(m["display_name"]) or m["display_name"]
-                )
-            continue
         members.sort(key=lambda m: m["id"])
-        pack_id = members[0]["id"]
+        # Dedupe by slot_code: keep first, drop the rest. The dropped
+        # entries are format-alternates of the same color (e.g. animelee
+        # vs vanilla versions of slot Bu) — the user picks one canonical
+        # variant per slot in the pack.
+        seen_slots: set[str] = set()
+        kept: list[dict] = []
+        for m in members:
+            if m["slot_code"] in seen_slots:
+                continue
+            seen_slots.add(m["slot_code"])
+            kept.append(m)
+        if not kept:
+            continue
+        pack_id = kept[0]["id"]
         # pack_display_name: longest common prefix → strip → fallback to first
-        pdn = strip_color_suffix(members[0]["display_name"])
-        if len(members) > 1:
-            common = members[0]["display_name"]
-            for m in members[1:]:
+        pdn = strip_color_suffix(kept[0]["display_name"])
+        if len(kept) > 1:
+            common = kept[0]["display_name"]
+            for m in kept[1:]:
                 while m["display_name"][: len(common)] != common and common:
                     common = common[:-1]
             common = strip_color_suffix(common.strip())
             if len(common) >= 5:
                 pdn = common
-        for m in members:
+        for m in kept:
             m["pack_id"] = pack_id
             m["pack_display_name"] = pdn or m["display_name"]
+        out.extend(kept)
+
+    return out
 
 
 # ─── patreon api ─────────────────────────────────────────────────────────────
@@ -677,41 +702,83 @@ def build_entries(
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    p.add_argument("target", help="patreon URL, campaign id, or existing creator id")
-    p.add_argument("--dry-run", action="store_true", help="print summary, don't write")
+    p.add_argument(
+        "target",
+        nargs="?",
+        help="patreon URL, campaign id, or existing creator id",
+    )
+    p.add_argument(
+        "--dry-run", action="store_true", help="print summary, don't write"
+    )
+    p.add_argument(
+        "--regroup-all",
+        action="store_true",
+        help="re-apply pack grouping to every entry in the index "
+             "(dedupes duplicate slot_codes within a group). use to "
+             "migrate existing data after a grouping rule change.",
+    )
     args = p.parse_args()
 
-    cookie = load_session_cookie()
+    if not args.target and not args.regroup_all:
+        p.error("provide a target (URL / id) or pass --regroup-all")
+
     index = json.loads(INDEX_PATH.read_text())
 
-    creator_id, creator = resolve_input(args.target, index, cookie)
-    print(f"creator: {creator_id} (campaign {creator['patreon_campaign_id']})")
+    if args.target:
+        cookie = load_session_cookie()
+        creator_id, creator = resolve_input(args.target, index, cookie)
+        print(f"creator: {creator_id} (campaign {creator['patreon_campaign_id']})")
 
-    posts = fetch_posts(creator["patreon_campaign_id"], cookie)
-    print(f"  posts seen: {len(posts)}")
+        posts = fetch_posts(creator["patreon_campaign_id"], cookie)
+        print(f"  posts seen: {len(posts)}")
 
-    # Cache downloaded archives for the duration of this run so we don't
-    # re-fetch the same .zip multiple times. Cleaned up on exit.
-    cache_dir = Path(tempfile.mkdtemp(prefix=f"the-shop-scrape-{creator_id}-"))
-    try:
-        new_entries = build_entries(creator_id, posts, cookie, cache_dir)
-    finally:
-        shutil.rmtree(cache_dir, ignore_errors=True)
-    print(f"  HAL-pattern attachments: {len(new_entries)}")
+        cache_dir = Path(
+            tempfile.mkdtemp(prefix=f"the-shop-scrape-{creator_id}-")
+        )
+        try:
+            new_entries = build_entries(creator_id, posts, cookie, cache_dir)
+        finally:
+            shutil.rmtree(cache_dir, ignore_errors=True)
+        print(f"  HAL-pattern attachments: {len(new_entries)}")
 
-    if not new_entries:
-        print("  nothing to merge.")
-        return
+        if new_entries:
+            before = len(new_entries)
+            new_entries = group_into_packs(new_entries)
+            after = len(new_entries)
+            pack_ids = {
+                e["pack_id"]
+                for e in new_entries
+                if e["kind"] == "character_skin"
+            }
+            print(
+                f"  character_skin packs: {len(pack_ids)} "
+                f"({before - after} alternate-slot variants deduped)"
+            )
 
-    group_into_packs(new_entries)
-    pack_ids = {e["pack_id"] for e in new_entries if e["kind"] == "character_skin"}
-    print(f"  character_skin packs: {len(pack_ids)}")
+            # Replace this creator's skins in-place (idempotent re-runs).
+            kept = [s for s in index["skins"] if s["creator_id"] != creator_id]
+            index["skins"] = kept + new_entries
 
-    # Replace this creator's skins in-place (idempotent re-runs).
-    kept = [s for s in index["skins"] if s["creator_id"] != creator_id]
-    index["skins"] = kept + new_entries
+    if args.regroup_all:
+        before = len(index["skins"])
+        index["skins"] = group_into_packs(index["skins"])
+        after = len(index["skins"])
+        dropped = before - after
+        n_packs = len(
+            {
+                s["pack_id"]
+                for s in index["skins"]
+                if s["kind"] == "character_skin"
+            }
+        )
+        print(
+            f"regrouped: {before} → {after} skins ({dropped} alternate-slot "
+            f"variants dropped); {n_packs} character_skin packs"
+        )
+
     print(
-        f"  index now: {len(index['creators'])} creators · {len(index['skins'])} skins"
+        f"index now: {len(index['creators'])} creators · "
+        f"{len(index['skins'])} skins"
     )
 
     if args.dry_run:
