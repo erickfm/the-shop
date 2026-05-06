@@ -636,10 +636,12 @@ def fetch_posts(campaign_id: str, cookie: str) -> list[dict]:
     out: list[dict] = []
     cursor = (
         f"/api/posts?filter[campaign_id]={campaign_id}"
-        "&include=attachments,attachments_media,access_rules"
+        "&include=attachments,attachments_media,access_rules,access_rules.tier"
         "&fields[post]=title,published_at,min_cents_pledged_to_view,current_user_can_view,image"
         "&fields[media]=name,download_url,file_name,image_urls"
         "&fields[attachment]=name,url"
+        "&fields[access-rule]=access_rule_type"
+        "&fields[tier]=amount_cents,title"
         "&page[size]=20&sort=-published_at"
     )
     while cursor:
@@ -922,12 +924,96 @@ def run_validation(
     return None
 
 
+def fetch_campaign_min_paid_cents(campaign_id: str, cookie: str) -> int:
+    """Lowest non-zero reward tier on a creator's campaign, in cents. Used
+    to price posts gated as "any paid pledge" (Patreon's `access_rule_type:
+    "patrons"`) where the post itself doesn't carry a specific tier price.
+    Returns 0 if the campaign has no paid tiers (free-only) or the request
+    fails — caller treats 0 as "unknown / treat as free."
+    """
+    try:
+        body = patreon_get(f"/api/campaigns/{campaign_id}?include=rewards", cookie)
+    except SystemExit:
+        raise
+    except Exception:
+        return 0
+    paid: list[int] = []
+    for inc in body.get("included", []):
+        if inc.get("type") != "reward":
+            continue
+        amt = int(inc.get("attributes", {}).get("amount_cents") or 0)
+        if amt > 0:
+            paid.append(amt)
+    return min(paid) if paid else 0
+
+
+def resolve_tier_cents(
+    post: dict,
+    included: list[dict],
+    campaign_min_paid_cents: int = 0,
+) -> int:
+    """Return the actual minimum tier price (in cents) required to view the
+    post. The honest answer lives in the post's `access_rules`, not in
+    `min_cents_pledged_to_view` — that field returns a sentinel `1` for
+    "any paid pledge" posts, which used to render in the UI as "$0.01".
+
+      1) Build a tier-id → amount_cents map from `included[]` (type=tier).
+      2) Walk this post's access_rules:
+         - "tier" rule → use the linked tier's amount_cents
+         - "patrons" rule → use the campaign's lowest paid reward (passed in
+           as `campaign_min_paid_cents`, fetched once per creator upstream)
+         - "public" rule → contributes 0
+      3) Return the minimum collected. If access_rules give us nothing
+         actionable, fall back to min_cents_pledged_to_view but only if it
+         looks real (≥ 100); the `1` sentinel becomes 0.
+    """
+    tiers_by_id: dict[str, int] = {}
+    rules_by_id: dict[str, dict] = {}
+    for inc in included:
+        t = inc.get("type")
+        if t == "tier":
+            amt = int(inc.get("attributes", {}).get("amount_cents") or 0)
+            tiers_by_id[inc.get("id", "")] = amt
+        elif t == "access-rule":
+            rules_by_id[inc.get("id", "")] = inc
+
+    rels = post.get("relationships", {})
+    rule_refs = (rels.get("access_rules", {}).get("data") or [])
+
+    candidates: list[int] = []
+    for ref in rule_refs:
+        rid = ref.get("id")
+        rule = rules_by_id.get(rid) if rid else None
+        if not rule:
+            continue
+        rtype = rule.get("attributes", {}).get("access_rule_type")
+        if rtype == "tier":
+            tier_ref = rule.get("relationships", {}).get("tier", {}).get("data")
+            if tier_ref:
+                amt = tiers_by_id.get(tier_ref.get("id", ""))
+                if amt and amt > 0:
+                    candidates.append(amt)
+        elif rtype == "patrons":
+            if campaign_min_paid_cents > 0:
+                candidates.append(campaign_min_paid_cents)
+
+    if candidates:
+        return min(candidates)
+
+    fallback = int(post.get("attributes", {}).get("min_cents_pledged_to_view") or 0)
+    # `1` is Patreon's "any paid pledge" sentinel — not a real price.
+    if fallback < 100:
+        return 0
+    return fallback
+
+
 def build_entries(
     creator_id: str,
     posts: list[dict],
     cookie: str,
     cache_dir: Path,
     vanilla_iso: str | None = None,
+    campaign_min_paid_cents: int = 0,
 ) -> list[dict]:
     out: list[dict] = []
     seen_ids: set[str] = set()
@@ -942,7 +1028,9 @@ def build_entries(
         post = bundle["post"]
         pid = post["id"]
         attrs = post["attributes"]
-        tier_cents = int(attrs.get("min_cents_pledged_to_view") or 0)
+        tier_cents = resolve_tier_cents(
+            post, bundle["included"], campaign_min_paid_cents
+        )
         post_title = (attrs.get("title") or "").strip()
         preview = post_preview_url(post)
 
@@ -1094,10 +1182,25 @@ def main() -> None:
         help="re-download every existing entry's attachment and run the "
              "safety validator against the user's vanilla iso. slow.",
     )
+    p.add_argument(
+        "--reprice-all",
+        action="store_true",
+        help="re-fetch every post's metadata and recompute tier_required_cents "
+             "from access_rules.tier (fixes the Patreon `min_cents_pledged_to_view: 1` "
+             "sentinel that rendered as $0.01).",
+    )
     args = p.parse_args()
 
-    if not args.target and not args.regroup_all and not args.revalidate_all:
-        p.error("provide a target (URL / id) or pass --regroup-all / --revalidate-all")
+    if (
+        not args.target
+        and not args.regroup_all
+        and not args.revalidate_all
+        and not args.reprice_all
+    ):
+        p.error(
+            "provide a target (URL / id) or pass "
+            "--regroup-all / --revalidate-all / --reprice-all"
+        )
 
     index = json.loads(INDEX_PATH.read_text())
     vanilla_iso = load_vanilla_iso_path()
@@ -1114,12 +1217,22 @@ def main() -> None:
         posts = fetch_posts(creator["patreon_campaign_id"], cookie)
         print(f"  posts seen: {len(posts)}")
 
+        campaign_min = fetch_campaign_min_paid_cents(
+            creator["patreon_campaign_id"], cookie
+        )
+        if campaign_min > 0:
+            print(f"  campaign min paid tier: ${campaign_min/100:.2f}")
+        else:
+            print("  campaign min paid tier: free / unknown")
+
         cache_dir = Path(
             tempfile.mkdtemp(prefix=f"the-shop-scrape-{creator_id}-")
         )
         try:
             new_entries = build_entries(
-                creator_id, posts, cookie, cache_dir, vanilla_iso=vanilla_iso
+                creator_id, posts, cookie, cache_dir,
+                vanilla_iso=vanilla_iso,
+                campaign_min_paid_cents=campaign_min,
             )
         finally:
             shutil.rmtree(cache_dir, ignore_errors=True)
@@ -1240,6 +1353,74 @@ def main() -> None:
         summary = " ".join(f"{k}:{v}" for k, v in sorted(verdicts.items()))
         print(
             f"revalidated: {attempted} attempted, {skipped} skipped · {summary}"
+        )
+
+    if args.reprice_all:
+        cookie = load_session_cookie()
+        # Build creator → campaign-min-paid-cents lookup once per creator
+        # so we don't hit /api/campaigns/{id} for every post.
+        campaign_min_by_creator: dict[str, int] = {}
+        creator_by_id = {c["id"]: c for c in index["creators"]}
+        for cid, c in creator_by_id.items():
+            cmp_id = c.get("patreon_campaign_id")
+            if not cmp_id:
+                continue
+            cents = fetch_campaign_min_paid_cents(cmp_id, cookie)
+            campaign_min_by_creator[cid] = cents
+            print(
+                f"  {cid:30s} campaign min paid: "
+                f"${cents/100:.2f}" if cents else
+                f"  {cid:30s} campaign min paid: free / unknown"
+            )
+            time.sleep(0.3)
+        # Group entries by post_id so we fetch each post once. Track creator
+        # alongside the post so we know which campaign-min to apply.
+        post_to_creator: dict[str, str] = {}
+        for e in index["skins"]:
+            pid = e.get("patreon_post_id")
+            cid = e.get("creator_id")
+            if pid and cid:
+                post_to_creator[pid] = cid
+        new_prices: dict[str, int] = {}
+        skipped = 0
+        post_query = (
+            "?include=access_rules,access_rules.tier"
+            "&fields[post]=min_cents_pledged_to_view"
+            "&fields[access-rule]=access_rule_type"
+            "&fields[tier]=amount_cents,title"
+        )
+        for pid, cid in sorted(post_to_creator.items()):
+            try:
+                body = patreon_get(f"/api/posts/{pid}{post_query}", cookie)
+            except SystemExit:
+                raise
+            except Exception:
+                skipped += 1
+                continue
+            post = body.get("data") or {}
+            if not post:
+                skipped += 1
+                continue
+            new_prices[pid] = resolve_tier_cents(
+                post,
+                body.get("included", []),
+                campaign_min_by_creator.get(cid, 0),
+            )
+            time.sleep(0.3)  # polite pause
+        # Apply prices.
+        changed = 0
+        for e in index["skins"]:
+            pid = e.get("patreon_post_id")
+            if not pid or pid not in new_prices:
+                continue
+            old = int(e.get("tier_required_cents") or 0)
+            new = new_prices[pid]
+            if old != new:
+                e["tier_required_cents"] = new
+                changed += 1
+        print(
+            f"repriced: {len(new_prices)} posts checked, "
+            f"{skipped} skipped · {changed} skin entries updated"
         )
 
     print(

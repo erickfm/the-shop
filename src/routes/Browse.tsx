@@ -744,9 +744,7 @@ function FeaturedHero({
             {pack.kind === "stage" && pack.slots[0]?.iso_target_filename && (
               <>
                 <span>·</span>
-                <span>
-                  replaces {stageDisplay(pack.slots[0].iso_target_filename)}
-                </span>
+                <span>{stageDisplay(pack.slots[0].iso_target_filename)}</span>
                 {isLegalRankedStage(pack.slots[0].iso_target_filename) && (
                   <>
                     <span>·</span>
@@ -1393,7 +1391,7 @@ function PackCard({
               isLegalRankedStage(pack.slots[0]?.iso_target_filename) && (
                 <span
                   className="label-mono px-1.5 py-0.5 rounded bg-bg border border-accent/40 text-accent shrink-0"
-                  title="this replaces a legal slippi ranked stage — collision changes affect ranked play"
+                  title="this targets a legal slippi ranked stage — collision changes affect ranked play"
                 >
                   ranked
                 </span>
@@ -1418,7 +1416,7 @@ function PackCard({
               {pack.creator?.display_name || pack.creator_id}
             </button>
             {pack.kind === "stage" && pack.slots[0]?.iso_target_filename &&
-              ` · replaces ${stageDisplay(pack.slots[0].iso_target_filename)}`}
+              ` · ${stageDisplay(pack.slots[0].iso_target_filename)}`}
             {(pack.kind === "character_skin" ||
               pack.kind === "effect" ||
               pack.kind === "animation") &&
@@ -1559,7 +1557,7 @@ function PackDetailDrawer({
 
   const metaPills: string[] = [kindLabel];
   if (pack.kind === "stage" && pack.slots[0]?.iso_target_filename) {
-    metaPills.push(`replaces ${stageDisplay(pack.slots[0].iso_target_filename)}`);
+    metaPills.push(stageDisplay(pack.slots[0].iso_target_filename));
     if (isLegalRankedStage(pack.slots[0].iso_target_filename)) {
       metaPills.push("ranked legal");
     }
