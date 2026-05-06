@@ -516,14 +516,12 @@ function Storefront(props: {
 }) {
   return (
     <div>
-      <div className="sticky top-0 z-20 px-8 pt-4 pb-2 flex justify-end pointer-events-none">
-        <div className="pointer-events-auto">
-          <SearchBar
-            packs={props.searchPacks}
-            onSelectPack={props.onSelectPack}
-            onCreatorClick={props.onCreatorClick}
-          />
-        </div>
+      <div className="px-8 pt-6 pb-2 flex justify-end">
+        <SearchBar
+          packs={props.searchPacks}
+          onSelectPack={props.onSelectPack}
+          onCreatorClick={props.onCreatorClick}
+        />
       </div>
 
       {props.featuredPacks.length > 0 && (
