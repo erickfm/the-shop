@@ -1225,6 +1225,71 @@ function AllModsSection({
   );
 }
 
+// ─── Safety pill ─────────────────────────────────────────────────────────────
+//
+// Renders one of four states. Effects intentionally render "unchecked"
+// rather than "unverified" since we don't have an effect validator yet
+// — distinguishing "we tried and couldn't" from "the validator doesn't
+// cover this kind."
+
+function SafetyPill({
+  safety,
+  kind,
+}: {
+  safety: { verdict: string; warnings: string[] } | null;
+  kind: SkinKind;
+}) {
+  if (!safety) {
+    if (kind !== "character_skin" && kind !== "stage") return null;
+    return (
+      <span
+        className="label-mono px-1.5 py-0.5 rounded bg-bg border border-border text-muted/70 shrink-0"
+        title="slippi safety: not validated (tier-locked or scrape couldn't fetch the file)"
+      >
+        unverified
+      </span>
+    );
+  }
+  if (safety.verdict === "safe") {
+    return (
+      <span
+        className="label-mono px-1.5 py-0.5 rounded bg-bg border border-ok/40 text-ok shrink-0"
+        title="slippi safety: structurally identical to vanilla"
+      >
+        ✓ slippi
+      </span>
+    );
+  }
+  if (safety.verdict === "warn") {
+    return (
+      <span
+        className="label-mono px-1.5 py-0.5 rounded bg-bg border border-yellow-500/60 text-yellow-500 shrink-0"
+        title={safety.warnings.join(" · ") || "minor structural drift from vanilla"}
+      >
+        review
+      </span>
+    );
+  }
+  if (safety.verdict === "unsafe") {
+    return (
+      <span
+        className="label-mono px-1.5 py-0.5 rounded bg-bg border border-danger/60 text-danger shrink-0"
+        title={safety.warnings.join(" · ") || "structural mismatch — likely to desync online"}
+      >
+        may desync
+      </span>
+    );
+  }
+  return (
+    <span
+      className="label-mono px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0"
+      title={safety.warnings.join(" · ") || "couldn't parse one or both files"}
+    >
+      unverified
+    </span>
+  );
+}
+
 // ─── Pack card (grid) ─────────────────────────────────────────────────────────
 
 function PackCard({
@@ -1309,35 +1374,7 @@ function PackCard({
                 {pack.format}
               </span>
             )}
-            {pack.safety && pack.safety.verdict !== "safe" && (
-              <span
-                className={`label-mono px-1.5 py-0.5 rounded bg-bg border shrink-0 ${
-                  pack.safety.verdict === "unsafe"
-                    ? "border-danger/60 text-danger"
-                    : pack.safety.verdict === "warn"
-                      ? "border-yellow-500/60 text-yellow-500"
-                      : "border-border text-muted"
-                }`}
-                title={
-                  (pack.safety.warnings || []).join(" · ") ||
-                  `slippi safety: ${pack.safety.verdict}`
-                }
-              >
-                {pack.safety.verdict === "unsafe"
-                  ? "may desync"
-                  : pack.safety.verdict === "warn"
-                    ? "review"
-                    : "unverified"}
-              </span>
-            )}
-            {pack.safety && pack.safety.verdict === "safe" && (
-              <span
-                className="label-mono px-1.5 py-0.5 rounded bg-bg border border-ok/40 text-ok shrink-0"
-                title="slippi safety: structurally identical to vanilla"
-              >
-                ✓ slippi
-              </span>
-            )}
+            <SafetyPill safety={pack.safety} kind={pack.kind} />
           </div>
           <div className="text-xs text-muted truncate">
             <button
