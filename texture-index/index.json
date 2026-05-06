@@ -99,13 +99,13 @@
       "pack_display_name": "Cave of Origin - Pokemon Stadium",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:136"
+          "collision_lines_match:112",
+          "ledges_match:5",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:156_vs_155"
-        ]
+        "warnings": []
       }
     },
     {
@@ -128,10 +128,12 @@
       "format": "animelee",
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:36_vs_34",
-          "line_count:30_vs_29"
+          "lines_added:1"
         ]
       }
     },
@@ -155,10 +157,12 @@
       "format": "vanilla",
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:36_vs_34",
-          "line_count:30_vs_29"
+          "lines_added:1"
         ]
       }
     },
@@ -181,13 +185,13 @@
       "pack_display_name": "ENVY Stadium",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:136"
+          "collision_lines_match:112",
+          "ledges_match:5",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:156_vs_155"
-        ]
+        "warnings": []
       }
     },
     {
@@ -209,13 +213,13 @@
       "pack_display_name": "BF: Jungle Japes (Free)",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -239,8 +243,9 @@
       "safety": {
         "verdict": "safe",
         "reasons": [
-          "vertex_count_match:16",
-          "line_count_match:16"
+          "collision_lines_match:16",
+          "ledges_match:2",
+          "blastzones_match"
         ],
         "warnings": []
       }
@@ -265,10 +270,12 @@
       "format": null,
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:16_vs_14",
-          "line_count:12_vs_11"
+          "lines_added:1"
         ]
       }
     },
@@ -291,13 +298,13 @@
       "pack_display_name": "PS: Syrox Stadium (Free)",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:136"
+          "collision_lines_match:112",
+          "ledges_match:5",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:156_vs_155"
-        ]
+        "warnings": []
       }
     },
     {
@@ -319,13 +326,13 @@
       "pack_display_name": "Slippi Updates - Stadium Transformations",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:136"
+          "collision_lines_match:112",
+          "ledges_match:5",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:156_vs_155"
-        ]
+        "warnings": []
       }
     },
     {
@@ -347,13 +354,13 @@
       "pack_display_name": "Paper Melee 64",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:34"
+          "collision_lines_match:34",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:40_vs_38"
-        ]
+        "warnings": []
       }
     },
     {
@@ -375,13 +382,13 @@
       "pack_display_name": "Paper Melee 64",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -405,8 +412,9 @@
       "safety": {
         "verdict": "safe",
         "reasons": [
-          "vertex_count_match:16",
-          "line_count_match:16"
+          "collision_lines_match:16",
+          "ledges_match:2",
+          "blastzones_match"
         ],
         "warnings": []
       }
@@ -431,10 +439,12 @@
       "format": null,
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:16_vs_14",
-          "line_count:12_vs_11"
+          "lines_added:1"
         ]
       }
     },
@@ -457,13 +467,13 @@
       "pack_display_name": "Paper Melee 64",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:136"
+          "collision_lines_match:112",
+          "ledges_match:5",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:156_vs_155"
-        ]
+        "warnings": []
       }
     },
     {
@@ -486,10 +496,12 @@
       "format": null,
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:36_vs_34",
-          "line_count:30_vs_29"
+          "lines_added:1"
         ]
       }
     },
@@ -512,13 +524,13 @@
       "pack_display_name": "Icy Melee",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -542,8 +554,9 @@
       "safety": {
         "verdict": "safe",
         "reasons": [
-          "vertex_count_match:16",
-          "line_count_match:16"
+          "collision_lines_match:16",
+          "ledges_match:2",
+          "blastzones_match"
         ],
         "warnings": []
       }
@@ -568,10 +581,12 @@
       "format": null,
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:16_vs_14",
-          "line_count:12_vs_11"
+          "lines_added:1"
         ]
       }
     },
@@ -594,13 +609,13 @@
       "pack_display_name": "Icy Melee",
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:136"
+          "collision_lines_match:112",
+          "ledges_match:5",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:156_vs_155"
-        ]
+        "warnings": []
       }
     },
     {
@@ -623,10 +638,12 @@
       "format": null,
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:36_vs_34",
-          "line_count:30_vs_29"
+          "lines_added:1"
         ]
       }
     },
@@ -650,13 +667,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -679,13 +696,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -708,13 +725,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -737,13 +754,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -766,13 +783,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -795,13 +812,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -824,13 +841,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -873,13 +890,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:136"
+          "collision_lines_match:112",
+          "ledges_match:5",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:156_vs_155"
-        ]
+        "warnings": []
       }
     },
     {
@@ -922,13 +939,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:34"
+          "collision_lines_match:34",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:40_vs_38"
-        ]
+        "warnings": []
       }
     },
     {
@@ -951,13 +968,13 @@
       "notes": null,
       "format": null,
       "safety": {
-        "verdict": "unsafe",
+        "verdict": "safe",
         "reasons": [
-          "line_count_match:23"
+          "collision_lines_match:23",
+          "ledges_match:2",
+          "blastzones_match"
         ],
-        "warnings": [
-          "vertex_count:28_vs_26"
-        ]
+        "warnings": []
       }
     },
     {
@@ -1021,10 +1038,12 @@
       "format": null,
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:36_vs_34",
-          "line_count:30_vs_29"
+          "lines_added:1"
         ]
       }
     },
@@ -1049,10 +1068,12 @@
       "format": null,
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:36_vs_34",
-          "line_count:30_vs_29"
+          "lines_added:1"
         ]
       }
     },
@@ -1077,10 +1098,12 @@
       "format": null,
       "safety": {
         "verdict": "unsafe",
-        "reasons": [],
+        "reasons": [
+          "ledges_match:2",
+          "blastzones_match"
+        ],
         "warnings": [
-          "vertex_count:36_vs_34",
-          "line_count:30_vs_29"
+          "lines_added:1"
         ]
       }
     },
@@ -1106,8 +1129,9 @@
       "safety": {
         "verdict": "safe",
         "reasons": [
-          "vertex_count_match:16",
-          "line_count_match:16"
+          "collision_lines_match:16",
+          "ledges_match:2",
+          "blastzones_match"
         ],
         "warnings": []
       }
@@ -1134,8 +1158,9 @@
       "safety": {
         "verdict": "safe",
         "reasons": [
-          "vertex_count_match:16",
-          "line_count_match:16"
+          "collision_lines_match:16",
+          "ledges_match:2",
+          "blastzones_match"
         ],
         "warnings": []
       }

@@ -1412,29 +1412,230 @@ static int ValidateStage(string[] args)
         return EmitVerdict("unknown", new[] { "no coll_data root in one or both files" }, null);
     }
 
-    int cVerts = cColl.Vertices?.Length ?? 0;
-    int vVerts = vColl.Vertices?.Length ?? 0;
-    int cLines = cColl.Links?.Length ?? 0;
-    int vLines = vColl.Links?.Length ?? 0;
+    var cLines = SerializedLines(cColl);
+    var vLines = SerializedLines(vColl);
+    var cLedges = cLines.Where(l => l.Property == HSDRaw.Melee.Gr.CollProperty.LedgeGrab).ToList();
+    var vLedges = vLines.Where(l => l.Property == HSDRaw.Melee.Gr.CollProperty.LedgeGrab).ToList();
 
     var reasons = new List<string>();
     var warnings = new List<string>();
 
-    if (cVerts == vVerts) reasons.Add($"vertex_count_match:{cVerts}");
-    else warnings.Add($"vertex_count:{cVerts}_vs_{vVerts}");
+    // ── Collision lines ────────────────────────────────────────────────
+    // Build canonical sorted multi-sets and compare. Lines flagged
+    // Disabled are filtered upstream so background / unreachable
+    // collision doesn't trigger false positives. Within each side,
+    // duplicates (same coords + flags) are kept — they affect the
+    // simulation's per-line iteration even if visually identical.
+    var cSorted = SortLines(cLines);
+    var vSorted = SortLines(vLines);
+    int linesAdded = 0;
+    int linesRemoved = 0;
+    int linesMoved = 0;
+    DiffLineSets(cSorted, vSorted, out linesAdded, out linesRemoved, out linesMoved);
+    if (linesAdded == 0 && linesRemoved == 0 && linesMoved == 0)
+        reasons.Add($"collision_lines_match:{cLines.Count}");
+    else
+    {
+        if (linesMoved > 0)   warnings.Add($"lines_moved:{linesMoved}");
+        if (linesAdded > 0)   warnings.Add($"lines_added:{linesAdded}");
+        if (linesRemoved > 0) warnings.Add($"lines_removed:{linesRemoved}");
+    }
 
-    if (cLines == vLines) reasons.Add($"line_count_match:{cLines}");
-    else warnings.Add($"line_count:{cLines}_vs_{vLines}");
+    // ── Ledges ─────────────────────────────────────────────────────────
+    // LedgeGrab lines are the ledges characters can grab. Moves here are
+    // the loudest desync category for stage mods because ledge mechanics
+    // are central to neutral game.
+    int ledgeAdded = 0, ledgeRemoved = 0, ledgeMoved = 0;
+    DiffLineSets(SortLines(cLedges), SortLines(vLedges), out ledgeAdded, out ledgeRemoved, out ledgeMoved);
+    if (ledgeAdded == 0 && ledgeRemoved == 0 && ledgeMoved == 0)
+        reasons.Add($"ledges_match:{vLedges.Count}");
+    else
+    {
+        if (ledgeMoved > 0)   warnings.Add($"ledges_moved:{ledgeMoved}");
+        if (ledgeAdded > 0)   warnings.Add($"ledges_added:{ledgeAdded}");
+        if (ledgeRemoved > 0) warnings.Add($"ledges_removed:{ledgeRemoved}");
+    }
 
-    // Any collision change desyncs online when the stage gets selected.
-    // Slippi ranked draws from a fixed legal stage list, but each client
-    // loads that stage's .dat from its own local ISO — so if you've
-    // replaced e.g. GrSt.dat (Yoshi's Story), every ranked match that
-    // lands on that stage will desync against vanilla opponents. No
-    // middle "warn" verdict here — it's just unsafe.
-    bool anyDiff = (cVerts != vVerts) || (cLines != vLines);
-    return EmitVerdict(anyDiff ? "unsafe" : "safe", reasons, warnings);
+    // ── Blastzones ─────────────────────────────────────────────────────
+    // Stored as GeneralPoints of type TopLeftBlastZone / BottomRightBlastZone
+    // in map_head, with their position carried by an indexed JOBJ in the
+    // GeneralPoints' JOBJReference tree. We extract (X, Y) via the joint's
+    // bind-pose translation.
+    var cBlast = ExtractBlastZones(cand);
+    var vBlast = ExtractBlastZones(vani);
+    if (cBlast == null || vBlast == null)
+    {
+        // Couldn't locate map_head — informational only, don't block.
+        warnings.Add("blastzones_unverified");
+    }
+    else
+    {
+        bool blastMatch =
+            FloatEq(cBlast.Value.tlX, vBlast.Value.tlX) &&
+            FloatEq(cBlast.Value.tlY, vBlast.Value.tlY) &&
+            FloatEq(cBlast.Value.brX, vBlast.Value.brX) &&
+            FloatEq(cBlast.Value.brY, vBlast.Value.brY);
+        if (blastMatch)
+            reasons.Add("blastzones_match");
+        else
+            warnings.Add(
+                $"blastzones_moved:" +
+                $"TL({cBlast.Value.tlX:F1},{cBlast.Value.tlY:F1})_vs_({vBlast.Value.tlX:F1},{vBlast.Value.tlY:F1})_" +
+                $"BR({cBlast.Value.brX:F1},{cBlast.Value.brY:F1})_vs_({vBlast.Value.brX:F1},{vBlast.Value.brY:F1})");
+    }
+
+    // Verdict: any reachable / interactable change ≠ safe. Disabled lines
+    // are already excluded from the comparison so adding background
+    // collision wouldn't fail the check.
+    bool any =
+        linesAdded + linesRemoved + linesMoved + ledgeAdded + ledgeRemoved + ledgeMoved > 0
+        || (cBlast.HasValue && vBlast.HasValue && warnings.Any(w => w.StartsWith("blastzones_moved")));
+    return EmitVerdict(any ? "unsafe" : "safe", reasons, warnings);
 }
+
+static List<StageLine> SerializedLines(HSDRaw.Melee.Gr.SBM_Coll_Data coll)
+{
+    var verts = coll.Vertices ?? Array.Empty<HSDRaw.Melee.Gr.SBM_CollVertex>();
+    var links = coll.Links ?? Array.Empty<HSDRaw.Melee.Gr.SBM_CollLine>();
+    var Disabled = HSDRaw.Melee.Gr.CollPhysics.Disabled;
+    var out_ = new List<StageLine>(links.Length);
+    foreach (var l in links)
+    {
+        // Skip lines flagged Disabled — they're not part of active
+        // collision, can be added/moved without affecting simulation.
+        if ((l.CollisionFlag & Disabled) != 0) continue;
+        // Index out-of-range guard: malformed mods sometimes have stale
+        // vertex indices. Treat as a missing line rather than crashing.
+        if (l.VertexIndex1 < 0 || l.VertexIndex1 >= verts.Length) continue;
+        if (l.VertexIndex2 < 0 || l.VertexIndex2 >= verts.Length) continue;
+        var a = verts[l.VertexIndex1];
+        var b = verts[l.VertexIndex2];
+        out_.Add(new StageLine(
+            (int)Math.Round(a.X * 10f),
+            (int)Math.Round(a.Y * 10f),
+            (int)Math.Round(b.X * 10f),
+            (int)Math.Round(b.Y * 10f),
+            l.CollisionFlag & ~Disabled,
+            l.Flag));
+    }
+    return out_;
+}
+
+// Sorting key normalizes line orientation (so a → b vs b → a compare equal).
+static List<StageLine> SortLines(IEnumerable<StageLine> lines)
+{
+    var list = lines.Select(l =>
+    {
+        // Canonical orientation: smaller endpoint first (lex on x then y).
+        bool aFirst = (l.Xa10, l.Ya10).CompareTo((l.Xb10, l.Yb10)) <= 0;
+        return aFirst
+            ? l
+            : new StageLine(l.Xb10, l.Yb10, l.Xa10, l.Ya10, l.Physics, l.Property);
+    }).ToList();
+    list.Sort((p, q) =>
+    {
+        int c = p.Xa10.CompareTo(q.Xa10); if (c != 0) return c;
+        c = p.Ya10.CompareTo(q.Ya10); if (c != 0) return c;
+        c = p.Xb10.CompareTo(q.Xb10); if (c != 0) return c;
+        c = p.Yb10.CompareTo(q.Yb10); if (c != 0) return c;
+        c = ((int)p.Physics).CompareTo((int)q.Physics); if (c != 0) return c;
+        return ((int)p.Property).CompareTo((int)q.Property);
+    });
+    return list;
+}
+
+static void DiffLineSets(List<StageLine> a, List<StageLine> b,
+                          out int added, out int removed, out int moved)
+{
+    // Counts:
+    //   added   = lines in a not in b (with same coords + flags)
+    //   removed = lines in b not in a
+    //   moved   = lines in a whose position differs but whose flag set
+    //             matches a removed line in b (a re-positioned ledge etc.)
+    // Cheap implementation: bag-difference. "moved" is the min of the
+    // two sides' surplus per (Physics,Property) flag bucket — it reads
+    // as "n lines of this kind got rearranged" which is what users care
+    // about more than the raw add/remove split.
+    var aBag = new Dictionary<StageLine, int>();
+    foreach (var l in a) aBag[l] = aBag.GetValueOrDefault(l) + 1;
+    var bBag = new Dictionary<StageLine, int>();
+    foreach (var l in b) bBag[l] = bBag.GetValueOrDefault(l) + 1;
+
+    var addedLines = new List<StageLine>();
+    var removedLines = new List<StageLine>();
+    foreach (var (k, n) in aBag)
+    {
+        int v = bBag.GetValueOrDefault(k);
+        for (int i = 0; i < n - v; i++) addedLines.Add(k);
+    }
+    foreach (var (k, n) in bBag)
+    {
+        int v = aBag.GetValueOrDefault(k);
+        for (int i = 0; i < n - v; i++) removedLines.Add(k);
+    }
+
+    // Bucket by (Physics, Property) and call min(added, removed) per bucket "moved."
+    var addBucket = new Dictionary<(HSDRaw.Melee.Gr.CollPhysics, HSDRaw.Melee.Gr.CollProperty), int>();
+    foreach (var l in addedLines)
+        addBucket[(l.Physics, l.Property)] = addBucket.GetValueOrDefault((l.Physics, l.Property)) + 1;
+    var rmBucket = new Dictionary<(HSDRaw.Melee.Gr.CollPhysics, HSDRaw.Melee.Gr.CollProperty), int>();
+    foreach (var l in removedLines)
+        rmBucket[(l.Physics, l.Property)] = rmBucket.GetValueOrDefault((l.Physics, l.Property)) + 1;
+
+    moved = 0;
+    foreach (var (k, n) in addBucket)
+    {
+        int matched = Math.Min(n, rmBucket.GetValueOrDefault(k));
+        moved += matched;
+    }
+    added = addedLines.Count - moved;
+    removed = removedLines.Count - moved;
+}
+
+static (float tlX, float tlY, float brX, float brY)? ExtractBlastZones(HSDRawFile file)
+{
+    foreach (var r in file.Roots)
+    {
+        if (r.Data is not HSDRaw.Melee.Gr.SBM_Map_Head head) continue;
+        var groups = head.GeneralPoints?.Array;
+        if (groups == null) continue;
+        float? tlX = null, tlY = null, brX = null, brY = null;
+        foreach (var grp in groups)
+        {
+            var jobjRef = grp.JOBJReference;
+            var points = grp.Points;
+            if (jobjRef == null || points == null) continue;
+            var bones = WalkBones(jobjRef);
+            // Walked-list shares ordering with the JOBJ tree's flattened
+            // index — same indexing the engine uses to look up a
+            // GeneralPoint's joint. We need the joint object itself,
+            // not just the bone summary, so re-walk the live JOBJs.
+            var joints = WalkJoints(jobjRef);
+            foreach (var p in points)
+            {
+                if (p.JOBJIndex < 0 || p.JOBJIndex >= joints.Count) continue;
+                var jobj = joints[p.JOBJIndex];
+                if (p.Type == HSDRaw.Melee.Gr.PointType.TopLeftBlastZone)
+                { tlX = jobj.TX; tlY = jobj.TY; }
+                else if (p.Type == HSDRaw.Melee.Gr.PointType.BottomRightBlastZone)
+                { brX = jobj.TX; brY = jobj.TY; }
+            }
+        }
+        if (tlX.HasValue && tlY.HasValue && brX.HasValue && brY.HasValue)
+            return (tlX.Value, tlY.Value, brX.Value, brY.Value);
+    }
+    return null;
+}
+
+static List<HSD_JOBJ> WalkJoints(HSD_JOBJ root)
+{
+    var list = new List<HSD_JOBJ>();
+    void rec(HSD_JOBJ j) { list.Add(j); if (j.Child != null) rec(j.Child); if (j.Next != null) rec(j.Next); }
+    rec(root);
+    return list;
+}
+
+static bool FloatEq(float a, float b) => Math.Abs(a - b) < 0.05f;
 
 // Find the costume's main JOBJ root. Costumes typically have one root
 // whose name matches `Ply<Char>5K[<Slot>]_Share_joint`; we accept any
@@ -1552,3 +1753,12 @@ class _BoneInfo
     public int Depth;
     public bool HasDobj;
 }
+
+readonly record struct StageLine(
+    int Xa10,           // ×10 to flatten float jitter; equality is exact then
+    int Ya10,
+    int Xb10,
+    int Yb10,
+    HSDRaw.Melee.Gr.CollPhysics Physics,
+    HSDRaw.Melee.Gr.CollProperty Property);
+
