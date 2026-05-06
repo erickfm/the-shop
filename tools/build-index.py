@@ -737,25 +737,61 @@ def expand_archive_attachment(
 
 def _extract_inner(archive: Path, inner_path: str, dest_dir: Path) -> Path | None:
     """Extract one named entry from an archive into dest_dir; returns the
-    path or None on failure. Works with zip / 7z / rar via the same tools
-    used by list_archive_contents."""
+    path or None on failure. `inner_path` is matched case-insensitively
+    on basename — the index stores just the basename of the file inside
+    the archive even if the actual archive entry is at a subpath like
+    `B0XX Spacies/PlFcBu.dat`. Works with zip / 7z / rar."""
     name = str(archive).lower()
-    safe_inner = re.sub(r"[^A-Za-z0-9._-]+", "_", inner_path.rsplit("/", 1)[-1])[:120]
+    target_basename = inner_path.rsplit("/", 1)[-1].rsplit("\\", 1)[-1].lower()
+    safe_inner = re.sub(r"[^A-Za-z0-9._-]+", "_", target_basename)[:120]
     out = dest_dir / f"{archive.stem}__{safe_inner}"
     if out.exists():
         return out
+
     if name.endswith(".zip"):
         try:
             with zipfile.ZipFile(archive) as z:
-                with z.open(inner_path) as src, open(out, "wb") as dst:
+                # Resolve full path inside the archive by basename match.
+                entry = None
+                for n in z.namelist():
+                    if n.endswith("/"):
+                        continue
+                    base = n.rsplit("/", 1)[-1].rsplit("\\", 1)[-1].lower()
+                    if base == target_basename:
+                        entry = n
+                        break
+                if entry is None:
+                    return None
+                with z.open(entry) as src, open(out, "wb") as dst:
                     shutil.copyfileobj(src, dst)
             return out
         except Exception:
             return None
+
     if name.endswith(".rar"):
         try:
+            # List archive contents to find the full path of the inner file.
+            list_r = subprocess.run(
+                ["unrar", "lb", str(archive)],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            if list_r.returncode != 0:
+                return None
+            entry = None
+            for ln in list_r.stdout.splitlines():
+                ln = ln.strip()
+                if not ln:
+                    continue
+                base = ln.rsplit("/", 1)[-1].rsplit("\\", 1)[-1].lower()
+                if base == target_basename:
+                    entry = ln
+                    break
+            if entry is None:
+                return None
             r = subprocess.run(
-                ["unrar", "p", "-inul", str(archive), inner_path],
+                ["unrar", "p", "-inul", str(archive), entry],
                 capture_output=True,
                 timeout=30,
             )
@@ -765,15 +801,39 @@ def _extract_inner(archive: Path, inner_path: str, dest_dir: Path) -> Path | Non
         except (FileNotFoundError, subprocess.CalledProcessError):
             pass
         return None
+
     if name.endswith(".7z"):
         try:
+            list_r = subprocess.run(
+                ["7z", "l", "-slt", str(archive)],
+                capture_output=True,
+                text=True,
+                timeout=30,
+            )
+            if list_r.returncode != 0:
+                return None
+            paths = [
+                line[7:].strip()
+                for line in list_r.stdout.splitlines()
+                if line.startswith("Path = ")
+            ][1:]
+            entry = None
+            for ent in paths:
+                base = ent.rsplit("/", 1)[-1].rsplit("\\", 1)[-1].lower()
+                if base == target_basename:
+                    entry = ent
+                    break
+            if entry is None:
+                return None
+            # 7z e flattens paths into dest_dir; we then rename to our
+            # canonical out filename.
             subprocess.run(
-                ["7z", "e", "-y", f"-o{dest_dir}", str(archive), inner_path],
+                ["7z", "e", "-y", f"-o{dest_dir}", str(archive), entry],
                 capture_output=True,
                 timeout=30,
                 check=True,
             )
-            extracted = dest_dir / inner_path.rsplit("/", 1)[-1]
+            extracted = dest_dir / entry.rsplit("/", 1)[-1]
             if extracted.exists():
                 if extracted != out:
                     extracted.rename(out)
@@ -781,6 +841,7 @@ def _extract_inner(archive: Path, inner_path: str, dest_dir: Path) -> Path | Non
         except (FileNotFoundError, subprocess.CalledProcessError):
             pass
         return None
+
     return None
 
 

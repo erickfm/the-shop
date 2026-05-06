@@ -6424,7 +6424,15 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-travis-touchdown-over-marth-msnr-plmsnr-dat",
       "pack_display_name": "Travis Touchdown over Marth",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "Dewrion-animelee-travis-touchdown-over-marth-nmh3-msnr-plmsnr-dat",
@@ -6443,7 +6451,15 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-animelee-travis-touchdown-over-marth-nmh3-msnr-plmsnr-dat",
       "pack_display_name": "Animelee Travis Touchdown over Marth (NMH3)",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "Dewrion-luffy-falco-animelee-fcnr-plfcnr-dat",
@@ -6462,7 +6478,15 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-luffy-falco-animelee-fcnr-plfcnr-dat",
       "pack_display_name": "Luffy Falco + Animelee",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "Dewrion-luffy-falco-animelee-wano-variants-fcnr-plfcnr-dat",
@@ -6481,7 +6505,15 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-luffy-falco-animelee-wano-variants-fcnr-plfcnr-dat",
       "pack_display_name": "Luffy Falco + Animelee (Wano variants)",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "Dewrion-gear-5-luffy-falco-animelee-fcnr-plfcnr-dat",
@@ -6500,7 +6532,15 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-gear-5-luffy-falco-animelee-fcnr-plfcnr-dat",
       "pack_display_name": "Gear 5 Luffy Falco + Animelee",
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "Dewrion-bobobo-bo-over-ganon-gnnr-plgnnr-dat",
@@ -6519,7 +6559,17 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-bobobo-bo-over-ganon-gnnr-plgnnr-dat",
       "pack_display_name": "Bobobo-bo over Ganon",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:84",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "Dewrion-doctor-luigi-lgnr-pllgnr-dat",
@@ -6538,7 +6588,17 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-doctor-luigi-lgnr-pllgnr-dat",
       "pack_display_name": "Doctor Luigi",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "Dewrion-rengoku-over-marth-msnr-plmsnr-dat",
@@ -6557,7 +6617,15 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-rengoku-over-marth-msnr-plmsnr-dat",
       "pack_display_name": "Rengoku over Marth",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:90",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "Dewrion-blood-falcon-falcon-skin-canr-plcanr-dat",
@@ -6576,7 +6644,15 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-blood-falcon-falcon-skin-canr-plcanr-dat",
       "pack_display_name": "Blood Falcon (Falcon skin)",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "Dewrion-black-suit-spider-man-over-mario-mrnr-plmrnr-dat",
@@ -6595,7 +6671,15 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-black-suit-spider-man-over-mario-mrnr-plmrnr-dat",
       "pack_display_name": "Black Suit Spider-Man over Mario",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "Dewrion-koishi-komeiji-over-peach-penr-plpenr-dat",
@@ -6614,7 +6698,15 @@
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-koishi-komeiji-over-peach-penr-plpenr-dat",
       "pack_display_name": "Koishi Komeiji over Peach",
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:114",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "LazloSSBM-happy-chaos-falco-spacies-pack-fcnr-plfcnr-dat",
@@ -7486,7 +7578,17 @@
       "pack_id": "gay_lord_erika-kritter-over-dk-gr",
       "pack_display_name": "Kritter over DK",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-kritter-over-dk-nr",
@@ -7506,7 +7608,17 @@
       "pack_id": "gay_lord_erika-kritter-over-dk-gr",
       "pack_display_name": "Kritter over DK",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:75",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:1"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-bk",
@@ -7526,7 +7638,15 @@
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-bu",
@@ -7546,7 +7666,15 @@
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-gr",
@@ -7566,7 +7694,15 @@
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-nr",
@@ -7586,7 +7722,15 @@
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-ye",
@@ -7606,7 +7750,15 @@
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
       "notes": null,
-      "format": null
+      "format": null,
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:61",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-bu",
@@ -7626,7 +7778,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-gr",
@@ -7646,7 +7808,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-gy",
@@ -7666,7 +7838,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-nr",
@@ -7686,7 +7868,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-re",
@@ -7706,7 +7898,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-wh",
@@ -7726,7 +7928,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-bu-1",
@@ -7746,7 +7958,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-gr-1",
@@ -7766,7 +7988,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-gy-1",
@@ -7786,7 +8018,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-nr-1",
@@ -7806,7 +8048,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-re-2",
@@ -7826,7 +8078,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-wh-1",
@@ -7846,7 +8108,17 @@
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
       "pack_display_name": "Scizor over Falcon",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-alttp-young-link-bu",
@@ -7956,7 +8228,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-gr",
@@ -7976,7 +8258,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-gy",
@@ -7996,7 +8288,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-nr",
@@ -8016,7 +8318,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-re",
@@ -8036,7 +8348,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-wh",
@@ -8056,7 +8378,17 @@
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:63",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:3"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-bu-1",
@@ -8376,7 +8708,17 @@
       "pack_id": "gay_lord_erika-medicham-over-falco-bu",
       "pack_display_name": "Medicham over Falco",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-gr",
@@ -8396,7 +8738,17 @@
       "pack_id": "gay_lord_erika-medicham-over-falco-bu",
       "pack_display_name": "Medicham over Falco",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-nr",
@@ -8416,7 +8768,17 @@
       "pack_id": "gay_lord_erika-medicham-over-falco-bu",
       "pack_display_name": "Medicham over Falco",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-re",
@@ -8436,7 +8798,17 @@
       "pack_id": "gay_lord_erika-medicham-over-falco-bu",
       "pack_display_name": "Medicham over Falco",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-bu-2",
@@ -8456,7 +8828,17 @@
       "pack_id": "gay_lord_erika-medicham-over-falco-bu-2",
       "pack_display_name": "Medicham over Falco",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-gr-1",
@@ -8476,7 +8858,17 @@
       "pack_id": "gay_lord_erika-medicham-over-falco-bu-2",
       "pack_display_name": "Medicham over Falco",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-nr-1",
@@ -8496,7 +8888,17 @@
       "pack_id": "gay_lord_erika-medicham-over-falco-bu-2",
       "pack_display_name": "Medicham over Falco",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-re-1",
@@ -8516,7 +8918,17 @@
       "pack_id": "gay_lord_erika-medicham-over-falco-bu-2",
       "pack_display_name": "Medicham over Falco",
       "notes": null,
-      "format": "vanilla"
+      "format": "vanilla",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-bk",
@@ -8686,7 +9098,17 @@
       "pack_id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",
       "pack_display_name": "Animelee Toxicroak over Falco",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-toxicroak-over-falco-gr",
@@ -8706,7 +9128,17 @@
       "pack_id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",
       "pack_display_name": "Animelee Toxicroak over Falco",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-toxicroak-over-falco-nr",
@@ -8726,7 +9158,17 @@
       "pack_id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",
       "pack_display_name": "Animelee Toxicroak over Falco",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-animelee-toxicroak-over-falco-re",
@@ -8746,7 +9188,17 @@
       "pack_id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",
       "pack_display_name": "Animelee Toxicroak over Falco",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:67",
+          "topology_match"
+        ],
+        "warnings": [
+          "mesh_attachment_drift:7"
+        ]
+      }
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
@@ -8766,7 +9218,15 @@
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:118",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-gr",
@@ -8786,7 +9246,15 @@
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:118",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-nr",
@@ -8806,7 +9274,15 @@
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:118",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-re",
@@ -8826,7 +9302,15 @@
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:118",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-wh",
@@ -8846,7 +9330,15 @@
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
       "notes": null,
-      "format": "animelee"
+      "format": "animelee",
+      "safety": {
+        "verdict": "safe",
+        "reasons": [
+          "bone_count_match:118",
+          "topology_match"
+        ],
+        "warnings": []
+      }
     }
   ]
 }
