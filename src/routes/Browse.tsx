@@ -740,6 +740,12 @@ function FeaturedHero({
                 <span>{characterDisplay(pack.character_code)}</span>
               </>
             )}
+            {pack.format && (
+              <>
+                <span>·</span>
+                <span className="text-accent">{pack.format}</span>
+              </>
+            )}
           </div>
           <h1 className="text-3xl md:text-4xl leading-tight text-white drop-shadow">
             {stripColorSuffix(pack.display_name)}
@@ -1295,6 +1301,14 @@ function PackCard({
             <span className="label-mono px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
               {KIND_LABELS[(pack.kind ?? "character_skin") as SkinKind]}
             </span>
+            {pack.format && (
+              <span
+                className="label-mono px-1.5 py-0.5 rounded bg-bg border border-accent/40 text-accent shrink-0"
+                title={`format: ${pack.format}`}
+              >
+                {pack.format}
+              </span>
+            )}
           </div>
           <div className="text-xs text-muted truncate">
             <button
@@ -1467,6 +1481,9 @@ function PackDetailDrawer({
     pack.slots[0]?.slot_code
   ) {
     metaPills.push(slotDisplay(pack.slots[0].slot_code));
+  }
+  if (pack.format) {
+    metaPills.push(pack.format);
   }
   metaPills.push(
     pack.tier_required_cents === 0

@@ -111,6 +111,13 @@ pub struct IndexedSkinEntry {
     /// Falls back to the first slot's `display_name` when absent.
     #[serde(default)]
     pub pack_display_name: Option<String>,
+    /// Format flavor: `"animelee"` / `"vanilla"` / `"1:1"` / null. Lets
+    /// two packs of the same skin coexist when a creator publishes
+    /// alternate styles (e.g. an Animelee Zuko + a Vanilla Zuko, both
+    /// with the full color set). Set by the grouping pass in
+    /// tools/build-index.py based on tokens in the source filenames.
+    #[serde(default)]
+    pub format: Option<String>,
     #[serde(default)]
     pub notes: Option<String>,
 }
@@ -202,6 +209,9 @@ pub struct IndexedPack {
     /// Representative `filename_in_post` (first slot) — informational only,
     /// not an install key. Each slot still installs from its own attachment.
     pub filename_in_post: String,
+    /// Format flavor (animelee / vanilla / 1:1 / null) carried up from
+    /// the slots so the frontend can render a pill on the pack card.
+    pub format: Option<String>,
 }
 
 fn pack_grouping_key(s: &AnnotatedSkin) -> String {
@@ -248,6 +258,7 @@ fn group_into_packs(skins: Vec<AnnotatedSkin>) -> Vec<IndexedPack> {
         let character_code = first.entry.character_code.clone();
         let patreon_post_id = first.entry.patreon_post_id.clone();
         let filename_in_post = first.entry.filename_in_post.clone();
+        let format = first.entry.format.clone();
 
         let mut tier_required_cents: i64 = 0;
         let mut preview_url: Option<String> = None;
@@ -312,6 +323,7 @@ fn group_into_packs(skins: Vec<AnnotatedSkin>) -> Vec<IndexedPack> {
             installed_count,
             slot_count,
             filename_in_post,
+            format,
         });
     }
 

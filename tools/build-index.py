@@ -215,18 +215,52 @@ def normalize_pack_name(display_name: str, slot_code: str) -> str:
     return s if s else slot_code.lower()
 
 
+# Format detection — animelee / vanilla / null. The token is searched
+# across display_name, inner_filename, and filename_in_post (lowercased).
+# Vanilla is mostly inferred relatively: when a sibling entry has an
+# "animelee" marker and this one doesn't, we mark the unmarked one
+# "vanilla" so the pill appears on both faces of the alternate.
+def _format_marker(blob: str) -> str | None:
+    b = blob.lower()
+    if "animelee" in b:
+        return "animelee"
+    if re.search(r"\bvanilla\b", b):
+        return "vanilla"
+    if re.search(r"\b1[:_-]?1\b", b) or "1to1" in b:
+        return "1:1"
+    return None
+
+
+def detect_explicit_format(entry: dict) -> str | None:
+    return _format_marker(
+        " ".join(
+            filter(
+                None,
+                [
+                    entry.get("display_name") or "",
+                    entry.get("inner_filename") or "",
+                    entry.get("filename_in_post") or "",
+                ],
+            )
+        )
+    )
+
+
 def group_into_packs(entries: list[dict]) -> list[dict]:
-    """Group entries into packs and dedupe duplicate slot_codes.
+    """Group entries into packs and split by format (animelee / vanilla).
 
-    The rule: same skin (same creator + character + normalized name) =
-    same pack, and within a pack each slot_code appears at most once.
-    When the input has multiple entries on the same slot (format
-    alternates — e.g. an archive with both `PlCaBu-ANIMELEE ZUKO.dat`
-    and `PlCaBu-ZUKO.dat`), the lowest-sorting `id` wins; the others
-    are dropped from the output.
+    The rule: same skin (creator + character + normalized name) AND same
+    format = same pack. Inside a pack each slot_code appears at most once;
+    if multiple entries share both group + slot, the lowest-sorting id
+    wins (last-line-of-defense dedupe).
 
-    Returns a new list, possibly shorter than the input. Mutates kept
-    entries in place to set `pack_id` + `pack_display_name`.
+    "Format" is detected from animelee / vanilla / 1:1 tokens in the
+    display_name or filenames. When a candidate group contains explicit
+    "animelee" entries alongside unmarked ones, the unmarked ones get
+    labeled "vanilla" so the pill renders on both sides of the alternate.
+
+    Returns a new list. Mutates kept entries in place to set `pack_id`,
+    `pack_display_name`, and `format`.
     """
     by_kind: dict[str, list[dict]] = defaultdict(list)
     for e in entries:
@@ -234,7 +268,7 @@ def group_into_packs(entries: list[dict]) -> list[dict]:
 
     out: list[dict] = []
 
-    # Non-character_skin → packs of 1.
+    # Non-character_skin → packs of 1, format inferred from explicit tokens.
     for e in [
         x for k, lst in by_kind.items() if k != "character_skin" for x in lst
     ]:
@@ -242,48 +276,64 @@ def group_into_packs(entries: list[dict]) -> list[dict]:
         e["pack_display_name"] = (
             strip_color_suffix(e["display_name"]) or e["display_name"]
         )
+        e["format"] = detect_explicit_format(e)
         out.append(e)
 
-    # character_skin → group on (creator, character, normalized_name).
-    groups: dict[tuple[str, str, str], list[dict]] = defaultdict(list)
+    # character_skin → first-pass group on (creator, character, name).
+    base_groups: dict[tuple[str, str, str], list[dict]] = defaultdict(list)
     for e in by_kind.get("character_skin", []):
         key = (
             e["creator_id"],
             e["character_code"],
             normalize_pack_name(e["display_name"], e["slot_code"]),
         )
-        groups[key].append(e)
+        base_groups[key].append(e)
 
-    for members in groups.values():
-        members.sort(key=lambda m: m["id"])
-        # Dedupe by slot_code: keep first, drop the rest. The dropped
-        # entries are format-alternates of the same color (e.g. animelee
-        # vs vanilla versions of slot Bu) — the user picks one canonical
-        # variant per slot in the pack.
-        seen_slots: set[str] = set()
-        kept: list[dict] = []
+    for members in base_groups.values():
+        # Detect format on each entry, then promote unmarked → "vanilla"
+        # iff at least one sibling is explicitly "animelee".
+        any_animelee = False
         for m in members:
-            if m["slot_code"] in seen_slots:
+            f = detect_explicit_format(m)
+            m["format"] = f
+            if f == "animelee":
+                any_animelee = True
+        if any_animelee:
+            for m in members:
+                if m["format"] is None:
+                    m["format"] = "vanilla"
+
+        # Second-pass: split by format. Each (group, format) becomes its
+        # own pack. Within a pack we dedupe by slot_code with id-sort.
+        by_format: dict[str | None, list[dict]] = defaultdict(list)
+        for m in members:
+            by_format[m["format"]].append(m)
+
+        for fmembers in by_format.values():
+            fmembers.sort(key=lambda m: m["id"])
+            seen_slots: set[str] = set()
+            kept: list[dict] = []
+            for m in fmembers:
+                if m["slot_code"] in seen_slots:
+                    continue
+                seen_slots.add(m["slot_code"])
+                kept.append(m)
+            if not kept:
                 continue
-            seen_slots.add(m["slot_code"])
-            kept.append(m)
-        if not kept:
-            continue
-        pack_id = kept[0]["id"]
-        # pack_display_name: longest common prefix → strip → fallback to first
-        pdn = strip_color_suffix(kept[0]["display_name"])
-        if len(kept) > 1:
-            common = kept[0]["display_name"]
-            for m in kept[1:]:
-                while m["display_name"][: len(common)] != common and common:
-                    common = common[:-1]
-            common = strip_color_suffix(common.strip())
-            if len(common) >= 5:
-                pdn = common
-        for m in kept:
-            m["pack_id"] = pack_id
-            m["pack_display_name"] = pdn or m["display_name"]
-        out.extend(kept)
+            pack_id = kept[0]["id"]
+            pdn = strip_color_suffix(kept[0]["display_name"])
+            if len(kept) > 1:
+                common = kept[0]["display_name"]
+                for m in kept[1:]:
+                    while m["display_name"][: len(common)] != common and common:
+                        common = common[:-1]
+                common = strip_color_suffix(common.strip())
+                if len(common) >= 5:
+                    pdn = common
+            for m in kept:
+                m["pack_id"] = pack_id
+                m["pack_display_name"] = pdn or m["display_name"]
+            out.extend(kept)
 
     return out
 
@@ -687,6 +737,7 @@ def build_entries(
                 "preview_urls": [],
                 "pack_id": "",
                 "pack_display_name": None,
+                "format": None,
                 "notes": None,
             }
             out.append(entry)

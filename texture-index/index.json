@@ -96,7 +96,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/154643091/f3d482fb180b4c379a949875098e4654/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=GVhRP_XUf1157NvdqQBfEB8VrDyzC4ol8jJbRn29cAQ%3D&token-time=1779148800",
       "notes": "Cave of Origin (Pokemon ORAS) over Pokémon Stadium; Patreon filename includes 'CoO' suffix",
       "pack_id": "Dewrion-cave-of-origin-pokemon-stadium-grps-usd",
-      "pack_display_name": "Cave of Origin - Pokemon Stadium"
+      "pack_display_name": "Cave of Origin - Pokemon Stadium",
+      "format": null
     },
     {
       "id": "LazloSSBM-animelee-yoshi-s-story-newport-randall-grst-dat",
@@ -114,7 +115,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/100734982/619fbec828b447999d807bfd97c0f98d/eyJ3IjoxMDgwfQ%3D%3D/1.PNG?token-hash=VTbanVmMcTbsC5X7jol6MPbxu93vclikifSZTJRmZA8%3D&token-time=1779148800",
       "notes": "Yoshi's Story with Newport randall, animelee art",
       "pack_id": "LazloSSBM-animelee-yoshi-s-story-newport-randall-grst-dat",
-      "pack_display_name": "Animelee Yoshi's Story - Newport Randall"
+      "pack_display_name": "Animelee Yoshi's Story - Newport Randall",
+      "format": "animelee"
     },
     {
       "id": "LazloSSBM-vanilla-yoshi-s-story-newport-randall-grst-dat",
@@ -132,7 +134,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/100734982/619fbec828b447999d807bfd97c0f98d/eyJ3IjoxMDgwfQ%3D%3D/1.PNG?token-hash=VTbanVmMcTbsC5X7jol6MPbxu93vclikifSZTJRmZA8%3D&token-time=1779148800",
       "notes": "Yoshi's Story with Newport randall, vanilla art",
       "pack_id": "LazloSSBM-vanilla-yoshi-s-story-newport-randall-grst-dat",
-      "pack_display_name": "Vanilla Yoshi's Story - Newport Randall"
+      "pack_display_name": "Vanilla Yoshi's Story - Newport Randall",
+      "format": "vanilla"
     },
     {
       "id": "gonko-envy-stadium-grps-usd",
@@ -150,7 +153,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/54899624/17d36fdc44b14dc293ff231aba0d0dca/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=Yreiwgx530jCDRo4AcmJyHJxFWcTDQpcMUgqbSW6AnY%3D&token-time=1779148800",
       "notes": "Pokémon Stadium ENVY-team skin",
       "pack_id": "gonko-envy-stadium-grps-usd",
-      "pack_display_name": "ENVY Stadium"
+      "pack_display_name": "ENVY Stadium",
+      "format": null
     },
     {
       "id": "skraton-bf-jungle-japes-free-grnba-dat",
@@ -168,7 +172,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/84913899/c129c0b0904141468a4a6479e7969122/eyJ3IjoxMDgwfQ%3D%3D/1.gif?token-hash=Ygi556s00O2wIhQ683IKkpRERmOKcCwRkLYmH2b843Y%3D&token-time=1779148800",
       "notes": "Battlefield skinned as Jungle Japes",
       "pack_id": "skraton-bf-jungle-japes-free-grnba-dat",
-      "pack_display_name": "BF: Jungle Japes (Free)"
+      "pack_display_name": "BF: Jungle Japes (Free)",
+      "format": null
     },
     {
       "id": "skraton-fd-kongo-jungle-free-grnla-dat",
@@ -186,7 +191,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/84916702/fee8bfd4a3154a1c839a561278d71a0e/eyJ3IjoxMDgwfQ%3D%3D/1.gif?token-hash=eyr8PC2KavpVFtQFYVd1J9IkP7PqnrTLXRZzwe7yKDo%3D&token-time=1779148800",
       "notes": "Final Destination skinned as Kongo Jungle 64",
       "pack_id": "skraton-fd-kongo-jungle-free-grnla-dat",
-      "pack_display_name": "FD: Kongo Jungle (Free)"
+      "pack_display_name": "FD: Kongo Jungle (Free)",
+      "format": null
     },
     {
       "id": "skraton-dl-return-to-dreamland-free-grop-dat",
@@ -204,7 +210,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/87747874/97703066828f4f698a90021d3fc50260/eyJ3IjoxMDgwfQ%3D%3D/1.gif?token-hash=PI4hiNYJW2HsyJW9Ti6by0zyHe9Iz9k2glQsmJTkYCo%3D&token-time=1779148800",
       "notes": null,
       "pack_id": "skraton-dl-return-to-dreamland-free-grop-dat",
-      "pack_display_name": "DL: Return to Dreamland (Free)"
+      "pack_display_name": "DL: Return to Dreamland (Free)",
+      "format": null
     },
     {
       "id": "skraton-ps-syrox-stadium-free-grps-usd",
@@ -222,7 +229,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/90215619/ff8b165214e641eb86cd2a4c7ddaa741/eyJ3IjoxMDgwfQ%3D%3D/1.gif?token-hash=MJ0MMer4cgsDCirVMbKf6TaBQFs2Fy1jlfjrYWimyNA%3D&token-time=1779148800",
       "notes": null,
       "pack_id": "skraton-ps-syrox-stadium-free-grps-usd",
-      "pack_display_name": "PS: Syrox Stadium (Free)"
+      "pack_display_name": "PS: Syrox Stadium (Free)",
+      "format": null
     },
     {
       "id": "vancity_primal-slippi-updates-stadium-transformations-grps-usd",
@@ -240,7 +248,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/136420417/7372300c1d124a45a0e38c614e10d2c1/eyJ3IjoxMDgwfQ%3D%3D/1.jfif?token-hash=p1d0kaTEEfeG5DNzALfOWC4PohbJv5w8sXrSgy5p3lY%3D&token-time=1779148800",
       "notes": "20XX-style Pokémon Stadium with all transformations",
       "pack_id": "vancity_primal-slippi-updates-stadium-transformations-grps-usd",
-      "pack_display_name": "Slippi Updates - Stadium Transformations"
+      "pack_display_name": "Slippi Updates - Stadium Transformations",
+      "format": null
     },
     {
       "id": "vancity_primal-paper-melee-64-griz-dat",
@@ -258,7 +267,8 @@
       "preview_url": "https://image.mux.com/mmrCd9hvogU3SZZb4nEXNk2oOcQXwZgtwiCVSG7EQ5g/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJtbXJDZDlodm9nVTNTWlpiNG5FWE5rMm9PY1FYd1pndHdpQ1ZTRzdFUTVnIiwiZXhwIjoxNzgwNTMxMjAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjowfQ.PB9E9CynOAmbB2OgAM8FhADKi6qFq2QzwjvI7XcensAMz24ieWtZ0E5K_ScSL3v9w8XoCkrLMCi1SW_ZUA6hecTfpuzMy4jZ_qtDfOq1Z2NSTThILx77xjGcbSUaXCP4IolPn73u66WONoQwBZWZVU7fCt-2Gppb4fSbawDSXxDJWZhK19p9hylJW53ijO7TUXutrcVTywPWDPDAnOjbrEcYFFK5enM-gekglDhmikwI_aBgPRrhIhfnwID41nIw82osVLXPXiXB0kE9vmPZEX9Tw4ZBSYe_C_O_ij4Px2Q6TeRcGdT0afXhrv_DAx-O7uChRUAYSx1gXIJ4OUddLQ",
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-griz-dat",
-      "pack_display_name": "Paper Melee 64"
+      "pack_display_name": "Paper Melee 64",
+      "format": null
     },
     {
       "id": "vancity_primal-paper-melee-64-grnba-dat",
@@ -276,7 +286,8 @@
       "preview_url": "https://image.mux.com/mmrCd9hvogU3SZZb4nEXNk2oOcQXwZgtwiCVSG7EQ5g/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJtbXJDZDlodm9nVTNTWlpiNG5FWE5rMm9PY1FYd1pndHdpQ1ZTRzdFUTVnIiwiZXhwIjoxNzgwNTMxMjAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjowfQ.PB9E9CynOAmbB2OgAM8FhADKi6qFq2QzwjvI7XcensAMz24ieWtZ0E5K_ScSL3v9w8XoCkrLMCi1SW_ZUA6hecTfpuzMy4jZ_qtDfOq1Z2NSTThILx77xjGcbSUaXCP4IolPn73u66WONoQwBZWZVU7fCt-2Gppb4fSbawDSXxDJWZhK19p9hylJW53ijO7TUXutrcVTywPWDPDAnOjbrEcYFFK5enM-gekglDhmikwI_aBgPRrhIhfnwID41nIw82osVLXPXiXB0kE9vmPZEX9Tw4ZBSYe_C_O_ij4Px2Q6TeRcGdT0afXhrv_DAx-O7uChRUAYSx1gXIJ4OUddLQ",
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grnba-dat",
-      "pack_display_name": "Paper Melee 64"
+      "pack_display_name": "Paper Melee 64",
+      "format": null
     },
     {
       "id": "vancity_primal-paper-melee-64-grnla-dat",
@@ -294,7 +305,8 @@
       "preview_url": "https://image.mux.com/mmrCd9hvogU3SZZb4nEXNk2oOcQXwZgtwiCVSG7EQ5g/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJtbXJDZDlodm9nVTNTWlpiNG5FWE5rMm9PY1FYd1pndHdpQ1ZTRzdFUTVnIiwiZXhwIjoxNzgwNTMxMjAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjowfQ.PB9E9CynOAmbB2OgAM8FhADKi6qFq2QzwjvI7XcensAMz24ieWtZ0E5K_ScSL3v9w8XoCkrLMCi1SW_ZUA6hecTfpuzMy4jZ_qtDfOq1Z2NSTThILx77xjGcbSUaXCP4IolPn73u66WONoQwBZWZVU7fCt-2Gppb4fSbawDSXxDJWZhK19p9hylJW53ijO7TUXutrcVTywPWDPDAnOjbrEcYFFK5enM-gekglDhmikwI_aBgPRrhIhfnwID41nIw82osVLXPXiXB0kE9vmPZEX9Tw4ZBSYe_C_O_ij4Px2Q6TeRcGdT0afXhrv_DAx-O7uChRUAYSx1gXIJ4OUddLQ",
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grnla-dat",
-      "pack_display_name": "Paper Melee 64"
+      "pack_display_name": "Paper Melee 64",
+      "format": null
     },
     {
       "id": "vancity_primal-paper-melee-64-grop-dat",
@@ -312,7 +324,8 @@
       "preview_url": "https://image.mux.com/mmrCd9hvogU3SZZb4nEXNk2oOcQXwZgtwiCVSG7EQ5g/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJtbXJDZDlodm9nVTNTWlpiNG5FWE5rMm9PY1FYd1pndHdpQ1ZTRzdFUTVnIiwiZXhwIjoxNzgwNTMxMjAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjowfQ.PB9E9CynOAmbB2OgAM8FhADKi6qFq2QzwjvI7XcensAMz24ieWtZ0E5K_ScSL3v9w8XoCkrLMCi1SW_ZUA6hecTfpuzMy4jZ_qtDfOq1Z2NSTThILx77xjGcbSUaXCP4IolPn73u66WONoQwBZWZVU7fCt-2Gppb4fSbawDSXxDJWZhK19p9hylJW53ijO7TUXutrcVTywPWDPDAnOjbrEcYFFK5enM-gekglDhmikwI_aBgPRrhIhfnwID41nIw82osVLXPXiXB0kE9vmPZEX9Tw4ZBSYe_C_O_ij4Px2Q6TeRcGdT0afXhrv_DAx-O7uChRUAYSx1gXIJ4OUddLQ",
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grop-dat",
-      "pack_display_name": "Paper Melee 64"
+      "pack_display_name": "Paper Melee 64",
+      "format": null
     },
     {
       "id": "vancity_primal-paper-melee-64-grps-usd",
@@ -330,7 +343,8 @@
       "preview_url": "https://image.mux.com/mmrCd9hvogU3SZZb4nEXNk2oOcQXwZgtwiCVSG7EQ5g/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJtbXJDZDlodm9nVTNTWlpiNG5FWE5rMm9PY1FYd1pndHdpQ1ZTRzdFUTVnIiwiZXhwIjoxNzgwNTMxMjAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjowfQ.PB9E9CynOAmbB2OgAM8FhADKi6qFq2QzwjvI7XcensAMz24ieWtZ0E5K_ScSL3v9w8XoCkrLMCi1SW_ZUA6hecTfpuzMy4jZ_qtDfOq1Z2NSTThILx77xjGcbSUaXCP4IolPn73u66WONoQwBZWZVU7fCt-2Gppb4fSbawDSXxDJWZhK19p9hylJW53ijO7TUXutrcVTywPWDPDAnOjbrEcYFFK5enM-gekglDhmikwI_aBgPRrhIhfnwID41nIw82osVLXPXiXB0kE9vmPZEX9Tw4ZBSYe_C_O_ij4Px2Q6TeRcGdT0afXhrv_DAx-O7uChRUAYSx1gXIJ4OUddLQ",
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grps-usd",
-      "pack_display_name": "Paper Melee 64"
+      "pack_display_name": "Paper Melee 64",
+      "format": null
     },
     {
       "id": "vancity_primal-paper-melee-64-grst-dat",
@@ -348,7 +362,8 @@
       "preview_url": "https://image.mux.com/mmrCd9hvogU3SZZb4nEXNk2oOcQXwZgtwiCVSG7EQ5g/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJtbXJDZDlodm9nVTNTWlpiNG5FWE5rMm9PY1FYd1pndHdpQ1ZTRzdFUTVnIiwiZXhwIjoxNzgwNTMxMjAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjowfQ.PB9E9CynOAmbB2OgAM8FhADKi6qFq2QzwjvI7XcensAMz24ieWtZ0E5K_ScSL3v9w8XoCkrLMCi1SW_ZUA6hecTfpuzMy4jZ_qtDfOq1Z2NSTThILx77xjGcbSUaXCP4IolPn73u66WONoQwBZWZVU7fCt-2Gppb4fSbawDSXxDJWZhK19p9hylJW53ijO7TUXutrcVTywPWDPDAnOjbrEcYFFK5enM-gekglDhmikwI_aBgPRrhIhfnwID41nIw82osVLXPXiXB0kE9vmPZEX9Tw4ZBSYe_C_O_ij4Px2Q6TeRcGdT0afXhrv_DAx-O7uChRUAYSx1gXIJ4OUddLQ",
       "notes": null,
       "pack_id": "vancity_primal-paper-melee-64-grst-dat",
-      "pack_display_name": "Paper Melee 64"
+      "pack_display_name": "Paper Melee 64",
+      "format": null
     },
     {
       "id": "vancity_primal-icy-melee-grnba-dat",
@@ -366,7 +381,8 @@
       "preview_url": "https://image.mux.com/uzvuDtKLhhW4jVldl5ZI1V7vsLM3YiFtyNHC1Vk02j4Y/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ1enZ1RHRLTGhoVzRqVmxkbDVaSTFWN3ZzTE0zWWlGdHlOSEMxVmswMmo0WSIsImV4cCI6MTc4MDUzMTIwMCwiYXVkIjoidCIsIndpZHRoIjoxMDgwLCJmaXRfbW9kZSI6InByZXNlcnZlIiwidGltZSI6MTAuMTM3N30.bbpykslQ-9oFY5jsImYYDHvMT3ZX2bLETScIL9MulrTVmGDSHyhfHokushgKePY3dWMdspcKb4hAUJ7SDszjDiESlUc0_mZFHb3k9H7BG7sqVCKAr7ZjVi7V-bJihhvd2dBqaG8K1c3G77J3DpGImLgwPCHxR8YSGqpXG4GxbP8pvIQ-K-yzxcXVZs_8JHyt7Hga-0OQYHdeK88H_Up-mZXVubRiv7JzW89MlFw-6IC-9tIeqn3_AHKQUSyLYEXDXLA-j7UreTF7nQC7ch6KMRxLsbzthXkzu4HHjG6TNRtd_RfCLHqw96ZioKds9d7tU1jd8WI2Gm9O09ZFJ6MGBQ",
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grnba-dat",
-      "pack_display_name": "Icy Melee"
+      "pack_display_name": "Icy Melee",
+      "format": null
     },
     {
       "id": "vancity_primal-icy-melee-grnla-dat",
@@ -384,7 +400,8 @@
       "preview_url": "https://image.mux.com/uzvuDtKLhhW4jVldl5ZI1V7vsLM3YiFtyNHC1Vk02j4Y/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ1enZ1RHRLTGhoVzRqVmxkbDVaSTFWN3ZzTE0zWWlGdHlOSEMxVmswMmo0WSIsImV4cCI6MTc4MDUzMTIwMCwiYXVkIjoidCIsIndpZHRoIjoxMDgwLCJmaXRfbW9kZSI6InByZXNlcnZlIiwidGltZSI6MTAuMTM3N30.bbpykslQ-9oFY5jsImYYDHvMT3ZX2bLETScIL9MulrTVmGDSHyhfHokushgKePY3dWMdspcKb4hAUJ7SDszjDiESlUc0_mZFHb3k9H7BG7sqVCKAr7ZjVi7V-bJihhvd2dBqaG8K1c3G77J3DpGImLgwPCHxR8YSGqpXG4GxbP8pvIQ-K-yzxcXVZs_8JHyt7Hga-0OQYHdeK88H_Up-mZXVubRiv7JzW89MlFw-6IC-9tIeqn3_AHKQUSyLYEXDXLA-j7UreTF7nQC7ch6KMRxLsbzthXkzu4HHjG6TNRtd_RfCLHqw96ZioKds9d7tU1jd8WI2Gm9O09ZFJ6MGBQ",
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grnla-dat",
-      "pack_display_name": "Icy Melee"
+      "pack_display_name": "Icy Melee",
+      "format": null
     },
     {
       "id": "vancity_primal-icy-melee-grop-dat",
@@ -402,7 +419,8 @@
       "preview_url": "https://image.mux.com/uzvuDtKLhhW4jVldl5ZI1V7vsLM3YiFtyNHC1Vk02j4Y/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ1enZ1RHRLTGhoVzRqVmxkbDVaSTFWN3ZzTE0zWWlGdHlOSEMxVmswMmo0WSIsImV4cCI6MTc4MDUzMTIwMCwiYXVkIjoidCIsIndpZHRoIjoxMDgwLCJmaXRfbW9kZSI6InByZXNlcnZlIiwidGltZSI6MTAuMTM3N30.bbpykslQ-9oFY5jsImYYDHvMT3ZX2bLETScIL9MulrTVmGDSHyhfHokushgKePY3dWMdspcKb4hAUJ7SDszjDiESlUc0_mZFHb3k9H7BG7sqVCKAr7ZjVi7V-bJihhvd2dBqaG8K1c3G77J3DpGImLgwPCHxR8YSGqpXG4GxbP8pvIQ-K-yzxcXVZs_8JHyt7Hga-0OQYHdeK88H_Up-mZXVubRiv7JzW89MlFw-6IC-9tIeqn3_AHKQUSyLYEXDXLA-j7UreTF7nQC7ch6KMRxLsbzthXkzu4HHjG6TNRtd_RfCLHqw96ZioKds9d7tU1jd8WI2Gm9O09ZFJ6MGBQ",
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grop-dat",
-      "pack_display_name": "Icy Melee"
+      "pack_display_name": "Icy Melee",
+      "format": null
     },
     {
       "id": "vancity_primal-icy-melee-grps-usd",
@@ -420,7 +438,8 @@
       "preview_url": "https://image.mux.com/uzvuDtKLhhW4jVldl5ZI1V7vsLM3YiFtyNHC1Vk02j4Y/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ1enZ1RHRLTGhoVzRqVmxkbDVaSTFWN3ZzTE0zWWlGdHlOSEMxVmswMmo0WSIsImV4cCI6MTc4MDUzMTIwMCwiYXVkIjoidCIsIndpZHRoIjoxMDgwLCJmaXRfbW9kZSI6InByZXNlcnZlIiwidGltZSI6MTAuMTM3N30.bbpykslQ-9oFY5jsImYYDHvMT3ZX2bLETScIL9MulrTVmGDSHyhfHokushgKePY3dWMdspcKb4hAUJ7SDszjDiESlUc0_mZFHb3k9H7BG7sqVCKAr7ZjVi7V-bJihhvd2dBqaG8K1c3G77J3DpGImLgwPCHxR8YSGqpXG4GxbP8pvIQ-K-yzxcXVZs_8JHyt7Hga-0OQYHdeK88H_Up-mZXVubRiv7JzW89MlFw-6IC-9tIeqn3_AHKQUSyLYEXDXLA-j7UreTF7nQC7ch6KMRxLsbzthXkzu4HHjG6TNRtd_RfCLHqw96ZioKds9d7tU1jd8WI2Gm9O09ZFJ6MGBQ",
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grps-usd",
-      "pack_display_name": "Icy Melee"
+      "pack_display_name": "Icy Melee",
+      "format": null
     },
     {
       "id": "vancity_primal-icy-melee-grst-dat",
@@ -438,7 +457,8 @@
       "preview_url": "https://image.mux.com/uzvuDtKLhhW4jVldl5ZI1V7vsLM3YiFtyNHC1Vk02j4Y/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ1enZ1RHRLTGhoVzRqVmxkbDVaSTFWN3ZzTE0zWWlGdHlOSEMxVmswMmo0WSIsImV4cCI6MTc4MDUzMTIwMCwiYXVkIjoidCIsIndpZHRoIjoxMDgwLCJmaXRfbW9kZSI6InByZXNlcnZlIiwidGltZSI6MTAuMTM3N30.bbpykslQ-9oFY5jsImYYDHvMT3ZX2bLETScIL9MulrTVmGDSHyhfHokushgKePY3dWMdspcKb4hAUJ7SDszjDiESlUc0_mZFHb3k9H7BG7sqVCKAr7ZjVi7V-bJihhvd2dBqaG8K1c3G77J3DpGImLgwPCHxR8YSGqpXG4GxbP8pvIQ-K-yzxcXVZs_8JHyt7Hga-0OQYHdeK88H_Up-mZXVubRiv7JzW89MlFw-6IC-9tIeqn3_AHKQUSyLYEXDXLA-j7UreTF7nQC7ch6KMRxLsbzthXkzu4HHjG6TNRtd_RfCLHqw96ZioKds9d7tU1jd8WI2Gm9O09ZFJ6MGBQ",
       "notes": null,
       "pack_id": "vancity_primal-icy-melee-grst-dat",
-      "pack_display_name": "Icy Melee"
+      "pack_display_name": "Icy Melee",
+      "format": null
     },
     {
       "id": "gay_lord_erika-ganon-s-castle-bf-stage",
@@ -457,7 +477,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-ganon-s-castle-bf-stage",
       "pack_display_name": "Ganon's Castle - BF",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-ganon-s-castle-bf-stage-1",
@@ -476,7 +497,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-ganon-s-castle-bf-stage-1",
       "pack_display_name": "Ganon's Castle - BF",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-rainbow-bf-stage",
@@ -495,7 +517,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-rainbow-bf-stage",
       "pack_display_name": "Rainbow BF",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage",
@@ -514,7 +537,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage",
       "pack_display_name": "Metal Gear Solid 1 VR Training - Battlefield",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage-1",
@@ -533,7 +557,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage-1",
       "pack_display_name": "Metal Gear Solid 1 VR Training - Battlefield",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage-2",
@@ -552,7 +577,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-metal-gear-solid-1-vr-training-battlefield-stage-2",
       "pack_display_name": "Metal Gear Solid 1 VR Training - Battlefield",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-game-and-watch-bf-stage",
@@ -571,7 +597,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-game-and-watch-bf-stage",
       "pack_display_name": "Game and Watch BF",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-yoshi-s-story-pokemon-mystery-dungeon-hill-of-the-ancients-stage",
@@ -590,7 +617,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-yoshi-s-story-pokemon-mystery-dungeon-hill-of-the-ancients-stage",
       "pack_display_name": "Yoshi's Story - Pokemon Mystery Dungeon Hill of the Ancients",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-yoshi-s-64-ps-stage",
@@ -609,7 +637,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-yoshi-s-64-ps-stage",
       "pack_display_name": "Yoshi's 64 - PS",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-rusty-bucket-bay-fd-stage",
@@ -628,7 +657,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-rusty-bucket-bay-fd-stage",
       "pack_display_name": "Rusty Bucket Bay FD",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-mushroom-kingdom-2-fod-stage",
@@ -647,7 +677,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-mushroom-kingdom-2-fod-stage",
       "pack_display_name": "Mushroom Kingdom 2 FoD",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-beach-bowl-bf-mario-galaxy-stage",
@@ -666,7 +697,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-beach-bowl-bf-mario-galaxy-stage",
       "pack_display_name": "Beach Bowl BF (Mario Galaxy)",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-duck-hunt-yoshi-s-story-stage",
@@ -685,7 +717,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-duck-hunt-yoshi-s-story-stage",
       "pack_display_name": "Duck Hunt Yoshi's Story",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-snow-yoshi-s-story-stage",
@@ -704,7 +737,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-snow-yoshi-s-story-stage",
       "pack_display_name": "Snow Yoshi's Story",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage",
@@ -723,7 +757,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage",
       "pack_display_name": "Wuhu Island (Yoshi's Story)",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage-1",
@@ -742,7 +777,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage-1",
       "pack_display_name": "Wuhu Island (Yoshi's Story)",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage-2",
@@ -761,7 +797,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-wuhu-island-yoshi-s-story-stage-2",
       "pack_display_name": "Wuhu Island (Yoshi's Story)",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-end-of-eva-fd-stage",
@@ -780,7 +817,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-end-of-eva-fd-stage",
       "pack_display_name": "End of Eva FD",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-end-of-eva-fd-stage-1",
@@ -799,7 +837,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-end-of-eva-fd-stage-1",
       "pack_display_name": "End of Eva FD",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-dragon-roost-island-fd-stage",
@@ -818,7 +857,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-dragon-roost-island-fd-stage",
       "pack_display_name": "Dragon Roost Island FD",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gonko-9s-fox-shine-fx-fx",
@@ -836,7 +876,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/57046769/7cfa2dffd87441b2ba669321cbedb0fb/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=onKO9ho61XQMBOrXCfU4UyLkcg75NM7GsAxdZAamnQQ%3D&token-time=1779148800",
       "notes": "9S-themed shine FX from 9S Fox post",
       "pack_id": "gonko-9s-fox-shine-fx-fx",
-      "pack_display_name": "9S Fox - Shine FX"
+      "pack_display_name": "9S Fox - Shine FX",
+      "format": null
     },
     {
       "id": "gonko-ultimate-shine-fx",
@@ -854,7 +895,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/57728734/c4d5ff70ee564b3b892d8deae5f4180e/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=-BojEI20dWjjTHHUDST_I-ETc0i6KAWUgYud4FCJ-90%3D&token-time=1779148800",
       "notes": "Recolored shine FX (default variant)",
       "pack_id": "gonko-ultimate-shine-fx",
-      "pack_display_name": "Ultimate Shine"
+      "pack_display_name": "Ultimate Shine",
+      "format": null
     },
     {
       "id": "gonko-ultimate-shine-fx-2",
@@ -872,7 +914,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/57728734/c4d5ff70ee564b3b892d8deae5f4180e/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=-BojEI20dWjjTHHUDST_I-ETc0i6KAWUgYud4FCJ-90%3D&token-time=1779148800",
       "notes": "Recolored shine FX (translucent variant)",
       "pack_id": "gonko-ultimate-shine-fx-2",
-      "pack_display_name": "Ultimate Shine"
+      "pack_display_name": "Ultimate Shine",
+      "format": null
     },
     {
       "id": "vancity_primal-evangelion-at-field-shine-fx",
@@ -890,7 +933,8 @@
       "preview_url": "https://image.mux.com/Hmv3H00ldco02xRtzjd8F01Npu5yULmlbD01HHPeBlB02jZg/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJIbXYzSDAwbGRjbzAyeFJ0empkOEYwMU5wdTV5VUxtbGJEMDFISFBlQmxCMDJqWmciLCJleHAiOjE3ODA1MzEyMDAsImF1ZCI6InQiLCJ3aWR0aCI6MTA4MCwiZml0X21vZGUiOiJwcmVzZXJ2ZSIsInRpbWUiOjIuMH0.oYPjgX40KYqlWLjf8cYcpxW8Ua8QZhs0nokpXZ2k2KRf1XrSO5hl_Lr96CvUx3C70RuP4CbXkLXlDI3MaL6S-cQRiDx3VRyG3TOeptUolQt9jU-wcRB3FJUVj1UjwsUNWdrrhzg5nHpGWJHo-4PA8p1auLifAHu9N24xUSM0sAex88P-HwdjuXlJkvG_1xCpBN6CM0J7uOWFtE5k9YLtpvm-Rr0xv2XYtuAvfELZC2H5_QjEVftAi-u2ASDmPlikadCiDyxOdYinAYfrwpPEFl1PPmHB-ZLser__muVRm3LNNz92BlTct4JbWKR1-g_FOgleoIhwJuBgRinPRwagGg",
       "notes": "Fox shine FX recolored as Eva-Unit AT Field",
       "pack_id": "vancity_primal-evangelion-at-field-shine-fx",
-      "pack_display_name": "Evangelion AT Field Shine"
+      "pack_display_name": "Evangelion AT Field Shine",
+      "format": null
     },
     {
       "id": "gonko-b0xx-spacies-bu",
@@ -906,7 +950,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-b0xx-spacies-bu",
-      "pack_display_name": "B0XX Spacies"
+      "pack_display_name": "B0XX Spacies",
+      "format": null
     },
     {
       "id": "gonko-b0xx-spacies-la",
@@ -922,7 +967,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-b0xx-spacies-la",
-      "pack_display_name": "B0XX Spacies"
+      "pack_display_name": "B0XX Spacies",
+      "format": null
     },
     {
       "id": "gonko-bab-activated-captain-falcon-bu",
@@ -938,7 +984,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-bab-activated-captain-falcon-bu",
-      "pack_display_name": "Bab Activated Captain Falcon ("
+      "pack_display_name": "Bab Activated Captain Falcon (",
+      "format": null
     },
     {
       "id": "gonko-bab-activated-captain-falcon-gr",
@@ -954,7 +1001,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-bab-activated-captain-falcon-bu",
-      "pack_display_name": "Bab Activated Captain Falcon ("
+      "pack_display_name": "Bab Activated Captain Falcon (",
+      "format": null
     },
     {
       "id": "gonko-randall-falcon-wh",
@@ -970,7 +1018,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-randall-falcon-wh",
-      "pack_display_name": "Randall Falcon"
+      "pack_display_name": "Randall Falcon",
+      "format": null
     },
     {
       "id": "gonko-freestyle-falco-skin-gr",
@@ -986,7 +1035,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-freestyle-falco-skin-gr",
-      "pack_display_name": "Freestyle Falco Skin"
+      "pack_display_name": "Freestyle Falco Skin",
+      "format": null
     },
     {
       "id": "gonko-wii-fit-trainer-falcon-re",
@@ -1002,7 +1052,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-wii-fit-trainer-falcon-re",
-      "pack_display_name": "Wii Fit Trainer Falcon"
+      "pack_display_name": "Wii Fit Trainer Falcon",
+      "format": null
     },
     {
       "id": "gonko-buzz-lightyear-falcon-bu",
@@ -1018,7 +1069,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-buzz-lightyear-falcon-bu",
-      "pack_display_name": "Buzz Lightyear Falcon ("
+      "pack_display_name": "Buzz Lightyear Falcon (",
+      "format": null
     },
     {
       "id": "gonko-buzz-lightyear-falcon-wh",
@@ -1034,7 +1086,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-buzz-lightyear-falcon-bu",
-      "pack_display_name": "Buzz Lightyear Falcon ("
+      "pack_display_name": "Buzz Lightyear Falcon (",
+      "format": null
     },
     {
       "id": "gonko-emg-moky-fox-skins-gr",
@@ -1050,7 +1103,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-emg-moky-fox-skins-gr",
-      "pack_display_name": "EMG - moky Fox Skins ("
+      "pack_display_name": "EMG - moky Fox Skins (",
+      "format": null
     },
     {
       "id": "gonko-emg-moky-fox-skins-la",
@@ -1066,7 +1120,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-emg-moky-fox-skins-gr",
-      "pack_display_name": "EMG - moky Fox Skins ("
+      "pack_display_name": "EMG - moky Fox Skins (",
+      "format": null
     },
     {
       "id": "gonko-emg-moky-fox-skins-nr",
@@ -1082,7 +1137,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-emg-moky-fox-skins-gr",
-      "pack_display_name": "EMG - moky Fox Skins ("
+      "pack_display_name": "EMG - moky Fox Skins (",
+      "format": null
     },
     {
       "id": "gonko-emg-moky-fox-skins-or",
@@ -1098,7 +1154,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-emg-moky-fox-skins-gr",
-      "pack_display_name": "EMG - moky Fox Skins ("
+      "pack_display_name": "EMG - moky Fox Skins (",
+      "format": null
     },
     {
       "id": "gonko-emg-falco-skins-bu",
@@ -1114,7 +1171,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-emg-falco-skins-bu",
-      "pack_display_name": "EMG Falco Skins ("
+      "pack_display_name": "EMG Falco Skins (",
+      "format": null
     },
     {
       "id": "gonko-emg-falco-skins-gr",
@@ -1130,7 +1188,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-emg-falco-skins-bu",
-      "pack_display_name": "EMG Falco Skins ("
+      "pack_display_name": "EMG Falco Skins (",
+      "format": null
     },
     {
       "id": "gonko-emg-falco-skins-nr",
@@ -1146,7 +1205,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-emg-falco-skins-bu",
-      "pack_display_name": "EMG Falco Skins ("
+      "pack_display_name": "EMG Falco Skins (",
+      "format": null
     },
     {
       "id": "gonko-emg-falco-skins-re",
@@ -1162,7 +1222,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-emg-falco-skins-bu",
-      "pack_display_name": "EMG Falco Skins ("
+      "pack_display_name": "EMG Falco Skins (",
+      "format": null
     },
     {
       "id": "gonko-magneto-fox-or",
@@ -1178,7 +1239,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-magneto-fox-or",
-      "pack_display_name": "Magneto Fox"
+      "pack_display_name": "Magneto Fox",
+      "format": null
     },
     {
       "id": "gonko-clown-ganondorf-bu",
@@ -1194,7 +1256,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-clown-ganondorf-bu",
-      "pack_display_name": "Clown Ganondorf ("
+      "pack_display_name": "Clown Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-clown-ganondorf-la",
@@ -1210,7 +1273,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-clown-ganondorf-bu",
-      "pack_display_name": "Clown Ganondorf ("
+      "pack_display_name": "Clown Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-speed-racer-falcon-bu",
@@ -1226,7 +1290,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-speed-racer-falcon-bu",
-      "pack_display_name": "Speed Racer Falcon"
+      "pack_display_name": "Speed Racer Falcon",
+      "format": null
     },
     {
       "id": "gonko-deadass-ganon-bu",
@@ -1242,7 +1307,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-deadass-ganon-bu",
-      "pack_display_name": "Deadass Ganon ("
+      "pack_display_name": "Deadass Ganon (",
+      "format": null
     },
     {
       "id": "gonko-deadass-ganon-nr",
@@ -1258,7 +1324,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-deadass-ganon-bu",
-      "pack_display_name": "Deadass Ganon ("
+      "pack_display_name": "Deadass Ganon (",
+      "format": null
     },
     {
       "id": "gonko-chef-rachman-falcon-skin-re",
@@ -1274,7 +1341,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-chef-rachman-falcon-skin-re",
-      "pack_display_name": "Chef Rachman Falcon Skin"
+      "pack_display_name": "Chef Rachman Falcon Skin",
+      "format": null
     },
     {
       "id": "gonko-lg-ginger-falco-bu",
@@ -1290,7 +1358,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-lg-ginger-falco-bu",
-      "pack_display_name": "LG - Ginger Falco"
+      "pack_display_name": "LG - Ginger Falco",
+      "format": null
     },
     {
       "id": "gonko-uyu-n0ne-ganondorf-skins-nr",
@@ -1306,7 +1375,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-uyu-n0ne-ganondorf-skins-nr",
-      "pack_display_name": "UYU - n0ne Ganondorf Skins"
+      "pack_display_name": "UYU - n0ne Ganondorf Skins",
+      "format": null
     },
     {
       "id": "gonko-uyu-n0ne-falcon-skins-re",
@@ -1322,7 +1392,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-uyu-n0ne-falcon-skins-re",
-      "pack_display_name": "UYU - n0ne Falcon Skins ("
+      "pack_display_name": "UYU - n0ne Falcon Skins (",
+      "format": null
     },
     {
       "id": "gonko-uyu-n0ne-falcon-skins-wh",
@@ -1338,7 +1409,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-uyu-n0ne-falcon-skins-re",
-      "pack_display_name": "UYU - n0ne Falcon Skins ("
+      "pack_display_name": "UYU - n0ne Falcon Skins (",
+      "format": null
     },
     {
       "id": "gonko-brown-striped-falco-nr",
@@ -1354,7 +1426,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-brown-striped-falco-nr",
-      "pack_display_name": "Brown Striped Falco"
+      "pack_display_name": "Brown Striped Falco",
+      "format": null
     },
     {
       "id": "gonko-silver-ganondorf-la",
@@ -1370,7 +1443,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-silver-ganondorf-la",
-      "pack_display_name": "Silver Ganondorf"
+      "pack_display_name": "Silver Ganondorf",
+      "format": null
     },
     {
       "id": "gonko-chill-beats-fox-la",
@@ -1386,7 +1460,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-chill-beats-fox-la",
-      "pack_display_name": "Chill Beats Fox"
+      "pack_display_name": "Chill Beats Fox",
+      "format": null
     },
     {
       "id": "gonko-society-skin-pack-la",
@@ -1402,7 +1477,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-society-skin-pack-la",
-      "pack_display_name": "Society Skin Pack ("
+      "pack_display_name": "Society Skin Pack (",
+      "format": null
     },
     {
       "id": "gonko-society-skin-pack-re",
@@ -1418,7 +1494,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-society-skin-pack-la",
-      "pack_display_name": "Society Skin Pack ("
+      "pack_display_name": "Society Skin Pack (",
+      "format": null
     },
     {
       "id": "gonko-slippi-fox-gr",
@@ -1434,7 +1511,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-slippi-fox-gr",
-      "pack_display_name": "Slippi Fox"
+      "pack_display_name": "Slippi Fox",
+      "format": null
     },
     {
       "id": "gonko-gg-n0ne-falcon-ganondorf-la",
@@ -1450,7 +1528,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gg-n0ne-falcon-ganondorf-la",
-      "pack_display_name": "GG - n0ne Falcon/Ganondorf"
+      "pack_display_name": "GG - n0ne Falcon/Ganondorf",
+      "format": null
     },
     {
       "id": "gonko-texas-falcon-nr",
@@ -1466,7 +1545,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-texas-falcon-nr",
-      "pack_display_name": "Texas Falcon ("
+      "pack_display_name": "Texas Falcon (",
+      "format": null
     },
     {
       "id": "gonko-texas-falcon-re",
@@ -1482,7 +1562,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-texas-falcon-nr",
-      "pack_display_name": "Texas Falcon ("
+      "pack_display_name": "Texas Falcon (",
+      "format": null
     },
     {
       "id": "gonko-viewtiful-joe-falcon-re",
@@ -1498,7 +1579,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-viewtiful-joe-falcon-re",
-      "pack_display_name": "Viewtiful Joe Falcon"
+      "pack_display_name": "Viewtiful Joe Falcon",
+      "format": null
     },
     {
       "id": "gonko-mega-man-falcon-bu",
@@ -1514,7 +1596,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-mega-man-falcon-bu",
-      "pack_display_name": "Mega Man Falcon"
+      "pack_display_name": "Mega Man Falcon",
+      "format": null
     },
     {
       "id": "gonko-joseph-joestar-falcon-gr",
@@ -1530,7 +1613,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-joseph-joestar-falcon-gr",
-      "pack_display_name": "Joseph Joestar Falcon ("
+      "pack_display_name": "Joseph Joestar Falcon (",
+      "format": null
     },
     {
       "id": "gonko-joseph-joestar-falcon-nr",
@@ -1546,7 +1630,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-joseph-joestar-falcon-gr",
-      "pack_display_name": "Joseph Joestar Falcon ("
+      "pack_display_name": "Joseph Joestar Falcon (",
+      "format": null
     },
     {
       "id": "gonko-one-punch-falcon-wh",
@@ -1562,7 +1647,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-one-punch-falcon-wh",
-      "pack_display_name": "One Punch Falcon"
+      "pack_display_name": "One Punch Falcon",
+      "format": null
     },
     {
       "id": "gonko-gg-wizzyfan109-wh",
@@ -1578,7 +1664,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gg-wizzyfan109-wh",
-      "pack_display_name": "GG - wizzyfan109"
+      "pack_display_name": "GG - wizzyfan109",
+      "format": null
     },
     {
       "id": "gonko-king-falcon-tekken-3-nr",
@@ -1594,7 +1681,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-king-falcon-tekken-3-nr",
-      "pack_display_name": "King Falcon (Tekken 3)"
+      "pack_display_name": "King Falcon (Tekken 3)",
+      "format": null
     },
     {
       "id": "gonko-envy-wizzrobe-falcon-skins-bu",
@@ -1610,7 +1698,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-envy-wizzrobe-falcon-skins-bu",
-      "pack_display_name": "ENVY - Wizzrobe Falcon Skins ("
+      "pack_display_name": "ENVY - Wizzrobe Falcon Skins (",
+      "format": null
     },
     {
       "id": "gonko-envy-wizzrobe-falcon-skins-nr",
@@ -1626,7 +1715,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-envy-wizzrobe-falcon-skins-bu",
-      "pack_display_name": "ENVY - Wizzrobe Falcon Skins ("
+      "pack_display_name": "ENVY - Wizzrobe Falcon Skins (",
+      "format": null
     },
     {
       "id": "gonko-powerline-falcon-wh",
@@ -1642,7 +1732,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-powerline-falcon-wh",
-      "pack_display_name": "Powerline Falcon"
+      "pack_display_name": "Powerline Falcon",
+      "format": null
     },
     {
       "id": "gonko-sora-marth-bk",
@@ -1658,7 +1749,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-sora-marth-bk",
-      "pack_display_name": "Sora Marth"
+      "pack_display_name": "Sora Marth",
+      "format": null
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-re",
@@ -1674,7 +1766,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-fuck-nintendo-skin-pack-re",
-      "pack_display_name": "Fuck Nintendo Skin Pack"
+      "pack_display_name": "Fuck Nintendo Skin Pack",
+      "format": null
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-or",
@@ -1690,7 +1783,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-fuck-nintendo-skin-pack-or",
-      "pack_display_name": "Fuck Nintendo Skin Pack"
+      "pack_display_name": "Fuck Nintendo Skin Pack",
+      "format": null
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-re-2",
@@ -1706,7 +1800,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-fuck-nintendo-skin-pack-re-2",
-      "pack_display_name": "Fuck Nintendo Skin Pack"
+      "pack_display_name": "Fuck Nintendo Skin Pack",
+      "format": null
     },
     {
       "id": "gonko-fuck-nintendo-skin-pack-nr",
@@ -1722,7 +1817,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-fuck-nintendo-skin-pack-nr",
-      "pack_display_name": "Fuck Nintendo Skin Pack"
+      "pack_display_name": "Fuck Nintendo Skin Pack",
+      "format": null
     },
     {
       "id": "gonko-haikyuu-skin-pack-or",
@@ -1738,7 +1834,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-haikyuu-skin-pack-or",
-      "pack_display_name": "Haikyuu Skin Pack"
+      "pack_display_name": "Haikyuu Skin Pack",
+      "format": null
     },
     {
       "id": "gonko-haikyuu-skin-pack-bk",
@@ -1754,7 +1851,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-haikyuu-skin-pack-bk",
-      "pack_display_name": "Haikyuu Skin Pack"
+      "pack_display_name": "Haikyuu Skin Pack",
+      "format": null
     },
     {
       "id": "gonko-haikyuu-skin-pack-wh",
@@ -1770,7 +1868,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-haikyuu-skin-pack-wh",
-      "pack_display_name": "Haikyuu Skin Pack"
+      "pack_display_name": "Haikyuu Skin Pack",
+      "format": null
     },
     {
       "id": "gonko-9s-fox-or",
@@ -1786,7 +1885,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-9s-fox-or",
-      "pack_display_name": "9S Fox"
+      "pack_display_name": "9S Fox",
+      "format": null
     },
     {
       "id": "gonko-tanjiro-fox-gr",
@@ -1802,7 +1902,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-tanjiro-fox-gr",
-      "pack_display_name": "Tanjiro Fox ("
+      "pack_display_name": "Tanjiro Fox (",
+      "format": null
     },
     {
       "id": "gonko-tanjiro-fox-la",
@@ -1818,7 +1919,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-tanjiro-fox-gr",
-      "pack_display_name": "Tanjiro Fox ("
+      "pack_display_name": "Tanjiro Fox (",
+      "format": null
     },
     {
       "id": "gonko-gc-samus-skin-pack-bk",
@@ -1834,7 +1936,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gc-samus-skin-pack-bk",
-      "pack_display_name": "GC Samus Skin Pack ("
+      "pack_display_name": "GC Samus Skin Pack (",
+      "format": null
     },
     {
       "id": "gonko-gc-samus-skin-pack-gr",
@@ -1850,7 +1953,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gc-samus-skin-pack-bk",
-      "pack_display_name": "GC Samus Skin Pack ("
+      "pack_display_name": "GC Samus Skin Pack (",
+      "format": null
     },
     {
       "id": "gonko-gc-samus-skin-pack-la",
@@ -1866,7 +1970,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gc-samus-skin-pack-bk",
-      "pack_display_name": "GC Samus Skin Pack ("
+      "pack_display_name": "GC Samus Skin Pack (",
+      "format": null
     },
     {
       "id": "gonko-gc-samus-skin-pack-nr",
@@ -1882,7 +1987,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gc-samus-skin-pack-bk",
-      "pack_display_name": "GC Samus Skin Pack ("
+      "pack_display_name": "GC Samus Skin Pack (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-fox-gr",
@@ -1898,7 +2004,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-fox-gr",
-      "pack_display_name": "Ultimate Fox ("
+      "pack_display_name": "Ultimate Fox (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-fox-la",
@@ -1914,7 +2021,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-fox-gr",
-      "pack_display_name": "Ultimate Fox ("
+      "pack_display_name": "Ultimate Fox (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-fox-nr",
@@ -1930,7 +2038,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-fox-gr",
-      "pack_display_name": "Ultimate Fox ("
+      "pack_display_name": "Ultimate Fox (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-fox-or",
@@ -1946,7 +2055,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-fox-gr",
-      "pack_display_name": "Ultimate Fox ("
+      "pack_display_name": "Ultimate Fox (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-falco-bu",
@@ -1962,7 +2072,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-falco-bu",
-      "pack_display_name": "Ultimate Falco ("
+      "pack_display_name": "Ultimate Falco (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-falco-gr",
@@ -1978,7 +2089,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-falco-bu",
-      "pack_display_name": "Ultimate Falco ("
+      "pack_display_name": "Ultimate Falco (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-falco-nr",
@@ -1994,7 +2106,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-falco-bu",
-      "pack_display_name": "Ultimate Falco ("
+      "pack_display_name": "Ultimate Falco (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-falco-re",
@@ -2010,7 +2123,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-falco-bu",
-      "pack_display_name": "Ultimate Falco ("
+      "pack_display_name": "Ultimate Falco (",
+      "format": null
     },
     {
       "id": "gonko-vaporwave-falcon-nr",
@@ -2026,7 +2140,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-vaporwave-falcon-nr",
-      "pack_display_name": "Vaporwave Falcon"
+      "pack_display_name": "Vaporwave Falcon",
+      "format": null
     },
     {
       "id": "gonko-phantom-ganondorf-bu",
@@ -2042,7 +2157,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-phantom-ganondorf-bu",
-      "pack_display_name": "Phantom Ganondorf ("
+      "pack_display_name": "Phantom Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-phantom-ganondorf-la",
@@ -2058,7 +2174,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-phantom-ganondorf-bu",
-      "pack_display_name": "Phantom Ganondorf ("
+      "pack_display_name": "Phantom Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-phantom-ganondorf-nr",
@@ -2074,7 +2191,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-phantom-ganondorf-bu",
-      "pack_display_name": "Phantom Ganondorf ("
+      "pack_display_name": "Phantom Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-marth-bk",
@@ -2090,7 +2208,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
-      "pack_display_name": "Ultimate Marth ("
+      "pack_display_name": "Ultimate Marth (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-marth-gr",
@@ -2106,7 +2225,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
-      "pack_display_name": "Ultimate Marth ("
+      "pack_display_name": "Ultimate Marth (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-marth-nr",
@@ -2122,7 +2242,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
-      "pack_display_name": "Ultimate Marth ("
+      "pack_display_name": "Ultimate Marth (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-marth-re",
@@ -2138,7 +2259,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
-      "pack_display_name": "Ultimate Marth ("
+      "pack_display_name": "Ultimate Marth (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-marth-wh",
@@ -2154,7 +2276,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-marth-bk",
-      "pack_display_name": "Ultimate Marth ("
+      "pack_display_name": "Ultimate Marth (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-roy-bu",
@@ -2170,7 +2293,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
-      "pack_display_name": "Ultimate Roy ("
+      "pack_display_name": "Ultimate Roy (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-roy-gr",
@@ -2186,7 +2310,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
-      "pack_display_name": "Ultimate Roy ("
+      "pack_display_name": "Ultimate Roy (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-roy-nr",
@@ -2202,7 +2327,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
-      "pack_display_name": "Ultimate Roy ("
+      "pack_display_name": "Ultimate Roy (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-roy-re",
@@ -2218,7 +2344,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
-      "pack_display_name": "Ultimate Roy ("
+      "pack_display_name": "Ultimate Roy (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-roy-ye",
@@ -2234,7 +2361,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-roy-bu",
-      "pack_display_name": "Ultimate Roy ("
+      "pack_display_name": "Ultimate Roy (",
+      "format": null
     },
     {
       "id": "gonko-miles-morales-falco-re",
@@ -2250,7 +2378,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-miles-morales-falco-re",
-      "pack_display_name": "Miles Morales Falco"
+      "pack_display_name": "Miles Morales Falco",
+      "format": null
     },
     {
       "id": "gonko-ultimate-yoshi-bu",
@@ -2266,7 +2395,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
-      "pack_display_name": "Ultimate Yoshi ("
+      "pack_display_name": "Ultimate Yoshi (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-yoshi-gr",
@@ -2282,7 +2412,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
-      "pack_display_name": "Ultimate Yoshi ("
+      "pack_display_name": "Ultimate Yoshi (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-yoshi-nr",
@@ -2298,7 +2429,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
-      "pack_display_name": "Ultimate Yoshi ("
+      "pack_display_name": "Ultimate Yoshi (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-yoshi-re",
@@ -2314,7 +2446,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
-      "pack_display_name": "Ultimate Yoshi ("
+      "pack_display_name": "Ultimate Yoshi (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-yoshi-wh",
@@ -2330,7 +2463,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
-      "pack_display_name": "Ultimate Yoshi ("
+      "pack_display_name": "Ultimate Yoshi (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-yoshi-ye",
@@ -2346,7 +2480,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-yoshi-bu",
-      "pack_display_name": "Ultimate Yoshi ("
+      "pack_display_name": "Ultimate Yoshi (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-luigi-aq",
@@ -2362,7 +2497,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-luigi-aq",
-      "pack_display_name": "Ultimate Luigi ("
+      "pack_display_name": "Ultimate Luigi (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-luigi-nr",
@@ -2378,7 +2514,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-luigi-aq",
-      "pack_display_name": "Ultimate Luigi ("
+      "pack_display_name": "Ultimate Luigi (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-luigi-wh",
@@ -2394,7 +2531,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-luigi-aq",
-      "pack_display_name": "Ultimate Luigi ("
+      "pack_display_name": "Ultimate Luigi (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-donkey-kong-bk",
@@ -2410,7 +2548,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
-      "pack_display_name": "Ultimate Donkey Kong ("
+      "pack_display_name": "Ultimate Donkey Kong (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-donkey-kong-bu",
@@ -2426,7 +2565,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
-      "pack_display_name": "Ultimate Donkey Kong ("
+      "pack_display_name": "Ultimate Donkey Kong (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-donkey-kong-gr",
@@ -2442,7 +2582,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
-      "pack_display_name": "Ultimate Donkey Kong ("
+      "pack_display_name": "Ultimate Donkey Kong (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-donkey-kong-nr",
@@ -2458,7 +2599,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
-      "pack_display_name": "Ultimate Donkey Kong ("
+      "pack_display_name": "Ultimate Donkey Kong (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-donkey-kong-re",
@@ -2474,7 +2616,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-donkey-kong-bk",
-      "pack_display_name": "Ultimate Donkey Kong ("
+      "pack_display_name": "Ultimate Donkey Kong (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-pikachu-bu",
@@ -2490,7 +2633,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-pikachu-bu",
-      "pack_display_name": "Ultimate Pikachu ("
+      "pack_display_name": "Ultimate Pikachu (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-pikachu-gr",
@@ -2506,7 +2650,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-pikachu-bu",
-      "pack_display_name": "Ultimate Pikachu ("
+      "pack_display_name": "Ultimate Pikachu (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-pikachu-nr",
@@ -2522,7 +2667,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-pikachu-bu",
-      "pack_display_name": "Ultimate Pikachu ("
+      "pack_display_name": "Ultimate Pikachu (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-pikachu-re",
@@ -2538,7 +2684,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-pikachu-bu",
-      "pack_display_name": "Ultimate Pikachu ("
+      "pack_display_name": "Ultimate Pikachu (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-bowser-bk",
@@ -2554,7 +2701,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-bowser-bk",
-      "pack_display_name": "Ultimate Bowser ("
+      "pack_display_name": "Ultimate Bowser (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-bowser-bu",
@@ -2570,7 +2718,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-bowser-bk",
-      "pack_display_name": "Ultimate Bowser ("
+      "pack_display_name": "Ultimate Bowser (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-bowser-nr",
@@ -2586,7 +2735,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-bowser-bk",
-      "pack_display_name": "Ultimate Bowser ("
+      "pack_display_name": "Ultimate Bowser (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-bowser-re",
@@ -2602,7 +2752,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-bowser-bk",
-      "pack_display_name": "Ultimate Bowser ("
+      "pack_display_name": "Ultimate Bowser (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-link-bk",
@@ -2618,7 +2769,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
-      "pack_display_name": "Ultimate Link ("
+      "pack_display_name": "Ultimate Link (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-link-bu",
@@ -2634,7 +2786,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
-      "pack_display_name": "Ultimate Link ("
+      "pack_display_name": "Ultimate Link (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-link-nr",
@@ -2650,7 +2803,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
-      "pack_display_name": "Ultimate Link ("
+      "pack_display_name": "Ultimate Link (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-link-re",
@@ -2666,7 +2820,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
-      "pack_display_name": "Ultimate Link ("
+      "pack_display_name": "Ultimate Link (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-link-wh",
@@ -2682,7 +2837,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-link-bk",
-      "pack_display_name": "Ultimate Link ("
+      "pack_display_name": "Ultimate Link (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-captain-falcon-bu",
@@ -2698,7 +2854,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
-      "pack_display_name": "Ultimate Captain Falcon ("
+      "pack_display_name": "Ultimate Captain Falcon (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-captain-falcon-gr",
@@ -2714,7 +2871,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
-      "pack_display_name": "Ultimate Captain Falcon ("
+      "pack_display_name": "Ultimate Captain Falcon (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-captain-falcon-nr",
@@ -2730,7 +2888,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
-      "pack_display_name": "Ultimate Captain Falcon ("
+      "pack_display_name": "Ultimate Captain Falcon (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-captain-falcon-re",
@@ -2746,7 +2905,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
-      "pack_display_name": "Ultimate Captain Falcon ("
+      "pack_display_name": "Ultimate Captain Falcon (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-captain-falcon-wh",
@@ -2762,7 +2922,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-captain-falcon-bu",
-      "pack_display_name": "Ultimate Captain Falcon ("
+      "pack_display_name": "Ultimate Captain Falcon (",
+      "format": null
     },
     {
       "id": "gonko-gonko-s-animelee-link-bk",
@@ -2778,7 +2939,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
-      "pack_display_name": "gonko's Animelee Link ("
+      "pack_display_name": "gonko's Animelee Link (",
+      "format": "animelee"
     },
     {
       "id": "gonko-gonko-s-animelee-link-bu",
@@ -2794,7 +2956,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
-      "pack_display_name": "gonko's Animelee Link ("
+      "pack_display_name": "gonko's Animelee Link (",
+      "format": "animelee"
     },
     {
       "id": "gonko-gonko-s-animelee-link-nr",
@@ -2810,7 +2973,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
-      "pack_display_name": "gonko's Animelee Link ("
+      "pack_display_name": "gonko's Animelee Link (",
+      "format": "animelee"
     },
     {
       "id": "gonko-gonko-s-animelee-link-re",
@@ -2826,7 +2990,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
-      "pack_display_name": "gonko's Animelee Link ("
+      "pack_display_name": "gonko's Animelee Link (",
+      "format": "animelee"
     },
     {
       "id": "gonko-gonko-s-animelee-link-wh",
@@ -2842,7 +3007,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-gonko-s-animelee-link-bk",
-      "pack_display_name": "gonko's Animelee Link ("
+      "pack_display_name": "gonko's Animelee Link (",
+      "format": "animelee"
     },
     {
       "id": "gonko-ultimate-doctor-mario-bk",
@@ -2858,7 +3024,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
-      "pack_display_name": "Ultimate Doctor Mario ("
+      "pack_display_name": "Ultimate Doctor Mario (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-doctor-mario-bu",
@@ -2874,7 +3041,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
-      "pack_display_name": "Ultimate Doctor Mario ("
+      "pack_display_name": "Ultimate Doctor Mario (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-doctor-mario-gr",
@@ -2890,7 +3058,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
-      "pack_display_name": "Ultimate Doctor Mario ("
+      "pack_display_name": "Ultimate Doctor Mario (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-doctor-mario-nr",
@@ -2906,7 +3075,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
-      "pack_display_name": "Ultimate Doctor Mario ("
+      "pack_display_name": "Ultimate Doctor Mario (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-doctor-mario-re",
@@ -2922,7 +3092,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-doctor-mario-bk",
-      "pack_display_name": "Ultimate Doctor Mario ("
+      "pack_display_name": "Ultimate Doctor Mario (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ganondorf-bu",
@@ -2938,7 +3109,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
-      "pack_display_name": "Ultimate Ganondorf ("
+      "pack_display_name": "Ultimate Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ganondorf-gr",
@@ -2954,7 +3126,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
-      "pack_display_name": "Ultimate Ganondorf ("
+      "pack_display_name": "Ultimate Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ganondorf-la",
@@ -2970,7 +3143,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
-      "pack_display_name": "Ultimate Ganondorf ("
+      "pack_display_name": "Ultimate Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ganondorf-nr",
@@ -2986,7 +3160,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
-      "pack_display_name": "Ultimate Ganondorf ("
+      "pack_display_name": "Ultimate Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ganondorf-re",
@@ -3002,7 +3177,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-ganondorf-bu",
-      "pack_display_name": "Ultimate Ganondorf ("
+      "pack_display_name": "Ultimate Ganondorf (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-peach-bu",
@@ -3018,7 +3194,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
-      "pack_display_name": "Ultimate Peach ("
+      "pack_display_name": "Ultimate Peach (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-peach-gr",
@@ -3034,7 +3211,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
-      "pack_display_name": "Ultimate Peach ("
+      "pack_display_name": "Ultimate Peach (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-peach-nr",
@@ -3050,7 +3228,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
-      "pack_display_name": "Ultimate Peach ("
+      "pack_display_name": "Ultimate Peach (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-peach-wh",
@@ -3066,7 +3245,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
-      "pack_display_name": "Ultimate Peach ("
+      "pack_display_name": "Ultimate Peach (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-peach-ye",
@@ -3082,7 +3262,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-peach-bu",
-      "pack_display_name": "Ultimate Peach ("
+      "pack_display_name": "Ultimate Peach (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-mewtwo-bu",
@@ -3098,7 +3279,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-mewtwo-bu",
-      "pack_display_name": "Ultimate Mewtwo ("
+      "pack_display_name": "Ultimate Mewtwo (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-mewtwo-gr",
@@ -3114,7 +3296,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-mewtwo-bu",
-      "pack_display_name": "Ultimate Mewtwo ("
+      "pack_display_name": "Ultimate Mewtwo (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-mewtwo-nr",
@@ -3130,7 +3313,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-mewtwo-bu",
-      "pack_display_name": "Ultimate Mewtwo ("
+      "pack_display_name": "Ultimate Mewtwo (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-mewtwo-re",
@@ -3146,7 +3330,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "gonko-ultimate-mewtwo-bu",
-      "pack_display_name": "Ultimate Mewtwo ("
+      "pack_display_name": "Ultimate Mewtwo (",
+      "format": null
     },
     {
       "id": "shiggles-crazy-fox-all-colors-gr",
@@ -3162,7 +3347,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-crazy-fox-all-colors-gr",
-      "pack_display_name": "Crazy Fox - All Colors ("
+      "pack_display_name": "Crazy Fox - All Colors (",
+      "format": null
     },
     {
       "id": "shiggles-crazy-fox-all-colors-la",
@@ -3178,7 +3364,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-crazy-fox-all-colors-gr",
-      "pack_display_name": "Crazy Fox - All Colors ("
+      "pack_display_name": "Crazy Fox - All Colors (",
+      "format": null
     },
     {
       "id": "shiggles-crazy-fox-all-colors-nr",
@@ -3194,7 +3381,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-crazy-fox-all-colors-gr",
-      "pack_display_name": "Crazy Fox - All Colors ("
+      "pack_display_name": "Crazy Fox - All Colors (",
+      "format": null
     },
     {
       "id": "shiggles-crazy-fox-all-colors-or",
@@ -3210,7 +3398,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-crazy-fox-all-colors-gr",
-      "pack_display_name": "Crazy Fox - All Colors ("
+      "pack_display_name": "Crazy Fox - All Colors (",
+      "format": null
     },
     {
       "id": "shiggles-animelee-chosen-undead-link-skin-nr",
@@ -3226,7 +3415,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-chosen-undead-link-skin-nr",
-      "pack_display_name": "Animelee, Chosen Undead - Link Skin"
+      "pack_display_name": "Animelee, Chosen Undead - Link Skin",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-bob-omb-buddy-jigglypuff-skin-re",
@@ -3242,7 +3432,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-bob-omb-buddy-jigglypuff-skin-re",
-      "pack_display_name": "Animelee, Bob-omb Buddy - Jigglypuff Skin"
+      "pack_display_name": "Animelee, Bob-omb Buddy - Jigglypuff Skin",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-gon-mario-bk",
@@ -3258,7 +3449,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
-      "pack_display_name": "Animelee, Gon - Mario ("
+      "pack_display_name": "Animelee, Gon - Mario (",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-gon-mario-bu",
@@ -3274,7 +3466,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
-      "pack_display_name": "Animelee, Gon - Mario ("
+      "pack_display_name": "Animelee, Gon - Mario (",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-gon-mario-gr",
@@ -3290,7 +3483,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
-      "pack_display_name": "Animelee, Gon - Mario ("
+      "pack_display_name": "Animelee, Gon - Mario (",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-gon-mario-nr",
@@ -3306,7 +3500,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
-      "pack_display_name": "Animelee, Gon - Mario ("
+      "pack_display_name": "Animelee, Gon - Mario (",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-gon-mario-ye",
@@ -3322,7 +3517,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-gon-mario-bk",
-      "pack_display_name": "Animelee, Gon - Mario ("
+      "pack_display_name": "Animelee, Gon - Mario (",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-viewtiful-joe-fox-v1-1-nr",
@@ -3338,7 +3534,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-animelee-viewtiful-joe-fox-v1-1-nr",
-      "pack_display_name": "Animelee, Viewtiful Joe - Fox (v1.1)"
+      "pack_display_name": "Animelee, Viewtiful Joe - Fox (v1.1)",
+      "format": "animelee"
     },
     {
       "id": "shiggles-robloxian-fox-gr",
@@ -3354,7 +3551,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-robloxian-fox-gr",
-      "pack_display_name": "Robloxian - Fox ("
+      "pack_display_name": "Robloxian - Fox (",
+      "format": null
     },
     {
       "id": "shiggles-robloxian-fox-la",
@@ -3370,7 +3568,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-robloxian-fox-gr",
-      "pack_display_name": "Robloxian - Fox ("
+      "pack_display_name": "Robloxian - Fox (",
+      "format": null
     },
     {
       "id": "shiggles-robloxian-fox-nr",
@@ -3386,7 +3585,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-robloxian-fox-gr",
-      "pack_display_name": "Robloxian - Fox ("
+      "pack_display_name": "Robloxian - Fox (",
+      "format": null
     },
     {
       "id": "shiggles-robloxian-fox-or",
@@ -3402,7 +3602,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "shiggles-robloxian-fox-gr",
-      "pack_display_name": "Robloxian - Fox ("
+      "pack_display_name": "Robloxian - Fox (",
+      "format": null
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
@@ -3418,7 +3619,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
-      "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 ("
+      "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 (",
+      "format": "animelee"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-gr",
@@ -3434,7 +3636,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
-      "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 ("
+      "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 (",
+      "format": "animelee"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-nr",
@@ -3450,7 +3653,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
-      "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 ("
+      "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 (",
+      "format": "animelee"
     },
     {
       "id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-re",
@@ -3466,7 +3670,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-sonic-falco-animelee-vanilla-1-1-bu",
-      "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 ("
+      "pack_display_name": "Sonic Falco - Animelee / Vanilla - 1:1 (",
+      "format": "animelee"
     },
     {
       "id": "vancity_primal-paper-melee-64-public-release-nr",
@@ -3482,7 +3687,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-paper-melee-64-public-release-nr",
-      "pack_display_name": "Paper Melee 64 - Public Release"
+      "pack_display_name": "Paper Melee 64 - Public Release",
+      "format": null
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
@@ -3498,7 +3704,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
-      "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 ("
+      "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 (",
+      "format": "animelee"
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-la",
@@ -3514,7 +3721,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
-      "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 ("
+      "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 (",
+      "format": "animelee"
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-nr",
@@ -3530,7 +3738,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
-      "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 ("
+      "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 (",
+      "format": "animelee"
     },
     {
       "id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-or",
@@ -3546,7 +3755,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-animelee-x-tekken-kunimitsu-fox-1-1-gr",
-      "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 ("
+      "pack_display_name": "Animelee x Tekken - Kunimitsu Fox - 1:1 (",
+      "format": "animelee"
     },
     {
       "id": "vancity_primal-plague-doctor-nr",
@@ -3562,7 +3772,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-plague-doctor-nr",
-      "pack_display_name": "Plague Doctor"
+      "pack_display_name": "Plague Doctor",
+      "format": null
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-bu",
@@ -3578,7 +3789,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-dbz-x-mangobb-1-1-bu",
-      "pack_display_name": "DBZ x mangoBB - 1:1 ("
+      "pack_display_name": "DBZ x mangoBB - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-gr",
@@ -3594,7 +3806,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-dbz-x-mangobb-1-1-bu",
-      "pack_display_name": "DBZ x mangoBB - 1:1 ("
+      "pack_display_name": "DBZ x mangoBB - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-nr",
@@ -3610,7 +3823,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-dbz-x-mangobb-1-1-bu",
-      "pack_display_name": "DBZ x mangoBB - 1:1 ("
+      "pack_display_name": "DBZ x mangoBB - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-dbz-x-mangobb-1-1-re",
@@ -3626,7 +3840,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-dbz-x-mangobb-1-1-bu",
-      "pack_display_name": "DBZ x mangoBB - 1:1 ("
+      "pack_display_name": "DBZ x mangoBB - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-gr",
@@ -3642,7 +3857,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-akira-fox-ce-edition-gr",
-      "pack_display_name": "Akira Fox - CE Edition ("
+      "pack_display_name": "Akira Fox - CE Edition (",
+      "format": null
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-la",
@@ -3658,7 +3874,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-akira-fox-ce-edition-gr",
-      "pack_display_name": "Akira Fox - CE Edition ("
+      "pack_display_name": "Akira Fox - CE Edition (",
+      "format": null
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-nr",
@@ -3674,7 +3891,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-akira-fox-ce-edition-gr",
-      "pack_display_name": "Akira Fox - CE Edition ("
+      "pack_display_name": "Akira Fox - CE Edition (",
+      "format": null
     },
     {
       "id": "vancity_primal-akira-fox-ce-edition-or",
@@ -3690,7 +3908,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-akira-fox-ce-edition-gr",
-      "pack_display_name": "Akira Fox - CE Edition ("
+      "pack_display_name": "Akira Fox - CE Edition (",
+      "format": null
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
@@ -3706,7 +3925,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
-      "pack_display_name": "Santa Mario - DTW and M-EX ("
+      "pack_display_name": "Santa Mario - DTW and M-EX (",
+      "format": null
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-bu",
@@ -3722,7 +3942,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
-      "pack_display_name": "Santa Mario - DTW and M-EX ("
+      "pack_display_name": "Santa Mario - DTW and M-EX (",
+      "format": null
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-gr",
@@ -3738,7 +3959,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
-      "pack_display_name": "Santa Mario - DTW and M-EX ("
+      "pack_display_name": "Santa Mario - DTW and M-EX (",
+      "format": null
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-nr",
@@ -3754,7 +3976,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
-      "pack_display_name": "Santa Mario - DTW and M-EX ("
+      "pack_display_name": "Santa Mario - DTW and M-EX (",
+      "format": null
     },
     {
       "id": "vancity_primal-santa-mario-dtw-and-m-ex-ye",
@@ -3770,7 +3993,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-santa-mario-dtw-and-m-ex-bk",
-      "pack_display_name": "Santa Mario - DTW and M-EX ("
+      "pack_display_name": "Santa Mario - DTW and M-EX (",
+      "format": null
     },
     {
       "id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh",
@@ -3786,7 +4010,25 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh",
-      "pack_display_name": "Pro Skin - Jmook - FlyQuest Sheik"
+      "pack_display_name": "Pro Skin - Jmook - FlyQuest Sheik",
+      "format": "animelee"
+    },
+    {
+      "id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh-2",
+      "creator_id": "vancity_primal",
+      "display_name": "Pro Skin - Jmook - FlyQuest Sheik (Wh)",
+      "character_code": "Sk",
+      "slot_code": "Wh",
+      "patreon_post_id": "76571506",
+      "filename_in_post": "PlSkWh-VANILLA-FQ-JMOOK-SHEIK.dat",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://image.mux.com/OS1c4ROqcCGzorIVQvRfA8xTE7SjtwJSkHQdV3nW3hM/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJPUzFjNFJPcWNDR3pvcklWUXZSZkE4eFRFN1NqdHdKU2tIUWRWM25XM2hNIiwiZXhwIjoxNzgwNTMxMjAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjoyLjB9.lMHhkl6LmsFd8E70iW9Akj8SezcHpP4fSOJw2lUnGbZUkkl-P7gFcz7-5N3ywg3hS7Er46RnPk-hnoU38TjQSx75p1RQRHffeL6abGh96ozP6arq85ELWq11b9kW30qv7q2hnrQMbAxd_yTU-1PTq6_lK-1NAQc0nGF2yLpiuuetqRQ2i_Ki8xUt0A3XyPyWTuc9QVNfwRkGrtwn0l_ZgotHUD6004j_T9tR54NKMZwi_gVR4fhBZFwmBpnk6mavXRy7Nx519nwIWqg0_O9pZ-Rc5vvy-LU_qEjK0g32CbK6HuxlU9t9ZPsfOEv44Z2D6FA5HMidC_C2j2vxoe2gBQ",
+      "notes": null,
+      "kind": "character_skin",
+      "pack_id": "vancity_primal-pro-skin-jmook-flyquest-sheik-wh-2",
+      "pack_display_name": "Pro Skin - Jmook - FlyQuest Sheik",
+      "format": "vanilla"
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-bu",
@@ -3802,7 +4044,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-april-fools-fox-1-1-bu",
-      "pack_display_name": "April Fools Fox - 1:1 ("
+      "pack_display_name": "April Fools Fox - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-gr",
@@ -3818,7 +4061,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-april-fools-fox-1-1-bu",
-      "pack_display_name": "April Fools Fox - 1:1 ("
+      "pack_display_name": "April Fools Fox - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-nr",
@@ -3834,7 +4078,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-april-fools-fox-1-1-bu",
-      "pack_display_name": "April Fools Fox - 1:1 ("
+      "pack_display_name": "April Fools Fox - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-april-fools-fox-1-1-re",
@@ -3850,7 +4095,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-april-fools-fox-1-1-bu",
-      "pack_display_name": "April Fools Fox - 1:1 ("
+      "pack_display_name": "April Fools Fox - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-gr",
@@ -3866,7 +4112,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-eggdog-fox-1-1-gr",
-      "pack_display_name": "Eggdog Fox - 1:1 ("
+      "pack_display_name": "Eggdog Fox - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-la",
@@ -3882,7 +4129,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-eggdog-fox-1-1-gr",
-      "pack_display_name": "Eggdog Fox - 1:1 ("
+      "pack_display_name": "Eggdog Fox - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-nr",
@@ -3898,7 +4146,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-eggdog-fox-1-1-gr",
-      "pack_display_name": "Eggdog Fox - 1:1 ("
+      "pack_display_name": "Eggdog Fox - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-eggdog-fox-1-1-or",
@@ -3914,7 +4163,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-eggdog-fox-1-1-gr",
-      "pack_display_name": "Eggdog Fox - 1:1 ("
+      "pack_display_name": "Eggdog Fox - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-bk",
@@ -3930,7 +4180,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
-      "pack_display_name": "Moist Esports - Mogi - 1:1 ("
+      "pack_display_name": "Moist Esports - Mogi - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-gr",
@@ -3946,7 +4197,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
-      "pack_display_name": "Moist Esports - Mogi - 1:1 ("
+      "pack_display_name": "Moist Esports - Mogi - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-nr",
@@ -3962,7 +4214,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
-      "pack_display_name": "Moist Esports - Mogi - 1:1 ("
+      "pack_display_name": "Moist Esports - Mogi - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-re",
@@ -3978,7 +4231,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
-      "pack_display_name": "Moist Esports - Mogi - 1:1 ("
+      "pack_display_name": "Moist Esports - Mogi - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-moist-esports-mogi-1-1-wh",
@@ -3994,7 +4248,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-moist-esports-mogi-1-1-bk",
-      "pack_display_name": "Moist Esports - Mogi - 1:1 ("
+      "pack_display_name": "Moist Esports - Mogi - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-bu",
@@ -4010,7 +4265,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-bu",
-      "pack_display_name": "Christmas Spacies - 1:1 ("
+      "pack_display_name": "Christmas Spacies - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-gr-2",
@@ -4026,7 +4282,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-bu",
-      "pack_display_name": "Christmas Spacies - 1:1 ("
+      "pack_display_name": "Christmas Spacies - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-nr-2",
@@ -4042,7 +4299,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-bu",
-      "pack_display_name": "Christmas Spacies - 1:1 ("
+      "pack_display_name": "Christmas Spacies - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-re",
@@ -4058,7 +4316,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-bu",
-      "pack_display_name": "Christmas Spacies - 1:1 ("
+      "pack_display_name": "Christmas Spacies - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-gr",
@@ -4074,7 +4333,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-gr",
-      "pack_display_name": "Christmas Spacies - 1:1 ("
+      "pack_display_name": "Christmas Spacies - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-la",
@@ -4090,7 +4350,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-gr",
-      "pack_display_name": "Christmas Spacies - 1:1 ("
+      "pack_display_name": "Christmas Spacies - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-nr",
@@ -4106,7 +4367,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-gr",
-      "pack_display_name": "Christmas Spacies - 1:1 ("
+      "pack_display_name": "Christmas Spacies - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "vancity_primal-christmas-spacies-1-1-or",
@@ -4122,7 +4384,8 @@
       "notes": null,
       "kind": "character_skin",
       "pack_id": "vancity_primal-christmas-spacies-1-1-gr",
-      "pack_display_name": "Christmas Spacies - 1:1 ("
+      "pack_display_name": "Christmas Spacies - 1:1 (",
+      "format": "1:1"
     },
     {
       "id": "Dewrion-perry-fox-fxnr-plfxnr-dat",
@@ -4140,7 +4403,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105047651/bd9d391d04a1445ab9ed4b9ab09e1673/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=Wr2AmvKrFjLNuLUfdtTHbovt3se3Z1hP7pKJN0m7tzc%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-perry-fox-fxnr-plfxnr-dat",
-      "pack_display_name": "Perry Fox"
+      "pack_display_name": "Perry Fox",
+      "format": null
     },
     {
       "id": "Dewrion-travis-touchdown-over-marth-msnr-plmsnr-dat",
@@ -4158,7 +4422,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105053930/5e1e9dd6a1694ee1911f48054cf49216/eyJ3IjoxMDgwfQ%3D%3D/1.jpg?token-hash=00QwVHsuxsHMvpEp7peFBz1CzTCOZq-i6-UmD5lrSwg%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-travis-touchdown-over-marth-msnr-plmsnr-dat",
-      "pack_display_name": "Travis Touchdown over Marth"
+      "pack_display_name": "Travis Touchdown over Marth",
+      "format": null
     },
     {
       "id": "Dewrion-animelee-travis-touchdown-over-marth-nmh3-msnr-plmsnr-dat",
@@ -4176,7 +4441,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105054424/788b05bb331347838bdae94a69425349/eyJ3IjoxMDgwfQ%3D%3D/1.jpg?token-hash=sNIv-c0MVj38ziJrIs35Ud6socVVYlkKpxbaPncZSaw%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-animelee-travis-touchdown-over-marth-nmh3-msnr-plmsnr-dat",
-      "pack_display_name": "Animelee Travis Touchdown over Marth (NMH3)"
+      "pack_display_name": "Animelee Travis Touchdown over Marth (NMH3)",
+      "format": "animelee"
     },
     {
       "id": "Dewrion-luffy-falco-animelee-fcnr-plfcnr-dat",
@@ -4194,7 +4460,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105398965/cf2d774e1d2f422eaaafcc1e2cfb96f4/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=7hYkd56XNXuIolHR5dtIR05NMfmI7GvAcxY4aVnl8OE%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-luffy-falco-animelee-fcnr-plfcnr-dat",
-      "pack_display_name": "Luffy Falco + Animelee"
+      "pack_display_name": "Luffy Falco + Animelee",
+      "format": "animelee"
     },
     {
       "id": "Dewrion-luffy-falco-animelee-wano-variants-fcnr-plfcnr-dat",
@@ -4212,7 +4479,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105399104/28079ca7fd754b3da6ef0c709c1d2f86/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=XDiBHZ427FnYMQjO-LJxF0LNlmy9_Itnknw3ONc7mqU%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-luffy-falco-animelee-wano-variants-fcnr-plfcnr-dat",
-      "pack_display_name": "Luffy Falco + Animelee (Wano variants)"
+      "pack_display_name": "Luffy Falco + Animelee (Wano variants)",
+      "format": "animelee"
     },
     {
       "id": "Dewrion-gear-5-luffy-falco-animelee-fcnr-plfcnr-dat",
@@ -4230,7 +4498,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105399271/dda7df7ffe564ab7a7189e0a38799705/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=ogsvUyXm4jXy4jkl2Hdtu1mYI2aPjFBhDj05MuQw6Yw%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-gear-5-luffy-falco-animelee-fcnr-plfcnr-dat",
-      "pack_display_name": "Gear 5 Luffy Falco + Animelee"
+      "pack_display_name": "Gear 5 Luffy Falco + Animelee",
+      "format": "animelee"
     },
     {
       "id": "Dewrion-bobobo-bo-over-ganon-gnnr-plgnnr-dat",
@@ -4248,7 +4517,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/113846977/cca662b6d5d14ae1a880151b2d82b677/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=Fi8nJ_iScjGGN9qKRBhvemcnWi8-xTskjxrMO1TpEv0%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-bobobo-bo-over-ganon-gnnr-plgnnr-dat",
-      "pack_display_name": "Bobobo-bo over Ganon"
+      "pack_display_name": "Bobobo-bo over Ganon",
+      "format": null
     },
     {
       "id": "Dewrion-doctor-luigi-lgnr-pllgnr-dat",
@@ -4266,7 +4536,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/136441307/8a15a864a9f34f538002c84ba9c076fa/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HqwSzeVdL6Hc-PMrRkFCwwx0N7N5UZgVWCB7lEW5mio%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-doctor-luigi-lgnr-pllgnr-dat",
-      "pack_display_name": "Doctor Luigi"
+      "pack_display_name": "Doctor Luigi",
+      "format": null
     },
     {
       "id": "Dewrion-rengoku-over-marth-msnr-plmsnr-dat",
@@ -4284,7 +4555,8 @@
       "preview_url": "https://image.mux.com/MveYRP4WUarlmQU02mUZgvvBX3g7S02QhqzaUKGJIVybw/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJNdmVZUlA0V1VhcmxtUVUwMm1VWmd2dkJYM2c3UzAyUWhxemFVS0dKSVZ5YnciLCJleHAiOjE3ODA1MzEyMDAsImF1ZCI6InQiLCJ3aWR0aCI6MTA4MCwiZml0X21vZGUiOiJwcmVzZXJ2ZSIsInRpbWUiOjUuOTc1MTh9.i5Pn5LN8E3PDD8XvHJWOic5-7rE4zsMHlmtFDJ6NwHgg8mPYCLU4cgLqu5vHC_UvvlgYtB4AzI2CHOm6wit-bolCt2sD1D-fGiHGws5C-hAp6iU_NyAeLZ07wXATOoYohhZDrZbOvITsMqTA_1Q87p8HCfaxDEbsXSjghL3fWLGth54b4b7KRVWyv2Tn40bo414t2H6A6DNu3_35zehFCVhOCN5ItkCR9ZT1R1h6ahisChsaFdPuOHEhK4UUJaqMAAkSDqlhcJxKqOHEmEkfPeBthSoioFhqNDOLQbxz-wvcuHxHQhCPBUqVrslZ642F-xV87HAbzzkIkcSGrhn8Lw",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-rengoku-over-marth-msnr-plmsnr-dat",
-      "pack_display_name": "Rengoku over Marth"
+      "pack_display_name": "Rengoku over Marth",
+      "format": null
     },
     {
       "id": "Dewrion-blood-falcon-falcon-skin-canr-plcanr-dat",
@@ -4302,7 +4574,8 @@
       "preview_url": "https://image.mux.com/DLP01lq00tDiCWfqBrW6YYYsLgDs8QnJ3QMO5Zsxk5Mm00/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJETFAwMWxxMDB0RGlDV2ZxQnJXNllZWXNMZ0RzOFFuSjNRTU81WnN4azVNbTAwIiwiZXhwIjoxNzgwNTMxMjAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjozMi4xNTc1fQ.cipAr5NaUX0sbU8e72C5xkjLZS7FD049mY0kslpeDkNckThKWhFNjshW2Hru0CM9BoAKPT2gF9KQU5Uaa-CkLRr76p0aXToFIpPfyGWXTt5wQpgjm-WvPpcThjm6RHsFA_Q9xKHTQpsqrac9e2uTNWUewK0l4km6sSADrjru5-PKX4dJY4ZhV_Fudj3KVLxl0JhgcFgX4Tb01LvKeMVrUk1PxtGGINwRlebeo0vtqkWxWuOLX8Q0T6PrjzlYwb9wkpDHp2qhStBQPhKdQio0P_6ZIqsfJtFafMFtl3Pt__vecPsgcfRLbI2tbVEsCAIims5XsrN0NQDSUN2pu3f3mA",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-blood-falcon-falcon-skin-canr-plcanr-dat",
-      "pack_display_name": "Blood Falcon (Falcon skin)"
+      "pack_display_name": "Blood Falcon (Falcon skin)",
+      "format": null
     },
     {
       "id": "Dewrion-black-suit-spider-man-over-mario-mrnr-plmrnr-dat",
@@ -4320,7 +4593,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/150050065/58e0d1d8dd2644d29d8616dd408b8a1a/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=QH8DwLjcftaaZ_T4T2qgF3cf8yjTkI4DW6V_By1aMyE%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-black-suit-spider-man-over-mario-mrnr-plmrnr-dat",
-      "pack_display_name": "Black Suit Spider-Man over Mario"
+      "pack_display_name": "Black Suit Spider-Man over Mario",
+      "format": null
     },
     {
       "id": "Dewrion-koishi-komeiji-over-peach-penr-plpenr-dat",
@@ -4338,7 +4612,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/150803004/8a99b271e2dd40c9bc26458d195c4e78/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=jV8U20e_lgLp1grQcNWgViL7y4cJwT9vXpNcA6X8_04%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "Dewrion-koishi-komeiji-over-peach-penr-plpenr-dat",
-      "pack_display_name": "Koishi Komeiji over Peach"
+      "pack_display_name": "Koishi Komeiji over Peach",
+      "format": null
     },
     {
       "id": "LazloSSBM-happy-chaos-falco-spacies-pack-fcnr-plfcnr-dat",
@@ -4356,7 +4631,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/78137798/40625c653584417382466a574a33ee9c/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=1WSy9IN8RYli54GrXztiaYTIrJj2qB2tt0dPvLfd6pk%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "LazloSSBM-happy-chaos-falco-spacies-pack-fcnr-plfcnr-dat",
-      "pack_display_name": "Happy Chaos Falco (Spacies pack)"
+      "pack_display_name": "Happy Chaos Falco (Spacies pack)",
+      "format": null
     },
     {
       "id": "LazloSSBM-happy-chaos-fox-spacies-pack-fxnr-plfxnr-dat",
@@ -4374,7 +4650,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/78137798/40625c653584417382466a574a33ee9c/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=1WSy9IN8RYli54GrXztiaYTIrJj2qB2tt0dPvLfd6pk%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "LazloSSBM-happy-chaos-fox-spacies-pack-fxnr-plfxnr-dat",
-      "pack_display_name": "Happy Chaos Fox (Spacies pack)"
+      "pack_display_name": "Happy Chaos Fox (Spacies pack)",
+      "format": null
     },
     {
       "id": "LazloSSBM-jordan-1s-mario-mrnr-plmrnr-dat",
@@ -4392,7 +4669,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/78927409/55776fd4bdae4ac89ed8954016964303/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=y8l_6-RJBcg4Z5vMv_6DtMD4Xtuz9HqFHKZLH26zZtQ%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "LazloSSBM-jordan-1s-mario-mrnr-plmrnr-dat",
-      "pack_display_name": "Jordan 1s Mario"
+      "pack_display_name": "Jordan 1s Mario",
+      "format": null
     },
     {
       "id": "LazloSSBM-uni-falcon-nr",
@@ -4410,7 +4688,8 @@
       "preview_url": "https://image.mux.com/f00tiOksViy7n02yxLApRW002vcdme01swgegBduqVW01BMk/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJmMDB0aU9rc1ZpeTduMDJ5eExBcFJXMDAydmNkbWUwMXN3Z2VnQmR1cVZXMDFCTWsiLCJleHAiOjE3ODA1MzEyMDAsImF1ZCI6InQiLCJ3aWR0aCI6MTA4MCwiZml0X21vZGUiOiJwcmVzZXJ2ZSIsInRpbWUiOjB9.TO7l6YZ9UIUvo9Qu4cgPqnVQUXcN56c6SgvFCi_KhGI5U6C0ITzFwUsHQ2kfxWX4Vk5Q_U2Ky2Y6whkMSg3tzVxCAKbsInE2x0WYBvJ_FvuJaaMNggH3bf3QGRwqG8H2etqNgvDCX7R77Qy9L9w-Z5IyVreg89XH84OLvXZfb_uGpXAIi5rCBy0tLEK5gvTOKTAE8jSi8fUWGfnSS75vnkR1yPpq-2GvpL-aAPWQGUbeimdDri36C4DdpQFYmqez_yT0jPj7kxHUx_NwtMgaCwKL2lA0qqW7bQXoaxqb8MKM-v99Fg9mLS5oRv5owCBEfGKzuQdVJ0EKf9iBUVYDmg",
       "notes": null,
       "pack_id": "LazloSSBM-uni-falcon-nr",
-      "pack_display_name": "Uni Falcon"
+      "pack_display_name": "Uni Falcon",
+      "format": null
     },
     {
       "id": "LazloSSBM-patriot-falco-neverforget-nr",
@@ -4428,7 +4707,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/89129686/0d20cf7f30db41ee8d10e912cc6b6158/eyJ3IjoxMDgwfQ%3D%3D/1.JPG?token-hash=aPpiQSMbOJhpbyLMkkDXmVd-7te-V-n0I0OyeNNh_gc%3D&token-time=1779148800",
       "notes": null,
       "pack_id": "LazloSSBM-patriot-falco-neverforget-nr",
-      "pack_display_name": "Patriot Falco (#neverforget)"
+      "pack_display_name": "Patriot Falco (#neverforget)",
+      "format": null
     },
     {
       "id": "chiefneif-x-ray-falcon-canr-plcanr-dat",
@@ -4446,7 +4726,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/120337184/945d791bd8df4fa2a43de627e9d09f04/eyJ3IjoxMDgwfQ%3D%3D/1.PNG?token-hash=Y8yLLkA_7f2-EKV1-9xELhqWh1bfKwGFoxfN8vHoHzQ%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "chiefneif-x-ray-falcon-canr-plcanr-dat",
-      "pack_display_name": "X-Ray Falcon"
+      "pack_display_name": "X-Ray Falcon",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-blue-nnbu-plnnbu-dat",
@@ -4464,7 +4745,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Nana (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-nnbu-plnnbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-brown-nnbk-plnnbk-dat",
@@ -4482,7 +4764,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Nana (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-nnbu-plnnbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-green-nngr-plnngr-dat",
@@ -4500,7 +4783,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Nana (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-nnbu-plnnbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-indigo-nnla-plnnla-dat",
@@ -4518,7 +4802,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Nana (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-nnbu-plnnbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-neutral-nnnr-plnnnr-dat",
@@ -4536,7 +4821,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Nana (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-nnbu-plnnbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-orange-nnor-plnnor-dat",
@@ -4554,7 +4840,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Nana (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-nnbu-plnnbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-red-nnre-plnnre-dat",
@@ -4572,7 +4859,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Nana (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-nnbu-plnnbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-white-nnwh-plnnwh-dat",
@@ -4590,7 +4878,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Nana (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-nnbu-plnnbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-blue-ppbu-plppbu-dat",
@@ -4608,7 +4897,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Popo (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-ppbu-plppbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-brown-ppbk-plppbk-dat",
@@ -4626,7 +4916,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Popo (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-ppbu-plppbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-green-ppgr-plppgr-dat",
@@ -4644,7 +4935,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Popo (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-ppbu-plppbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-indigo-ppla-plppla-dat",
@@ -4662,7 +4954,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Popo (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-ppbu-plppbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-neutral-ppnr-plppnr-dat",
@@ -4680,7 +4973,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Popo (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-ppbu-plppbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-orange-ppor-plppor-dat",
@@ -4698,7 +4992,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Popo (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-ppbu-plppbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-red-ppre-plppre-dat",
@@ -4716,7 +5011,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Popo (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-ppbu-plppbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "gonko-ultimate-ice-climbers-white-ppwh-plppwh-dat",
@@ -4734,7 +5030,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/75789850/d91dfc140fc8409685f3b2e4da6fe146/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=HPZ2w1_7j4vx_krZgQcIwuOKYsOwjLCnu2MT8xwA2do%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Popo (IC pair); slot inferred from color",
       "pack_id": "gonko-ultimate-ice-climbers-blue-ppbu-plppbu-dat",
-      "pack_display_name": "Ultimate Ice Climbers ("
+      "pack_display_name": "Ultimate Ice Climbers (",
+      "format": null
     },
     {
       "id": "shiggles-animelee-zero-mega-man-zero-young-link-clnr-plclnr-dat",
@@ -4752,7 +5049,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/109410733/4037d8989beb4477bf807565eee74ead/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=RZMRpvWonFP8yEn5H2LzR302Exv3axMFjvjk5YRK4cM%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-zero-mega-man-zero-young-link-clnr-plclnr-dat",
-      "pack_display_name": "Animelee Zero (Mega Man Zero) — Young Link"
+      "pack_display_name": "Animelee Zero (Mega Man Zero) — Young Link",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-cloud-marth-skin-msnr-plmsnr-dat",
@@ -4770,7 +5068,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/68118770/ba8aadaa58d14307b334ac1c4dde5bf6/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=QTvXC0ccmDQVUryiN2Lf5UkJ1ggJyoI_nFZSk_Gk0YY%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-cloud-marth-skin-msnr-plmsnr-dat",
-      "pack_display_name": "Animelee Cloud — Marth Skin"
+      "pack_display_name": "Animelee Cloud — Marth Skin",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-le-monke-dk-skin-dknr-pldknr-dat",
@@ -4788,7 +5087,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/68621686/77ae9781b3144d309df0ba1003fc9788/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=m9tShkfHOHzQc4i6g9oNMObwUZy-zAcIT2b0Nc6CTTk%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-le-monke-dk-skin-dknr-pldknr-dat",
-      "pack_display_name": "Animelee le monke — DK Skin"
+      "pack_display_name": "Animelee le monke — DK Skin",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-ping-pong-fox-skins-fxgr-plfxgr-dat",
@@ -4806,7 +5106,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/69185782/277d4a66d5cd4bdc9a98a44404793ad4/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=1SoOGhRb2ouluFnruXhz8qoR0an2zuTvFGw3srJ_w6M%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-ping-pong-fox-skins-fxgr-plfxgr-dat",
-      "pack_display_name": "Animelee Ping Pong — Fox Skins"
+      "pack_display_name": "Animelee Ping Pong — Fox Skins",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-ping-pong-fox-skins-fxla-plfxla-dat",
@@ -4824,7 +5125,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/69185782/277d4a66d5cd4bdc9a98a44404793ad4/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=1SoOGhRb2ouluFnruXhz8qoR0an2zuTvFGw3srJ_w6M%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-ping-pong-fox-skins-fxgr-plfxgr-dat",
-      "pack_display_name": "Animelee Ping Pong — Fox Skins"
+      "pack_display_name": "Animelee Ping Pong — Fox Skins",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-ping-pong-fox-skins-fxnr-plfxnr-dat",
@@ -4842,7 +5144,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/69185782/277d4a66d5cd4bdc9a98a44404793ad4/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=1SoOGhRb2ouluFnruXhz8qoR0an2zuTvFGw3srJ_w6M%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-ping-pong-fox-skins-fxgr-plfxgr-dat",
-      "pack_display_name": "Animelee Ping Pong — Fox Skins"
+      "pack_display_name": "Animelee Ping Pong — Fox Skins",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-ping-pong-fox-skins-fxor-plfxor-dat",
@@ -4860,7 +5163,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/69185782/277d4a66d5cd4bdc9a98a44404793ad4/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=1SoOGhRb2ouluFnruXhz8qoR0an2zuTvFGw3srJ_w6M%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-ping-pong-fox-skins-fxgr-plfxgr-dat",
-      "pack_display_name": "Animelee Ping Pong — Fox Skins"
+      "pack_display_name": "Animelee Ping Pong — Fox Skins",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-aerith-peach-skin-penr-plpenr-dat",
@@ -4878,7 +5182,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/69569690/e1f3a9b93a9b4c4ea93c11ad18ae346b/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=dbzrpbSZwKblsqTQ0fFqR5Ps6--lgqFAxe0p8mMhx34%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-aerith-peach-skin-penr-plpenr-dat",
-      "pack_display_name": "Animelee Aerith — Peach Skin"
+      "pack_display_name": "Animelee Aerith — Peach Skin",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-mr-bomb-puff-skin-prnr-plprnr-dat",
@@ -4896,7 +5201,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/69871456/b71428e750ad4846b5f411c05ed5ba92/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=QmAG4sKam--s_qEtljVawf8CZCuAiwHtVECDqG6i08Q%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-mr-bomb-puff-skin-prnr-plprnr-dat",
-      "pack_display_name": "Animelee Mr. Bomb — Puff Skin"
+      "pack_display_name": "Animelee Mr. Bomb — Puff Skin",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-turnip-head-puff-skin-prnr-plprnr-dat",
@@ -4914,7 +5220,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/69871456/b71428e750ad4846b5f411c05ed5ba92/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=QmAG4sKam--s_qEtljVawf8CZCuAiwHtVECDqG6i08Q%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-turnip-head-puff-skin-prnr-plprnr-dat",
-      "pack_display_name": "Animelee Turnip Head — Puff Skin"
+      "pack_display_name": "Animelee Turnip Head — Puff Skin",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-king-bob-omb-puff-skin-prnr-plprnr-dat",
@@ -4932,7 +5239,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/70081516/c9c59a715b6141f1aada04c8c7d3c054/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=gsv6BIjelLMebgUD3tq6tZJw3qJC65GEnlAkRuyKQfw%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-king-bob-omb-puff-skin-prnr-plprnr-dat",
-      "pack_display_name": "Animelee King Bob-omb — Puff Skin"
+      "pack_display_name": "Animelee King Bob-omb — Puff Skin",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-bob-omb-buddy-puff-skin-archive-prre-plprre-dat",
@@ -4950,7 +5258,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/70081933/5719967730794e4ab875fe4416399d5e/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=ziIyVmLwbVzz2mmSOx2wbEU48M7usU2PJ8uK_91-Caw%3D&token-time=1779148800",
       "notes": "guessed inner_filename, archive companion to direct PlPrRe-bomb-buddy.dat",
       "pack_id": "shiggles-animelee-bob-omb-buddy-puff-skin-archive-prre-plprre-dat",
-      "pack_display_name": "Animelee Bob-omb Buddy — Puff Skin (archive)"
+      "pack_display_name": "Animelee Bob-omb Buddy — Puff Skin (archive)",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-magneto-captain-falcon-canr-plcanr-dat",
@@ -4968,7 +5277,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/70844304/40ad6ec3ba75433fb0f42db4e9ff6afe/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=30-AQJFgvlbQTgp5OnKDy4X2gbRCZOH19rL7tPZ7ux0%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-magneto-captain-falcon-canr-plcanr-dat",
-      "pack_display_name": "Animelee Magneto — Captain Falcon"
+      "pack_display_name": "Animelee Magneto — Captain Falcon",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-garfield-mario-skin-mrnr-plmrnr-dat",
@@ -4986,7 +5296,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/71127527/e0bbf089ba7343119c77e81a2b254454/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=0iV9JhVbyyukNE_LVVB37Xko--oywO_huPGvH-KYeqg%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-garfield-mario-skin-mrnr-plmrnr-dat",
-      "pack_display_name": "Animelee Garfield — Mario Skin"
+      "pack_display_name": "Animelee Garfield — Mario Skin",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-tiff-n-tuff-ice-climbers-nnnr-plnnnr-dat",
@@ -5004,7 +5315,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/72269069/2ae5e00b5639453a9ef2d287ce00fb97/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=l6Yti54svmGoVUjcRvPYzZVh0Bv5MQc_rnmrsO1YJiY%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Nana, may need manual override",
       "pack_id": "shiggles-animelee-tiff-n-tuff-ice-climbers-nnnr-plnnnr-dat",
-      "pack_display_name": "Animelee Tiff n Tuff — Ice Climbers"
+      "pack_display_name": "Animelee Tiff n Tuff — Ice Climbers",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-tiff-n-tuff-ice-climbers-ppnr-plppnr-dat",
@@ -5022,7 +5334,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/72269069/2ae5e00b5639453a9ef2d287ce00fb97/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=l6Yti54svmGoVUjcRvPYzZVh0Bv5MQc_rnmrsO1YJiY%3D&token-time=1779148800",
       "notes": "guessed inner_filename for Popo, may need manual override",
       "pack_id": "shiggles-animelee-tiff-n-tuff-ice-climbers-ppnr-plppnr-dat",
-      "pack_display_name": "Animelee Tiff n Tuff — Ice Climbers"
+      "pack_display_name": "Animelee Tiff n Tuff — Ice Climbers",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-cyberpunk-edgerunner-falco-fcnr-plfcnr-dat",
@@ -5040,7 +5353,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/72801947/2330e8d760c3497cbab34107ee2d3982/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=oXKyXGDmNuuu_Ppt3N3BmScjf1hcNnsx9f3q05xpfrs%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-cyberpunk-edgerunner-falco-fcnr-plfcnr-dat",
-      "pack_display_name": "Animelee Cyberpunk Edgerunner — Falco"
+      "pack_display_name": "Animelee Cyberpunk Edgerunner — Falco",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-king-tekken-3-captain-falcon-archive-cagy-plcagy-dat",
@@ -5058,7 +5372,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/73696818/791c073a47e54d3f9c804dd47bfd6352/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=BSkuNt9j18TXB4Db_j3o0MjoEnx9-wKNsmRY0wbIqVk%3D&token-time=1779148800",
       "notes": "guessed inner_filename, archive companion to direct PlCaGy-KING.dat",
       "pack_id": "shiggles-animelee-king-tekken-3-captain-falcon-archive-cagy-plcagy-dat",
-      "pack_display_name": "Animelee King (Tekken 3) — Captain Falcon (archive)"
+      "pack_display_name": "Animelee King (Tekken 3) — Captain Falcon (archive)",
+      "format": "animelee"
     },
     {
       "id": "shiggles-aki-hayakawa-marth-skin-msnr-plmsnr-dat",
@@ -5076,7 +5391,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/77569330/bac465a308154c8a9ae28414758d3c56/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=uo7H6e1nZ3lhVHHc5iqdKiR6ZZPLhN06tHcAG6iZO4M%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-aki-hayakawa-marth-skin-msnr-plmsnr-dat",
-      "pack_display_name": "Aki Hayakawa — Marth Skin"
+      "pack_display_name": "Aki Hayakawa — Marth Skin",
+      "format": null
     },
     {
       "id": "shiggles-animelee-raven-falco-fcnr-plfcnr-dat",
@@ -5094,7 +5410,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/81950171/851ee5f5f7db4c0ea98374b566b527ab/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=o-hwwjIgPdYih1ZCanmu5ThtLs0pW3QS0EvJC5MCVZY%3D&token-time=1779148800",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "shiggles-animelee-raven-falco-fcnr-plfcnr-dat",
-      "pack_display_name": "Animelee Raven — Falco"
+      "pack_display_name": "Animelee Raven — Falco",
+      "format": "animelee"
     },
     {
       "id": "shiggles-animelee-viewtiful-joe-fox-v1-1-archive-fxnr-plfxnr-dat",
@@ -5112,7 +5429,8 @@
       "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/85657096/71e3f09ab3244f87b9abbbd22ee69317/eyJ3IjoxMDgwfQ%3D%3D/1.gif?token-hash=RfcZnjzOyuXU9z8A_igUMo5uqlKO44mDISTtQuSPKqs%3D&token-time=1779148800",
       "notes": "guessed inner_filename, archive companion bundle",
       "pack_id": "shiggles-animelee-viewtiful-joe-fox-v1-1-archive-fxnr-plfxnr-dat",
-      "pack_display_name": "Animelee Viewtiful Joe — Fox v1.1 (archive)"
+      "pack_display_name": "Animelee Viewtiful Joe — Fox v1.1 (archive)",
+      "format": "animelee"
     },
     {
       "id": "sinaa_ssbm-haku-animelee-sheik-sknr-plsknr-dat",
@@ -5130,7 +5448,8 @@
       "preview_url": "https://image.mux.com/qmBaWJyN02VhxeZiHEDvApWVrw3QxriJUZhwCItf7J6w/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJxbUJhV0p5TjAyVmh4ZVppSEVEdkFwV1ZydzNReHJpSlVaaHdDSXRmN0o2dyIsImV4cCI6MTc4MDUzMTIwMCwiYXVkIjoidCIsIndpZHRoIjoxMDgwLCJmaXRfbW9kZSI6InByZXNlcnZlIiwidGltZSI6Mi4wfQ.eGuNYNvGOiTr9nvXkbgCbLWpdaqf6daStG6BRHL3qjg5NsZ_u66c2YBzBo2rDzhx99MHVqT7nGnHzm6dDAPsUqr-Xt6dUNtTzJeNmNx1Xa7JS9q3C1ZpuirdXqmY13PJQhk8BNJFZ_bVg5AU7qknlhUORtAkiOWveC_iaeAqLuyFwJdHXynT50pqtfpW5-0nhBxI_SWBBzydl89nf1HIcG6VsFQgjunNizC8iO2e6eDxYJIhND5DDl8ZclH1ZRlZl93TuNIzo5j8D1ZPpHK3OJvEPcQ9Klv1Ewp8Vl84EKtQaNbZLojl61y_m5asG5AlQctePOtDT_eFxFbbU08JbA",
       "notes": "guessed inner_filename, may need manual override",
       "pack_id": "sinaa_ssbm-haku-animelee-sheik-sknr-plsknr-dat",
-      "pack_display_name": "Haku (Animelee) — Sheik"
+      "pack_display_name": "Haku (Animelee) — Sheik",
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-kritter-over-dk-gr",
@@ -5149,7 +5468,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-kritter-over-dk-gr",
       "pack_display_name": "Kritter over DK",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-kritter-over-dk-nr",
@@ -5168,7 +5488,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-kritter-over-dk-gr",
       "pack_display_name": "Kritter over DK",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-bk",
@@ -5187,7 +5508,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-bu",
@@ -5206,7 +5528,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-gr",
@@ -5225,7 +5548,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-nr",
@@ -5244,7 +5568,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-bomberman-over-mario-ye",
@@ -5263,7 +5588,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-bomberman-over-mario-bk",
       "pack_display_name": "Bomberman over Mario",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-bu",
@@ -5282,7 +5608,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-gr",
@@ -5301,7 +5628,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-gy",
@@ -5320,7 +5648,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-nr",
@@ -5339,7 +5668,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-re",
@@ -5358,7 +5688,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-scizor-over-falcon-wh",
@@ -5377,7 +5708,128 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-scizor-over-falcon-bu",
       "pack_display_name": "Scizor over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
+    },
+    {
+      "id": "gay_lord_erika-scizor-over-falcon-bu-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Scizor over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaBu.dat",
+      "inner_filename": "PlCaBu-SCIZOR (blue).dat",
+      "character_code": "Ca",
+      "slot_code": "Bu",
+      "patreon_post_id": "105748204",
+      "filename_in_post": "falcon scizor.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105748204/422e106b22944ddb9116dfc5294edb2b/eyJ3IjoxMDgwfQ%3D%3D/1.jpg?token-hash=IDtkAPp1H5nRrHULI5jKkyuCon7Vjjvm1hNGmwHh7SU%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
+      "pack_display_name": "Scizor over Falcon",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-scizor-over-falcon-gr-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Scizor over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaGr.dat",
+      "inner_filename": "PlCaGr-SCIZOR (green).dat",
+      "character_code": "Ca",
+      "slot_code": "Gr",
+      "patreon_post_id": "105748204",
+      "filename_in_post": "falcon scizor.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105748204/422e106b22944ddb9116dfc5294edb2b/eyJ3IjoxMDgwfQ%3D%3D/1.jpg?token-hash=IDtkAPp1H5nRrHULI5jKkyuCon7Vjjvm1hNGmwHh7SU%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
+      "pack_display_name": "Scizor over Falcon",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-scizor-over-falcon-gy-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Scizor over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaGy.dat",
+      "inner_filename": "PlCaGy-SCIZOR (black).dat",
+      "character_code": "Ca",
+      "slot_code": "Gy",
+      "patreon_post_id": "105748204",
+      "filename_in_post": "falcon scizor.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105748204/422e106b22944ddb9116dfc5294edb2b/eyJ3IjoxMDgwfQ%3D%3D/1.jpg?token-hash=IDtkAPp1H5nRrHULI5jKkyuCon7Vjjvm1hNGmwHh7SU%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
+      "pack_display_name": "Scizor over Falcon",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-scizor-over-falcon-nr-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Scizor over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaNr.dat",
+      "inner_filename": "PlCaNr-SCIZOR (neutral).dat",
+      "character_code": "Ca",
+      "slot_code": "Nr",
+      "patreon_post_id": "105748204",
+      "filename_in_post": "falcon scizor.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105748204/422e106b22944ddb9116dfc5294edb2b/eyJ3IjoxMDgwfQ%3D%3D/1.jpg?token-hash=IDtkAPp1H5nRrHULI5jKkyuCon7Vjjvm1hNGmwHh7SU%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
+      "pack_display_name": "Scizor over Falcon",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-scizor-over-falcon-re-2",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Scizor over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaRe.dat",
+      "inner_filename": "PlCaRe-SCIZOR (gold).usd",
+      "character_code": "Ca",
+      "slot_code": "Re",
+      "patreon_post_id": "105748204",
+      "filename_in_post": "falcon scizor.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105748204/422e106b22944ddb9116dfc5294edb2b/eyJ3IjoxMDgwfQ%3D%3D/1.jpg?token-hash=IDtkAPp1H5nRrHULI5jKkyuCon7Vjjvm1hNGmwHh7SU%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
+      "pack_display_name": "Scizor over Falcon",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-scizor-over-falcon-wh-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Scizor over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaWh.dat",
+      "inner_filename": "PlCaWh-SCIZOR (white).dat",
+      "character_code": "Ca",
+      "slot_code": "Wh",
+      "patreon_post_id": "105748204",
+      "filename_in_post": "falcon scizor.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/105748204/422e106b22944ddb9116dfc5294edb2b/eyJ3IjoxMDgwfQ%3D%3D/1.jpg?token-hash=IDtkAPp1H5nRrHULI5jKkyuCon7Vjjvm1hNGmwHh7SU%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-scizor-over-falcon-bu-1",
+      "pack_display_name": "Scizor over Falcon",
+      "notes": null,
+      "format": "vanilla"
     },
     {
       "id": "gay_lord_erika-alttp-young-link-bu",
@@ -5396,7 +5848,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-alttp-young-link-bu",
       "pack_display_name": "ALTTP YOUNG LINK",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-alttp-young-link-nr",
@@ -5415,7 +5868,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-alttp-young-link-bu",
       "pack_display_name": "ALTTP YOUNG LINK",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-alttp-young-link-re",
@@ -5434,7 +5888,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-alttp-young-link-bu",
       "pack_display_name": "ALTTP YOUNG LINK",
-      "notes": null
+      "notes": null,
+      "format": null
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-bu",
@@ -5453,7 +5908,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-gr",
@@ -5472,7 +5928,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-gy",
@@ -5491,7 +5948,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-nr",
@@ -5510,7 +5968,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-re",
@@ -5529,7 +5988,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-zuko-over-falcon-wh",
@@ -5548,7 +6008,108 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-zuko-over-falcon-bu",
       "pack_display_name": "Zuko over Falcon",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
+    },
+    {
+      "id": "gay_lord_erika-zuko-over-falcon-bu-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Zuko over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaBu.dat",
+      "inner_filename": "PlCaBu-ZUKO.dat",
+      "character_code": "Ca",
+      "slot_code": "Bu",
+      "patreon_post_id": "100448196",
+      "filename_in_post": "PlCaRe-ZUKO FALCON.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://image.mux.com/x7ELNpGgoe3xF96bomriSsmhHbiQZorHJYDSbv5GO4s/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ4N0VMTnBHZ29lM3hGOTZib21yaVNzbWhIYmlRWm9ySEpZRFNidjVHTzRzIiwiZXhwIjoxNzgwNzA0MDAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjoyLjB9.IQDGvnmqGREIDy0wTT-CsPED6WQ5Q4dC1gBy_0sJ0SRbZZFNGxHAsffyy5xmQ8kqT-Ambx7l8NIQ08D1P2pjKtNbKAU4ppMC60FIgylFW3bF-DCabEJkcHW5YRE9OfPTlxOkNouCz_7eyotCT8TCOa-FyAH8UfHvLdgRr4VSzDLi-C7bGOZBlS3PLTNEUvMU9ie2pBfrI9YEf0dJVkajGkVTRVqKt_9aGxXUae417GULkSJpG8kBl55JXIb7mvM89-yU_wZO5jDBU-jYncEs0TbPO33GwSHFng5OmOU0Z5v4-x6l-jAYmzpUkAzUbwxVfAThUNmphKu4aqZO9N-1tw",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
+      "pack_display_name": "Zuko over Falcon",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-zuko-over-falcon-gr-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Zuko over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaGr.dat",
+      "inner_filename": "PlCaGr-ZUKO.dat",
+      "character_code": "Ca",
+      "slot_code": "Gr",
+      "patreon_post_id": "100448196",
+      "filename_in_post": "PlCaRe-ZUKO FALCON.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://image.mux.com/x7ELNpGgoe3xF96bomriSsmhHbiQZorHJYDSbv5GO4s/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ4N0VMTnBHZ29lM3hGOTZib21yaVNzbWhIYmlRWm9ySEpZRFNidjVHTzRzIiwiZXhwIjoxNzgwNzA0MDAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjoyLjB9.IQDGvnmqGREIDy0wTT-CsPED6WQ5Q4dC1gBy_0sJ0SRbZZFNGxHAsffyy5xmQ8kqT-Ambx7l8NIQ08D1P2pjKtNbKAU4ppMC60FIgylFW3bF-DCabEJkcHW5YRE9OfPTlxOkNouCz_7eyotCT8TCOa-FyAH8UfHvLdgRr4VSzDLi-C7bGOZBlS3PLTNEUvMU9ie2pBfrI9YEf0dJVkajGkVTRVqKt_9aGxXUae417GULkSJpG8kBl55JXIb7mvM89-yU_wZO5jDBU-jYncEs0TbPO33GwSHFng5OmOU0Z5v4-x6l-jAYmzpUkAzUbwxVfAThUNmphKu4aqZO9N-1tw",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
+      "pack_display_name": "Zuko over Falcon",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-zuko-over-falcon-gy-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Zuko over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaGy.dat",
+      "inner_filename": "PlCaGy-ZUKO.dat",
+      "character_code": "Ca",
+      "slot_code": "Gy",
+      "patreon_post_id": "100448196",
+      "filename_in_post": "PlCaRe-ZUKO FALCON.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://image.mux.com/x7ELNpGgoe3xF96bomriSsmhHbiQZorHJYDSbv5GO4s/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ4N0VMTnBHZ29lM3hGOTZib21yaVNzbWhIYmlRWm9ySEpZRFNidjVHTzRzIiwiZXhwIjoxNzgwNzA0MDAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjoyLjB9.IQDGvnmqGREIDy0wTT-CsPED6WQ5Q4dC1gBy_0sJ0SRbZZFNGxHAsffyy5xmQ8kqT-Ambx7l8NIQ08D1P2pjKtNbKAU4ppMC60FIgylFW3bF-DCabEJkcHW5YRE9OfPTlxOkNouCz_7eyotCT8TCOa-FyAH8UfHvLdgRr4VSzDLi-C7bGOZBlS3PLTNEUvMU9ie2pBfrI9YEf0dJVkajGkVTRVqKt_9aGxXUae417GULkSJpG8kBl55JXIb7mvM89-yU_wZO5jDBU-jYncEs0TbPO33GwSHFng5OmOU0Z5v4-x6l-jAYmzpUkAzUbwxVfAThUNmphKu4aqZO9N-1tw",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
+      "pack_display_name": "Zuko over Falcon",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-zuko-over-falcon-re-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Zuko over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaRe.dat",
+      "inner_filename": "PlCaRe-ZUKO.usd",
+      "character_code": "Ca",
+      "slot_code": "Re",
+      "patreon_post_id": "100448196",
+      "filename_in_post": "PlCaRe-ZUKO FALCON.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://image.mux.com/x7ELNpGgoe3xF96bomriSsmhHbiQZorHJYDSbv5GO4s/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ4N0VMTnBHZ29lM3hGOTZib21yaVNzbWhIYmlRWm9ySEpZRFNidjVHTzRzIiwiZXhwIjoxNzgwNzA0MDAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjoyLjB9.IQDGvnmqGREIDy0wTT-CsPED6WQ5Q4dC1gBy_0sJ0SRbZZFNGxHAsffyy5xmQ8kqT-Ambx7l8NIQ08D1P2pjKtNbKAU4ppMC60FIgylFW3bF-DCabEJkcHW5YRE9OfPTlxOkNouCz_7eyotCT8TCOa-FyAH8UfHvLdgRr4VSzDLi-C7bGOZBlS3PLTNEUvMU9ie2pBfrI9YEf0dJVkajGkVTRVqKt_9aGxXUae417GULkSJpG8kBl55JXIb7mvM89-yU_wZO5jDBU-jYncEs0TbPO33GwSHFng5OmOU0Z5v4-x6l-jAYmzpUkAzUbwxVfAThUNmphKu4aqZO9N-1tw",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
+      "pack_display_name": "Zuko over Falcon",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-zuko-over-falcon-wh-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Zuko over Falcon",
+      "kind": "character_skin",
+      "iso_target_filename": "PlCaWh.dat",
+      "inner_filename": "PlCaWh-ZUKO.dat",
+      "character_code": "Ca",
+      "slot_code": "Wh",
+      "patreon_post_id": "100448196",
+      "filename_in_post": "PlCaRe-ZUKO FALCON.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://image.mux.com/x7ELNpGgoe3xF96bomriSsmhHbiQZorHJYDSbv5GO4s/thumbnail.jpg?token=eyJhbGciOiJSUzI1NiIsImtpZCI6Ik5CY3o3Sk5RcUNmdDdWcmo5MWhra2lEY3Vyc2xtRGNmSU1oSFUzallZMDI0IiwidHlwIjoiSldUIn0.eyJzdWIiOiJ4N0VMTnBHZ29lM3hGOTZib21yaVNzbWhIYmlRWm9ySEpZRFNidjVHTzRzIiwiZXhwIjoxNzgwNzA0MDAwLCJhdWQiOiJ0Iiwid2lkdGgiOjEwODAsImZpdF9tb2RlIjoicHJlc2VydmUiLCJ0aW1lIjoyLjB9.IQDGvnmqGREIDy0wTT-CsPED6WQ5Q4dC1gBy_0sJ0SRbZZFNGxHAsffyy5xmQ8kqT-Ambx7l8NIQ08D1P2pjKtNbKAU4ppMC60FIgylFW3bF-DCabEJkcHW5YRE9OfPTlxOkNouCz_7eyotCT8TCOa-FyAH8UfHvLdgRr4VSzDLi-C7bGOZBlS3PLTNEUvMU9ie2pBfrI9YEf0dJVkajGkVTRVqKt_9aGxXUae417GULkSJpG8kBl55JXIb7mvM89-yU_wZO5jDBU-jYncEs0TbPO33GwSHFng5OmOU0Z5v4-x6l-jAYmzpUkAzUbwxVfAThUNmphKu4aqZO9N-1tw",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-zuko-over-falcon-bu-1",
+      "pack_display_name": "Zuko over Falcon",
+      "notes": null,
+      "format": "vanilla"
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
@@ -5567,7 +6128,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bu",
@@ -5586,7 +6148,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-gr",
@@ -5605,7 +6168,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-nr",
@@ -5624,7 +6188,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-re",
@@ -5643,7 +6208,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-potemkin-over-donkey-kong-bk",
       "pack_display_name": "Animelee Potemkin over Donkey Kong",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-bu",
@@ -5662,7 +6228,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-medicham-over-falco-bu",
       "pack_display_name": "Medicham over Falco",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-gr",
@@ -5681,7 +6248,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-medicham-over-falco-bu",
       "pack_display_name": "Medicham over Falco",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-nr",
@@ -5700,7 +6268,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-medicham-over-falco-bu",
       "pack_display_name": "Medicham over Falco",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-medicham-over-falco-re",
@@ -5719,7 +6288,88 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-medicham-over-falco-bu",
       "pack_display_name": "Medicham over Falco",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
+    },
+    {
+      "id": "gay_lord_erika-medicham-over-falco-bu-2",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Medicham over Falco",
+      "kind": "character_skin",
+      "iso_target_filename": "PlFcBu.dat",
+      "inner_filename": "PlFcBu-Medicham Shiny.dat",
+      "character_code": "Fc",
+      "slot_code": "Bu",
+      "patreon_post_id": "89400723",
+      "filename_in_post": "Medicham over Falco.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/89400723/5fdccbdf4885446cabbe6823f7c5eebe/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=ZCquoizv4xwIvSbdstSnr1LH3aBF-hCA1zvWb85eGA8%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-medicham-over-falco-bu-2",
+      "pack_display_name": "Medicham over Falco",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-medicham-over-falco-gr-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Medicham over Falco",
+      "kind": "character_skin",
+      "iso_target_filename": "PlFcGr.dat",
+      "inner_filename": "PlFcGr-Medicham.dat",
+      "character_code": "Fc",
+      "slot_code": "Gr",
+      "patreon_post_id": "89400723",
+      "filename_in_post": "Medicham over Falco.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/89400723/5fdccbdf4885446cabbe6823f7c5eebe/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=ZCquoizv4xwIvSbdstSnr1LH3aBF-hCA1zvWb85eGA8%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-medicham-over-falco-bu-2",
+      "pack_display_name": "Medicham over Falco",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-medicham-over-falco-nr-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Medicham over Falco",
+      "kind": "character_skin",
+      "iso_target_filename": "PlFcNr.dat",
+      "inner_filename": "PlFcNr-Medicham.dat",
+      "character_code": "Fc",
+      "slot_code": "Nr",
+      "patreon_post_id": "89400723",
+      "filename_in_post": "Medicham over Falco.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/89400723/5fdccbdf4885446cabbe6823f7c5eebe/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=ZCquoizv4xwIvSbdstSnr1LH3aBF-hCA1zvWb85eGA8%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-medicham-over-falco-bu-2",
+      "pack_display_name": "Medicham over Falco",
+      "notes": null,
+      "format": "vanilla"
+    },
+    {
+      "id": "gay_lord_erika-medicham-over-falco-re-1",
+      "creator_id": "gay_lord_erika",
+      "display_name": "Medicham over Falco",
+      "kind": "character_skin",
+      "iso_target_filename": "PlFcRe.dat",
+      "inner_filename": "PlFcRe-Medicham.dat",
+      "character_code": "Fc",
+      "slot_code": "Re",
+      "patreon_post_id": "89400723",
+      "filename_in_post": "Medicham over Falco.zip",
+      "tier_required_cents": 0,
+      "sha256": null,
+      "preview_url": "https://c10.patreonusercontent.com/4/patreon-media/p/post/89400723/5fdccbdf4885446cabbe6823f7c5eebe/eyJ3IjoxMDgwfQ%3D%3D/1.png?token-hash=ZCquoizv4xwIvSbdstSnr1LH3aBF-hCA1zvWb85eGA8%3D&token-time=1779321600",
+      "preview_urls": [],
+      "pack_id": "gay_lord_erika-medicham-over-falco-bu-2",
+      "pack_display_name": "Medicham over Falco",
+      "notes": null,
+      "format": "vanilla"
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-bk",
@@ -5738,7 +6388,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-gr",
@@ -5757,7 +6408,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-la",
@@ -5776,7 +6428,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-nr",
@@ -5795,7 +6448,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-helmetless-samus-pi",
@@ -5814,7 +6468,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-helmetless-samus-bk",
       "pack_display_name": "Animelee Helmetless Samus",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",
@@ -5833,7 +6488,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",
       "pack_display_name": "Animelee Toxicroak over Falco",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-toxicroak-over-falco-gr",
@@ -5852,7 +6508,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",
       "pack_display_name": "Animelee Toxicroak over Falco",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-toxicroak-over-falco-nr",
@@ -5871,7 +6528,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",
       "pack_display_name": "Animelee Toxicroak over Falco",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-animelee-toxicroak-over-falco-re",
@@ -5890,7 +6548,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-animelee-toxicroak-over-falco-bu",
       "pack_display_name": "Animelee Toxicroak over Falco",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
@@ -5909,7 +6568,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-gr",
@@ -5928,7 +6588,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-nr",
@@ -5947,7 +6608,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-re",
@@ -5966,7 +6628,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     },
     {
       "id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-wh",
@@ -5985,7 +6648,8 @@
       "preview_urls": [],
       "pack_id": "gay_lord_erika-gardevoir-gallade-over-zelda-sheik-bu",
       "pack_display_name": "Gardevoir/Gallade over Zelda/Sheik",
-      "notes": null
+      "notes": null,
+      "format": "animelee"
     }
   ]
 }

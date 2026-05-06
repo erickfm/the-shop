@@ -185,6 +185,7 @@ export type IndexedSkinEntry = {
   preview_urls: string[];
   pack_id: string;
   pack_display_name: string | null;
+  format: string | null;
   notes: string | null;
 };
 
@@ -220,6 +221,7 @@ export type IndexedPack = {
   installed_count: number;
   slot_count: number;
   filename_in_post: string;
+  format: string | null;
 };
 
 export type SkinIndex = {
