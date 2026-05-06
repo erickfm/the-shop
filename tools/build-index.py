@@ -182,16 +182,28 @@ def validate_dat(
 
 # ─── HAL filename parser (port of manifest::identify + parse_iso_asset) ──────
 
-# Slot code regex: 2 letters + optional digit suffix (Or, Or11, Bu2, etc.).
-SLOT_RE = re.compile(r"^([A-Z][a-z])(\d{0,2})$")
+# HAL costume filename: starts with `Pl`, then a 2-letter char code,
+# then a 2-letter slot code + optional digits. Anything after (a paren
+# suffix like " (Blue)" or a "-Name" annotation) is the modder's label.
+_PL_RE = re.compile(r"^Pl([A-Z][a-z])([A-Z][a-z]\d{0,2})(.*)$")
+# Per-character animation bank: PlXxAJ
+_PLAJ_RE = re.compile(r"^Pl([A-Z][a-z])AJ(.*)$")
+# Per-character effect bank: EfXxData
+_EF_RE = re.compile(r"^Ef([A-Z][a-z])Data(.*)$")
+# Stage: Gr<...>
+_GR_RE = re.compile(r"^(Gr[A-Za-z0-9]+)(.*)$")
+# UI: Mn<...> / If<...> / Ty<...>
+_UI_RE = re.compile(r"^((?:Mn|If|Ty)[A-Za-z0-9]+)(.*)$")
+# Items / Pokemon: It<...> / Pk<...>
+_ITEM_RE = re.compile(r"^((?:It|Pk)[A-Za-z0-9]+)(.*)$")
 
 
 def parse_filename(filename: str) -> dict | None:
     """Returns a dict describing what this HAL file is, or None.
 
-    Keys: kind, character_code, slot_code, iso_target_filename,
-    pack_name (the modder's suffix after `-`), inner_filename (set when the
-    file IS an archive and we're guessing what's inside).
+    Tolerates either of the two annotation conventions creators use:
+      `PlFcBu-Animelee.dat`   ← dash-separated
+      `PlFcBu (Blue).dat`      ← space + paren-wrapped
     """
     name = filename
     ext = None
@@ -201,11 +213,8 @@ def parse_filename(filename: str) -> dict | None:
             name = name[: -len(e)]
             break
     if ext is None:
-        # archives — flag for the caller; we'll guess from the inner pattern
         for e in (".zip", ".rar", ".7z"):
             if name.lower().endswith(e):
-                # try to parse the stem before the extension as if it were
-                # itself a HAL filename ("PlFcBu (B0XX).zip" → guess Fc/Bu).
                 inner = name[: -len(e)]
                 guess = parse_filename(inner + ".dat")
                 if guess:
@@ -219,71 +228,79 @@ def parse_filename(filename: str) -> dict | None:
                 return None
         return None
 
-    # `core - suffix` split
-    core, _, suffix = name.partition("-")
-    pack_name = suffix.strip() or None
+    def _label(rest: str) -> str | None:
+        # Trim leading separator characters (-_ space + paren) so the
+        # captured "rest" reads like a clean annotation.
+        s = rest.strip(" -_()").strip()
+        return s or None
 
-    # Pl{Char}AJ → animation
-    if core.startswith("Pl") and core.endswith("AJ") and len(core) >= 6:
+    # Pl{Char}AJ — animation bank
+    m = _PLAJ_RE.match(name)
+    if m:
+        ch = m.group(1)
         return {
             "kind": "animation",
-            "character_code": core[2:4],
+            "character_code": ch,
             "slot_code": "",
-            "iso_target_filename": f"{core}{ext}",
-            "pack_name": pack_name,
+            "iso_target_filename": f"Pl{ch}AJ{ext}",
+            "pack_name": _label(m.group(2)),
             "inner_filename": None,
         }
-    # Pl{Char}{Slot} → character_skin
-    if core.startswith("Pl") and len(core) >= 6:
-        ch = core[2:4]
-        slot = core[4:]
-        if SLOT_RE.match(slot):
-            return {
-                "kind": "character_skin",
-                "character_code": ch,
-                "slot_code": slot,
-                "iso_target_filename": f"Pl{ch}{slot}.dat",
-                "pack_name": pack_name,
-                "inner_filename": None,
-            }
-    # Ef{Char}Data → effect
-    if core.startswith("Ef") and core.endswith("Data") and len(core) >= 8:
+    # Pl{Char}{Slot} — character_skin
+    m = _PL_RE.match(name)
+    if m:
+        ch, slot = m.group(1), m.group(2)
+        return {
+            "kind": "character_skin",
+            "character_code": ch,
+            "slot_code": slot,
+            "iso_target_filename": f"Pl{ch}{slot}.dat",
+            "pack_name": _label(m.group(3)),
+            "inner_filename": None,
+        }
+    # Ef{Char}Data — effect
+    m = _EF_RE.match(name)
+    if m:
+        ch = m.group(1)
         return {
             "kind": "effect",
-            "character_code": core[2:4],
+            "character_code": ch,
             "slot_code": "",
-            "iso_target_filename": f"{core}{ext}",
-            "pack_name": pack_name,
+            "iso_target_filename": f"Ef{ch}Data{ext}",
+            "pack_name": _label(m.group(2)),
             "inner_filename": None,
         }
-    # Gr* → stage
-    if core.startswith("Gr") and len(core) >= 4:
+    # Gr* — stage
+    m = _GR_RE.match(name)
+    if m:
         return {
             "kind": "stage",
             "character_code": "",
             "slot_code": "",
-            "iso_target_filename": f"{core}{ext}",
-            "pack_name": pack_name,
+            "iso_target_filename": f"{m.group(1)}{ext}",
+            "pack_name": _label(m.group(2)),
             "inner_filename": None,
         }
-    # Mn* / If* / Ty* → ui
-    if core.startswith(("Mn", "If", "Ty")):
+    # Mn* / If* / Ty* — ui
+    m = _UI_RE.match(name)
+    if m:
         return {
             "kind": "ui",
             "character_code": "",
             "slot_code": "",
-            "iso_target_filename": f"{core}{ext}",
-            "pack_name": pack_name,
+            "iso_target_filename": f"{m.group(1)}{ext}",
+            "pack_name": _label(m.group(2)),
             "inner_filename": None,
         }
-    # It* / Pk* → item
-    if core.startswith(("It", "Pk")):
+    # It* / Pk* — item / pokemon
+    m = _ITEM_RE.match(name)
+    if m:
         return {
             "kind": "item",
             "character_code": "",
             "slot_code": "",
-            "iso_target_filename": f"{core}{ext}",
-            "pack_name": pack_name,
+            "iso_target_filename": f"{m.group(1)}{ext}",
+            "pack_name": _label(m.group(2)),
             "inner_filename": None,
         }
     return None
@@ -519,26 +536,40 @@ def discover_creator(
     with urllib.request.urlopen(req, timeout=30) as r:
         html = r.read().decode("utf-8", errors="replace")
 
-    cid = re.findall(r'"campaign":\s*\{\s*"data":\s*\{\s*"id":\s*"(\d+)"', html)
-    if not cid:
-        cid = re.findall(r'"campaign_id":"(\d+)"', html)
-    if not cid:
+    # Try multiple patterns Patreon's page emits — a creator URL may not
+    # include any of them depending on which experiment / locale is live.
+    patterns = [
+        r'"campaign":\s*\{\s*"data":\s*\{\s*"id":\s*"(\d+)"',
+        r'"campaign_id":"(\d+)"',
+        r'/api/campaigns/(\d+)',           # appears in preload links + JSON-LD
+        r'patreon-media/p/campaign/(\d+)',  # appears in CDN avatar URLs
+    ]
+    campaign_id = None
+    for pat in patterns:
+        m = re.findall(pat, html)
+        if m:
+            campaign_id = m[0]
+            break
+    if campaign_id is None:
         raise SystemExit(f"could not find campaign id in {page_url}")
-    campaign_id = cid[0]
 
     title_m = re.search(r"<title[^>]*>([^<]+)</title>", html)
     name = title_m.group(1).split("|")[0].strip() if title_m else f"creator-{campaign_id}"
 
     summary_m = re.findall(r'"summary":"([^"]+)"', html)
-    tagline = (
-        summary_m[0]
-        .encode().decode("unicode_escape")
-        .replace("\\u003cbr\\u003e", " · ")
-        .replace("<br>", " · ")
-        .strip()[:160]
-        if summary_m
-        else None
-    )
+    tagline = None
+    if summary_m:
+        # Decode JSON-style backslash escapes safely. The previous
+        # `unicode_escape` codec choked on trailing backslashes; using
+        # json.loads on the quoted string handles edge cases cleanly.
+        raw = summary_m[0]
+        try:
+            decoded = json.loads(f'"{raw}"')
+        except json.JSONDecodeError:
+            decoded = raw  # fall back to the raw string with \u escapes intact
+        tagline = (
+            decoded.replace("<br>", " · ").strip()[:160] or None
+        )
 
     creator_id = re.sub(r"\W+", "_", name.lower()).strip("_") or f"creator_{campaign_id}"
 
