@@ -120,18 +120,17 @@ export default function App() {
             }}
           />
         )}
-        {route === "browse" && (
-          <Browse
-            key={refreshKey}
-            onAfterAction={() => setRefreshKey((k) => k + 1)}
-          />
-        )}
-        {route === "account" && (
-          <Account
-            key={refreshKey}
-            onAfterAction={() => setRefreshKey((k) => k + 1)}
-          />
-        )}
+        {/* Browse and Account manage their own data refreshes on install /
+            uninstall / remove (each handler calls a local refresh() that
+            re-fetches via ipc and updates state). They no longer key off
+            App's refreshKey — that was forcing a full remount on every
+            install, resetting scroll position, the open drawer, the search
+            input, and the carousel. App still bumps refreshKey for
+            connect / disconnect / first-run completion to re-fetch its
+            own patreon + first-run state, but the route components stay
+            mounted. */}
+        {route === "browse" && <Browse />}
+        {route === "account" && <Account />}
       </main>
 
       {needsFirstRun && (
