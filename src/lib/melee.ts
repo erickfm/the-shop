@@ -105,6 +105,32 @@ export function stageDisplay(isoTargetFilename: string | null | undefined): stri
   return STAGE_LABELS[code] ?? isoTargetFilename;
 }
 
+// HAL codes for the six legal Slippi ranked stages. A stage replacement
+// targeting one of these gets the "ranked" pill — desync risk hits the
+// ranked queue directly, not just unranked / direct-connect.
+const LEGAL_RANKED_STAGE_CODES = new Set([
+  "Ba",  // Battlefield
+  "Bf",  // Battlefield (alt code, just in case)
+  "Fs",  // Final Destination
+  "Fn",  // Final Destination (alt)
+  "St",  // Yoshi's Story
+  "Ps",  // Pokémon Stadium
+  "Op",  // Dreamland
+  "Fz",  // Fountain of Dreams
+]);
+
+/// True iff the given iso_target_filename targets a legal Slippi ranked
+/// stage. Useful for surfacing "this WILL desync ranked" rather than the
+/// weaker unranked-only risk.
+export function isLegalRankedStage(
+  isoTargetFilename: string | null | undefined,
+): boolean {
+  if (!isoTargetFilename) return false;
+  const m = isoTargetFilename.match(/^Gr(.+?)\.(?:dat|usd)$/i);
+  if (!m) return false;
+  return LEGAL_RANKED_STAGE_CODES.has(m[1]);
+}
+
 /// All the slot/color tokens we recognize as "this is just naming the slot,
 /// not part of the skin's identity." Used by `stripColorSuffix` so titles
 /// don't repeat the info that already lives in the slot pill.

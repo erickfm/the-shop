@@ -14,6 +14,7 @@ import type {
 } from "../lib/types";
 import {
   characterDisplay,
+  isLegalRankedStage,
   packTilt,
   previewList,
   requiresUnzip,
@@ -740,6 +741,20 @@ function FeaturedHero({
                 <span>{characterDisplay(pack.character_code)}</span>
               </>
             )}
+            {pack.kind === "stage" && pack.slots[0]?.iso_target_filename && (
+              <>
+                <span>·</span>
+                <span>
+                  replaces {stageDisplay(pack.slots[0].iso_target_filename)}
+                </span>
+                {isLegalRankedStage(pack.slots[0].iso_target_filename) && (
+                  <>
+                    <span>·</span>
+                    <span className="text-accent">ranked legal</span>
+                  </>
+                )}
+              </>
+            )}
             {pack.format && (
               <>
                 <span>·</span>
@@ -1374,6 +1389,15 @@ function PackCard({
             <span className="label-mono px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
               {KIND_LABELS[(pack.kind ?? "character_skin") as SkinKind]}
             </span>
+            {pack.kind === "stage" &&
+              isLegalRankedStage(pack.slots[0]?.iso_target_filename) && (
+                <span
+                  className="label-mono px-1.5 py-0.5 rounded bg-bg border border-accent/40 text-accent shrink-0"
+                  title="this replaces a legal slippi ranked stage — collision changes affect ranked play"
+                >
+                  ranked
+                </span>
+              )}
             {pack.format && (
               <span
                 className="label-mono px-1.5 py-0.5 rounded bg-bg border border-accent/40 text-accent shrink-0"
@@ -1394,7 +1418,7 @@ function PackCard({
               {pack.creator?.display_name || pack.creator_id}
             </button>
             {pack.kind === "stage" && pack.slots[0]?.iso_target_filename &&
-              ` · ${stageDisplay(pack.slots[0].iso_target_filename)}`}
+              ` · replaces ${stageDisplay(pack.slots[0].iso_target_filename)}`}
             {(pack.kind === "character_skin" ||
               pack.kind === "effect" ||
               pack.kind === "animation") &&
@@ -1535,7 +1559,10 @@ function PackDetailDrawer({
 
   const metaPills: string[] = [kindLabel];
   if (pack.kind === "stage" && pack.slots[0]?.iso_target_filename) {
-    metaPills.push(stageDisplay(pack.slots[0].iso_target_filename));
+    metaPills.push(`replaces ${stageDisplay(pack.slots[0].iso_target_filename)}`);
+    if (isLegalRankedStage(pack.slots[0].iso_target_filename)) {
+      metaPills.push("ranked legal");
+    }
   }
   if (
     (pack.kind === "character_skin" ||
