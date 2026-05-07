@@ -808,6 +808,8 @@ function FeaturedHero({
                 <span className="text-accent">{pack.format}</span>
               </>
             )}
+            <span>·</span>
+            <SafetyPill safety={pack.safety} kind={pack.kind} />
           </div>
           <h1 className="text-3xl md:text-4xl leading-tight text-white drop-shadow">
             {stripColorSuffix(pack.display_name)}
@@ -1735,6 +1737,7 @@ function PackDetailDrawer({
                 {p}
               </span>
             ))}
+            <SafetyPill safety={pack.safety} kind={pack.kind} />
           </div>
 
           {isMulti && installable > 0 && (

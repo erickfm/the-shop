@@ -196,7 +196,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   };
 
   const removePack = async (p: SkinPack) => {
-    const verb = p.source === "patreon" ? "remove" : "unimport";
+    const verb = p.source === "patreon" ? "delete" : "unimport";
     const ok = window.confirm(
       `${verb} "${p.pack_name}" (${p.character_display})? this deletes the file${
         p.slots.length === 1 ? "" : "s"
@@ -213,19 +213,20 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     if (!ok) return;
     setBusy(`${p.character_code}/${p.pack_name}`);
     try {
-      const r = await withBusy(`removing ${p.pack_name}…`, () =>
+      const presentTense = verb === "delete" ? "deleting" : "unimporting";
+      const r = await withBusy(`${presentTense} ${p.pack_name}…`, () =>
         ipc.deleteSkinPack(p.character_code, p.pack_name),
       );
       toast({
         kind: "ok",
-        text: `removed ${p.pack_name} (${r.files_removed} file${
+        text: `${verb}d ${p.pack_name} (${r.files_removed} file${
           r.files_removed === 1 ? "" : "s"
         })`,
       });
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `remove failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `${verb} failed: ${e?.message || e}` });
     } finally {
       setBusy(null);
     }
@@ -264,22 +265,24 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   };
 
   const removeAsset = async (a: IsoAssetRow) => {
+    const verb = a.source === "patreon" ? "delete" : "unimport";
     const ok = window.confirm(
-      `remove "${a.filename}"? file will be deleted from disk${
+      `${verb} "${a.filename}"? file will be deleted from disk${
         a.installed ? " and uninstalled from the iso" : ""
-      }.`,
+      }.${a.source === "patreon" ? " you can reinstall from browse anytime." : ""}`,
     );
     if (!ok) return;
     setBusy(`asset:${a.id}`);
     try {
-      await withBusy(`removing ${a.filename}…`, () =>
+      const presentTense = verb === "delete" ? "deleting" : "unimporting";
+      await withBusy(`${presentTense} ${a.filename}…`, () =>
         ipc.deleteIsoAsset(a.id),
       );
-      toast({ kind: "ok", text: `removed ${a.filename}` });
+      toast({ kind: "ok", text: `${verb}d ${a.filename}` });
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `remove failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `${verb} failed: ${e?.message || e}` });
     } finally {
       setBusy(null);
     }
@@ -553,7 +556,7 @@ function AssetRows({
                 disabled={busy === myKey}
                 title="delete file from disk"
               >
-                {a.source === "patreon" ? "remove" : "unimport"}
+                {a.source === "patreon" ? "delete" : "unimport"}
               </button>
             </div>
           </div>
@@ -691,7 +694,7 @@ function PackGrid({
                             : "delete file from disk (forgets the import)"
                         }
                       >
-                        {p.source === "patreon" ? "remove" : "unimport"}
+                        {p.source === "patreon" ? "delete" : "unimport"}
                       </button>
                     </div>
                   </div>

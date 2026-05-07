@@ -147,27 +147,33 @@ export function Settings({ onChange }: { onChange?: () => void }) {
       </Section>
 
       <Section title="slippi launcher">
-        <div className="flex gap-2">
-          <input
-            className="input font-mono"
-            value={settings.slippi_launcher_executable ?? ""}
-            readOnly
-            placeholder={detected?.slippi_launcher_executable || "not detected"}
-          />
-          <button className="btn" onClick={pickLauncher}>
-            browse…
-          </button>
+        <div className="space-y-1">
+          <div className="text-xs text-muted">launcher executable</div>
+          <div className="flex gap-2">
+            <input
+              className="input font-mono"
+              value={settings.slippi_launcher_executable ?? ""}
+              readOnly
+              placeholder={detected?.slippi_launcher_executable || "not detected"}
+            />
+            <button className="btn whitespace-nowrap" onClick={pickLauncher}>
+              browse…
+            </button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <input
-            className="input font-mono"
-            value={settings.slippi_user_dir ?? ""}
-            readOnly
-            placeholder={detected?.slippi_user_dir || "not detected"}
-          />
-          <button className="btn" onClick={pickUserDir}>
-            browse user dir…
-          </button>
+        <div className="space-y-1">
+          <div className="text-xs text-muted">user dir</div>
+          <div className="flex gap-2">
+            <input
+              className="input font-mono"
+              value={settings.slippi_user_dir ?? ""}
+              readOnly
+              placeholder={detected?.slippi_user_dir || "not detected"}
+            />
+            <button className="btn whitespace-nowrap" onClick={pickUserDir}>
+              browse…
+            </button>
+          </div>
         </div>
         <div className="text-xs text-muted">
           currently configured iso in slippi:{" "}
