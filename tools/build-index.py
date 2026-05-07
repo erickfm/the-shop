@@ -24,6 +24,7 @@ Stdlib only — no pip install.
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import os
 import re
@@ -518,6 +519,50 @@ def resolve_input(arg: str, index: dict, cookie: str) -> tuple[str, dict]:
     raise SystemExit(f"unrecognized input: {arg!r}")
 
 
+def clean_summary(raw: str | None) -> str | None:
+    """Normalize a Patreon `summary` blob into a one-liner tagline.
+    Handles three real-world inputs we've seen:
+      - JSON-escaped HTML (e.g. `\\u003cp style=\\"...\\"\\u003e...`),
+        from the regex-extracted html-page path.
+      - Raw HTML (`<p style="...">...</p>`), from the campaign API
+        path.
+      - Already-clean plain text.
+    Decodes JSON escapes when applicable, strips HTML tags, collapses
+    whitespace, caps at 160 chars. Returns None if the result is
+    empty so we render no tagline rather than an empty string.
+    """
+    if not raw:
+        return None
+    s = raw
+    # If the input looks JSON-encoded (has \u escapes or escaped
+    # quotes), round-trip through json.loads to decode. Wrapped in a
+    # quoted string so json.loads treats it as a string literal.
+    if "\\u" in s or "\\\"" in s or "\\n" in s:
+        try:
+            s = json.loads(f'"{s}"')
+        except json.JSONDecodeError:
+            pass
+    # Replace block-level HTML tags with a separator before stripping
+    # everything else, so `<p>foo</p><p>bar</p>` reads as `foo · bar`
+    # rather than `foobar`.
+    s = re.sub(r"<\s*br\s*/?\s*>", " · ", s, flags=re.IGNORECASE)
+    s = re.sub(r"</\s*(p|div|li)\s*>", " · ", s, flags=re.IGNORECASE)
+    # Strip remaining tags.
+    s = re.sub(r"<[^>]+>", "", s)
+    # Decode HTML entities (`&lt;`, `&amp;`, `&#x2026;`, etc.) so e.g.
+    # `&lt;3` reads as `<3` and not as literal HTML.
+    s = html.unescape(s)
+    # Collapse whitespace and the leading/trailing separators we just
+    # introduced. Also collapse runs of `·` produced by empty
+    # paragraphs / consecutive line breaks (real-world Patreon
+    # summaries lean heavily on whitespace paragraphs for layout).
+    s = re.sub(r"\s+", " ", s)
+    s = re.sub(r"(?:\s*·\s*){2,}", " · ", s)
+    s = s.strip(" ·\t")
+    s = s[:160].strip(" ·\t")
+    return s or None
+
+
 def discover_creator(
     campaign_id: str | None,
     url: str | None,
@@ -558,20 +603,14 @@ def discover_creator(
     title_m = re.search(r"<title[^>]*>([^<]+)</title>", html)
     name = title_m.group(1).split("|")[0].strip() if title_m else f"creator-{campaign_id}"
 
-    summary_m = re.findall(r'"summary":"([^"]+)"', html)
-    tagline = None
-    if summary_m:
-        # Decode JSON-style backslash escapes safely. The previous
-        # `unicode_escape` codec choked on trailing backslashes; using
-        # json.loads on the quoted string handles edge cases cleanly.
-        raw = summary_m[0]
-        try:
-            decoded = json.loads(f'"{raw}"')
-        except json.JSONDecodeError:
-            decoded = raw  # fall back to the raw string with \u escapes intact
-        tagline = (
-            decoded.replace("<br>", " · ").strip()[:160] or None
-        )
+    # The previous regex `"summary":"([^"]+)"` chopped at the first
+    # quote inside the value — but Patreon JSON-encodes the summary,
+    # so embedded `"` show up as `\"` and we'd end up with a truncated
+    # head like `<p style=\` (Animelee GFX Project). New pattern
+    # consumes either an escaped char (`\\.`) or any non-quote
+    # non-backslash char, so it captures the full quoted JSON string.
+    summary_m = re.findall(r'"summary":"((?:\\.|[^"\\])*)"', html)
+    tagline = clean_summary(summary_m[0]) if summary_m else None
 
     creator_id = re.sub(r"\W+", "_", name.lower()).strip("_") or f"creator_{campaign_id}"
 
@@ -599,7 +638,7 @@ def _from_campaign_api(
         creator_id=creator_id,
         display_name=name,
         patreon_url=f"https://www.patreon.com/{vanity}",
-        tagline=attrs.get("summary"),
+        tagline=clean_summary(attrs.get("summary")),
         campaign_id=campaign_id,
     )
     return creator["id"], creator
