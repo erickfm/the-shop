@@ -211,10 +211,6 @@ export function Settings({ onChange }: { onChange?: () => void }) {
           puts melee back to its original look — no installed skins, no
           patched iso.
         </p>
-        <p className="text-xs text-muted">
-          your downloaded skins stay on disk. reinstall any of them with
-          one click; nothing re-downloads.
-        </p>
         <button
           className="text-xs text-muted hover:text-white transition-colors self-start"
           onClick={reset}

@@ -207,6 +207,14 @@ fn delete_skin_packs_bulk(
 }
 
 #[tauri::command]
+fn uninstall_skin_packs_bulk(
+    state: State<'_, AppState>,
+    source: Option<String>,
+) -> AppResult<library::BulkDeleteReport> {
+    library::uninstall_packs_bulk(&state.db, source.as_deref())
+}
+
+#[tauri::command]
 fn list_iso_assets(state: State<'_, AppState>) -> AppResult<Vec<library::IsoAssetRow>> {
     library::list_iso_assets(&state.db)
 }
@@ -327,6 +335,7 @@ pub fn run() {
             import_skin_files,
             delete_skin_pack,
             delete_skin_packs_bulk,
+            uninstall_skin_packs_bulk,
             list_iso_assets,
             install_iso_asset_from_file,
             uninstall_iso_asset_cmd,

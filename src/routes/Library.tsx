@@ -161,38 +161,35 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     }
   };
 
-  const removeAll = async (source: "manual" | "patreon") => {
+  /// Section-level "uninstall all" — clears installed_pack rows and
+  /// rebuilds the ISO once. Files stay on disk (skin_files row stays
+  /// too) so anything in this section reinstalls instantly via the
+  /// local-cache install path. Destructive delete-from-disk lives at
+  /// the section's per-card "remove" / "unimport" link OR the
+  /// app-wide "back to vanilla" button at the bottom of the cog menu;
+  /// section bulk no longer ships the destructive path.
+  const uninstallAllInSection = async (source: "manual" | "patreon") => {
     const list = source === "patreon" ? patreonPacks : manualPacks;
-    if (list.length === 0) return;
-    const verb = source === "patreon" ? "remove" : "unimport";
-    const ok = window.confirm(
-      `${verb} all ${list.length} ${source === "patreon" ? "patreon-installed" : "manually-imported"} skin${
-        list.length === 1 ? "" : "s"
-      }? files will be deleted from disk and the ISO rebuilt once.${
-        source === "patreon"
-          ? " you can reinstall any of them from browse."
-          : ""
-      }`,
-    );
-    if (!ok) return;
+    const installedCount = list.filter(
+      (p) => p.fully_installed || p.partially_installed,
+    ).length;
+    if (installedCount === 0) return;
     setBusy(`__bulk_${source}`);
     try {
       const r = await withBusy(
-        `${verb === "remove" ? "removing" : "unimporting"} ${list.length} skin${
-          list.length === 1 ? "" : "s"
-        }…`,
-        () => ipc.deleteSkinPacksBulk(source),
+        `uninstalling ${installedCount} skin${installedCount === 1 ? "" : "s"}…`,
+        () => ipc.uninstallSkinPacksBulk(source),
       );
       toast({
         kind: "ok",
-        text: `${verb}d ${r.packs_removed} pack${
+        text: `uninstalled ${r.packs_removed} pack${
           r.packs_removed === 1 ? "" : "s"
-        } (${r.files_removed} file${r.files_removed === 1 ? "" : "s"})`,
+        }; files kept locally`,
       });
       await refresh();
       onAfterAction?.();
     } catch (e: any) {
-      toast({ kind: "danger", text: `${verb} all failed: ${e?.message || e}` });
+      toast({ kind: "danger", text: `uninstall all failed: ${e?.message || e}` });
     } finally {
       setBusy(null);
     }
@@ -336,9 +333,12 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         onInstall={install}
         onUninstall={uninstall}
         onRemove={removePack}
-        onRemoveAll={() => removeAll("patreon")}
+        onRemoveAll={() => uninstallAllInSection("patreon")}
         bulkBusy={busy === "__bulk_patreon"}
-        bulkLabel="remove all"
+        bulkLabel="uninstall all"
+        bulkVisible={patreonPacks.some(
+          (p) => p.fully_installed || p.partially_installed,
+        )}
         onInstallAsset={installAsset}
         onUninstallAsset={uninstallAsset}
         onRemoveAsset={removeAsset}
@@ -367,9 +367,12 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         onInstall={install}
         onUninstall={uninstall}
         onRemove={removePack}
-        onRemoveAll={() => removeAll("manual")}
+        onRemoveAll={() => uninstallAllInSection("manual")}
         bulkBusy={busy === "__bulk_manual"}
-        bulkLabel="unimport all"
+        bulkLabel="uninstall all"
+        bulkVisible={manualPacks.some(
+          (p) => p.fully_installed || p.partially_installed,
+        )}
         onInstallAsset={installAsset}
         onUninstallAsset={uninstallAsset}
         onRemoveAsset={removeAsset}
@@ -397,6 +400,7 @@ function SourceGroup({
   onRemoveAll,
   bulkBusy,
   bulkLabel,
+  bulkVisible,
   onInstallAsset,
   onUninstallAsset,
   onRemoveAsset,
@@ -414,6 +418,10 @@ function SourceGroup({
   onRemoveAll: () => void;
   bulkBusy: boolean;
   bulkLabel: string;
+  /// Show the bulk-action button only when there's something to act on.
+  /// e.g. "uninstall all" should hide when no pack in the section is
+  /// currently installed; otherwise the button does nothing useful.
+  bulkVisible: boolean;
   onInstallAsset: (a: IsoAssetRow) => void;
   onUninstallAsset: (a: IsoAssetRow) => void;
   onRemoveAsset: (a: IsoAssetRow) => void;
@@ -430,13 +438,13 @@ function SourceGroup({
           <div className="text-xs text-muted">
             {totalCount} item{totalCount === 1 ? "" : "s"}
           </div>
-          {totalCount > 0 && (
+          {bulkVisible && (
             <button
               type="button"
-              className="text-xs text-muted hover:text-danger px-2 py-1 border border-border rounded"
+              className="text-xs text-muted hover:text-white px-2 py-1 border border-border rounded"
               onClick={onRemoveAll}
               disabled={bulkBusy}
-              title={`${bulkLabel} all ${totalCount} item${totalCount === 1 ? "" : "s"} in this section`}
+              title={`${bulkLabel} every installed pack in this section · files stay on disk`}
             >
               {bulkBusy ? `${bulkLabel}…` : bulkLabel}
             </button>

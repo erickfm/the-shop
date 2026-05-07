@@ -43,6 +43,8 @@ export const ipc = {
     invoke<DeletePackReport>("delete_skin_pack", { characterCode, packName }),
   deleteSkinPacksBulk: (source?: "manual" | "patreon") =>
     invoke<BulkDeleteReport>("delete_skin_packs_bulk", { source: source ?? null }),
+  uninstallSkinPacksBulk: (source?: "manual" | "patreon") =>
+    invoke<BulkDeleteReport>("uninstall_skin_packs_bulk", { source: source ?? null }),
   listIsoAssets: () => invoke<IsoAssetRow[]>("list_iso_assets"),
   installIsoAssetFromFile: (skinFileId: number) =>
     invoke<AssetInstallResult>("install_iso_asset_from_file", { skinFileId }),

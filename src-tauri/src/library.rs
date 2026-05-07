@@ -537,6 +537,83 @@ pub fn delete_packs_bulk(db: &Db, source_filter: Option<&str>) -> AppResult<Bulk
     })
 }
 
+/// Bulk-uninstall variant of `delete_packs_bulk` that does NOT touch
+/// the on-disk file or the skin_files row — only clears installed_pack
+/// rows and rebuilds the patched iso once. Used by the "uninstall all"
+/// section button so a user can roll back a section without losing
+/// the underlying files (those still reinstall instantly via the
+/// local-cache install path). For the destructive
+/// "delete-from-disk" path, callers should use `delete_packs_bulk`.
+pub fn uninstall_packs_bulk(
+    db: &Db,
+    source_filter: Option<&str>,
+) -> AppResult<BulkDeleteReport> {
+    let rows: Vec<(String, String, Option<String>)> = db.with_conn(|c| {
+        let (sql, params_vec): (&str, Vec<String>) = match source_filter {
+            Some(s) => (
+                "SELECT id, character_code, pack_name FROM skin_files
+                 WHERE pack_name IS NOT NULL AND source = ?1",
+                vec![s.to_string()],
+            ),
+            None => (
+                "SELECT id, character_code, pack_name FROM skin_files
+                 WHERE pack_name IS NOT NULL",
+                vec![],
+            ),
+        };
+        let mut stmt = c.prepare(sql)?;
+        let mapped = stmt.query_map(rusqlite::params_from_iter(params_vec.iter()), |r| {
+            Ok((
+                r.get::<_, i64>(0)?.to_string(),
+                r.get::<_, String>(1)?,
+                r.get::<_, Option<String>>(2)?,
+            ))
+        })?;
+        let mut out = Vec::new();
+        for r in mapped {
+            out.push(r?);
+        }
+        Ok(out)
+    })?;
+
+    if rows.is_empty() {
+        return Ok(BulkDeleteReport {
+            packs_removed: 0,
+            files_removed: 0,
+            uninstalled_any: false,
+        });
+    }
+
+    let pack_keys: std::collections::HashSet<(String, String)> = rows
+        .iter()
+        .filter_map(|(_, ch, pn)| pn.as_ref().map(|p| (ch.clone(), p.clone())))
+        .collect();
+
+    let uninstalled_any = db.with_conn(|c| {
+        let mut any = false;
+        for (ch, pn) in &pack_keys {
+            let n = c.execute(
+                "DELETE FROM installed_pack WHERE character_code = ?1 AND pack_name = ?2",
+                params![ch, pn],
+            )?;
+            if n > 0 {
+                any = true;
+            }
+        }
+        Ok(any)
+    })?;
+
+    if uninstalled_any {
+        crate::install::refresh_patched_iso(db)?;
+    }
+
+    Ok(BulkDeleteReport {
+        packs_removed: pack_keys.len(),
+        files_removed: 0,
+        uninstalled_any,
+    })
+}
+
 /// If the file's identified character disagrees with what its filename
 /// implies, rewrite the filename to match the identified character. This makes
 /// the on-disk name + DB row a faithful reflection of the file's contents.
