@@ -236,18 +236,80 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
     });
   }, [creatorPacks, filterKind, filterCharacter]);
 
+  /// Sibling packs sharing this pack's patreon_post_id. A creator
+  /// often bundles a character skin with its CSP / stock icon /
+  /// matching effect in a single Patreon post; without expansion the
+  /// user has to find each one as a separate card and install each
+  /// individually. Siblings = different pack_id (so the multi-color
+  /// pack itself stays a single bundle in the install).
+  const findSiblingPacks = (pack: IndexedPack): IndexedPack[] => {
+    if (!pack.patreon_post_id) return [];
+    return packs.filter(
+      (p) =>
+        p.patreon_post_id === pack.patreon_post_id &&
+        p.pack_id !== pack.pack_id,
+    );
+  };
+
+  /// Slot ids from sibling packs that we'd actually install: not
+  /// already installed, tier-satisfied. Used by both the per-slot
+  /// and per-pack install flows so a click installs the whole
+  /// post-bundle in one shot.
+  const siblingInstallableIds = (pack: IndexedPack): string[] => {
+    return findSiblingPacks(pack).flatMap((sib) =>
+      sib.slots
+        .filter((s) => !s.installed && s.tier_satisfied)
+        .map((s) => s.id),
+    );
+  };
+
   const installSlot = async (slot: AnnotatedSkin) => {
     setBusyKey(`slot:${slot.id}`);
     try {
-      const result = await withBusy(`installing ${slot.display_name}…`, () =>
-        ipc.installPatreonSkin(slot.id),
+      // Find the parent pack so we can pull in siblings.
+      const parent = packs.find((p) =>
+        p.slots.some((s) => s.id === slot.id),
       );
-      toast({
-        kind: "ok",
-        text: result.from_local
-          ? `installed ${slot.display_name} from your library`
-          : `installed ${slot.display_name}`,
-      });
+      const extras = parent ? siblingInstallableIds(parent) : [];
+      const ids = [slot.id, ...extras];
+      const result = await withBusy(
+        extras.length > 0
+          ? `installing ${slot.display_name} + ${extras.length} extras from this post…`
+          : `installing ${slot.display_name}…`,
+        () =>
+          ids.length === 1
+            ? ipc
+                .installPatreonSkin(slot.id)
+                // Lift the single result into the bulk shape so the
+                // toast logic doesn't need a parallel branch.
+                .then((r) => ({
+                  installed: [r],
+                  failed: [],
+                  iso_rebuilt: false,
+                }))
+            : ipc.installPatreonSkinsBulk(ids),
+      );
+      const okCount = result.installed.length;
+      const failCount = result.failed.length;
+      const allFromLocal =
+        okCount > 0 && result.installed.every((r) => r.from_local);
+      const localTag = allFromLocal ? " from your library" : "";
+      const extrasTag =
+        extras.length > 0 && okCount > 1
+          ? ` + ${okCount - 1} extra${okCount - 1 === 1 ? "" : "s"}`
+          : "";
+      if (failCount > 0) {
+        const detail = result.failed.slice(0, 2).map((f) => f.error).join(" · ");
+        toast({
+          kind: okCount > 0 ? "info" : "danger",
+          text: `installed ${okCount}/${okCount + failCount}${extrasTag}. failed: ${detail}`,
+        });
+      } else {
+        toast({
+          kind: "ok",
+          text: `installed ${slot.display_name}${extrasTag}${localTag}`,
+        });
+      }
       await refresh(false);
       onAfterAction?.();
     } catch (e: any) {
@@ -259,22 +321,35 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
 
   const installPackAll = async (pack: IndexedPack) => {
     const installable = pack.slots.filter((s) => !s.installed && s.tier_satisfied);
-    if (installable.length === 0) return;
+    const extras = siblingInstallableIds(pack);
+    if (installable.length === 0 && extras.length === 0) return;
     setBusyKey(`pack:${pack.pack_id}`);
     try {
+      const slotIds = installable.map((s) => s.id);
+      const allIds = [...slotIds, ...extras];
       const result = await withBusy(
-        `installing ${installable.length} slot${
-          installable.length === 1 ? "" : "s"
-        } from ${pack.display_name}…`,
-        () => ipc.installPatreonSkinsBulk(installable.map((s) => s.id)),
+        extras.length > 0
+          ? `installing ${installable.length} slot${
+              installable.length === 1 ? "" : "s"
+            } + ${extras.length} extra${extras.length === 1 ? "" : "s"} from this post…`
+          : `installing ${installable.length} slot${
+              installable.length === 1 ? "" : "s"
+            } from ${pack.display_name}…`,
+        () => ipc.installPatreonSkinsBulk(allIds),
       );
       const okCount = result.installed.length;
       const failCount = result.failed.length;
+      const ownInstalled = Math.min(okCount, slotIds.length);
+      const extraInstalled = Math.max(0, okCount - ownInstalled);
+      const extrasTag =
+        extraInstalled > 0
+          ? ` + ${extraInstalled} extra${extraInstalled === 1 ? "" : "s"}`
+          : "";
       if (failCount > 0) {
         const detail = result.failed.slice(0, 2).map((f) => f.error).join(" · ");
         toast({
           kind: okCount > 0 ? "info" : "danger",
-          text: `installed ${okCount}/${okCount + failCount} from ${pack.display_name}. Failed: ${detail}`,
+          text: `installed ${okCount}/${okCount + failCount} from ${pack.display_name}${extrasTag}. failed: ${detail}`,
         });
       } else {
         const allFromLocal = result.installed.every((r) => r.from_local);
@@ -286,7 +361,7 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
             : "";
         toast({
           kind: "ok",
-          text: `installed ${okCount} slot${okCount === 1 ? "" : "s"} from ${pack.display_name}${localTag}`,
+          text: `installed ${ownInstalled} slot${ownInstalled === 1 ? "" : "s"} from ${pack.display_name}${extrasTag}${localTag}`,
         });
       }
       await refresh(false);
@@ -406,10 +481,12 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
       {selectedPack && (
         <PackDetailDrawer
           pack={selectedPack}
+          siblings={findSiblingPacks(selectedPack)}
           busyKey={busyKey}
           onClose={() => setSelectedPackId(null)}
           onInstallSlot={installSlot}
           onInstallAll={() => installPackAll(selectedPack)}
+          onSelectSiblingPack={(id) => setSelectedPackId(id)}
           onSubscribe={() =>
             subscribeOnPatreon(
               selectedPack.creator?.patreon_url || "https://www.patreon.com",
@@ -1479,19 +1556,27 @@ function PackCard({
 
 function PackDetailDrawer({
   pack,
+  siblings,
   busyKey,
   onClose,
   onInstallSlot,
   onInstallAll,
+  onSelectSiblingPack,
   onSubscribe,
   onOpenPost,
   onCreatorClick,
 }: {
   pack: IndexedPack;
+  /// Other packs from the same Patreon post (different pack_id,
+  /// matching patreon_post_id). Rendered as a "from this post"
+  /// strip so the user knows what's bundled and can click into a
+  /// specific sibling's drawer.
+  siblings: IndexedPack[];
   busyKey: string | null;
   onClose: () => void;
   onInstallSlot: (slot: AnnotatedSkin) => void;
   onInstallAll: () => void;
+  onSelectSiblingPack: (packId: string) => void;
   onSubscribe: () => void;
   onOpenPost: () => void;
   onCreatorClick: () => void;
@@ -1690,6 +1775,55 @@ function PackDetailDrawer({
               onInstall={() => pack.slots[0] && onInstallSlot(pack.slots[0])}
               onSubscribe={onSubscribe}
             />
+          )}
+
+          {siblings.length > 0 && (
+            <div className="border border-border rounded">
+              <div className="label-mono px-3 py-2 border-b border-border">
+                also in this post · auto-installed alongside
+              </div>
+              <div className="divide-y divide-border">
+                {siblings.map((sib) => {
+                  const sibKindLabel =
+                    KIND_LABELS[(sib.kind ?? "character_skin") as SkinKind];
+                  const installedAll =
+                    sib.installed_count === sib.slot_count;
+                  return (
+                    <button
+                      key={sib.pack_id}
+                      type="button"
+                      onClick={() => onSelectSiblingPack(sib.pack_id)}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-left hover:bg-bg/40 transition-colors"
+                      title="open this sibling pack's details"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="font-medium truncate">
+                          {stripColorSuffix(sib.display_name)}
+                        </div>
+                        <div className="text-xs text-muted truncate">
+                          {sibKindLabel}
+                          {sib.kind === "stage" &&
+                            sib.slots[0]?.iso_target_filename &&
+                            ` · ${stageDisplay(sib.slots[0].iso_target_filename)}`}
+                          {sib.character_code &&
+                            sib.kind !== "stage" &&
+                            ` · ${characterDisplay(sib.character_code)}`}
+                          {sib.slot_count > 1 &&
+                            ` · ${sib.slot_count} slots`}
+                        </div>
+                      </div>
+                      {installedAll ? (
+                        <span className="pill-ok shrink-0">installed</span>
+                      ) : sib.installed_count > 0 ? (
+                        <span className="pill-ok shrink-0">
+                          {sib.installed_count}/{sib.slot_count}
+                        </span>
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           )}
 
           <button className="btn w-full text-xs" onClick={onOpenPost}>
