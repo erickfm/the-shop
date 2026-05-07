@@ -17,6 +17,12 @@ export default function App() {
   const [needsFirstRun, setNeedsFirstRun] = useState<boolean | null>(null);
   const [patreon, setPatreon] = useState<PatreonStatus | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  // Bumped only on logo / wordmark click. Used as a React `key` on the
+  // route's content so clicking "home" gives a clean remount (scroll
+  // top, drawer closed, search cleared, carousel re-randomized) — i.e.
+  // the user's expected "refresh the page" behavior. Distinct from
+  // refreshKey, which gates patreon-status side effects only.
+  const [homeKey, setHomeKey] = useState(0);
 
   const checkFirstRun = async () => {
     const s = await ipc.getSettings();
@@ -60,7 +66,14 @@ export default function App() {
     return <div className="p-8 text-muted">loading…</div>;
   }
 
-  const goHome = () => setRoute(patreon.connected ? "browse" : "connect");
+  const goHome = () => {
+    setRoute(patreon.connected ? "browse" : "connect");
+    setHomeKey((k) => k + 1);
+    // Pull the latest index in the background — fire-and-forget; if it
+    // fails the existing cache stays in place. Browse's own onMount
+    // re-fetches from the (possibly updated) cache after the remount.
+    ipc.refreshSkinIndex().catch(() => {});
+  };
 
   return (
     <div className="h-full flex flex-col">
@@ -129,8 +142,8 @@ export default function App() {
             connect / disconnect / first-run completion to re-fetch its
             own patreon + first-run state, but the route components stay
             mounted. */}
-        {route === "browse" && <Browse />}
-        {route === "account" && <Account />}
+        {route === "browse" && <Browse key={homeKey} />}
+        {route === "account" && <Account key={homeKey} />}
       </main>
 
       {needsFirstRun && (

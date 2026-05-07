@@ -355,7 +355,6 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
           onSubscribe={subscribeOnPatreon}
           onCreatorClick={goToCreator}
           onShowAllCreators={() => setView({ tag: "creators-index" })}
-          onRefresh={() => refresh(true)}
           onReshuffle={reshuffle}
         />
       )}
@@ -511,7 +510,6 @@ function Storefront(props: {
   onSubscribe: (url: string) => void;
   onCreatorClick: (id: string) => void;
   onShowAllCreators: () => void;
-  onRefresh: () => void;
   onReshuffle: () => void;
 }) {
   return (
@@ -600,7 +598,6 @@ function Storefront(props: {
         onCreatorClick={props.onCreatorClick}
         onShowAllCreators={props.onShowAllCreators}
         totalCreatorCount={props.totalCreatorCount}
-        onRefresh={props.onRefresh}
       />
     </div>
   );
@@ -1088,7 +1085,6 @@ function AllModsSection({
   onCreatorClick,
   onShowAllCreators,
   totalCreatorCount,
-  onRefresh,
   title,
   hideTopActions,
 }: {
@@ -1108,7 +1104,6 @@ function AllModsSection({
   onCreatorClick: (id: string) => void;
   onShowAllCreators?: () => void;
   totalCreatorCount?: number;
-  onRefresh?: () => void;
   title?: string;
   hideTopActions?: boolean;
 }) {
@@ -1126,15 +1121,6 @@ function AllModsSection({
                 {totalCreatorCount
                   ? `Browse all ${totalCreatorCount} creators →`
                   : "browse all creators →"}
-              </button>
-            )}
-            {onRefresh && (
-              <button
-                className="text-muted hover:text-white hover:underline"
-                onClick={onRefresh}
-                title="pull the latest texture index"
-              >
-                ↻ refresh index
               </button>
             )}
           </div>
