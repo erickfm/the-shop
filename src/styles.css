@@ -6,17 +6,8 @@
   html, body, #root {
     height: 100%;
   }
-  /* Both html AND body need to be transparent — the webview default
-     paints html as white and that color leaks through #root's rounded
-     corner mask, showing as opaque white wedges where the desktop
-     should be. The actual app surface lives on #root. Pairs with
-     `transparent: true` + `decorations: false` in tauri.conf.json. */
-  html {
-    background: transparent;
-  }
   body {
-    @apply text-white antialiased;
-    background: transparent;
+    @apply bg-bg text-white antialiased;
     /* The whole app reads in a print-catalog serif. Underground-shop voice:
        quiet, classical, slightly out of step with the rest of the web.
        Georgia ships everywhere and is screen-tuned; Iowan / Palatino are
@@ -27,15 +18,6 @@
        Catches data-driven copy too (pack titles, creator names) so we
        don't have to .toLowerCase() at every render site. */
     text-transform: lowercase;
-  }
-  #root {
-    @apply bg-bg;
-    border-radius: 12px;
-    overflow: hidden;
-    /* A faint outer ring so the rounded corners still read as the
-       app's edge against bright wallpapers. */
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06),
-                0 8px 32px rgb(0 0 0 / 0.45);
   }
   /* Exempt monospace text (filenames, paths, slot codes, kbd) — those
      are technical strings whose case carries meaning. */
