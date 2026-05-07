@@ -209,6 +209,23 @@ export type AnnotatedCreator = IndexedCreator & {
   backed: boolean;
   current_tier_cents: number;
   skin_count: number;
+  /// How many distinct files (deduped by filename_in_post) the user can
+  /// view+install from this creator. Drives the per-creator "download
+  /// N" button label in the cog menu's stash section.
+  viewable_count: number;
+  /// How many of those eligible files are already cached locally.
+  /// `viewable_count - stashed_count` is what the download-all button
+  /// would actually fetch.
+  stashed_count: number;
+};
+
+export type CreatorStashResult = {
+  creator_id: string;
+  creator_display: string | null;
+  total_eligible: number;
+  downloaded: number;
+  skipped_existing: number;
+  failed: { skin_id: string; error: string }[];
 };
 
 export type IndexedPack = {

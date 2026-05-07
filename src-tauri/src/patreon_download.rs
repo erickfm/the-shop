@@ -659,3 +659,155 @@ fn register_skin_file_from(
         Ok(id)
     })
 }
+
+#[derive(Debug, serde::Serialize)]
+pub struct CreatorStashResult {
+    pub creator_id: String,
+    pub creator_display: Option<String>,
+    /// Total skins eligible to download (viewable + entitled, deduped by
+    /// (creator, filename_in_post) — same dedup the count in
+    /// AnnotatedCreator.viewable_count uses).
+    pub total_eligible: usize,
+    pub downloaded: usize,
+    pub skipped_existing: usize,
+    pub failed: Vec<BulkInstallFailure>,
+}
+
+/// Mirror of `dispatch_install` minus the install_pack / install_iso_asset
+/// step. Downloads + extracts (if zip) + registers the skin_files row, but
+/// does NOT mutate the patched ISO or installed_pack tables. The user gets
+/// the bytes on disk so they can install later — handy for "I'm cancelling
+/// my Patreon sub but want to keep these files."
+async fn stash_one(
+    db: &Db,
+    client: &reqwest::Client,
+    session_cookie: &str,
+    entry: &IndexedSkinEntry,
+) -> AppResult<u64> {
+    let metadata = fetch_post_metadata(client, session_cookie, &entry.patreon_post_id).await?;
+    let (matched_filename, signed_url) =
+        pick_attachment_url(&metadata, &entry.filename_in_post).ok_or_else(|| {
+            AppError::Other(format!(
+                "attachment '{}' not found on post {}",
+                entry.filename_in_post, entry.patreon_post_id
+            ))
+        })?;
+
+    let dest = paths::skins_dir()?.join(&matched_filename);
+    let (bytes, downloaded_sha) =
+        download_to_path(client, &signed_url, session_cookie, &dest).await?;
+    if let Some(expected) = entry.sha256.as_ref() {
+        if !expected.is_empty() && !downloaded_sha.eq_ignore_ascii_case(expected) {
+            let _ = std::fs::remove_file(&dest);
+            return Err(AppError::Other(format!(
+                "integrity check failed for {}: expected {expected}, got {downloaded_sha}",
+                matched_filename
+            )));
+        }
+    }
+
+    // Match dispatch_install's on-disk shape: zips get extracted into
+    // `skins_dir/<entry.id>-extracted/<inner>` and the original archive
+    // is removed. That way a later install attempt finds the file
+    // exactly where the install path expects it (via skin_files.source_path).
+    let attachment_is_zip = is_zip_archive(&entry.filename_in_post);
+    let real_file: PathBuf = if attachment_is_zip {
+        let extracted = paths::skins_dir()?.join(format!("{}-extracted", entry.id));
+        std::fs::create_dir_all(&extracted)?;
+        let inner_name = match entry.inner_filename.as_deref() {
+            Some(n) if !n.is_empty() => n.to_string(),
+            _ => entry
+                .resolved_iso_target()
+                .ok_or_else(|| AppError::Other(
+                    "zip archive entry has no inner_filename and kind has no canonical target"
+                        .into(),
+                ))?,
+        };
+        let dest_inner = extracted.join(&inner_name);
+        zip_helper::extract_named_file(&dest, &inner_name, &dest_inner)?;
+        let _ = std::fs::remove_file(&dest);
+        dest_inner
+    } else {
+        dest
+    };
+
+    register_skin_file_from(db, entry, &real_file, &downloaded_sha, bytes)?;
+    Ok(bytes)
+}
+
+/// Bulk-download every skin from a single creator that the user can
+/// view+install but doesn't already have cached locally. Files land in
+/// `paths::skins_dir()` exactly where install would put them, so a
+/// subsequent install attempt is just the install_pack / install_iso_asset
+/// step — no re-download. Use case: "I'm not going to be subbed forever,
+/// pull everything I have access to now."
+#[tauri::command]
+pub async fn download_all_from_creator(
+    state: State<'_, AppState>,
+    creator_id: String,
+) -> AppResult<CreatorStashResult> {
+    let session_cookie = patreon::load_session_cookie(&state.db)?
+        .ok_or_else(|| AppError::Other("not connected to Patreon".into()))?;
+
+    let index = read_index(&state.db)?;
+    let creator = index
+        .creators
+        .iter()
+        .find(|c| c.id == creator_id);
+    let creator_display = creator.map(|c| c.display_name.clone());
+
+    // Build the eligible set: this creator's skins where the post is
+    // viewable (per Patreon's current_user_can_view, surfaced via
+    // viewable_posts). Dedup by filename_in_post — a 4-color pack
+    // shares one archive, no point downloading it 4 times.
+    let viewable = patreon::read_viewable_posts(&state.db).unwrap_or_default();
+    let already_stashed = skin_index::read_stashed_skin_ids(&state.db).unwrap_or_default();
+    let mut seen_files: std::collections::HashSet<String> = Default::default();
+    let mut eligible: Vec<IndexedSkinEntry> = Vec::new();
+    for skin in &index.skins {
+        if skin.creator_id != creator_id {
+            continue;
+        }
+        if !viewable.contains(&skin.patreon_post_id) {
+            continue;
+        }
+        if !seen_files.insert(skin.filename_in_post.clone()) {
+            continue;
+        }
+        eligible.push(skin.clone());
+    }
+
+    let total_eligible = eligible.len();
+    let mut downloaded = 0;
+    let mut skipped_existing = 0;
+    let mut failed: Vec<BulkInstallFailure> = Vec::new();
+
+    let client = reqwest::Client::builder()
+        .user_agent("the-shop/0.1")
+        .timeout(Duration::from_secs(120))
+        .build()
+        .map_err(|e| AppError::Other(format!("reqwest: {e}")))?;
+
+    for entry in &eligible {
+        if already_stashed.contains(&entry.id) {
+            skipped_existing += 1;
+            continue;
+        }
+        match stash_one(&state.db, &client, &session_cookie, entry).await {
+            Ok(_) => downloaded += 1,
+            Err(e) => failed.push(BulkInstallFailure {
+                skin_id: entry.id.clone(),
+                error: e.to_string(),
+            }),
+        }
+    }
+
+    Ok(CreatorStashResult {
+        creator_id,
+        creator_display,
+        total_eligible,
+        downloaded,
+        skipped_existing,
+        failed,
+    })
+}

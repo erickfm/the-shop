@@ -4,7 +4,12 @@ import { ipc } from "../lib/ipc";
 import { toast } from "../components/Toaster";
 import { busy as withBusy } from "../components/BusyOverlay";
 import { CharacterBadge } from "../components/CharacterBadge";
-import type { CharacterDef, IsoAssetRow, SkinPack } from "../lib/types";
+import type {
+  AnnotatedCreator,
+  CharacterDef,
+  IsoAssetRow,
+  SkinPack,
+} from "../lib/types";
 import { characterDisplay, packTilt, stageDisplay } from "../lib/melee";
 import type { CSSProperties } from "react";
 
@@ -20,17 +25,57 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   const [packs, setPacks] = useState<SkinPack[]>([]);
   const [chars, setChars] = useState<CharacterDef[]>([]);
   const [assets, setAssets] = useState<IsoAssetRow[]>([]);
+  const [creators, setCreators] = useState<AnnotatedCreator[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
 
   const refresh = async () => {
-    const [p, c, a] = await Promise.all([
+    const [p, c, a, cr] = await Promise.all([
       ipc.listSkinPacks(),
       ipc.listCharacters(),
       ipc.listIsoAssets(),
+      ipc.listIndexedCreators().catch(() => [] as AnnotatedCreator[]),
     ]);
     setPacks(p);
     setChars(c);
     setAssets(a);
+    setCreators(cr);
+  };
+
+  // Stash candidates: creators with at least one viewable file the user
+  // doesn't already have on disk. Sorted by remaining-to-fetch desc so
+  // the most useful targets surface first.
+  const stashCreators = useMemo(() => {
+    return creators
+      .map((c) => ({
+        creator: c,
+        remaining: Math.max(0, c.viewable_count - c.stashed_count),
+      }))
+      .filter((c) => c.creator.viewable_count > 0)
+      .sort((a, b) => b.remaining - a.remaining || b.creator.viewable_count - a.creator.viewable_count);
+  }, [creators]);
+
+  const stashAllFromCreator = async (c: AnnotatedCreator, remaining: number) => {
+    const myKey = `stash:${c.id}`;
+    setBusy(myKey);
+    try {
+      const r = await withBusy(
+        `downloading ${remaining} from ${c.display_name}…`,
+        () => ipc.downloadAllFromCreator(c.id),
+      );
+      const failedNote = r.failed.length
+        ? ` · ${r.failed.length} failed (${r.failed[0].error})`
+        : "";
+      toast({
+        kind: r.failed.length ? (r.downloaded > 0 ? "info" : "danger") : "ok",
+        text: `${c.display_name}: downloaded ${r.downloaded} · skipped ${r.skipped_existing} already on disk${failedNote}`,
+      });
+      await refresh();
+      onAfterAction?.();
+    } catch (e: any) {
+      toast({ kind: "danger", text: `download failed: ${e?.message || e}` });
+    } finally {
+      setBusy(null);
+    }
   };
 
   useEffect(() => {
@@ -266,6 +311,12 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
           + import
         </button>
       </div>
+
+      <StashSection
+        creators={stashCreators}
+        onStashAll={stashAllFromCreator}
+        busy={busy}
+      />
 
       <Section
         title="from patreon"
@@ -623,6 +674,83 @@ function Section({
           })}
         </div>
       )}
+    </section>
+  );
+}
+
+/// Per-creator bulk-download UI. For each creator the user has viewable
+/// content from, shows "X of Y already on disk" and a button to fetch
+/// the rest. Use case: cancelling a Patreon sub but wanting to keep
+/// access to everything you can still see right now. The backend
+/// download command is idempotent — clicking again after it finishes
+/// just re-checks the on-disk set and skips everything that's already
+/// there.
+function StashSection({
+  creators,
+  onStashAll,
+  busy,
+}: {
+  creators: { creator: AnnotatedCreator; remaining: number }[];
+  onStashAll: (c: AnnotatedCreator, remaining: number) => void;
+  busy: string | null;
+}) {
+  if (creators.length === 0) return null;
+  return (
+    <section>
+      <div className="flex items-baseline justify-between mb-3 gap-3">
+        <div>
+          <h3 className="section-title text-base">stash from creators</h3>
+          <p className="text-xs text-muted">
+            cache every skin you can currently view from a creator. handy
+            before letting a sub lapse — files land in your skin library
+            ready to install later.
+          </p>
+        </div>
+        <div className="text-xs text-muted shrink-0">
+          {creators.length} creator{creators.length === 1 ? "" : "s"}
+        </div>
+      </div>
+      <div className="card divide-y divide-border">
+        {creators.map(({ creator, remaining }) => {
+          const myKey = `stash:${creator.id}`;
+          const isBusy = busy === myKey;
+          const onDisk = creator.stashed_count;
+          const total = creator.viewable_count;
+          const allCached = remaining === 0;
+          return (
+            <div
+              key={creator.id}
+              className="flex items-center gap-4 p-4"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="font-medium truncate">{creator.display_name}</div>
+                <div className="text-xs text-muted truncate">
+                  {onDisk}/{total} already on disk
+                  {creator.backed && (
+                    <> · backed</>
+                  )}
+                </div>
+              </div>
+              <button
+                className={allCached ? "btn" : "btn-primary"}
+                onClick={() => onStashAll(creator, remaining)}
+                disabled={isBusy || allCached}
+                title={
+                  allCached
+                    ? "everything you can view is already cached locally"
+                    : `download ${remaining} skin file${remaining === 1 ? "" : "s"} into your library`
+                }
+              >
+                {isBusy
+                  ? "downloading…"
+                  : allCached
+                    ? "all cached"
+                    : `download ${remaining}`}
+              </button>
+            </div>
+          );
+        })}
+      </div>
     </section>
   );
 }

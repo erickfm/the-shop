@@ -187,6 +187,19 @@ pub struct AnnotatedCreator {
     pub backed: bool,
     pub current_tier_cents: i64,
     pub skin_count: i64,
+    /// How many of this creator's skin entries the user can actually
+    /// view+install — i.e. the post is in the `viewable_posts` set OR
+    /// the user's tier already covers it. The cog menu's "stash from
+    /// creators" flow uses this to decide whether to show a creator's
+    /// download-all button and how to label it ("download N").
+    #[serde(default)]
+    pub viewable_count: i64,
+    /// How many of this creator's eligible files are already cached
+    /// locally (registered in `skin_files` with a matching entry id and
+    /// the on-disk file present). Lets the UI render "5 of 47 already
+    /// on disk" without a second round-trip.
+    #[serde(default)]
+    pub stashed_count: i64,
 }
 
 /// A single pack as the user thinks about it: one Patreon post worth of slot
@@ -613,11 +626,42 @@ pub async fn list_skin_index(state: State<'_, AppState>) -> AppResult<Vec<Annota
 pub async fn list_indexed_creators(state: State<'_, AppState>) -> AppResult<Vec<AnnotatedCreator>> {
     let index = load_index_with_fallback(&state.db).await?;
     let backed_by_campaign = backed_by_campaign_id(&state).await;
+    let viewable_posts = patreon::read_viewable_posts(&state.db).unwrap_or_default();
+    let stashed_ids = read_stashed_skin_ids(&state.db).unwrap_or_default();
 
-    let mut skin_counts: std::collections::HashMap<String, i64> =
-        std::collections::HashMap::new();
+    // Per-creator: total skins, viewable skins, and skins already cached
+    // locally (registered in skin_files with the file actually present).
+    let mut skin_count: std::collections::HashMap<String, i64> = Default::default();
+    let mut viewable_count: std::collections::HashMap<String, i64> = Default::default();
+    let mut stashed_count: std::collections::HashMap<String, i64> = Default::default();
+    // Count file-uniqueness, not entry-uniqueness — a 4-color pack from
+    // one post is one file (filename_in_post) we'd download once, not 4
+    // times. Using (creator, filename_in_post) as the dedup key matches
+    // what the actual download flow does.
+    let mut seen_files: std::collections::HashSet<(String, String)> = Default::default();
+    let mut seen_viewable_files: std::collections::HashSet<(String, String)> = Default::default();
     for skin in &index.skins {
-        *skin_counts.entry(skin.creator_id.clone()).or_insert(0) += 1;
+        let key = (skin.creator_id.clone(), skin.filename_in_post.clone());
+        if seen_files.insert(key.clone()) {
+            *skin_count.entry(skin.creator_id.clone()).or_insert(0) += 1;
+        }
+        let creator = index
+            .creators
+            .iter()
+            .find(|c| c.id == skin.creator_id);
+        let backed_cents = creator
+            .and_then(|c| backed_by_campaign.get(&c.patreon_campaign_id))
+            .map(|b| b.currently_entitled_amount_cents)
+            .unwrap_or(0);
+        let tier_satisfied = backed_cents >= skin.tier_required_cents;
+        let post_viewable = viewable_posts.contains(&skin.patreon_post_id);
+        let viewable = tier_satisfied || post_viewable;
+        if viewable && seen_viewable_files.insert(key) {
+            *viewable_count.entry(skin.creator_id.clone()).or_insert(0) += 1;
+            if stashed_ids.contains(&skin.id) {
+                *stashed_count.entry(skin.creator_id.clone()).or_insert(0) += 1;
+            }
+        }
     }
 
     Ok(index
@@ -628,15 +672,42 @@ pub async fn list_indexed_creators(state: State<'_, AppState>) -> AppResult<Vec<
                 Some(b) => (true, b.currently_entitled_amount_cents),
                 None => (false, 0),
             };
-            let skin_count = *skin_counts.get(&c.id).unwrap_or(&0);
             AnnotatedCreator {
+                viewable_count: *viewable_count.get(&c.id).unwrap_or(&0),
+                stashed_count: *stashed_count.get(&c.id).unwrap_or(&0),
+                skin_count: *skin_count.get(&c.id).unwrap_or(&0),
                 creator: c,
                 backed,
                 current_tier_cents: cents,
-                skin_count,
             }
         })
         .collect())
+}
+
+/// Set of `IndexedSkinEntry::id` values that are already cached locally
+/// — i.e. there's a `skin_files` row pointing at a real on-disk file.
+/// Used by both list_indexed_creators (for the per-creator stash count)
+/// and patreon_download::download_all_from_creator (to skip re-downloads).
+pub fn read_stashed_skin_ids(db: &Db) -> AppResult<std::collections::HashSet<String>> {
+    db.with_conn(|c| {
+        let mut set = std::collections::HashSet::new();
+        let mut stmt = c.prepare(
+            "SELECT pack_name, source_path FROM skin_files \
+             WHERE source = 'patreon' AND pack_name IS NOT NULL",
+        )?;
+        let rows = stmt.query_map([], |r| {
+            Ok((r.get::<_, String>(0)?, r.get::<_, String>(1)?))
+        })?;
+        for row in rows {
+            let (pack_name, source_path) = row?;
+            // Verify the on-disk file actually still exists — a row
+            // pointing at a deleted file is stale and shouldn't count.
+            if std::path::Path::new(&source_path).exists() {
+                set.insert(pack_name);
+            }
+        }
+        Ok(set)
+    })
 }
 
 /// "Is this index entry currently installed?" — the set of identifiers we

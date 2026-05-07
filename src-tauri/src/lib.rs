@@ -348,6 +348,7 @@ pub fn run() {
             skin_index::list_indexed_creators,
             patreon_download::install_patreon_skin,
             patreon_download::install_patreon_skins_bulk,
+            patreon_download::download_all_from_creator,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

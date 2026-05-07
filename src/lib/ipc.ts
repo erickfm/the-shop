@@ -8,6 +8,7 @@ import type {
   BrowserProbe,
   BulkDeleteReport,
   CharacterDef,
+  CreatorStashResult,
   DeletePackReport,
   DetectedPaths,
   ImportReport,
@@ -73,6 +74,8 @@ export const ipc = {
   listIndexedPacks: () => invoke<IndexedPack[]>("list_indexed_packs"),
   listIndexedCreators: () =>
     invoke<AnnotatedCreator[]>("list_indexed_creators"),
+  downloadAllFromCreator: (creatorId: string) =>
+    invoke<CreatorStashResult>("download_all_from_creator", { creatorId }),
   installPatreonSkin: (skinId: string) =>
     invoke<PatreonInstallResult>("install_patreon_skin", { skinId }),
   installPatreonSkinsBulk: (skinIds: string[]) =>
