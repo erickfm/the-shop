@@ -56,6 +56,17 @@ export type SkinPack = {
   source: "manual" | "patreon";
   source_creator_id: string | null;
   source_creator_display: string | null;
+  /// Pulled from the cached skin index when the pack came from
+  /// patreon — lets the cog menu render the same hero image users
+  /// saw on the storefront. Null for manual imports or older
+  /// patreon installs from before we cached the index.
+  preview_url: string | null;
+  /// "animelee" / "vanilla" / null. Surfaces the same flavor pill
+  /// the storefront uses.
+  format: string | null;
+  /// Pack-level display name (e.g. "Frieza Mewtwo") rather than the
+  /// per-slot variant string skin_files stores.
+  pack_display_name: string | null;
 };
 
 export type ImportFailure = {

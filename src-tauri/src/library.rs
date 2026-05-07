@@ -49,6 +49,27 @@ pub struct SkinPack {
     pub source: String,
     pub source_creator_id: Option<String>,
     pub source_creator_display: Option<String>,
+    /// Preview image url, looked up in the cached skin index by
+    /// matching one of the pack's slot pack_names against
+    /// IndexedSkinEntry.id. Lets the cog menu's "my stuff" cards
+    /// render the same hero image users see on the storefront. None
+    /// for manually-imported packs (no index entry to look up) and
+    /// for patreon entries the user installed before we knew about
+    /// the source post.
+    #[serde(default)]
+    pub preview_url: Option<String>,
+    /// Format flavor (animelee / vanilla / null) — also pulled from
+    /// the index entry. Surfaces the same blue "animelee" pill the
+    /// storefront uses so a user can tell at a glance which version
+    /// of a creator's skin they have installed.
+    #[serde(default)]
+    pub format: Option<String>,
+    /// Pack-level display name from the index — e.g. "Frieza Mewtwo"
+    /// rather than the per-slot variant title. Falls back to the
+    /// individual entry's display_name (which is what skin_files
+    /// stores) when missing. Empty for manual imports.
+    #[serde(default)]
+    pub pack_display_name: Option<String>,
 }
 
 #[derive(Debug, Serialize)]
@@ -603,6 +624,57 @@ pub fn list_packs(db: &Db) -> AppResult<Vec<SkinPack>> {
             .map(|(_, _, _, actual)| actual.clone())
     };
 
+    // One-time read of the cached skin index so we can enrich each
+    // patreon-installed pack with its preview image, format, and
+    // pack-level display name. The cog-menu cards otherwise look
+    // nothing like the storefront cards (just a CharacterBadge
+    // placeholder), and users get confused that they "lost" the
+    // visual on install.
+    let index_by_entry_id: std::collections::HashMap<String, IndexedEntryMeta> = db
+        .with_conn(|c| {
+            let json: Option<String> = c
+                .query_row(
+                    "SELECT json FROM skin_index_cache WHERE id = 1",
+                    [],
+                    |r| r.get(0),
+                )
+                .ok();
+            let mut map = std::collections::HashMap::new();
+            if let Some(s) = json {
+                if let Ok(v) = serde_json::from_str::<serde_json::Value>(&s) {
+                    if let Some(arr) = v.get("skins").and_then(|s| s.as_array()) {
+                        for skin in arr {
+                            let id = skin
+                                .get("id")
+                                .and_then(|v| v.as_str())
+                                .map(|s| s.to_string());
+                            if let Some(id) = id {
+                                map.insert(
+                                    id,
+                                    IndexedEntryMeta {
+                                        preview_url: skin
+                                            .get("preview_url")
+                                            .and_then(|v| v.as_str())
+                                            .map(|s| s.to_string()),
+                                        format: skin
+                                            .get("format")
+                                            .and_then(|v| v.as_str())
+                                            .map(|s| s.to_string()),
+                                        pack_display_name: skin
+                                            .get("pack_display_name")
+                                            .and_then(|v| v.as_str())
+                                            .map(|s| s.to_string()),
+                                    },
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+            Ok(map)
+        })
+        .unwrap_or_default();
+
     let mut grouped: std::collections::BTreeMap<(String, String), Vec<SkinFileRow>> =
         std::collections::BTreeMap::new();
 
@@ -652,6 +724,14 @@ pub fn list_packs(db: &Db) -> AppResult<Vec<SkinPack>> {
         slots.sort_by(|a, b| a.slot_code.cmp(&b.slot_code));
         let total = slots.len();
         let installed_count = slots.iter().filter(|s| s.installed).count();
+        // Look up the matching IndexedSkinEntry via pack_name (which
+        // equals entry.id for patreon installs). Any of the pack's
+        // slot-level pack_names points back into the index — they all
+        // share preview_url / format / pack_display_name at the
+        // index's pack_id level. We use `pack_name` directly here:
+        // for patreon character_skin packs, install_pack registers
+        // skin_files.pack_name as entry.id.
+        let meta = index_by_entry_id.get(&pack_name).cloned();
         packs.push(SkinPack {
             character_code: char_code,
             character_display: char_def.display.to_string(),
@@ -662,8 +742,18 @@ pub fn list_packs(db: &Db) -> AppResult<Vec<SkinPack>> {
             source: pack_source,
             source_creator_id: pack_creator_id,
             source_creator_display: pack_creator_display,
+            preview_url: meta.as_ref().and_then(|m| m.preview_url.clone()),
+            format: meta.as_ref().and_then(|m| m.format.clone()),
+            pack_display_name: meta.as_ref().and_then(|m| m.pack_display_name.clone()),
         });
     }
 
     Ok(packs)
+}
+
+#[derive(Debug, Clone)]
+struct IndexedEntryMeta {
+    preview_url: Option<String>,
+    format: Option<String>,
+    pack_display_name: Option<String>,
 }

@@ -4,6 +4,7 @@ import { ipc } from "../lib/ipc";
 import { toast } from "../components/Toaster";
 import { busy as withBusy } from "../components/BusyOverlay";
 import { CharacterBadge } from "../components/CharacterBadge";
+import { SafeImage } from "../components/SafeImage";
 import type {
   AnnotatedCreator,
   CharacterDef,
@@ -581,10 +582,19 @@ function PackGrid({
                 className="card tactile overflow-hidden flex flex-col"
                 style={packTilt(myKey) as CSSProperties}
               >
-                <div className="relative aspect-square bg-bg flex items-center justify-center">
-                  <CharacterBadge code={p.character_code} size={120} />
+                <div className="relative aspect-square bg-bg flex items-center justify-center overflow-hidden">
+                  {p.preview_url ? (
+                    <SafeImage
+                      src={p.preview_url}
+                      alt={p.pack_display_name || p.pack_name}
+                      className="max-w-full max-h-full object-contain"
+                      fallback={<CharacterBadge code={p.character_code} size={120} />}
+                    />
+                  ) : (
+                    <CharacterBadge code={p.character_code} size={120} />
+                  )}
                   <span
-                    className="absolute top-2 left-2 text-[10px] px-1.5 py-0.5 rounded bg-surface/90 border border-border text-muted"
+                    className="label-mono absolute top-2 left-2 px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white"
                     title={
                       p.source === "patreon"
                         ? `installed from Patreon${
@@ -597,24 +607,39 @@ function PackGrid({
                   >
                     {p.source === "patreon" ? "patreon" : "imported"}
                   </span>
+                  {p.slots.length > 1 && (
+                    <span className="label-mono absolute top-2 right-2 px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white">
+                      {p.slots.length} slots
+                    </span>
+                  )}
+                  {(p.fully_installed || p.partially_installed) && (
+                    <span className="label-mono absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-ok/30 border border-ok text-ok">
+                      {p.fully_installed
+                        ? "installed"
+                        : `${p.slots.filter((s) => s.installed).length}/${p.slots.length}`}
+                    </span>
+                  )}
                 </div>
                 <div className="p-4 space-y-3 flex-1 flex flex-col">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <div className="text-base truncate">
-                        {p.pack_name}
+                      <div className="flex items-center gap-2">
+                        <div className="text-base truncate flex-1">
+                          {p.pack_display_name || p.pack_name}
+                        </div>
+                        {p.format === "animelee" && (
+                          <span
+                            className="label-mono px-1.5 py-0.5 rounded bg-bg border border-accent/40 text-accent shrink-0"
+                            title="animelee — cel-shaded cartoon style. unmarked / vanilla skins keep Melee's original look."
+                          >
+                            {p.format}
+                          </span>
+                        )}
                       </div>
                       <div className="text-xs text-muted truncate">
-                        {p.character_display} · {p.slots.length} slot
-                        {p.slots.length === 1 ? "" : "s"}
+                        {p.character_display}
                         {p.source === "patreon" && p.source_creator_display && (
                           <> · by {p.source_creator_display}</>
-                        )}
-                        {p.fully_installed && (
-                          <span className="text-ok"> · installed</span>
-                        )}
-                        {p.partially_installed && (
-                          <span className="text-accent"> · partial</span>
                         )}
                       </div>
                     </div>
