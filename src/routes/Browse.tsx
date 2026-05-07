@@ -1740,6 +1740,9 @@ function SlotRow({
         )}
       </div>
       {slot.installed ? (
+        // Single-source-of-truth state: green pill says "installed",
+        // no parallel disabled button. The button column collapses
+        // when there's no action to offer — see below.
         <span className="pill-ok shrink-0">installed</span>
       ) : !slot.tier_satisfied ? (
         <span
@@ -1749,25 +1752,23 @@ function SlotRow({
           {dollars(slot.tier_required_cents)} tier
         </span>
       ) : null}
-      <div className="shrink-0">
-        {slot.installed ? (
-          <button className="btn text-xs" disabled>
-            Installed
-          </button>
-        ) : slot.tier_satisfied ? (
-          <button
-            className="btn-primary text-xs"
-            onClick={onInstall}
-            disabled={busy}
-          >
-            {busy ? "installing…" : "install"}
-          </button>
-        ) : (
-          <button className="btn text-xs" onClick={onSubscribe}>
-            Subscribe
-          </button>
-        )}
-      </div>
+      {!slot.installed && (
+        <div className="shrink-0">
+          {slot.tier_satisfied ? (
+            <button
+              className="btn-primary text-xs"
+              onClick={onInstall}
+              disabled={busy}
+            >
+              {busy ? "installing…" : "install"}
+            </button>
+          ) : (
+            <button className="btn text-xs" onClick={onSubscribe}>
+              Subscribe
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
