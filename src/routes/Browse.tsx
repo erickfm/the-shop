@@ -3,7 +3,7 @@ import { open as openExternal } from "@tauri-apps/plugin-shell";
 import { ipc } from "../lib/ipc";
 import { toast } from "../components/Toaster";
 import { busy as withBusy } from "../components/BusyOverlay";
-import { CharacterBadge } from "../components/CharacterBadge";
+import { NoPreview } from "../components/NoPreview";
 import { SafeImage } from "../components/SafeImage";
 import type {
   AnnotatedCreator,
@@ -708,13 +708,13 @@ function FeaturedHero({
           className="w-full h-full object-cover"
           fallback={
             <div className="w-full h-full flex items-center justify-center">
-              <CharacterBadge code={pack.character_code} size={240} />
+              <NoPreview characterCode={pack.character_code} size="lg" />
             </div>
           }
         />
       ) : (
         <div className="w-full h-full flex items-center justify-center">
-          <CharacterBadge code={pack.character_code} size={240} />
+          <NoPreview characterCode={pack.character_code} size="lg" />
         </div>
       )}
 
@@ -1037,10 +1037,10 @@ function MiniPackCard({
             src={previews[0]}
             alt={pack.display_name}
             className="max-w-full max-h-full object-contain transition-transform group-hover:scale-[1.04]"
-            fallback={<CharacterBadge code={pack.character_code} size={80} />}
+            fallback={<NoPreview characterCode={pack.character_code} size="sm" />}
           />
         ) : (
-          <CharacterBadge code={pack.character_code} size={80} />
+          <NoPreview characterCode={pack.character_code} size="sm" />
         )}
         {isMulti && (
           <span className="label-mono absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white">
@@ -1347,10 +1347,10 @@ function PackCard({
             src={previews[0]}
             alt={pack.display_name}
             className="max-w-full max-h-full object-contain transition-transform group-hover:scale-[1.02]"
-            fallback={<CharacterBadge code={pack.character_code} size={120} />}
+            fallback={<NoPreview characterCode={pack.character_code} size="md" />}
           />
         ) : (
-          <CharacterBadge code={pack.character_code} size={120} />
+          <NoPreview characterCode={pack.character_code} size="md" />
         )}
         {extra > 0 && (
           <span className="label-mono absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white">
@@ -1602,11 +1602,11 @@ function PackDetailDrawer({
                 alt={pack.display_name}
                 className="block max-w-full max-h-[70vh] w-auto h-auto object-contain"
                 fallback={
-                  <CharacterBadge code={pack.character_code} size={200} />
+                  <NoPreview characterCode={pack.character_code} size="lg" />
                 }
               />
             ) : (
-              <CharacterBadge code={pack.character_code} size={200} />
+              <NoPreview characterCode={pack.character_code} size="lg" />
             )}
           </div>
           {previews.length > 1 && (

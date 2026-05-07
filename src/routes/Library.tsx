@@ -3,7 +3,7 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { ipc } from "../lib/ipc";
 import { toast } from "../components/Toaster";
 import { busy as withBusy } from "../components/BusyOverlay";
-import { CharacterBadge } from "../components/CharacterBadge";
+import { NoPreview } from "../components/NoPreview";
 import { SafeImage } from "../components/SafeImage";
 import type {
   AnnotatedCreator,
@@ -345,7 +345,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
       />
 
       <SourceGroup
-        title="imported by you"
+        title="locally imported"
         subtitle={
           <>
             files you dropped in by hand (
@@ -588,10 +588,10 @@ function PackGrid({
                       src={p.preview_url}
                       alt={p.pack_display_name || p.pack_name}
                       className="max-w-full max-h-full object-contain"
-                      fallback={<CharacterBadge code={p.character_code} size={120} />}
+                      fallback={<NoPreview characterCode={p.character_code} />}
                     />
                   ) : (
-                    <CharacterBadge code={p.character_code} size={120} />
+                    <NoPreview characterCode={p.character_code} />
                   )}
                   <span
                     className="label-mono absolute top-2 left-2 px-1.5 py-0.5 rounded bg-bg/80 border border-border text-white"

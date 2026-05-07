@@ -104,7 +104,7 @@ export default function App() {
           aria-label="home"
           className="shrink-0 flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
-          <Logo size={36} />
+          <Logo size={44} />
           <Wordmark />
         </button>
         <div className="flex items-center gap-5 shrink-0 text-sm">
