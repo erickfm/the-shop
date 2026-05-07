@@ -341,6 +341,7 @@ pub fn run() {
             patreon::patreon_status,
             patreon::patreon_disconnect,
             patreon::list_backed_creators,
+            patreon::refresh_viewable_posts,
             skin_index::refresh_skin_index,
             skin_index::list_skin_index,
             skin_index::list_indexed_packs,

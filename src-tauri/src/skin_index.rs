@@ -576,6 +576,13 @@ pub async fn list_skin_index(state: State<'_, AppState>) -> AppResult<Vec<Annota
         .map(|c| (c.id.clone(), c.clone()))
         .collect();
     let installed_set = read_installed_pack_names(&state.db)?;
+    // Patreon's per-post `current_user_can_view: true` is the
+    // authoritative gate — `tier_satisfied` from membership math
+    // undercounts because /api/current_user?include=memberships hides
+    // former patrons who still have through-end-of-period access. If
+    // the post is in this set, we accept it as available regardless of
+    // the computed tier.
+    let viewable_posts = patreon::read_viewable_posts(&state.db).unwrap_or_default();
 
     let mut out = Vec::with_capacity(index.skins.len());
     for skin in index.skins {
@@ -587,7 +594,8 @@ pub async fn list_skin_index(state: State<'_, AppState>) -> AppResult<Vec<Annota
             Some(b) => (true, b.currently_entitled_amount_cents),
             None => (false, 0),
         };
-        let tier_satisfied = current_tier_cents >= skin.tier_required_cents;
+        let tier_satisfied = current_tier_cents >= skin.tier_required_cents
+            || viewable_posts.contains(&skin.patreon_post_id);
         let installed = installed_set.contains(&skin.id);
         out.push(AnnotatedSkin {
             entry: skin,

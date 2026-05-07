@@ -144,6 +144,22 @@ CREATE TABLE IF NOT EXISTS installed_iso_asset (
   source_skin_file_id INTEGER,
   installed_at INTEGER NOT NULL
 );
+
+-- Per-post `current_user_can_view: true` set, populated from
+-- /api/posts?filter[campaign_id]=X&fields[post]=current_user_can_view.
+-- This is the ground-truth signal from Patreon for "can the logged-in
+-- user actually view this post's contents." Necessary because:
+--   * Patreon's /api/current_user?include=memberships hides former
+--     patrons even when they still have entitled-through-end-of-period
+--     access, so our tier_satisfied calc undercounts viewability.
+--   * Some creators publish posts as "patrons" (any paid pledge) but
+--     those posts also seem to get unlocked to non-patrons after some
+--     delay — the post-level signal accounts for that.
+-- Cleared on disconnect; refreshed alongside memberships.
+CREATE TABLE IF NOT EXISTS viewable_posts (
+  patreon_post_id TEXT PRIMARY KEY,
+  fetched_at INTEGER NOT NULL
+);
 "#;
 
 fn ensure_column(conn: &Connection, table: &str, column: &str, decl: &str) -> AppResult<()> {

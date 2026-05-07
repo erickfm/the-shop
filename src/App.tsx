@@ -33,7 +33,21 @@ export default function App() {
   const refreshPatreon = async () => {
     try {
       const s = await ipc.patreonStatus();
-      setPatreon(s);
+      // Use functional setState so we can compare prev → next and only
+      // kick off the heavy viewable-post refresh on a true
+      // (disconnected → connected) transition. We deliberately don't
+      // re-fetch on every refreshKey bump (those fire on each install /
+      // first-run too) — the home-button reload path is the user-driven
+      // refresh. This is the authoritative gate for "can the user
+      // actually install this skin" — see refresh_viewable_posts in
+      // patreon.rs for why memberships alone aren't enough.
+      setPatreon((prev) => {
+        const wasConnected = prev?.connected ?? false;
+        if (s.connected && !wasConnected) {
+          ipc.refreshViewablePosts().catch(() => {});
+        }
+        return s;
+      });
       setRoute((r) => {
         // account stays open across (dis)connects so the user can still
         // reach settings + reconnect controls; browse routes to connect
@@ -73,6 +87,12 @@ export default function App() {
     // fails the existing cache stays in place. Browse's own onMount
     // re-fetches from the (possibly updated) cache after the remount.
     ipc.refreshSkinIndex().catch(() => {});
+    // Also refresh per-post viewability while we're at it — the user's
+    // entitlement may have changed since session start (cancellation
+    // ages out, new sub kicks in, etc.).
+    if (patreon.connected) {
+      ipc.refreshViewablePosts().catch(() => {});
+    }
   };
 
   return (

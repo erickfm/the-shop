@@ -102,6 +102,10 @@ pub fn save_session(db: &Db, cookie: &str, user: &PatreonUser) -> AppResult<()> 
 pub fn clear_session(db: &Db) -> AppResult<()> {
     db.with_conn(|c| {
         c.execute("DELETE FROM patreon_session WHERE id = 1", [])?;
+        // Per-user gate state — drop with the session so reconnecting
+        // as a different user gets a fresh viewable set.
+        c.execute("DELETE FROM viewable_posts", [])?;
+        c.execute("DELETE FROM patreon_memberships_cache", [])?;
         Ok(())
     })
 }
@@ -589,4 +593,154 @@ pub async fn list_backed_creators(
     write_memberships_cache(&state.db, &body)?;
     let json: serde_json::Value = serde_json::from_str(&body)?;
     Ok(parse_memberships(&json))
+}
+
+/// Walk a creator's post timeline and collect every post id where
+/// Patreon reports `current_user_can_view: true`. This is the
+/// authoritative gate — Patreon's `current_user.memberships` hides
+/// former patrons who still have entitled-through-period access, so
+/// purely tier-based gating undercounts what the user can actually
+/// install. Pages until exhausted; capped to avoid runaway calls
+/// against creators with thousands of posts.
+async fn fetch_viewable_posts_for_campaign(
+    client: &reqwest::Client,
+    session_cookie: &str,
+    campaign_id: &str,
+) -> AppResult<Vec<String>> {
+    let mut out: Vec<String> = Vec::new();
+    let mut next: Option<String> = Some(format!(
+        "https://www.patreon.com/api/posts?filter[campaign_id]={campaign_id}\
+         &fields[post]=current_user_can_view\
+         &page[size]=40&sort=-published_at"
+    ));
+    let mut pages = 0u32;
+    while let Some(url) = next.take() {
+        if pages >= 50 {
+            // Hard ceiling — 50 pages × 40 = 2000 posts is more than any
+            // creator we ship has. Anything beyond is a runaway loop.
+            break;
+        }
+        pages += 1;
+        let resp = client
+            .get(&url)
+            .header("Cookie", format!("{SESSION_COOKIE_NAME}={session_cookie}"))
+            .header("Accept", "application/json")
+            .send()
+            .await
+            .map_err(|e| AppError::Other(format!("patreon http: {e}")))?;
+        if !resp.status().is_success() {
+            return Err(AppError::Other(format!(
+                "patreon posts (campaign {campaign_id}): HTTP {}",
+                resp.status()
+            )));
+        }
+        let body: serde_json::Value = resp
+            .json()
+            .await
+            .map_err(|e| AppError::Other(format!("patreon json: {e}")))?;
+        if let Some(arr) = body.get("data").and_then(|v| v.as_array()) {
+            for p in arr {
+                let viewable = p
+                    .pointer("/attributes/current_user_can_view")
+                    .and_then(|v| v.as_bool())
+                    .unwrap_or(false);
+                if !viewable {
+                    continue;
+                }
+                if let Some(id) = p.get("id").and_then(|v| v.as_str()) {
+                    out.push(id.to_string());
+                }
+            }
+        }
+        next = body
+            .pointer("/links/next")
+            .and_then(|v| v.as_str())
+            .map(|s| s.to_string());
+    }
+    Ok(out)
+}
+
+fn write_viewable_posts(db: &Db, post_ids: &[String]) -> AppResult<()> {
+    let now = now_secs();
+    db.with_conn(|c| {
+        let tx = c.unchecked_transaction()?;
+        tx.execute("DELETE FROM viewable_posts", [])?;
+        {
+            let mut stmt = tx.prepare(
+                "INSERT OR REPLACE INTO viewable_posts (patreon_post_id, fetched_at) \
+                 VALUES (?1, ?2)",
+            )?;
+            for pid in post_ids {
+                stmt.execute(rusqlite::params![pid, now])?;
+            }
+        }
+        tx.commit()?;
+        Ok(())
+    })
+}
+
+pub fn read_viewable_posts(db: &Db) -> AppResult<std::collections::HashSet<String>> {
+    db.with_conn(|c| {
+        let mut stmt = c.prepare("SELECT patreon_post_id FROM viewable_posts")?;
+        let rows = stmt.query_map([], |r| r.get::<_, String>(0))?;
+        let mut set = std::collections::HashSet::new();
+        for row in rows {
+            set.insert(row?);
+        }
+        Ok(set)
+    })
+}
+
+/// Refresh the viewable-post set across every creator in the bundled
+/// skin index. Called after Patreon connect and on browse mount; cheap
+/// enough (~13 creators × few pages) that we don't bother with TTL
+/// caching beyond the DB table itself.
+#[tauri::command]
+pub async fn refresh_viewable_posts(state: State<'_, AppState>) -> AppResult<usize> {
+    let cookie = load_session_cookie(&state.db)?
+        .ok_or_else(|| AppError::Other("not connected to Patreon".into()))?;
+    // Pull campaign ids from the cached index — same source the rest of
+    // the app uses to enumerate creators.
+    let campaign_ids: Vec<String> = state.db.with_conn(|c| {
+        let json: Option<String> = c
+            .query_row(
+                "SELECT json FROM skin_index_cache WHERE id = 1",
+                [],
+                |r| r.get(0),
+            )
+            .ok();
+        let mut ids: Vec<String> = Vec::new();
+        if let Some(s) = json {
+            if let Ok(v) = serde_json::from_str::<serde_json::Value>(&s) {
+                if let Some(arr) = v.get("creators").and_then(|c| c.as_array()) {
+                    for c in arr {
+                        if let Some(id) = c
+                            .get("patreon_campaign_id")
+                            .and_then(|v| v.as_str())
+                        {
+                            ids.push(id.to_string());
+                        }
+                    }
+                }
+            }
+        }
+        Ok(ids)
+    })?;
+
+    let client = build_client()?;
+    let mut all_ids: Vec<String> = Vec::new();
+    for cid in campaign_ids {
+        match fetch_viewable_posts_for_campaign(&client, &cookie, &cid).await {
+            Ok(mut ids) => all_ids.append(&mut ids),
+            Err(e) => {
+                // Don't fail the whole refresh on one bad campaign — log
+                // and continue. The user still gets the gate corrected
+                // for the creators that succeeded.
+                eprintln!("viewable_posts: campaign {cid} failed: {e}");
+            }
+        }
+    }
+    let count = all_ids.len();
+    write_viewable_posts(&state.db, &all_ids)?;
+    Ok(count)
 }

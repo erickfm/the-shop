@@ -67,6 +67,7 @@ export const ipc = {
   patreonDisconnect: () => invoke<void>("patreon_disconnect"),
   listBackedCreators: (forceRefresh = false) =>
     invoke<BackedCreator[]>("list_backed_creators", { forceRefresh }),
+  refreshViewablePosts: () => invoke<number>("refresh_viewable_posts"),
   refreshSkinIndex: () => invoke<SkinIndex>("refresh_skin_index"),
   listSkinIndex: () => invoke<AnnotatedSkin[]>("list_skin_index"),
   listIndexedPacks: () => invoke<IndexedPack[]>("list_indexed_packs"),
