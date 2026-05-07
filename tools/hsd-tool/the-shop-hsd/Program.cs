@@ -34,8 +34,84 @@ return args[0] switch
     "to-gltf" => ToGltf(args),
     "validate-costume" => ValidateCostume(args),
     "validate-stage" => ValidateStage(args),
+    "detect-mex" => DetectMex(args),
     _ => Usage(),
 };
+
+// Probe a .usd (typically MnSlChr.usd or IfAll.usd) for m-ex's restructured
+// symbols. If `mexSelectChr` exists in MnSlChr.usd, the user has m-ex applied
+// for CSPs; if `Stc_icns` exists in IfAll.usd, m-ex is applied for stock icons.
+// Either symbol present = m-ex DOL patches are active.
+//
+// Emits one JSON line: {"file":"...","mex_select_chr":bool,"stc_icns":bool,
+//                       "csp_stride":int|null, "stock_stride":int|null,
+//                       "csp_count":int|null, "stock_count":int|null,
+//                       "roots":[...]}
+static int DetectMex(string[] args)
+{
+    if (args.Length < 2) return Usage();
+    var path = args[1];
+    HSDRawFile file;
+    try { file = new HSDRawFile(path); }
+    catch (Exception e)
+    {
+        Console.Error.WriteLine($"detect-mex failed to open: {e.Message}");
+        return 3;
+    }
+
+    bool hasMexSelectChr = false;
+    bool hasStcIcns = false;
+    int? cspStride = null;
+    int? stockStride = null;
+    int? cspCount = null;
+    int? stockCount = null;
+    var rootNames = new List<string>();
+
+    foreach (var r in file.Roots)
+    {
+        rootNames.Add(r.Name ?? "");
+        if (r.Name == "mexSelectChr" && r.Data is HSDRaw.MEX.Menus.MEX_mexSelectChr msc)
+        {
+            hasMexSelectChr = true;
+            cspStride = msc.CSPStride;
+            try
+            {
+                var keys = msc.CSPMatAnim?.TextureAnimation?.AnimationObject?.FObjDesc?.GetDecodedKeys();
+                if (keys != null) cspCount = keys.Count;
+            }
+            catch { }
+        }
+        if (r.Name == "Stc_icns" && r.Data is HSDRaw.MEX.MEX_Stock stc)
+        {
+            hasStcIcns = true;
+            stockStride = stc.Stride;
+            try
+            {
+                var keys = stc.MatAnimJoint?.MaterialAnimation?.TextureAnimation?.AnimationObject?.FObjDesc?.GetDecodedKeys();
+                if (keys != null) stockCount = keys.Count;
+            }
+            catch { }
+        }
+    }
+
+    var sb = new System.Text.StringBuilder();
+    sb.Append("{\"file\":\"").Append(JsonEscape(path)).Append('"');
+    sb.Append(",\"mex_select_chr\":").Append(hasMexSelectChr ? "true" : "false");
+    sb.Append(",\"stc_icns\":").Append(hasStcIcns ? "true" : "false");
+    sb.Append(",\"csp_stride\":").Append(cspStride.HasValue ? cspStride.Value.ToString() : "null");
+    sb.Append(",\"stock_stride\":").Append(stockStride.HasValue ? stockStride.Value.ToString() : "null");
+    sb.Append(",\"csp_count\":").Append(cspCount.HasValue ? cspCount.Value.ToString() : "null");
+    sb.Append(",\"stock_count\":").Append(stockCount.HasValue ? stockCount.Value.ToString() : "null");
+    sb.Append(",\"roots\":[");
+    for (int i = 0; i < rootNames.Count; i++)
+    {
+        if (i > 0) sb.Append(',');
+        sb.Append('"').Append(JsonEscape(rootNames[i])).Append('"');
+    }
+    sb.Append("]}");
+    Console.WriteLine(sb.ToString());
+    return 0;
+}
 
 // One-off diagnostic. For each DObj/MOBJ in the file, print the TOBJ list with
 // flags + sizes so we can see what we're picking vs. what's actually in the file.
