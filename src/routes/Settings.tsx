@@ -117,16 +117,23 @@ export function Settings({ onChange }: { onChange?: () => void }) {
   return (
     <div className="p-8 max-w-5xl space-y-8">
       <Section title="vanilla melee iso">
-        <div className="flex gap-2">
-          <input
-            className="input font-mono"
-            value={settings.vanilla_iso_path ?? ""}
-            readOnly
-            placeholder="no iso selected"
-          />
-          <button className="btn-primary" onClick={pickIso} disabled={isoBusy}>
-            {isoBusy ? "reading…" : "browse…"}
-          </button>
+        <div className="space-y-1">
+          <div className="text-xs text-muted">iso path</div>
+          <div className="flex gap-2">
+            <input
+              className="input font-mono"
+              value={settings.vanilla_iso_path ?? ""}
+              readOnly
+              placeholder="no iso selected"
+            />
+            <button
+              className="btn-primary whitespace-nowrap"
+              onClick={pickIso}
+              disabled={isoBusy}
+            >
+              {isoBusy ? "reading…" : "browse…"}
+            </button>
+          </div>
         </div>
         {settings.vanilla_iso && (
           <div className="text-xs text-muted font-mono space-y-1">
