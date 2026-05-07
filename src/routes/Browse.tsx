@@ -746,7 +746,7 @@ function FeaturedHero({
                 <span>{stageDisplay(pack.slots[0].iso_target_filename)}</span>
               </>
             )}
-            {pack.format && (
+            {pack.format === "animelee" && (
               <>
                 <span>·</span>
                 <span className="text-accent">{pack.format}</span>
@@ -1380,10 +1380,10 @@ function PackCard({
             <span className="label-mono px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
               {KIND_LABELS[(pack.kind ?? "character_skin") as SkinKind]}
             </span>
-            {pack.format && (
+            {pack.format === "animelee" && (
               <span
                 className="label-mono px-1.5 py-0.5 rounded bg-bg border border-accent/40 text-accent shrink-0"
-                title={`format: ${pack.format}`}
+                title="animelee — cel-shaded cartoon style. unmarked / vanilla skins keep Melee's original look."
               >
                 {pack.format}
               </span>
@@ -1562,7 +1562,7 @@ function PackDetailDrawer({
   ) {
     metaPills.push(slotDisplay(pack.slots[0].slot_code));
   }
-  if (pack.format) {
+  if (pack.format === "animelee") {
     metaPills.push(pack.format);
   }
   metaPills.push(
