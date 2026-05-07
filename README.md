@@ -17,6 +17,7 @@ We don't run a server. Your Patreon session, your machine, your file. We're just
 - **Honors your real entitlements.** Uses Patreon's per-post `current_user_can_view`, not just tier math, so a former-patron with through-end-of-period access sees everything they can actually install.
 - **Slippi safety verdicts on every entry.** Skeleton-compare for character skins, collision-compare for stages. A red `may desync` pill or green `✓ slippi` pill on every card before you install.
 - **One-click install for everything.** Character skins ride the ISO patcher; stages / effects / UI inject at their HAL filename; texture packs copy into Slippi's `Load/Textures/GALE01/`. Zip and 7z archives unpack to the right inner file automatically.
+- **Bundle-aware installs.** When a creator ships a character skin alongside its CSP / stock icon / matching effect in the same Patreon post, installing the skin pulls the siblings down too — no hunting through cards to find the matching CSP.
 - **Stash before you cancel.** Per-creator "download N" button caches every skin you can currently view from that creator. Critical when a sub is about to lapse — files stay on disk, you can reinstall any of them later with no re-download and no Patreon required.
 - **Local-first reinstall.** Anything you've installed before reinstalls instantly from your library. Cancelled your sub? You still have your skins.
 - **One-click vanilla.** "Back to vanilla Melee" undoes every install and points Slippi back at your original ISO. Your downloaded files stay; reinstall is one click.
@@ -51,7 +52,7 @@ In order of UX quality:
 ## Two pages
 
 - **Storefront** — what's available. Filterable by kind / character / creator. Big preview cards with safety pills, format flavors (animelee vs. vanilla), tier-required pricing, and the install button. Click into any card for the per-slot drawer.
-- **My stuff** — what's already on your machine. Two sections: *from patreon* and *locally imported*. Same card layout as the storefront so you don't lose visual context. A "stash from creators" list at the top lets you bulk-download every viewable skin from a creator before you cancel a sub.
+- **My stuff** — what's already on your machine. Two sections at the top: *from patreon* and *locally imported*, same card layout as the storefront so you don't lose visual context. Below them, a "stash from creators" list lets you bulk-download every viewable skin from a creator before you cancel a sub.
 
 ## Texture index
 
@@ -127,7 +128,8 @@ Nothing is installed system-wide. "Back to vanilla" + uninstalling the app and r
 
 ## Status
 
-- **v0.5 (current)** — Patreon-aggregator core with safety validation, per-creator stash flow, viewable-posts gating, local-cache reinstall, and a unified my-stuff library.
+- **v0.6 (current)** — Bundle-aware installs, custom titlebar, anti-aliased card hover, "uninstall all" non-destructive section bulk action, polish across the cog menu and storefront.
+- **v0.5** — Patreon-aggregator core with safety validation, per-creator stash flow, viewable-posts gating, local-cache reinstall, and a unified my-stuff library.
 - **What's working well** — install / uninstall / reinstall round trip; cross-creator browsing; tier-price resolver via campaign rewards; 7z + zip archive extraction; ISO-mode install for character skins, stages, effects, UI, items, and texture packs.
 - **Known caveats**
   - 51 character_skin entries (Marth, Roy, Mewtwo, Dr. Mario) install correctly via the Patreon path but break the local-import path due to slot-codes mapping mismatches. Audit pending.
