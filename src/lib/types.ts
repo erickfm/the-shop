@@ -277,6 +277,11 @@ export type PatreonInstallResult = {
   skin_id: string;
   bytes: number;
   outcome: PatreonInstallOutcome;
+  /// True when the install was satisfied from the local skin_files
+  /// cache without hitting Patreon. UI uses this to surface "installed
+  /// from your library" so the user knows their already-downloaded
+  /// files were the source — important once a Patreon sub has lapsed.
+  from_local: boolean;
 };
 
 export type BulkInstallFailure = {

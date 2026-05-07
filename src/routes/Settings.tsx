@@ -83,22 +83,22 @@ export function Settings({ onChange }: { onChange?: () => void }) {
   const reset = async () => {
     const ok = confirm(
       [
-        "uninstall all skins and clear the patched iso?",
+        "start fresh? this rolls back to vanilla melee:",
         "",
-        "this will:",
-        "  • delete the-shop-patched.iso",
-        "  • mark every installed skin as not-installed",
-        "  • point slippi back at your original iso",
+        "  • removes the-shop-patched.iso",
+        "  • marks every skin as not-installed",
+        "  • points slippi back at your original iso",
         "",
-        "your imported skin files in the library are kept.",
+        "your downloaded skin files stay — you can reinstall",
+        "anything in one click, and nothing re-downloads.",
       ].join("\n"),
     );
     if (!ok) return;
     try {
-      const r = await busy("clearing installs…", () => ipc.resetToVanilla());
+      const r = await busy("rolling back to vanilla…", () => ipc.resetToVanilla());
       toast({
         kind: "ok",
-        text: `cleared · removed patched iso: ${r.patched_iso_removed ? "yes" : "no"} · ${r.packs_uninstalled} packs cleared`,
+        text: `back to vanilla · ${r.packs_uninstalled} skin${r.packs_uninstalled === 1 ? "" : "s"} marked not-installed (files kept locally)`,
       });
       await refresh();
       onChange?.();
@@ -206,13 +206,19 @@ export function Settings({ onChange }: { onChange?: () => void }) {
         </div>
       </Section>
 
-      <Section title="danger zone">
+      <Section title="start fresh">
+        <p className="text-xs text-muted">
+          rolls back every installed skin and removes the patched iso so
+          slippi runs vanilla again. your downloaded files stay — anything
+          you've installed before reinstalls instantly without
+          re-downloading.
+        </p>
         <button
-          className="text-xs text-muted hover:text-danger transition-colors self-start"
+          className="text-xs text-muted hover:text-white transition-colors self-start"
           onClick={reset}
-          title="uninstall all skins and remove the patched iso"
+          title="uninstall everything and run vanilla — files stay; reinstall is one click"
         >
-          clear all installs →
+          roll back to vanilla →
         </button>
       </Section>
     </div>

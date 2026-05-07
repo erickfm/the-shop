@@ -26,6 +26,14 @@ pub struct PatreonInstallResult {
     pub skin_id: String,
     pub bytes: i64,
     pub outcome: PatreonInstallOutcome,
+    /// True iff we satisfied the install from the local skin_files
+    /// cache without hitting Patreon. Lets the frontend toast
+    /// "installed from your library — no download" rather than the
+    /// fresh-download phrasing. Critical UX signal when a user's
+    /// Patreon access has lapsed but they still have the file from a
+    /// prior install or stash.
+    #[serde(default)]
+    pub from_local: bool,
 }
 
 fn now_secs() -> i64 {
@@ -207,12 +215,109 @@ fn is_zip_archive(name: &str) -> bool {
     l.ends_with(".zip") || l.ends_with(".rar") || l.ends_with(".7z")
 }
 
+/// Look up a previously-downloaded file for this entry. Returns None
+/// if either no skin_files row exists for the entry id, or the row's
+/// source_path no longer points at a real file on disk. The DB row is
+/// the source of truth for "do we have this locally?" — file existence
+/// alone is not enough because the install pipeline needs a registered
+/// row to install from (skin_file_id is referenced by installed_pack
+/// and installed_iso_asset).
+fn try_local_cached(
+    db: &Db,
+    entry: &IndexedSkinEntry,
+) -> Option<(PathBuf, i64, u64)> {
+    use rusqlite::OptionalExtension;
+    let row: Option<(String, i64, i64)> = db
+        .with_conn(|c| {
+            c.query_row(
+                "SELECT source_path, id, size_bytes FROM skin_files \
+                 WHERE source = 'patreon' AND pack_name = ?1 LIMIT 1",
+                rusqlite::params![&entry.id],
+                |r| Ok((
+                    r.get::<_, String>(0)?,
+                    r.get::<_, i64>(1)?,
+                    r.get::<_, i64>(2)?,
+                )),
+            )
+            .optional()
+            .map_err(Into::into)
+        })
+        .ok()
+        .flatten();
+    let (source_path, skin_file_id, bytes) = row?;
+    let path = PathBuf::from(&source_path);
+    if !path.exists() {
+        return None;
+    }
+    Some((path, skin_file_id, bytes as u64))
+}
+
+/// Run the install half only (no download, no extraction). Used when
+/// `try_local_cached` finds an existing on-disk file — typical case is
+/// a user reinstalling something they previously installed and then
+/// uninstalled (uninstall_pack only clears installed_pack rows, the
+/// file and skin_files row both stay) or a stash-then-install flow.
+///
+/// texture_pack entries deliberately fall back to the network path:
+/// install_pack_from_dir copies content from a folder into Slippi's
+/// Load/Textures dir at install time, and the original folder no
+/// longer exists by then (we delete the temp dir after the copy).
+/// Restoring it from a single source_path is non-trivial. Rare case;
+/// not worth the complexity until someone hits it.
+fn install_from_local_cache(
+    db: &Db,
+    entry: &IndexedSkinEntry,
+    skin_file_id: i64,
+) -> AppResult<Option<PatreonInstallOutcome>> {
+    let kind = entry.kind.as_str();
+    if kind == "texture_pack" {
+        return Ok(None);
+    }
+    if kind == "character_skin" {
+        let result = install::install_pack(db, &entry.character_code, &entry.id)?;
+        return Ok(Some(PatreonInstallOutcome::CharacterSkin(result)));
+    }
+    let target = entry
+        .resolved_iso_target()
+        .ok_or_else(|| AppError::Other(format!(
+            "no iso_target_filename resolvable for kind '{kind}' entry '{}'",
+            entry.id
+        )))?;
+    let result = install::install_iso_asset(
+        db,
+        skin_file_id,
+        kind,
+        &target,
+        Some(&entry.id),
+    )?;
+    Ok(Some(PatreonInstallOutcome::IsoAsset(result)))
+}
+
 #[tauri::command]
 pub async fn install_patreon_skin(
     state: State<'_, AppState>,
     skin_id: String,
 ) -> AppResult<PatreonInstallResult> {
     let entry = read_index_entry(&state.db, &skin_id)?;
+
+    // Local cache first — if we already have the file from a prior
+    // install or stash, install from there and skip Patreon entirely.
+    // Critical for the "I cancelled my sub but still want my skins"
+    // flow: install would otherwise fail at fetch_post_metadata once
+    // the user no longer has access, even though the bytes are right
+    // there on disk.
+    if let Some((_path, skin_file_id, bytes)) = try_local_cached(&state.db, &entry) {
+        if let Some(outcome) =
+            install_from_local_cache(&state.db, &entry, skin_file_id)?
+        {
+            return Ok(PatreonInstallResult {
+                skin_id,
+                bytes: bytes as i64,
+                outcome,
+                from_local: true,
+            });
+        }
+    }
 
     let session_cookie = patreon::load_session_cookie(&state.db)?
         .ok_or_else(|| AppError::Other("not connected to Patreon".into()))?;
@@ -252,6 +357,7 @@ pub async fn install_patreon_skin(
         skin_id,
         bytes: bytes as i64,
         outcome,
+        from_local: false,
     })
 }
 
@@ -302,7 +408,8 @@ pub async fn install_patreon_skins_bulk(
 
     let mut installed = Vec::new();
     let mut failed = Vec::new();
-    let mut character_skin_keys: Vec<(String, String, String, u64)> = Vec::new(); // (skin_id, character_code, pack_name, bytes)
+    // (skin_id, character_code, pack_name, bytes, from_local)
+    let mut character_skin_keys: Vec<(String, String, String, u64, bool)> = Vec::new();
 
     for skin_id in &skin_ids {
         let entry = match read_index_entry(&state.db, skin_id) {
@@ -341,12 +448,13 @@ pub async fn install_patreon_skins_bulk(
         )
         .await
         {
-            Ok(bytes) => {
+            Ok((bytes, from_local)) => {
                 character_skin_keys.push((
                     entry.id.clone(),
                     entry.character_code.clone(),
                     entry.id.clone(),
                     bytes,
+                    from_local,
                 ));
             }
             Err(e) => failed.push(BulkInstallFailure {
@@ -357,13 +465,14 @@ pub async fn install_patreon_skins_bulk(
     }
 
     // Reserve all character_skin slots in the DB (no ISO writes).
-    let mut reservation_results: Vec<(String, u64, install::InstallResult)> = Vec::new();
-    for (skin_id, character, pack_name, bytes) in &character_skin_keys {
+    let mut reservation_results: Vec<(String, u64, bool, install::InstallResult)> = Vec::new();
+    for (skin_id, character, pack_name, bytes, from_local) in &character_skin_keys {
         match install::reserve_pack_install_slots(&state.db, character, pack_name) {
             Ok((slots_installed, slots_skipped)) => {
                 reservation_results.push((
                     skin_id.clone(),
                     *bytes,
+                    *from_local,
                     install::InstallResult {
                         installed_slots: slots_installed,
                         skipped_slots: slots_skipped,
@@ -388,13 +497,14 @@ pub async fn install_patreon_skins_bulk(
         match install::finalize_iso_state(&state.db) {
             Ok((patched_path, previous)) => {
                 iso_rebuilt = true;
-                for (skin_id, bytes, mut r) in reservation_results.drain(..) {
+                for (skin_id, bytes, from_local, mut r) in reservation_results.drain(..) {
                     r.patched_iso_path = patched_path.clone();
                     r.previous_slippi_iso = previous.clone();
                     installed.push(PatreonInstallResult {
                         skin_id,
                         bytes: bytes as i64,
                         outcome: PatreonInstallOutcome::CharacterSkin(r),
+                        from_local,
                     });
                 }
             }
@@ -402,7 +512,7 @@ pub async fn install_patreon_skins_bulk(
                 // ISO rebuild failed after reservations — surface as a
                 // single failure so the caller knows the DB has rows that
                 // aren't reflected on disk yet.
-                for (skin_id, _, _) in reservation_results {
+                for (skin_id, _, _, _) in reservation_results {
                     failed.push(BulkInstallFailure {
                         skin_id,
                         error: format!("iso rebuild failed: {e}"),
@@ -450,18 +560,28 @@ async fn install_one_via_dispatch(
         skin_id: entry.id.clone(),
         bytes: bytes as i64,
         outcome,
+        from_local: false,
     })
 }
 
 /// Download a character_skin entry's attachment, extract from zip if needed,
 /// register the skin_files row, and return the byte count. Doesn't touch
 /// installed_pack or the ISO — caller does those in a batch.
+///
+/// Short-circuits if `try_local_cached` finds the entry's file already
+/// on disk. Critical for the "I cancelled my sub but want to reinstall"
+/// path: this function is called by install_patreon_skins_bulk during
+/// the install-from-pack flow, and would otherwise fail at
+/// fetch_post_metadata when the user no longer has access.
 async fn download_and_register_character_skin(
     db: &Db,
     client: &reqwest::Client,
     session_cookie: &str,
     entry: &IndexedSkinEntry,
-) -> AppResult<u64> {
+) -> AppResult<(u64, bool)> {
+    if let Some((_path, _id, bytes)) = try_local_cached(db, entry) {
+        return Ok((bytes, true));
+    }
     let metadata = fetch_post_metadata(client, session_cookie, &entry.patreon_post_id).await?;
     let (matched_filename, signed_url) =
         pick_attachment_url(&metadata, &entry.filename_in_post).ok_or_else(|| {
@@ -505,7 +625,7 @@ async fn download_and_register_character_skin(
     };
 
     register_skin_file_from(db, entry, &real_file, &downloaded_sha, bytes)?;
-    Ok(bytes)
+    Ok((bytes, false))
 }
 
 /// Routes the downloaded artifact based on entry.kind. Handles:

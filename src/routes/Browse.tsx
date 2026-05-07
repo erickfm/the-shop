@@ -245,10 +245,15 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
   const installSlot = async (slot: AnnotatedSkin) => {
     setBusyKey(`slot:${slot.id}`);
     try {
-      await withBusy(`installing ${slot.display_name}…`, () =>
+      const result = await withBusy(`installing ${slot.display_name}…`, () =>
         ipc.installPatreonSkin(slot.id),
       );
-      toast({ kind: "ok", text: `installed ${slot.display_name}` });
+      toast({
+        kind: "ok",
+        text: result.from_local
+          ? `installed ${slot.display_name} from your library`
+          : `installed ${slot.display_name}`,
+      });
       await refresh(false);
       onAfterAction?.();
     } catch (e: any) {
@@ -278,9 +283,16 @@ export function Browse({ onAfterAction }: { onAfterAction?: () => void }) {
           text: `installed ${okCount}/${okCount + failCount} from ${pack.display_name}. Failed: ${detail}`,
         });
       } else {
+        const allFromLocal = result.installed.every((r) => r.from_local);
+        const anyFromLocal = result.installed.some((r) => r.from_local);
+        const localTag = allFromLocal
+          ? " from your library"
+          : anyFromLocal
+            ? " (some from your library)"
+            : "";
         toast({
           kind: "ok",
-          text: `installed ${okCount} slot${okCount === 1 ? "" : "s"} from ${pack.display_name}`,
+          text: `installed ${okCount} slot${okCount === 1 ? "" : "s"} from ${pack.display_name}${localTag}`,
         });
       }
       await refresh(false);
