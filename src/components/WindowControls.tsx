@@ -19,7 +19,7 @@ export function WindowControls() {
           win.minimize().catch(() => {});
         }}
       >
-        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden>
+        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden className="pointer-events-none">
           <line
             x1="2.5"
             y1="6"
@@ -37,7 +37,7 @@ export function WindowControls() {
           win.toggleMaximize().catch(() => {});
         }}
       >
-        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden>
+        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden className="pointer-events-none">
           <rect
             x="2.5"
             y="2.5"
@@ -57,7 +57,7 @@ export function WindowControls() {
           win.close().catch(() => {});
         }}
       >
-        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden>
+        <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden className="pointer-events-none">
           <line
             x1="3"
             y1="3"

@@ -109,17 +109,20 @@ export default function App() {
       <header
         data-tauri-drag-region
         onMouseDown={(e) => {
-          // Belt-and-suspenders: data-tauri-drag-region works on most
-          // platforms but is flaky on some Linux compositors and
-          // Wayland sessions. Calling startDragging() explicitly on
-          // primary-button mousedown — but only when the click is on
-          // the header itself or a non-interactive descendant —
-          // gives us reliable native window drag. Buttons / inputs
-          // / links inside still receive their click events because
-          // we early-return here on those targets.
+          // Belt-and-suspenders: data-tauri-drag-region is flaky on
+          // some Linux compositors. Explicit startDragging() on
+          // primary-button mousedown is reliable. Two subtle gotchas:
+          //   1. e.target may be SVG-tree elements (path / rect / line)
+          //      which are SVGElement, not HTMLElement. Use Element so
+          //      the instanceof check lets them through to the
+          //      closest() walk; otherwise SVG-only clicks fall
+          //      through and startDragging steals the click before
+          //      the parent button can fire.
+          //   2. closest() walks the full ancestor chain — buttons
+          //      with SVG children correctly resolve to <button>.
           if (e.button !== 0) return;
           if (
-            e.target instanceof HTMLElement &&
+            e.target instanceof Element &&
             e.target.closest("button, a, input, select, textarea")
           ) {
             return;
