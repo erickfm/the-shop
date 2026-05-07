@@ -207,18 +207,20 @@ export function Settings({ onChange }: { onChange?: () => void }) {
       </Section>
 
       <Section title="start fresh">
+        <p className="text-sm">
+          puts melee back to its original look — no installed skins, no
+          patched iso.
+        </p>
         <p className="text-xs text-muted">
-          rolls back every installed skin and removes the patched iso so
-          slippi runs vanilla again. your downloaded files stay — anything
-          you've installed before reinstalls instantly without
-          re-downloading.
+          your downloaded skins stay on disk. reinstall any of them with
+          one click; nothing re-downloads.
         </p>
         <button
           className="text-xs text-muted hover:text-white transition-colors self-start"
           onClick={reset}
-          title="uninstall everything and run vanilla — files stay; reinstall is one click"
+          title="undo every install and run vanilla; downloaded files stay"
         >
-          roll back to vanilla →
+          back to vanilla melee →
         </button>
       </Section>
     </div>

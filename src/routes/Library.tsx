@@ -82,15 +82,21 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     refresh();
   }, []);
 
-  const { patreonPacks, manualPacks } = useMemo(() => {
+  const { patreonPacks, manualPacks, patreonAssets, manualAssets } = useMemo(() => {
     const patreonPacks: SkinPack[] = [];
     const manualPacks: SkinPack[] = [];
+    const patreonAssets: IsoAssetRow[] = [];
+    const manualAssets: IsoAssetRow[] = [];
     for (const p of packs) {
       if (p.source === "patreon") patreonPacks.push(p);
       else manualPacks.push(p);
     }
-    return { patreonPacks, manualPacks };
-  }, [packs]);
+    for (const a of assets) {
+      if (a.source === "patreon") patreonAssets.push(a);
+      else manualAssets.push(a);
+    }
+    return { patreonPacks, manualPacks, patreonAssets, manualAssets };
+  }, [packs, assets]);
 
   const addSkins = async () => {
     const sel = await open({
@@ -318,11 +324,12 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         busy={busy}
       />
 
-      <Section
+      <SourceGroup
         title="from patreon"
-        subtitle="character skins you installed by clicking install in browse."
-        emptyText="no patreon-installed character skins yet. head to browse to install one."
+        subtitle="anything you installed by clicking install in browse."
+        emptyText="nothing here yet. head to browse to install something."
         packs={patreonPacks}
+        assets={patreonAssets}
         chars={chars}
         busy={busy}
         onInstall={install}
@@ -331,21 +338,29 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         onRemoveAll={() => removeAll("patreon")}
         bulkBusy={busy === "__bulk_patreon"}
         bulkLabel="remove all"
+        onInstallAsset={installAsset}
+        onUninstallAsset={uninstallAsset}
+        onRemoveAsset={removeAsset}
       />
 
-      <Section
-        title="imported from your filesystem"
+      <SourceGroup
+        title="imported by you"
         subtitle={
           <>
-            character skins you dropped in by hand (
+            files you dropped in by hand (
             <code className="px-1 rounded bg-bg border border-border">
               PlFxNr-Name.dat
-            </code>{" "}
-            etc.). use the import button above.
+            </code>
+            ,{" "}
+            <code className="px-1 rounded bg-bg border border-border">
+              GrFs-Custom.usd
+            </code>
+            , etc.). use the import button above.
           </>
         }
-        emptyText="no manually-imported skins yet. import some via the button above."
+        emptyText="nothing imported yet. drop some .dat / .usd files via the import button."
         packs={manualPacks}
+        assets={manualAssets}
         chars={chars}
         busy={busy}
         onInstall={install}
@@ -354,20 +369,110 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         onRemoveAll={() => removeAll("manual")}
         bulkBusy={busy === "__bulk_manual"}
         bulkLabel="unimport all"
-      />
-
-      <IsoAssetsSection
-        assets={assets}
-        busy={busy}
-        onInstall={installAsset}
-        onUninstall={uninstallAsset}
-        onRemove={removeAsset}
+        onInstallAsset={installAsset}
+        onUninstallAsset={uninstallAsset}
+        onRemoveAsset={removeAsset}
       />
     </div>
   );
 }
 
-function IsoAssetsSection({
+/// One section per source ("from patreon" / "imported by you"). Both
+/// character_skin packs and non-character ISO assets render together
+/// under the source's header, with the same source-side action buttons
+/// and bulk-remove. Removes the old "characters split by source +
+/// stages-effects-ui all together" inconsistency.
+function SourceGroup({
+  title,
+  subtitle,
+  emptyText,
+  packs,
+  assets,
+  chars,
+  busy,
+  onInstall,
+  onUninstall,
+  onRemove,
+  onRemoveAll,
+  bulkBusy,
+  bulkLabel,
+  onInstallAsset,
+  onUninstallAsset,
+  onRemoveAsset,
+}: {
+  title: string;
+  subtitle: React.ReactNode;
+  emptyText: string;
+  packs: SkinPack[];
+  assets: IsoAssetRow[];
+  chars: CharacterDef[];
+  busy: string | null;
+  onInstall: (p: SkinPack) => void;
+  onUninstall: (p: SkinPack) => void;
+  onRemove: (p: SkinPack) => void;
+  onRemoveAll: () => void;
+  bulkBusy: boolean;
+  bulkLabel: string;
+  onInstallAsset: (a: IsoAssetRow) => void;
+  onUninstallAsset: (a: IsoAssetRow) => void;
+  onRemoveAsset: (a: IsoAssetRow) => void;
+}) {
+  const totalCount = packs.length + assets.length;
+  return (
+    <section>
+      <div className="flex items-baseline justify-between mb-3 gap-3">
+        <div>
+          <h3 className="section-title text-base">{title}</h3>
+          <p className="text-xs text-muted">{subtitle}</p>
+        </div>
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="text-xs text-muted">
+            {totalCount} item{totalCount === 1 ? "" : "s"}
+          </div>
+          {totalCount > 0 && (
+            <button
+              type="button"
+              className="text-xs text-muted hover:text-danger px-2 py-1 border border-border rounded"
+              onClick={onRemoveAll}
+              disabled={bulkBusy}
+              title={`${bulkLabel} all ${totalCount} item${totalCount === 1 ? "" : "s"} in this section`}
+            >
+              {bulkBusy ? `${bulkLabel}…` : bulkLabel}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {totalCount === 0 ? (
+        <div className="card p-8 text-center text-sm text-muted">{emptyText}</div>
+      ) : (
+        <div className="space-y-4">
+          {packs.length > 0 && (
+            <PackGrid
+              packs={packs}
+              chars={chars}
+              busy={busy}
+              onInstall={onInstall}
+              onUninstall={onUninstall}
+              onRemove={onRemove}
+            />
+          )}
+          {assets.length > 0 && (
+            <AssetRows
+              assets={assets}
+              busy={busy}
+              onInstall={onInstallAsset}
+              onUninstall={onUninstallAsset}
+              onRemove={onRemoveAsset}
+            />
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function AssetRows({
   assets,
   busy,
   onInstall,
@@ -381,167 +486,91 @@ function IsoAssetsSection({
   onRemove: (a: IsoAssetRow) => void;
 }) {
   return (
-    <section>
-      <div className="flex items-baseline justify-between mb-3 gap-3">
-        <div>
-          <h3 className="section-title text-base">stages, effects, ui</h3>
-          <p className="text-xs text-muted">
-            Non-character ISO assets — file names like{" "}
-            <code className="px-1 rounded bg-bg border border-border">
-              EfFxData-Variant.dat
-            </code>
-            ,{" "}
-            <code className="px-1 rounded bg-bg border border-border">
-              GrFs-Custom.usd
-            </code>
-            ,{" "}
-            <code className="px-1 rounded bg-bg border border-border">
-              MnSlChr-AnimatedCSS.usd
-            </code>
-            . Each one replaces a single HAL file in the ISO; only one variant
-            per target can be installed at a time.
-          </p>
-        </div>
-        <div className="text-xs text-muted shrink-0">
-          {assets.length} asset{assets.length === 1 ? "" : "s"}
-        </div>
-      </div>
-
-      {assets.length === 0 ? (
-        <div className="card p-8 text-center text-sm text-muted">
-          No imported ISO assets yet. Drop in a stage / effect / UI file via{" "}
-          <span className="text-white">+ Import .dat / .usd files</span>.
-        </div>
-      ) : (
-        <div className="card divide-y divide-border">
-          {assets.map((a) => {
-            const myKey = `asset:${a.id}`;
-            const kindLabel = KIND_LABEL[a.kind] ?? a.kind;
-            const subtitleParts: string[] = [kindLabel];
-            if (a.kind === "stage") {
-              subtitleParts.push(stageDisplay(a.iso_target_filename));
-            }
-            if (
-              (a.kind === "effect" ||
-                a.kind === "animation" ||
-                a.kind === "ui") &&
-              a.character_code
-            ) {
-              subtitleParts.push(characterDisplay(a.character_code));
-            }
-            subtitleParts.push(a.iso_target_filename);
-            return (
-              <div
-                key={a.id}
-                className="flex items-center gap-4 p-4"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className="font-medium truncate">{a.filename}</div>
-                  <div className="text-xs text-muted truncate">
-                    {subtitleParts.join(" · ")}
-                    {a.installed && (
-                      <span className="text-ok"> · installed</span>
-                    )}
-                    {a.source === "patreon" && a.source_creator_display && (
-                      <> · by {a.source_creator_display}</>
-                    )}
-                  </div>
-                </div>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
-                  {a.source === "patreon" ? "patreon" : "imported"}
-                </span>
-                <div className="flex flex-col gap-1.5 shrink-0 items-stretch">
-                  {a.installed ? (
-                    <button
-                      className="btn-danger"
-                      onClick={() => onUninstall(a)}
-                      disabled={busy === myKey}
-                    >
-                      {busy === myKey ? "uninstalling…" : "uninstall"}
-                    </button>
-                  ) : (
-                    <button
-                      className="btn-primary"
-                      onClick={() => onInstall(a)}
-                      disabled={busy === myKey}
-                    >
-                      {busy === myKey ? "installing…" : "install"}
-                    </button>
-                  )}
-                  <button
-                    className="text-xs text-muted hover:text-danger px-2 py-1"
-                    onClick={() => onRemove(a)}
-                    disabled={busy === myKey}
-                    title="delete file from disk"
-                  >
-                    {a.source === "patreon" ? "remove" : "unimport"}
-                  </button>
-                </div>
+    <div className="card divide-y divide-border">
+      {assets.map((a) => {
+        const myKey = `asset:${a.id}`;
+        const kindLabel = KIND_LABEL[a.kind] ?? a.kind;
+        const subtitleParts: string[] = [kindLabel];
+        if (a.kind === "stage") {
+          subtitleParts.push(stageDisplay(a.iso_target_filename));
+        }
+        if (
+          (a.kind === "effect" ||
+            a.kind === "animation" ||
+            a.kind === "ui") &&
+          a.character_code
+        ) {
+          subtitleParts.push(characterDisplay(a.character_code));
+        }
+        subtitleParts.push(a.iso_target_filename);
+        return (
+          <div
+            key={a.id}
+            className="flex items-center gap-4 p-4"
+          >
+            <div className="min-w-0 flex-1">
+              <div className="font-medium truncate">{a.filename}</div>
+              <div className="text-xs text-muted truncate">
+                {subtitleParts.join(" · ")}
+                {a.installed && (
+                  <span className="text-ok"> · installed</span>
+                )}
+                {a.source === "patreon" && a.source_creator_display && (
+                  <> · by {a.source_creator_display}</>
+                )}
               </div>
-            );
-          })}
-        </div>
-      )}
-    </section>
+            </div>
+            <div className="flex flex-col gap-1.5 shrink-0 items-stretch">
+              {a.installed ? (
+                <button
+                  className="btn-danger"
+                  onClick={() => onUninstall(a)}
+                  disabled={busy === myKey}
+                >
+                  {busy === myKey ? "uninstalling…" : "uninstall"}
+                </button>
+              ) : (
+                <button
+                  className="btn-primary"
+                  onClick={() => onInstall(a)}
+                  disabled={busy === myKey}
+                >
+                  {busy === myKey ? "installing…" : "install"}
+                </button>
+              )}
+              <button
+                className="text-xs text-muted hover:text-danger px-2 py-1"
+                onClick={() => onRemove(a)}
+                disabled={busy === myKey}
+                title="delete file from disk"
+              >
+                {a.source === "patreon" ? "remove" : "unimport"}
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
-function Section({
-  title,
-  subtitle,
-  emptyText,
+function PackGrid({
   packs,
   chars,
   busy,
   onInstall,
   onUninstall,
   onRemove,
-  onRemoveAll,
-  bulkBusy,
-  bulkLabel,
 }: {
-  title: string;
-  subtitle: React.ReactNode;
-  emptyText: string;
   packs: SkinPack[];
   chars: CharacterDef[];
   busy: string | null;
   onInstall: (p: SkinPack) => void;
   onUninstall: (p: SkinPack) => void;
   onRemove: (p: SkinPack) => void;
-  onRemoveAll: () => void;
-  bulkBusy: boolean;
-  bulkLabel: string;
 }) {
   return (
-    <section>
-      <div className="flex items-baseline justify-between mb-3 gap-3">
-        <div>
-          <h3 className="section-title text-base">{title}</h3>
-          <p className="text-xs text-muted">{subtitle}</p>
-        </div>
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="text-xs text-muted">
-            {packs.length} skin{packs.length === 1 ? "" : "s"}
-          </div>
-          {packs.length > 0 && (
-            <button
-              type="button"
-              className="text-xs text-muted hover:text-danger px-2 py-1 border border-border rounded"
-              onClick={onRemoveAll}
-              disabled={bulkBusy}
-              title={`${bulkLabel} all ${packs.length} skin${packs.length === 1 ? "" : "s"} in this section`}
-            >
-              {bulkBusy ? `${bulkLabel}…` : bulkLabel}
-            </button>
-          )}
-        </div>
-      </div>
-
-      {packs.length === 0 ? (
-        <div className="card p-8 text-center text-sm text-muted">{emptyText}</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 off-kilter">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 off-kilter">
           {packs.map((p) => {
             const charDef = chars.find((c) => c.code === p.character_code);
             const allSlots = charDef?.slots ?? [];
@@ -672,9 +701,7 @@ function Section({
               </div>
             );
           })}
-        </div>
-      )}
-    </section>
+    </div>
   );
 }
 
