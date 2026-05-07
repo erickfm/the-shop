@@ -621,13 +621,39 @@ async fn fetch_viewable_posts_for_campaign(
             break;
         }
         pages += 1;
-        let resp = client
-            .get(&url)
-            .header("Cookie", format!("{SESSION_COOKIE_NAME}={session_cookie}"))
-            .header("Accept", "application/json")
-            .send()
-            .await
-            .map_err(|e| AppError::Other(format!("patreon http: {e}")))?;
+        // Brief inter-page pacing to stay under Patreon's ~60 req/min/IP.
+        // First page free; subsequent pages wait 250ms. Without this,
+        // 13 creators × ~2-3 pages each fires ~30 requests in <2s and
+        // routinely trips 429.
+        if pages > 1 {
+            tokio::time::sleep(std::time::Duration::from_millis(250)).await;
+        }
+        // Retry-on-429 with backoff. Patreon includes Retry-After
+        // sometimes; honor it when present, otherwise pick a small
+        // exponential.
+        let mut attempt: u32 = 0;
+        let resp = loop {
+            let r = client
+                .get(&url)
+                .header("Cookie", format!("{SESSION_COOKIE_NAME}={session_cookie}"))
+                .header("Accept", "application/json")
+                .send()
+                .await
+                .map_err(|e| AppError::Other(format!("patreon http: {e}")))?;
+            if r.status() == reqwest::StatusCode::TOO_MANY_REQUESTS && attempt < 3 {
+                let secs = r
+                    .headers()
+                    .get(reqwest::header::RETRY_AFTER)
+                    .and_then(|h| h.to_str().ok())
+                    .and_then(|s| s.trim().parse::<u64>().ok())
+                    .unwrap_or((1u64 << attempt).saturating_mul(3))
+                    .clamp(2, 30);
+                tokio::time::sleep(std::time::Duration::from_secs(secs)).await;
+                attempt += 1;
+                continue;
+            }
+            break r;
+        };
         if !resp.status().is_success() {
             return Err(AppError::Other(format!(
                 "patreon posts (campaign {campaign_id}): HTTP {}",

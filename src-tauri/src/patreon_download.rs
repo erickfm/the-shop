@@ -113,6 +113,23 @@ fn pick_attachment_url(json: &serde_json::Value, filename: &str) -> Option<(Stri
     None
 }
 
+/// On 429 Patreon may include a Retry-After header (seconds, sometimes
+/// HTTP-date but for /api/* it's the integer form). Parses the header
+/// when present; otherwise picks an exponentially-growing default.
+/// Caps at 30s — anything past that, we bail and surface to the user
+/// rather than silently freezing the install button for a minute+.
+fn retry_after_secs(resp: &reqwest::Response, attempt: u32) -> u64 {
+    if let Some(h) = resp.headers().get(reqwest::header::RETRY_AFTER) {
+        if let Ok(s) = h.to_str() {
+            if let Ok(n) = s.trim().parse::<u64>() {
+                return n.min(30);
+            }
+        }
+    }
+    // 1.5 → 3 → 6 seconds across attempts 0/1/2.
+    (1u64 << attempt).saturating_mul(3).max(2).min(30)
+}
+
 async fn fetch_post_metadata(
     client: &reqwest::Client,
     session_cookie: &str,
@@ -121,30 +138,51 @@ async fn fetch_post_metadata(
     let url = format!(
         "https://www.patreon.com/api/posts/{post_id}?include=attachments,attachments_media,access_rules&fields[post]=title,published_at"
     );
-    let resp = client
-        .get(&url)
-        .header("Cookie", format!("session_id={session_cookie}"))
-        .header("Accept", "application/json")
-        .send()
-        .await
-        .map_err(|e| AppError::Other(format!("patreon post http: {e}")))?;
-    let status = resp.status();
-    if status == reqwest::StatusCode::UNAUTHORIZED || status == reqwest::StatusCode::FORBIDDEN {
-        return Err(AppError::Other(format!(
-            "tier-required or unauthorized for post {post_id}"
-        )));
+    // Patreon rate-limits aggressively (~60 req/min/IP). One refresh of
+    // viewable_posts + a few installs in quick succession can trip 429.
+    // Retry with backoff (Retry-After header when present) up to a
+    // small cap; then surface a friendly error.
+    let mut attempt: u32 = 0;
+    loop {
+        let resp = client
+            .get(&url)
+            .header("Cookie", format!("session_id={session_cookie}"))
+            .header("Accept", "application/json")
+            .send()
+            .await
+            .map_err(|e| AppError::Other(format!("patreon post http: {e}")))?;
+        let status = resp.status();
+        if status == reqwest::StatusCode::TOO_MANY_REQUESTS && attempt < 3 {
+            let secs = retry_after_secs(&resp, attempt);
+            tokio::time::sleep(Duration::from_secs(secs)).await;
+            attempt += 1;
+            continue;
+        }
+        if status == reqwest::StatusCode::TOO_MANY_REQUESTS {
+            return Err(AppError::Other(
+                "patreon is rate-limiting us — wait a minute and try again".into(),
+            ));
+        }
+        if status == reqwest::StatusCode::UNAUTHORIZED
+            || status == reqwest::StatusCode::FORBIDDEN
+        {
+            return Err(AppError::Other(format!(
+                "tier-required or unauthorized for post {post_id}"
+            )));
+        }
+        if status == reqwest::StatusCode::NOT_FOUND {
+            return Err(AppError::Other(format!("patreon post {post_id} not found")));
+        }
+        if !status.is_success() {
+            return Err(AppError::Other(format!(
+                "patreon post {post_id}: HTTP {status}"
+            )));
+        }
+        return resp
+            .json::<serde_json::Value>()
+            .await
+            .map_err(|e| AppError::Other(format!("patreon post body: {e}")));
     }
-    if status == reqwest::StatusCode::NOT_FOUND {
-        return Err(AppError::Other(format!("patreon post {post_id} not found")));
-    }
-    if !status.is_success() {
-        return Err(AppError::Other(format!(
-            "patreon post {post_id}: HTTP {status}"
-        )));
-    }
-    resp.json::<serde_json::Value>()
-        .await
-        .map_err(|e| AppError::Other(format!("patreon post body: {e}")))
 }
 
 async fn download_to_path(
