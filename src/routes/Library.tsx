@@ -319,12 +319,6 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         </button>
       </div>
 
-      <StashSection
-        creators={stashCreators}
-        onStashAll={stashAllFromCreator}
-        busy={busy}
-      />
-
       <SourceGroup
         title="from patreon"
         subtitle="anything you installed by clicking install in browse."
@@ -379,6 +373,12 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
         onInstallAsset={installAsset}
         onUninstallAsset={uninstallAsset}
         onRemoveAsset={removeAsset}
+      />
+
+      <StashSection
+        creators={stashCreators}
+        onStashAll={stashAllFromCreator}
+        busy={busy}
       />
     </div>
   );
