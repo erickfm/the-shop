@@ -7,6 +7,8 @@ import { Toaster, toast } from "./components/Toaster";
 import { Wordmark } from "./components/Wordmark";
 import { Logo } from "./components/Logo";
 import { BusyOverlay } from "./components/BusyOverlay";
+import { WindowControls } from "./components/WindowControls";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { ipc } from "./lib/ipc";
 import type { PatreonStatus } from "./lib/types";
 
@@ -97,17 +99,45 @@ export default function App() {
 
   return (
     <div className="h-full flex flex-col">
-      <header className="flex items-center justify-between px-6 py-3 gap-6">
+      {/* Custom titlebar — the OS chrome is off (decorations: false in
+          tauri.conf.json) so the user gets a single seamless surface
+          with rounded corners. data-tauri-drag-region on the header
+          makes the empty space draggable; interactive children
+          (buttons, links) stay clickable, and WindowControls opts
+          itself out of the drag handle so its buttons aren't lost
+          to drag-starts. */}
+      <header
+        data-tauri-drag-region
+        onMouseDown={(e) => {
+          // Belt-and-suspenders: data-tauri-drag-region works on most
+          // platforms but is flaky on some Linux compositors and
+          // Wayland sessions. Calling startDragging() explicitly on
+          // primary-button mousedown — but only when the click is on
+          // the header itself or a non-interactive descendant —
+          // gives us reliable native window drag. Buttons / inputs
+          // / links inside still receive their click events because
+          // we early-return here on those targets.
+          if (e.button !== 0) return;
+          if (
+            e.target instanceof HTMLElement &&
+            e.target.closest("button, a, input, select, textarea")
+          ) {
+            return;
+          }
+          getCurrentWindow().startDragging().catch(() => {});
+        }}
+        className="flex items-center justify-between px-6 py-3 gap-6 select-none"
+      >
         <button
           type="button"
           onClick={goHome}
           aria-label="home"
           className="shrink-0 flex items-center gap-3 hover:opacity-80 transition-opacity"
         >
-          <Logo size={44} />
+          <Logo size={56} />
           <Wordmark />
         </button>
-        <div className="flex items-center gap-5 shrink-0 text-sm">
+        <div className="flex items-center gap-3 shrink-0 text-sm">
           <button
             className={`transition-colors p-1 -m-1 relative -top-[2px] ${
               route === "account"
@@ -135,12 +165,14 @@ export default function App() {
             </svg>
           </button>
           <button
-            className="text-muted hover:text-white transition-colors"
+            className="btn"
             onClick={launch}
             title="launch slippi"
           >
-            ▶ launch
+            <span aria-hidden>▶</span>
+            <span>launch</span>
           </button>
+          <WindowControls />
         </div>
       </header>
 
