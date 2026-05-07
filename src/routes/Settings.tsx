@@ -182,12 +182,6 @@ export function Settings({ onChange }: { onChange?: () => void }) {
             </button>
           </div>
         </div>
-        <div className="text-xs text-muted">
-          currently configured iso in slippi:{" "}
-          <span className="font-mono">
-            {settings.current_slippi_iso_path ?? "(none / cannot read)"}
-          </span>
-        </div>
       </Section>
 
       <Section title="patreon">
