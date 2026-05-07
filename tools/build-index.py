@@ -356,10 +356,12 @@ def _format_marker(blob: str) -> str | None:
     b = blob.lower()
     if "animelee" in b:
         return "animelee"
-    if re.search(r"\bvanilla\b", b):
+    # `vanilla` and `1:1` collapse to the same label — both mean
+    # "faithful to Melee's original art style," as opposed to the
+    # animelee cel-shade variant. Splitting them was confusing on
+    # cards (users asked why 1:1 wasn't vanilla).
+    if re.search(r"\bvanilla\b", b) or re.search(r"\b1[:_-]?1\b", b) or "1to1" in b:
         return "vanilla"
-    if re.search(r"\b1[:_-]?1\b", b) or "1to1" in b:
-        return "1:1"
     return None
 
 

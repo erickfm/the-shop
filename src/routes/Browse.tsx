@@ -14,7 +14,6 @@ import type {
 } from "../lib/types";
 import {
   characterDisplay,
-  isLegalRankedStage,
   packTilt,
   previewList,
   requiresUnzip,
@@ -745,12 +744,6 @@ function FeaturedHero({
               <>
                 <span>·</span>
                 <span>{stageDisplay(pack.slots[0].iso_target_filename)}</span>
-                {isLegalRankedStage(pack.slots[0].iso_target_filename) && (
-                  <>
-                    <span>·</span>
-                    <span className="text-accent">ranked legal</span>
-                  </>
-                )}
               </>
             )}
             {pack.format && (
@@ -1387,15 +1380,6 @@ function PackCard({
             <span className="label-mono px-1.5 py-0.5 rounded bg-bg border border-border text-muted shrink-0">
               {KIND_LABELS[(pack.kind ?? "character_skin") as SkinKind]}
             </span>
-            {pack.kind === "stage" &&
-              isLegalRankedStage(pack.slots[0]?.iso_target_filename) && (
-                <span
-                  className="label-mono px-1.5 py-0.5 rounded bg-bg border border-accent/40 text-accent shrink-0"
-                  title="this targets a legal slippi ranked stage — collision changes affect ranked play"
-                >
-                  ranked
-                </span>
-              )}
             {pack.format && (
               <span
                 className="label-mono px-1.5 py-0.5 rounded bg-bg border border-accent/40 text-accent shrink-0"
@@ -1558,9 +1542,6 @@ function PackDetailDrawer({
   const metaPills: string[] = [kindLabel];
   if (pack.kind === "stage" && pack.slots[0]?.iso_target_filename) {
     metaPills.push(stageDisplay(pack.slots[0].iso_target_filename));
-    if (isLegalRankedStage(pack.slots[0].iso_target_filename)) {
-      metaPills.push("ranked legal");
-    }
   }
   if (
     (pack.kind === "character_skin" ||
