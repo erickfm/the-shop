@@ -116,7 +116,7 @@ export default function App() {
             }`}
             onClick={() => setRoute("account")}
             title="your installed skins, paths, account"
-            aria-label="open your stuff and settings"
+            aria-label="open my stuff and settings"
           >
             <svg
               width="16"

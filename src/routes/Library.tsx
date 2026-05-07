@@ -308,7 +308,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
     <div className="p-8 max-w-5xl space-y-8">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
-          <h2 className="section-title">your stuff</h2>
+          <h2 className="section-title">my stuff</h2>
           <p className="text-sm text-muted">
             everything you've installed or imported.
           </p>

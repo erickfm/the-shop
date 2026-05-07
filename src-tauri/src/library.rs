@@ -538,12 +538,21 @@ fn canonical_filename(original: &str, parsed: &manifest::ParsedSkinFilename) -> 
 }
 
 pub fn list_packs(db: &Db) -> AppResult<Vec<SkinPack>> {
+    // Scope to character_skin rows only — non-character ISO assets
+    // (stages, effects, ui, items) live in the same skin_files table
+    // but have empty character_code, which slot_codes::lookup rejects.
+    // Including them used to surface as `UnknownCharacter("")` and
+    // erase the entire pack list every time a user installed a stage.
+    // Those non-character rows are surfaced separately via
+    // list_iso_assets and rendered as AssetRows in the cog menu.
     let rows: Vec<SkinFileRow> = db.with_conn(|c| {
         let mut stmt = c.prepare(
             "SELECT id, filename, character_code, slot_code, pack_name, source_path, size_bytes, sha256,
                     source, source_creator_id, source_creator_display
              FROM skin_files
              WHERE pack_name IS NOT NULL
+               AND kind = 'character_skin'
+               AND character_code != ''
              ORDER BY character_code, pack_name, slot_code",
         )?;
         let mapped = stmt.query_map([], |r| {

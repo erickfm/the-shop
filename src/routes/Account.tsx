@@ -1,7 +1,7 @@
 import { Library } from "./Library";
 import { Settings } from "./Settings";
 
-/// Unified "your stuff" page — installed skins + settings + patreon
+/// Unified "my stuff" page — installed skins + settings + patreon
 /// account state, all on one scroll. Replaces the old Library and
 /// Settings routes so the top bar only needs one entry point. Both
 /// child components keep their own internal data fetching and
