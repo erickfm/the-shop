@@ -109,118 +109,131 @@ export function Settings({ onChange }: { onChange?: () => void }) {
 
   if (!settings) return <div className="p-8 text-muted">loading…</div>;
 
+  // Every section follows the same shape — section-title h2, then a
+  // card with consistent padding + vertical rhythm. Body content uses
+  // text-sm by default; secondary metadata is text-xs text-muted. No
+  // per-section font-size overrides on the card itself; let the inner
+  // elements decide their own size against a uniform container.
   return (
-    <div className="p-8 max-w-3xl space-y-10">
-      <div>
-        <h2 className="section-title text-base mb-3">vanilla melee iso</h2>
-        <div className="card p-4 space-y-3">
-          <div className="flex gap-2">
-            <input
-              className="input font-mono"
-              value={settings.vanilla_iso_path ?? ""}
-              readOnly
-              placeholder="no iso selected"
-            />
-            <button className="btn-primary" onClick={pickIso} disabled={isoBusy}>
-              {isoBusy ? "reading…" : "browse…"}
-            </button>
-          </div>
-          {settings.vanilla_iso && (
-            <div className="text-xs text-muted space-y-1 font-mono">
-              <div>size: {bytes(settings.vanilla_iso.size_bytes)}</div>
-              <div>
-                recognized:{" "}
-                <span
-                  className={
-                    settings.vanilla_iso.recognized ? "text-ok" : "text-muted"
-                  }
-                >
-                  {settings.vanilla_iso.recognized ??
-                    "unknown — proceed with care"}
-                </span>
-              </div>
-            </div>
-          )}
+    <div className="p-8 max-w-3xl space-y-8">
+      <Section title="vanilla melee iso">
+        <div className="flex gap-2">
+          <input
+            className="input font-mono"
+            value={settings.vanilla_iso_path ?? ""}
+            readOnly
+            placeholder="no iso selected"
+          />
+          <button className="btn-primary" onClick={pickIso} disabled={isoBusy}>
+            {isoBusy ? "reading…" : "browse…"}
+          </button>
         </div>
-      </div>
-
-      <div>
-        <h2 className="section-title text-base mb-3">slippi launcher</h2>
-        <div className="card p-4 space-y-3">
-          <div className="flex gap-2">
-            <input
-              className="input font-mono"
-              value={settings.slippi_launcher_executable ?? ""}
-              readOnly
-              placeholder={detected?.slippi_launcher_executable || "not detected"}
-            />
-            <button className="btn" onClick={pickLauncher}>
-              browse…
-            </button>
-          </div>
-          <div className="flex gap-2">
-            <input
-              className="input font-mono"
-              value={settings.slippi_user_dir ?? ""}
-              readOnly
-              placeholder={detected?.slippi_user_dir || "not detected"}
-            />
-            <button className="btn" onClick={pickUserDir}>
-              browse user dir…
-            </button>
-          </div>
-          <div className="text-xs text-muted">
-            currently configured iso in slippi:{" "}
-            <span className="font-mono">
-              {settings.current_slippi_iso_path ?? "(none / cannot read)"}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h2 className="section-title text-base mb-3">patreon</h2>
-        <div className="card p-4 text-sm space-y-2">
-          {patreon?.connected && patreon.user ? (
-            <>
-              <div className="text-muted">
-                connected as{" "}
-                <span className="text-white lowercase">
-                  {patreon.user.name || "(no name)"}
-                </span>
-              </div>
-              <button
-                className="text-xs text-muted hover:text-danger transition-colors"
-                onClick={disconnectPatreon}
-                title="sign out of patreon"
+        {settings.vanilla_iso && (
+          <div className="text-xs text-muted font-mono space-y-1">
+            <div>size: {bytes(settings.vanilla_iso.size_bytes)}</div>
+            <div>
+              recognized:{" "}
+              <span
+                className={
+                  settings.vanilla_iso.recognized ? "text-ok" : "text-muted"
+                }
               >
-                disconnect →
-              </button>
-            </>
-          ) : (
-            <div className="text-muted">not connected</div>
-          )}
-        </div>
-      </div>
+                {settings.vanilla_iso.recognized ??
+                  "unknown — proceed with care"}
+              </span>
+            </div>
+          </div>
+        )}
+      </Section>
 
-      <div>
-        <h2 className="section-title text-base mb-3">storage</h2>
-        <div className="card p-4 text-xs text-muted font-mono space-y-1">
+      <Section title="slippi launcher">
+        <div className="flex gap-2">
+          <input
+            className="input font-mono"
+            value={settings.slippi_launcher_executable ?? ""}
+            readOnly
+            placeholder={detected?.slippi_launcher_executable || "not detected"}
+          />
+          <button className="btn" onClick={pickLauncher}>
+            browse…
+          </button>
+        </div>
+        <div className="flex gap-2">
+          <input
+            className="input font-mono"
+            value={settings.slippi_user_dir ?? ""}
+            readOnly
+            placeholder={detected?.slippi_user_dir || "not detected"}
+          />
+          <button className="btn" onClick={pickUserDir}>
+            browse user dir…
+          </button>
+        </div>
+        <div className="text-xs text-muted">
+          currently configured iso in slippi:{" "}
+          <span className="font-mono">
+            {settings.current_slippi_iso_path ?? "(none / cannot read)"}
+          </span>
+        </div>
+      </Section>
+
+      <Section title="patreon">
+        {patreon?.connected && patreon.user ? (
+          <>
+            <div className="text-sm text-muted">
+              connected as{" "}
+              <span className="text-white lowercase">
+                {patreon.user.name || "(no name)"}
+              </span>
+            </div>
+            <button
+              className="text-xs text-muted hover:text-danger transition-colors self-start"
+              onClick={disconnectPatreon}
+              title="sign out of patreon"
+            >
+              disconnect →
+            </button>
+          </>
+        ) : (
+          <div className="text-sm text-muted">not connected</div>
+        )}
+      </Section>
+
+      <Section title="storage">
+        <div className="text-xs text-muted font-mono space-y-1">
           <div>skins: {settings.skins_dir}</div>
           <div>patched iso: {settings.patched_iso_path}</div>
         </div>
-      </div>
+      </Section>
 
-      <div>
-        <h2 className="section-title text-base mb-3">danger zone</h2>
+      <Section title="danger zone">
         <button
-          className="text-xs text-muted hover:text-danger transition-colors"
+          className="text-xs text-muted hover:text-danger transition-colors self-start"
           onClick={reset}
           title="uninstall all skins and remove the patched iso"
         >
           clear all installs →
         </button>
-      </div>
+      </Section>
+    </div>
+  );
+}
+
+/// Section primitive — keeps every Settings subsection visually
+/// identical. Title + card body with consistent padding and vertical
+/// gap. flex-col on the card so `self-start` works on inline links
+/// without stretching them across the row.
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <h2 className="section-title text-base mb-3">{title}</h2>
+      <div className="card p-4 flex flex-col gap-3">{children}</div>
     </div>
   );
 }

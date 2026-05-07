@@ -254,7 +254,7 @@ export function Library({ onAfterAction }: { onAfterAction?: () => void }) {
   };
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-8 space-y-8">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1 max-w-2xl">
           <h2 className="section-title">your stuff</h2>
@@ -331,7 +331,7 @@ function IsoAssetsSection({
 }) {
   return (
     <section>
-      <div className="flex items-baseline justify-between pb-2 gap-3">
+      <div className="flex items-baseline justify-between mb-3 gap-3">
         <div>
           <h3 className="section-title text-base">stages, effects, ui</h3>
           <p className="text-xs text-muted">
@@ -464,7 +464,7 @@ function Section({
 }) {
   return (
     <section>
-      <div className="flex items-baseline justify-between pb-2 gap-3">
+      <div className="flex items-baseline justify-between mb-3 gap-3">
         <div>
           <h3 className="section-title text-base">{title}</h3>
           <p className="text-xs text-muted">{subtitle}</p>
