@@ -115,7 +115,7 @@ export function Settings({ onChange }: { onChange?: () => void }) {
   // per-section font-size overrides on the card itself; let the inner
   // elements decide their own size against a uniform container.
   return (
-    <div className="p-8 max-w-3xl space-y-8">
+    <div className="p-8 max-w-5xl space-y-8">
       <Section title="vanilla melee iso">
         <div className="flex gap-2">
           <input
